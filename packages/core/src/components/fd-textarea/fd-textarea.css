@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.fd-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fd-control {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fd-gap, 0.5rem);
+}
+
+.fd-leading,
+.fd-trailing {
+  display: flex;
+  align-items: center;
+}
+
+sl-textarea::part(textarea) {
+  border-radius: var(--fd-radius, 6px);
+}

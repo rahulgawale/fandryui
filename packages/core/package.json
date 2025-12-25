@@ -1,0 +1,14 @@
+{
+  "name": "@fandry/core",
+  "version": "0.0.1",
+  "private": false,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "lwc": "^6.0.0"
+  }
+}

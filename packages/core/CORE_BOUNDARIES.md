@@ -1,103 +1,93 @@
-# Fandry Core – Scope & Boundaries
+# Fandry Core – Boundaries & Enforcement
 
 Fandry Core is intentionally constrained.
 
-Its purpose is to provide:
-- stable abstractions
-- consistent APIs
-- a foundation for higher-level components
+Its purpose is to provide **foundational UI primitives** that are:
+- extensible
+- predictable
+- platform-agnostic
 
-It is **not** a feature playground.
+Core is not a solution layer.
 
 ---
 
-## What Core Is Allowed to Contain
+## What Core MAY contain
 
 Core may include:
-
-- Base UI primitives (input, textarea, label)
-- Design tokens
-- Adapter utilities
-- Accessibility-safe defaults
-- Thin wrappers around web-component primitives
-- Stable, documented APIs
+- fd-* primitives (input, textarea, checkbox, etc.)
+- structural layout for primitives
+- slots for extensibility
+- design tokens
+- semantic event normalization
+- thin adapters over vendor behavior
 
 ---
 
-## What Core Must NEVER Include
+## What Core MUST NOT contain
 
 The following are explicitly forbidden in Core:
 
-### ❌ Salesforce-Specific Logic
-- Record awareness
+### ❌ Platform Logic
+- Salesforce record awareness
 - LDS / wire adapters
 - Apex calls
 - Flow integration
 - Navigation helpers
 
-These belong in higher layers.
-
 ---
 
-### ❌ Complex Business Components
-- Datatables
+### ❌ Business or Solution Components
 - Lookups
-- Multi-select logic
+- Datatables
 - File uploads
-- Charts
-- Layout builders
+- Validation UX
+- Wizards
+- Forms with behavior
 
-If it feels like a “solution”, it does not belong in Core.
+If it feels like an app feature, it does not belong in Core.
 
 ---
 
-### ❌ SLDS or Lightning Base Components
-- No SLDS classes
-- No `lightning-*` components
-- No Salesforce UI abstractions
+### ❌ Native Form Elements in Public APIs
+- `<input>`
+- `<textarea>`
+- `<select>`
 
-Core must remain platform-agnostic at the UI level.
+Native elements may exist **only inside vendor behavior**.
 
 ---
 
 ### ❌ Vendor API Leakage
-- No public exposure of Shoelace/Web Awesome APIs
-- No dependency on vendor-specific event names
-- No reliance on internal vendor DOM structure
-
-All vendor usage must be hidden behind adapters.
+- No public exposure of `sl-*` events
+- No reliance on vendor DOM structure
+- No vendor types in public Core APIs
 
 ---
 
 ### ❌ Configuration Explosion
-- No “just in case” options
-- No infinite variants
-- No premature extensibility
+- No “just in case” props
+- No feature flags
+- No preemptive extensibility
 
-Core prefers **opinionated defaults**.
+Core prefers opinionated defaults.
 
 ---
 
-## Growth Rule
+## Enforcement Rules
 
-If a proposed change makes Core:
-- harder to reason about
-- harder to document
-- harder to replace
+- Any addition to Core must justify its presence
+- Additions that expand scope will be rejected
+- Breaking these rules is grounds for reverting code
 
-It will be rejected.
+---
+
+## Philosophy
 
 Core should feel:
 - boring
+- small
 - predictable
-- stable
 
 That is success.
 
----
-
-## Enforcement
-
-Changes that violate these rules will be reverted, even if technically correct.
-
-These boundaries exist to protect long-term maintainability.
+If Core feels exciting, something is wrong.

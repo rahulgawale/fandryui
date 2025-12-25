@@ -1,0 +1,34 @@
+<template>
+  <div class="fd-field" data-size={size} data-variant={variant}>
+    <label if:true={hasLabel} class="fd-label">
+      <slot name="label">{label}</slot>
+    </label>
+
+    <div class="fd-control">
+      <span class="fd-leading">
+        <slot name="leading"></slot>
+      </span>
+
+      <sl-textarea
+        value={value}
+        placeholder={placeholder}
+        disabled={disabled}
+        readonly={readonly}
+        required={required}
+        resize={resize}
+        rows={rows}
+        size={mappedSize}
+        onsl-input={handleInput}
+        onsl-change={handleChange}
+      ></sl-textarea>
+
+      <span class="fd-trailing">
+        <slot name="trailing"></slot>
+      </span>
+    </div>
+
+    <div if:true={hasHelp} class="fd-help">
+      <slot name="help"></slot>
+    </div>
+  </div>
+</template>

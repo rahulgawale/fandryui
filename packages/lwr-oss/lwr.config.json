@@ -1,0 +1,22 @@
+{
+  "lwc": {
+    "modules": [
+      {
+        "dir": "../core/src"
+      }
+    ]
+  },
+  "routes": [
+    {
+      "id": "root",
+      "path": "/",
+      "rootComponent": "fandry/app"
+    }
+  ],
+  "staticResources": [
+    {
+      "dir": "../vendor/web-awesome/dist",
+      "urlPath": "/vendor"
+    }
+  ]
+}

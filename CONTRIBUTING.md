@@ -2,102 +2,124 @@
 
 Thanks for your interest in contributing to Fandry UI.
 
-Before you do anything: this project prioritizes **architecture, correctness, and long-term maintainability** over speed or feature count.
+Before you start: this project prioritizes **architecture, extensibility, and long-term maintainability** over speed or feature count. Contributions that violate these principles will be declined, even if they are technically correct.
 
-If you’re looking to quickly add features or shortcuts, this may not be the right project for you.
-
----
-
-## Guiding Principles
-
-All contributions must align with these principles:
-
-1. **Core stays small**
-2. **Abstractions are intentional**
-3. **Salesforce-specific logic does not leak into Core**
-4. **No breaking changes without discussion**
-5. **Developer experience > feature breadth**
+This is intentional.
 
 ---
 
-## Repository Structure (read this first)
+## Project Structure (Read First)
 
-- `packages/core`
-  - Mandatory, open source
-  - Stable APIs only
-  - No Salesforce hacks
-- `packages/free`
-  - Optional components
-  - Still open source
-- `packages/pro`
-  - Not part of this repository
+Fandry UI is a monorepo with strict boundaries.
+
+```
+packages/
+  ├── core/ ← Foundational UI primitives (fd-\*)
+  ├── vendor/ ← Generated vendor bundles (do not edit)
+  ├── playground/ ← Dev & demo app
+  ├── lwr-oss/ ← Compatibility testing (future)
+  └── salesforce/ ← Platform packaging (future)
+```
+
 
 If you are unsure where something belongs, it probably does **not** belong in Core.
 
 ---
 
-## What You Can Contribute (v0.x)
+## Core Is Intentionally Small
 
-- Bug fixes
-- Documentation improvements
-- Design token refinements
-- Accessibility improvements
-- Small, focused primitives (with justification)
+`packages/core` is the foundation of Fandry UI.
 
----
+Core exists to provide:
+- extensible primitives
+- stable public APIs
+- predictable behavior
+- design tokens
 
-## What Will Not Be Accepted
+Core does **not** exist to solve application problems.
 
-Pull requests will be rejected if they:
+Before contributing to Core, read: packages/core/CORE_BOUNDARIES.md
 
-- Add Salesforce-specific logic to Core
-- Introduce SLDS or Lightning base components
-- Add large feature sets without prior discussion
-- Expand Core beyond its defined scope
-- Depend directly on third-party UI libraries in public APIs
-- Optimize prematurely or add configuration “just in case”
+
+Pull requests that violate Core boundaries will be closed.
 
 ---
 
-## Design Decisions Are Intentional
+## What We Accept
 
-If something looks “too simple”, assume it is by design.
+Contributions are welcome if they:
 
-Please do not:
-- add options because “someone might need it”
-- generalize prematurely
-- expose internal vendor APIs
+- Improve existing primitives without expanding scope
+- Add **new primitives** with clear justification
+- Improve accessibility or semantics
+- Improve documentation or examples
+- Fix bugs without introducing new APIs
 
-If you believe a design decision is flawed, open a discussion *before* coding.
-
----
-
-## Pull Request Guidelines
-
-- One concern per PR
-- Clear description of intent
-- No unrelated refactors
-- Include reasoning, not just code
-
-PRs that lack context will be closed without comment.
+Each PR should address **one concern**.
 
 ---
 
-## Code Style & Philosophy
+## What We Will Not Accept
 
-- Prefer clarity over cleverness
-- Prefer composition over inheritance
-- Prefer boring solutions
-- Avoid framework magic
+The following will be rejected:
 
-This is infrastructure code. Treat it as such.
+- Salesforce-specific logic in Core
+- Business or solution components (lookup, datatable, etc.)
+- Native form elements exposed in public APIs
+- Vendor (`sl-*`) APIs leaking outside Core
+- Large feature additions without discussion
+- Configuration-heavy or “just in case” APIs
+
+If a feature requires explanation longer than the code, it probably does not belong in Core.
 
 ---
 
-## Final Note
+## TypeScript Rules
 
-Fandry UI is not trying to win popularity contests.
+Fandry UI uses TypeScript to enforce contracts.
 
-It is trying to be **correct, calm, and durable**.
+Guidelines:
+- Types should describe **public APIs**
+- Avoid clever or complex generic types
+- Prefer explicit unions over inference magic
+- If a type makes the code harder to read, remove it
+
+Types are contracts, not puzzles.
+
+---
+
+## Event & API Discipline
+
+- Core normalizes **semantic events** only (`input`, `change`, `focus`, `blur`)
+- Native DOM events bubble naturally and are not re-emitted
+- Vendor-specific events must not escape Core
+
+Do not introduce new events casually.
+
+---
+
+## Pull Request Expectations
+
+Each pull request must include:
+- Clear intent
+- Architectural reasoning
+- Scope justification (especially for Core changes)
+
+PRs without context may be closed without comment.
+
+---
+
+## Philosophy
+
+Fandry UI is not trying to be:
+- the biggest UI library
+- the fastest-moving project
+- the most configurable system
+
+It is trying to be:
+- boring
+- predictable
+- extensible
+- durable
 
 If that resonates with you, you’re welcome here.

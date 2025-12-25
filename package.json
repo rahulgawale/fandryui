@@ -1,0 +1,15 @@
+{
+  "name": "fandry-ui",
+  "packageManager": "pnpm@9.0.0",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build:vendor": "node scripts/build-vendor.mjs",
+    "dev:playground": "pnpm --filter playground dev"
+  },
+  "devDependencies": {
+    "@shoelace-style/shoelace": "^2.20.1",
+    "esbuild": "^0.20.0"
+  }
+}
