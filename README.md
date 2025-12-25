@@ -55,17 +55,6 @@ Install pnpm if needed:
 npm install -g pnpm
 ```
 
-## Prerequisites
-
-- Node.js **18.17+** (20+ recommended)
-- pnpm **9+**
-
-Install pnpm if needed:
-
-```bash
-npm install -g pnpm
-```
-
 ## Setup
 
 From repo root:
@@ -112,7 +101,7 @@ Open the URL printed by LWR (usually http://localhost:3000).
 
 If a change feels exciting, it probably doesn’t belong in Core.
 
-##Contributing
+## Contributing
 
 Read these first:
 - CONTRIBUTING.md
@@ -134,4 +123,4 @@ That’s intentional.
 
 MIT License - see the LICENSE file for details.
 
-“This project bundles third-party web components licensed under MIT or compatible licenses. See individual packages for details.”
+This project bundles third-party web components licensed under MIT or compatible licenses. See individual packages for details.
