@@ -5,8 +5,7 @@
   "type": "module",
   "files": [
     "lwc",
-    "lwc.config.json",
-    "tokens"
+    "lwc.config.json"
   ],
   "dependencies": {
     "lwc": "^6.0.0"

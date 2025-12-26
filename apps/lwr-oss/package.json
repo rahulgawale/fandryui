@@ -15,7 +15,6 @@
     "stage:prod-compat": "yarn build:prod-compat && yarn start"
   },
   "dependencies": {
-    "@fandry/core": "file:../../packages/core",
     "lwc": "latest",
     "lwr": "0.18.3"
   },

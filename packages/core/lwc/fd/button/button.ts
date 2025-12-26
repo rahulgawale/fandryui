@@ -1,6 +1,7 @@
-import { LightningElement, api } from 'lwc';
+import { api } from 'lwc';
+import Base from '../base/base';
 
-export default class FdButton extends LightningElement {
+export default class FdButton extends Base {
   @api variant = 'primary';
   @api type = 'button';
   @api disabled = false;

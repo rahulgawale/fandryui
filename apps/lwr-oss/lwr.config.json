@@ -3,11 +3,11 @@
         "modules": [
             {
                 "dir": "$rootDir/src/modules"
-            },
-            {
-                "npm": "@fandry/core"
             }
         ]
+    },
+    "moduleAliases": {
+        "fd": "../../packages/core/lwc/fd"
     },
     "routes": [
         {

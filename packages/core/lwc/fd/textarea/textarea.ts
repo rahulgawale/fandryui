@@ -1,6 +1,8 @@
-import { LightningElement, api } from 'lwc';
+import { api } from 'lwc';
+import Base from '../base/base';
 
-export default class Textarea extends LightningElement {
+export default class Textarea extends Base {
+
   @api label = '';
   @api helpText = '';
   @api value = '';

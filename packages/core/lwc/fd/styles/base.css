@@ -11,32 +11,16 @@
 :host {
   font-family: var(--fd-font-sans);
   color: hsl(var(--fd-text));
-}
-
-/* ---- Body-like defaults for components ---- */
-
-:host {
   line-height: 1.5;
 }
 
 /* ---- Typography ---- */
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
 p {
   margin: 0;
 }
 
-/* ---- Form primitives ---- */
+/* ---- Form primitives (authoritative) ---- */
 
 button,
 input,
@@ -44,24 +28,40 @@ textarea,
 select {
   font: inherit;
   color: inherit;
-}
-
-input,
-textarea,
-select {
+  background: hsl(var(--fd-bg));
   border-radius: var(--fd-radius-md);
   border: 1px solid hsl(var(--fd-border));
   padding: var(--fd-space-2) var(--fd-space-3);
-  background-color: hsl(var(--fd-bg));
+
+  /* kill browser defaults */
+  outline: none;
+  box-shadow: none;
 }
 
+/* ---- Unified focus ring ---- */
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border-color: hsl(var(--fd-border-focus));
+  box-shadow:
+    0 0 0 var(--fd-ring-offset) hsl(var(--fd-bg)),
+    0 0 0 calc(var(--fd-ring-width) + var(--fd-ring-offset))
+      hsl(var(--fd-ring-color));
+}
+
+/* fallback for browsers that ignore focus-visible */
 input:focus,
 textarea:focus,
 select:focus {
-  outline: none;
-  border-color: hsl(var(--fd-ring));
-  box-shadow: 0 0 0 1px hsl(var(--fd-ring));
+  border-color: hsl(var(--fd-border-focus));
+  box-shadow:
+    0 0 0 var(--fd-ring-offset) hsl(var(--fd-bg)),
+    0 0 0 calc(var(--fd-ring-width) + var(--fd-ring-offset))
+      hsl(var(--fd-ring-color));
 }
+
+/* ---- Disabled ---- */
 
 :disabled {
   opacity: 0.5;

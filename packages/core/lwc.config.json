@@ -5,6 +5,7 @@
     }
   ],
   "expose": [
+    "base/base",
     "fd/input",
     "fd/textarea",
     "fd/button"

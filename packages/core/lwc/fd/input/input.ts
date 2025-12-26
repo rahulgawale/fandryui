@@ -1,6 +1,7 @@
-import { LightningElement, api, track } from 'lwc';
+import { api, track } from 'lwc';
+import Base from '../base/base';
+export default class Input extends Base {
 
-export default class Input extends LightningElement {
   @api label = '';
   @api helpText = '';
   @api value = '';

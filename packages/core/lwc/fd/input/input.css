@@ -5,19 +5,20 @@
 .form-control {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-1, 4px);
+  gap: var(--fd-space-1);
 }
 
 .label {
-  font-size: var(--fd-font-size-sm, 0.875rem);
+  font-size: 0.875rem;
+  color: hsl(var(--fd-text));
 }
 
 .control {
   display: flex;
   align-items: center;
-  border: 1px solid var(--fd-color-border, #ccc);
-  border-radius: var(--fd-radius-md, 6px);
-  padding: var(--fd-space-1, 4px) var(--fd-space-2, 8px);
+  border: 1px solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-md);
+  padding: var(--fd-space-1) var(--fd-space-2);
 }
 
 .input {
