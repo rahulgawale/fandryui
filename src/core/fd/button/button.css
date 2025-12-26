@@ -1,0 +1,60 @@
+:host {
+  display: inline-block;
+}
+
+button {
+  font: inherit;
+  padding: var(--fd-space-2) var(--fd-space-3);
+  border-radius: var(--fd-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    box-shadow 120ms ease,
+    transform 80ms ease;
+  background: hsl(var(--fd-primary));
+  color: hsl(var(--fd-primary-foreground));
+}
+
+/* Hover effect */
+button:hover:not(:disabled) {
+  filter: brightness(1.1);
+  box-shadow: 0 2px 8px hsla(var(--fd-primary) / 0.3);
+}
+
+/* Variants */
+.btn--primary {
+  background: hsl(var(--fd-primary));
+  color: hsl(var(--fd-primary-foreground));
+}
+
+.btn--secondary {
+  background: hsl(var(--fd-bg-muted));
+  border-color: hsl(var(--fd-border));
+  color: hsl(var(--fd-text));
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: hsl(var(--fd-bg));
+  box-shadow: 0 2px 8px hsla(var(--fd-border) / 0.3);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: hsl(var(--fd-text));
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: hsl(var(--fd-bg-muted));
+  box-shadow: none;
+}
+
+/* States */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}

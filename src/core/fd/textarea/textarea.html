@@ -1,0 +1,29 @@
+<template>
+  <div class="form-control">
+    <template if:true={hasLabel}>
+      <label class="label">
+        {label}
+      </label>
+    </template>
+
+    <textarea
+      class="textarea"
+      name={name}
+      value={value}
+      placeholder={placeholder}
+      rows={rows}
+      disabled={disabled}
+      readonly={readonly}
+      required={required}
+      aria-describedby="help-text"
+      oninput={handleInput}
+      onchange={handleChange}
+    ></textarea>
+
+    <template if:true={hasHelpText}>
+      <div id="help-text" class="help-text">
+        {helpText}
+      </div>
+    </template>
+  </div>
+</template>
