@@ -1,7 +1,7 @@
 import { LightningElement, api } from "lwc";
-import type { FdInputSize, FdInputVariant } from "../fd-input/fd-input";
+import type { FdInputSize, FdInputVariant } from "../input/input.js";
 
-import "../../vendor/web-awesome/dist/textarea/textarea.js";
+// import "../../vendor/web-awesome/dist/textarea/textarea.js";`
 export type FdTextareaResize = "none" | "vertical" | "horizontal" | "auto";
 
 export default class FdTextarea extends LightningElement {

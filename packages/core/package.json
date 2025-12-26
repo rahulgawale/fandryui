@@ -6,7 +6,8 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "files": [
-    "src"
+    "src",
+    "lwc.config.json"
   ],
   "dependencies": {
     "lwc": "^6.0.0"

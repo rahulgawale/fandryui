@@ -1,0 +1,36 @@
+{
+    "lwc": {
+        "modules": [
+            {
+                "dir": "$rootDir/src/modules"
+            },
+            {
+                "npm": "@fandry/core"
+            }
+        ]
+    },
+    "routes": [
+        {
+            "id": "fandryui",
+            "path": "/",
+            "rootComponent": "fandryui/app"
+        }
+    ],
+    "assets": [
+        {
+            "alias": "assetsDir",
+            "dir": "$rootDir/src/assets",
+            "urlPath": "/public/assets"
+        },
+        {
+            "alias": "favicon",
+            "file": "$rootDir/src/assets/favicon.ico",
+            "urlPath": "/favicon.ico"
+        },
+        {
+            "alias": "vendorDir",
+            "dir": "$rootDir/../../packages/vendor/web-awesome/dist",
+            "urlPath": "/vendor"
+        }
+    ]
+}

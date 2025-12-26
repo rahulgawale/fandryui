@@ -1,0 +1,26 @@
+<template>
+    <main>
+        <h1>Fandry UI – LWR OSS</h1>
+        <p>Demonstrating fd-input and fd-textarea primitives</p>
+
+        <section>
+            <h2>Input Example</h2>
+            <fd-input 
+                label="Email" 
+                type="email"
+            >
+                <span slot="leading">📧</span>
+                <span slot="help">Used only for login</span>
+            </fd-input>
+        </section>
+
+        <section>
+            <h2>Textarea Example</h2>
+            <fd-textarea 
+                label="Notes"
+            >
+                <button slot="trailing">Clear</button>
+            </fd-textarea>
+        </section>
+    </main>
+</template>

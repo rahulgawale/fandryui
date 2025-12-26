@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+apps/lwr-oss/__lwr_cache__
+apps/lwr-oss/node_modules

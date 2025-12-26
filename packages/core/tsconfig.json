@@ -15,5 +15,5 @@
     "lib": ["ES2020", "DOM"],
     "types": ["lwc"]
   },
-  "include": ["src"]
+  "include": ["src", "lwc", "types", " index.ts", "core.d.ts"]
 }

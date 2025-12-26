@@ -1,6 +1,6 @@
 <template>
   <div class="fd-input">
-    <sl-input
+    <vendor-input
       value={value}
       type={type}
       placeholder={placeholder}
@@ -9,15 +9,12 @@
       required={required}
       clearable={clearable}
       size={mappedSize}
-      onsl-input={handleInput}
-      onsl-change={handleChange}
-      onsl-focus={handleFocus}
-      onsl-blur={handleBlur}
+
     >
       <slot name="label" slot="label"></slot>
       <slot name="prefix" slot="prefix"></slot>
       <slot name="suffix" slot="suffix"></slot>
       <slot name="help-text" slot="help-text"></slot>
-    </sl-input>
+    </vendor-input>
   </div>
 </template>

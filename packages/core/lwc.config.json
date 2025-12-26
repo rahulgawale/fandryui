@@ -1,0 +1,11 @@
+{
+  "modules": [
+    {
+      "dir": "lwc"
+    }
+  ],
+  "expose": [
+    "fd/input",
+    "fd/textarea"
+  ]
+}
