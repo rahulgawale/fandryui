@@ -2,7 +2,6 @@
   "name": "fandryui",
   "version": "0.1.0",
   "license": "MIT",
-  "private": true,
   "type": "module",
   "scripts": {
     "clean": "rimraf node_modules __lwr_cache__ site",
@@ -11,12 +10,17 @@
     "build": "lwr build --clean",
     "build:prod-compat": "lwr build --clean --mode prod-compat",
     "start": "lwr start",
-    "stage": "yarn build && yarn start",
-    "stage:prod-compat": "yarn build:prod-compat && yarn start"
+    "stage": "npm run build && npm start",
+    "stage:prod-compat": "npm run build:prod-compat && npm start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d site"
   },
   "dependencies": {
     "lwc": "latest",
     "lwr": "0.18.3"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.2.0"
   },
   "engines": {
     "node": ">=18.0.0"
