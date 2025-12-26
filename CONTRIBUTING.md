@@ -19,6 +19,14 @@ apps/
   └── lwr-oss/    ← Playground & runtime validation
 ```
 
+**Important:** `apps/lwr-oss` is excluded from pnpm workspace and uses npm for installation due to LWR compatibility issues. When working in lwr-oss:
+
+```bash
+cd apps/lwr-oss
+npm install
+npm run dev
+```
+
 **Future additions:**
 - `apps/salesforce/` for platform packaging
 

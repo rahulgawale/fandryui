@@ -72,14 +72,12 @@ pnpm --filter @fandry/core exec tsc --noEmit
 
 This is the playground and real runtime for Fandry UI components.
 
-```bash
-pnpm dev
-```
-
-Or directly:
+**Important:** lwr-oss uses npm for installation (not pnpm) due to LWR compatibility issues.
 
 ```bash
-pnpm --filter lwr-oss dev
+cd apps/lwr-oss
+npm install
+npm run dev
 ```
 
 Open the URL printed by LWR (usually http://localhost:3000).
@@ -87,6 +85,7 @@ Open the URL printed by LWR (usually http://localhost:3000).
 You should see:
 - fd-input
 - fd-textarea
+- fd-button
 - Native LWC primitives working
 - Slots and events behaving correctly
 

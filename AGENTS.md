@@ -74,6 +74,8 @@ Applications exist to:
 - test
 - document
 
+**Important:** lwr-oss is excluded from pnpm workspace and uses npm for installation due to LWR compatibility issues. Always use npm commands when working in `apps/lwr-oss`.
+
 They are allowed to be messy.  
 Core is not.
 
