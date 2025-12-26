@@ -18,10 +18,9 @@ Crossing layers casually is considered a defect.
 
 Layers (from bottom to top):
 
-1. Vendor (behavior)
-2. Core (primitives)
-3. Platform adapters (LWR, Salesforce)
-4. Applications (playground, docs, demos)
+1. Core (primitives built with native LWC)
+2. Platform adapters (LWR, Salesforce)
+3. Applications (lwr-oss for playground, docs, demos)
 
 Changes must respect this direction.
 
@@ -29,21 +28,11 @@ Changes must respect this direction.
 
 ## Layer Responsibilities
 
-### Vendor Layer (`packages/vendor`)
-- Generated code only
-- Provides behavior and accessibility
-- Must not be edited manually
-- Must not leak APIs upward
-
-If you need to change vendor behavior, do it by **upgrading or swapping vendors**, not patching files.
-
----
-
 ### Core Layer (`packages/core`)
 Core is intentionally small.
 
 Core provides:
-- fd-* primitives
+- fd-* primitives built with native LWC
 - extensible structure
 - slots, tokens, and contracts
 - normalized semantic events
@@ -56,7 +45,6 @@ Core must remain:
 Core must **not**:
 - contain business logic
 - contain Salesforce logic
-- expose vendor APIs
 - grow configuration surfaces casually
 
 If you are unsure whether something belongs in Core, it probably does not.
@@ -80,7 +68,7 @@ They may not:
 
 ---
 
-### Applications (`packages/playground`)
+### Applications (`apps/lwr-oss`)
 Applications exist to:
 - demonstrate
 - test
@@ -144,7 +132,7 @@ Core should feel uneventful.
   - `focus`
   - `blur`
 - Native DOM events bubble naturally
-- Vendor-specific events must never escape Core
+- Custom events must be semantic and well-documented
 
 Do not proxy or re-emit DOM events unless there is a strong, documented reason.
 

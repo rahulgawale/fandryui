@@ -26,11 +26,6 @@
             "alias": "favicon",
             "file": "$rootDir/src/assets/favicon.ico",
             "urlPath": "/favicon.ico"
-        },
-        {
-            "alias": "vendorDir",
-            "dir": "$rootDir/../../packages/vendor/web-awesome/dist",
-            "urlPath": "/vendor"
         }
     ]
 }

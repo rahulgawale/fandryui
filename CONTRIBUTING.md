@@ -14,13 +14,13 @@ Fandry UI is a monorepo with strict boundaries.
 
 ```
 packages/
-  ├── core/ ← Foundational UI primitives (fd-\*)
-  ├── vendor/ ← Generated vendor bundles (do not edit)
-  ├── playground/ ← Dev & demo app
-  ├── lwr-oss/ ← Compatibility testing (future)
-  └── salesforce/ ← Platform packaging (future)
+  └── core/       ← Foundational UI primitives (fd-*, native LWC)
+apps/
+  └── lwr-oss/    ← Playground & runtime validation
 ```
 
+**Future additions:**
+- `apps/salesforce/` for platform packaging
 
 If you are unsure where something belongs, it probably does **not** belong in Core.
 
@@ -31,14 +31,14 @@ If you are unsure where something belongs, it probably does **not** belong in Co
 `packages/core` is the foundation of Fandry UI.
 
 Core exists to provide:
-- extensible primitives
+- extensible primitives built with native LWC
 - stable public APIs
 - predictable behavior
 - design tokens
 
 Core does **not** exist to solve application problems.
 
-Before contributing to Core, read: packages/core/CORE_BOUNDARIES.md
+Before contributing to Core, read: [packages/core/CORE_BOUNDARIES.md](packages/core/CORE_BOUNDARIES.md)
 
 
 Pull requests that violate Core boundaries will be closed.
@@ -65,8 +65,7 @@ The following will be rejected:
 
 - Salesforce-specific logic in Core
 - Business or solution components (lookup, datatable, etc.)
-- Native form elements exposed in public APIs
-- Vendor (`sl-*`) APIs leaking outside Core
+- Direct native form elements in public APIs (wrap them properly)
 - Large feature additions without discussion
 - Configuration-heavy or “just in case” APIs
 
@@ -92,7 +91,7 @@ Types are contracts, not puzzles.
 
 - Core normalizes **semantic events** only (`input`, `change`, `focus`, `blur`)
 - Native DOM events bubble naturally and are not re-emitted
-- Vendor-specific events must not escape Core
+- Custom events must be semantic and well-documented
 
 Do not introduce new events casually.
 

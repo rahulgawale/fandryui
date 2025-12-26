@@ -1,47 +1,57 @@
-import { LightningElement, api } from "lwc";
+import { LightningElement, api, track } from 'lwc';
 
-export type FdInputSize = "sm" | "md" | "lg";
-export type FdInputVariant = "outline" | "filled";
-
-export default class FdInput extends LightningElement {
-  @api value = "";
-  @api type: string = "text";
-  @api label = "";
-  @api size: FdInputSize = "md";
-  @api variant: FdInputVariant = "outline";
+export default class Input extends LightningElement {
+  @api label = '';
+  @api helpText = '';
+  @api value = '';
+  @api type: string = 'text';
+  @api name = '';
+  @api placeholder = '';
   @api disabled = false;
   @api readonly = false;
   @api required = false;
-  @api clearable = false;
 
-  get mappedSize(): "small" | "medium" | "large" {
-    if (this.size === "sm") return "small";
-    if (this.size === "lg") return "large";
-    return "medium";
+  @track hasFocus = false;
+
+  get hasLabel(): boolean {
+    return !!this.label;
   }
 
-  handleInput(e: Event) {
-    const value = (e.target as HTMLInputElement).value;
-    this.value = value;
+  get hasHelpText(): boolean {
+    return !!this.helpText;
+  }
+
+  handleInput(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.value = target.value;
 
     this.dispatchEvent(
-      new CustomEvent<string>("input", {
-        detail: value,
+      new CustomEvent('input', {
+        detail: this.value,
         bubbles: true,
-        composed: true,
+        composed: true
       })
     );
   }
 
-  handleChange(e: Event) {
-    const value = (e.target as HTMLInputElement).value;
+  handleChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.value = target.value;
 
     this.dispatchEvent(
-      new CustomEvent<string>("change", {
-        detail: value,
+      new CustomEvent('change', {
+        detail: this.value,
         bubbles: true,
-        composed: true,
+        composed: true
       })
     );
+  }
+
+  handleFocus() {
+    this.hasFocus = true;
+  }
+
+  handleBlur() {
+    this.hasFocus = false;
   }
 }

@@ -1,20 +1,41 @@
 <template>
-  <div class="fd-input">
-    <vendor-input
-      value={value}
-      type={type}
-      placeholder={placeholder}
-      disabled={disabled}
-      readonly={readonly}
-      required={required}
-      clearable={clearable}
-      size={mappedSize}
+  <div class="form-control">
+    <template if:true={hasLabel}>
+      <label class="label">
+        {label}
+      </label>
+    </template>
 
-    >
-      <slot name="label" slot="label"></slot>
-      <slot name="prefix" slot="prefix"></slot>
-      <slot name="suffix" slot="suffix"></slot>
-      <slot name="help-text" slot="help-text"></slot>
-    </vendor-input>
+    <div class="control">
+      <span class="prefix">
+        <slot name="prefix"></slot>
+      </span>
+
+      <input
+        class="input"
+        type={type}
+        name={name}
+        value={value}
+        placeholder={placeholder}
+        disabled={disabled}
+        readonly={readonly}
+        required={required}
+        aria-describedby="help-text"
+        oninput={handleInput}
+        onchange={handleChange}
+        onfocus={handleFocus}
+        onblur={handleBlur}
+      />
+
+      <span class="suffix">
+        <slot name="suffix"></slot>
+      </span>
+    </div>
+
+    <template if:true={hasHelpText}>
+      <div id="help-text" class="help-text">
+        {helpText}
+      </div>
+    </template>
   </div>
 </template>

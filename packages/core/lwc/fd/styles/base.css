@@ -1,0 +1,69 @@
+@import "./tokens.css";
+
+/* ---- Reset ---- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:host {
+  font-family: var(--fd-font-sans);
+  color: hsl(var(--fd-text));
+}
+
+/* ---- Body-like defaults for components ---- */
+
+:host {
+  line-height: 1.5;
+}
+
+/* ---- Typography ---- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+p {
+  margin: 0;
+}
+
+/* ---- Form primitives ---- */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+input,
+textarea,
+select {
+  border-radius: var(--fd-radius-md);
+  border: 1px solid hsl(var(--fd-border));
+  padding: var(--fd-space-2) var(--fd-space-3);
+  background-color: hsl(var(--fd-bg));
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: hsl(var(--fd-ring));
+  box-shadow: 0 0 0 1px hsl(var(--fd-ring));
+}
+
+:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

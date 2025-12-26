@@ -1,0 +1,40 @@
+:host {
+  display: inline-block;
+}
+
+button {
+  font: inherit;
+  padding: var(--fd-space-2) var(--fd-space-3);
+  border-radius: var(--fd-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    box-shadow 120ms ease,
+    transform 80ms ease;
+}
+
+/* Variants */
+.btn--primary {
+  background: var(--fd-color-primary);
+  color: var(--fd-color-on-primary);
+}
+
+.btn--secondary {
+  background: var(--fd-color-surface);
+  border-color: var(--fd-color-border);
+}
+
+.btn--ghost {
+  background: transparent;
+}
+
+/* States */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}

@@ -2,12 +2,12 @@
 
 **Why Should React Have All the Fun?**
 
-Fandry UI is an opinionated, extensible UI foundation for **Lightning Web Components**, built on modern Web Components instead of fighting them.
+Fandry UI is an opinionated, extensible UI foundation for **Lightning Web Components**, built from scratch with native LWC.
 
-It combines:
-- **Vendor web components** for behavior & accessibility
-- **Thin LWC adapters** for Salesforce trust and lifecycle
+It provides:
+- **Native LWC primitives** for behavior & accessibility
 - **Strict boundaries** to keep the system sane as it grows
+- **Extensibility over completeness** as a core principle
 
 This is infrastructure, not a component zoo.
 
@@ -35,10 +35,9 @@ This is infrastructure, not a component zoo.
 
 ```
 packages/
-├── core/ # fd-* primitives (LWC, TypeScript)
-├── vendor/ # bundled web components (generated)
-├── playground/ # experiments & docs (non-LWC)
-├── lwr-oss/ # LWR-based runtime validation
+  └── core/         # fd-* primitives (native LWC, TypeScript)
+apps/
+  └── lwr-oss/      # LWR-based playground & runtime validation
 ```
 
 Key rule: **Core stays small.**  
@@ -63,12 +62,6 @@ From repo root:
 pnpm install
 ```
 
-Build vendor web components:
-
-```bash
-pnpm run build:vendor
-```
-
 Typecheck Core:
 
 ```bash
@@ -77,7 +70,13 @@ pnpm --filter @fandry/core exec tsc --noEmit
 
 ## Run LWR OSS Playground
 
-This is the real runtime for Fandry UI components.
+This is the playground and real runtime for Fandry UI components.
+
+```bash
+pnpm dev
+```
+
+Or directly:
 
 ```bash
 pnpm --filter lwr-oss dev
@@ -85,10 +84,10 @@ pnpm --filter lwr-oss dev
 
 Open the URL printed by LWR (usually http://localhost:3000).
 
-- You should see:
+You should see:
 - fd-input
 - fd-textarea
-- Vendor behavior working
+- Native LWC primitives working
 - Slots and events behaving correctly
 
 
@@ -122,5 +121,3 @@ That’s intentional.
 ## License
 
 MIT License - see the LICENSE file for details.
-
-This project bundles third-party web components licensed under MIT or compatible licenses. See individual packages for details.

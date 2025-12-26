@@ -8,21 +8,21 @@
 ## 2. Motivation
 - Problems with UI composition in Salesforce
 - Why SLDS is not enough for some use cases
-- Why web components + LWC adapters
+- Why native LWC primitives over external dependencies
 
 ## 3. Architecture
 - Layered model explanation
-- Headless primitives
-- Core adapters
+- Native LWC primitives
+- Core components
 - Design tokens
 - Free vs Pro (conceptual)
 
 ## 4. Core Concepts
 - Design tokens
-- Adapter pattern
+- Component composition pattern
 - Event normalization
-- Styling via CSS parts
-- Why users never touch vendor components
+- Styling via CSS custom properties
+- Slots for extensibility
 
 ## 5. Components (v0.1)
 - f-input
@@ -50,7 +50,7 @@
 ## 9. FAQ
 - Why not SLDS?
 - Why not React?
-- Why not expose Shoelace directly?
+- Why build from scratch instead of using existing web components?
 - Is this production-ready?
 
 ---

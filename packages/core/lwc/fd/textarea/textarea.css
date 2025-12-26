@@ -2,24 +2,25 @@
   display: block;
 }
 
-.fd-field {
+.form-control {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--fd-space-1, 4px);
 }
 
-.fd-control {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--fd-gap, 0.5rem);
+.label {
+  font-size: var(--fd-font-size-sm, 0.875rem);
 }
 
-.fd-leading,
-.fd-trailing {
-  display: flex;
-  align-items: center;
+.textarea {
+  border: 1px solid var(--fd-color-border, #ccc);
+  border-radius: var(--fd-radius-md, 6px);
+  padding: var(--fd-space-2, 8px);
+  font: inherit;
+  resize: vertical;
 }
 
-sl-textarea::part(textarea) {
-  border-radius: var(--fd-radius, 6px);
+.help-text {
+  font-size: var(--fd-font-size-xs, 0.75rem);
+  color: var(--fd-color-muted, #666);
 }

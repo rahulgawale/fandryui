@@ -1,32 +1,29 @@
 <template>
-  <div class="fd-field" data-size={size} data-variant={variant}>
-    <label if:true={hasLabel} class="fd-label">
-      <slot name="label">{label}</slot>
-    </label>
+  <div class="form-control">
+    <template if:true={hasLabel}>
+      <label class="label">
+        {label}
+      </label>
+    </template>
 
-    <div class="fd-control">
-      <span class="fd-leading">
-        <slot name="leading"></slot>
-      </span>
-<!-- 
-      <vendor-textarea
-        value={value}
-        placeholder={placeholder}
-        disabled={disabled}
-        readonly={readonly}
-        required={required}
-        resize={resize}
-        rows={rows}
-        size={mappedSize}
-      ></vendor-textarea> -->
+    <textarea
+      class="textarea"
+      name={name}
+      value={value}
+      placeholder={placeholder}
+      rows={rows}
+      disabled={disabled}
+      readonly={readonly}
+      required={required}
+      aria-describedby="help-text"
+      oninput={handleInput}
+      onchange={handleChange}
+    ></textarea>
 
-      <span class="fd-trailing">
-        <slot name="trailing"></slot>
-      </span>
-    </div>
-
-    <div if:true={hasHelp} class="fd-help">
-      <slot name="help"></slot>
-    </div>
+    <template if:true={hasHelpText}>
+      <div id="help-text" class="help-text">
+        {helpText}
+      </div>
+    </template>
   </div>
 </template>

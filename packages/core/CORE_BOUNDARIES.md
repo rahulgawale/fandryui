@@ -14,12 +14,11 @@ Core is not a solution layer.
 ## What Core MAY contain
 
 Core may include:
-- fd-* primitives (input, textarea, checkbox, etc.)
+- fd-* primitives built with native LWC (input, textarea, checkbox, etc.)
 - structural layout for primitives
 - slots for extensibility
 - design tokens
 - semantic event normalization
-- thin adapters over vendor behavior
 
 ---
 
@@ -53,14 +52,7 @@ If it feels like an app feature, it does not belong in Core.
 - `<textarea>`
 - `<select>`
 
-Native elements may exist **only inside vendor behavior**.
-
----
-
-### ❌ Vendor API Leakage
-- No public exposure of `sl-*` events
-- No reliance on vendor DOM structure
-- No vendor types in public Core APIs
+Native elements must be **properly wrapped** in fd-* components with normalized events and APIs.
 
 ---
 
