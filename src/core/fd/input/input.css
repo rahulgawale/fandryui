@@ -1,0 +1,35 @@
+:host {
+  display: block;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.label {
+  font-size: 0.875rem;
+  color: hsl(var(--fd-text));
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  border: 1px solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-md);
+  padding: var(--fd-space-1) var(--fd-space-2);
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font: inherit;
+  background: transparent;
+}
+
+.help-text {
+  font-size: var(--fd-font-size-xs, 0.75rem);
+  color: var(--fd-color-muted, #666);
+}
