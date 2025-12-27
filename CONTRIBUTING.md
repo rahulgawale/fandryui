@@ -42,6 +42,7 @@ If you are unsure where something belongs, it probably does **not** belong in co
 `src/core/fd/` is the foundation of Fandry UI.
 
 Primitives exist to provide:
+
 - extensible components built with native LWC
 - stable public APIs
 - predictable behavior
@@ -49,7 +50,32 @@ Primitives exist to provide:
 
 Primitives do **not** exist to solve application problems.
 
-All fd-* components should:
+---
+
+## Always Use Design Tokens (Non-Negotiable)
+
+This is a **component library**, not a production application.
+
+**Rule: All primitive styles must use design tokens from `fd/base/tokens.css`.**
+
+Never use hard-coded values like:
+
+- `4px` → use `var(--fd-radius-sm)`
+- `8px` → use `var(--fd-space-2)`
+- `#333` → use `hsl(var(--fd-text))`
+- `rgba(0,0,0,0.1)` → use token-based values
+
+Why:
+
+- Ensures consistency across all components
+- Enables theming and customization
+- Makes maintenance predictable
+- Preserves architectural intent
+
+If you need a value that doesn't have a token, add it to `fd/base/tokens.css` first.
+
+All fd-\* components should:
+
 - Extend the Base class from fd/base
 - Use design tokens from fd/styles
 - Normalize semantic events only
@@ -92,6 +118,7 @@ If a feature requires explanation longer than the code, it probably does not bel
 Fandry UI uses TypeScript to enforce contracts.
 
 Guidelines:
+
 - Types should describe **public APIs**
 - Avoid clever or complex generic types
 - Prefer explicit unions over inference magic
@@ -114,6 +141,7 @@ Do not introduce new events casually.
 ## Pull Request Expectations
 
 Each pull request must include:
+
 - Clear intent
 - Architectural reasoning
 - Scope justification (especially for Core changes)
@@ -125,11 +153,13 @@ PRs without context may be closed without comment.
 ## Philosophy
 
 Fandry UI is not trying to be:
+
 - the biggest UI library
 - the fastest-moving project
 - the most configurable system
 
 It is trying to be:
+
 - boring
 - predictable
 - extensible
