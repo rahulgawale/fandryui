@@ -1,7 +1,10 @@
 :host {
   /* ---- Colors (HSL, no commas) ---- */
-  --fd-primary: 222 89% 56%;
+  --fd-primary: 330 81% 60%;
   --fd-primary-foreground: 0 0% 100%;
+
+  --fd-accent: 199 89% 48%;
+  --fd-accent-foreground: 0 0% 100%;
 
   --fd-bg: 0 0% 100%;
   --fd-bg-muted: 220 14% 96%;
@@ -28,7 +31,10 @@
   --fd-space-3: 0.75rem;
 
   /* ---- Font ---- */
-  --fd-font-sans: ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", sans-serif;
+  --fd-font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --fd-font-heading: var(--fd-font-sans);
+  --fd-heading-weight: 600;
+  --fd-heading-letter-spacing: -0.01em;
 }

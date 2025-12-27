@@ -1,9 +1,7 @@
 <template>
   <div class="form-control">
     <template if:true={hasLabel}>
-      <label class="label">
-        {label}
-      </label>
+      <label class="label"> {label} </label>
     </template>
 
     <textarea
@@ -21,9 +19,7 @@
     ></textarea>
 
     <template if:true={hasHelpText}>
-      <div id="help-text" class="help-text">
-        {helpText}
-      </div>
+      <div id="help-text" class="help-text">{helpText}</div>
     </template>
   </div>
 </template>

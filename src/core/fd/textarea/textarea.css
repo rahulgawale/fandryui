@@ -24,9 +24,9 @@
 }
 
 .textarea:focus-visible {
+  outline: none;
   border-color: hsl(var(--fd-border-focus));
-  box-shadow:
-    0 0 0 var(--fd-ring-offset) hsl(var(--fd-bg)),
+  box-shadow: 0 0 0 var(--fd-ring-offset) hsl(var(--fd-bg)),
     0 0 0 calc(var(--fd-ring-width) + var(--fd-ring-offset))
       hsl(var(--fd-ring-color));
 }

@@ -33,3 +33,25 @@
   font-size: var(--fd-font-size-xs, 0.75rem);
   color: var(--fd-color-muted, #666);
 }
+
+.control {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--fd-color-border, #d1d5db);
+  border-radius: var(--fd-radius-md, 6px);
+  padding: var(--fd-space-1, 4px) var(--fd-space-2, 8px);
+  background: var(--fd-color-surface, #fff);
+
+  /* Important */
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+/* Focus ring */
+.control:focus-within {
+  border-color: hsl(var(--fd-border-focus));
+  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+}
+
+.input:focus {
+  outline: none;
+}

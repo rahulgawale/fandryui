@@ -1,4 +1,4 @@
-@import "./tokens.css";
+@import './tokens.css';
 
 /* ---- Reset ---- */
 
@@ -8,7 +8,7 @@
   box-sizing: border-box;
 }
 
-:host {
+body {
   font-family: var(--fd-font-sans);
   color: hsl(var(--fd-text));
   line-height: 1.5;
@@ -17,53 +17,35 @@
 /* ---- Typography ---- */
 
 p {
-  margin: 0;
+  margin: 0 0 1em;
 }
 
-/* ---- Form primitives (authoritative) ---- */
+/* ---- Focus (non-form) ---- */
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
-  color: inherit;
-  background: hsl(var(--fd-bg));
-  border-radius: var(--fd-radius-md);
-  border: 1px solid hsl(var(--fd-border));
-  padding: var(--fd-space-2) var(--fd-space-3);
-
-  /* kill browser defaults */
-  outline: none;
-  box-shadow: none;
-}
-
-/* ---- Unified focus ring ---- */
-
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  border-color: hsl(var(--fd-border-focus));
-  box-shadow:
-    0 0 0 var(--fd-ring-offset) hsl(var(--fd-bg)),
-    0 0 0 calc(var(--fd-ring-width) + var(--fd-ring-offset))
-      hsl(var(--fd-ring-color));
-}
-
-/* fallback for browsers that ignore focus-visible */
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: hsl(var(--fd-border-focus));
-  box-shadow:
-    0 0 0 var(--fd-ring-offset) hsl(var(--fd-bg)),
-    0 0 0 calc(var(--fd-ring-width) + var(--fd-ring-offset))
-      hsl(var(--fd-ring-color));
+:focus-visible {
+  outline: 2px solid hsl(var(--fd-ring-color));
+  outline-offset: 2px;
 }
 
 /* ---- Disabled ---- */
 
-:disabled {
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* ---- Headings ---- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--fd-font-heading);
+  font-weight: var(--fd-heading-weight);
+  letter-spacing: var(--fd-heading-letter-spacing);
 }

@@ -2,7 +2,6 @@ import { api } from 'lwc';
 import Base from 'fd/base';
 
 export default class Textarea extends Base {
-
   @api label = '';
   @api helpText = '';
   @api value = '';

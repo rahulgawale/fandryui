@@ -1,0 +1,135 @@
+/* -----------------------------
+   Reset (light, not destructive)
+------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* -----------------------------
+   Typography
+------------------------------ */
+
+:root {
+  /* Fonts */
+  --fd-font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif;
+  --fd-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Font sizes */
+  --fd-font-size-xs: 0.75rem;
+  --fd-font-size-sm: 0.875rem;
+  --fd-font-size-md: 1rem;
+  --fd-font-size-lg: 1.125rem;
+  --fd-font-size-xl: 1.25rem;
+
+  /* Line heights */
+  --fd-line-height-tight: 1.25;
+  --fd-line-height-normal: 1.5;
+  --fd-line-height-loose: 1.75;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fd-font-sans);
+  font-size: var(--fd-font-size-md);
+  line-height: var(--fd-line-height-normal);
+  color: var(--fd-color-text, #111827);
+  background: var(--fd-color-background, #ffffff);
+}
+
+/* Headings */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 0.5em;
+  font-weight: 600;
+  line-height: var(--fd-line-height-tight);
+}
+
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
+h4 {
+  font-size: 1.125rem;
+}
+h5 {
+  font-size: 1rem;
+}
+h6 {
+  font-size: 0.875rem;
+}
+
+/* Text elements */
+
+p {
+  margin: 0 0 1em;
+}
+
+small {
+  font-size: var(--fd-font-size-sm);
+}
+
+code {
+  font-family: var(--fd-font-mono);
+  font-size: 0.875em;
+}
+
+/* -----------------------------
+   Spacing scale
+------------------------------ */
+
+:root {
+  --fd-space-0: 0;
+  --fd-space-1: 4px;
+  --fd-space-2: 8px;
+  --fd-space-3: 12px;
+  --fd-space-4: 16px;
+  --fd-space-5: 20px;
+  --fd-space-6: 24px;
+}
+
+/* -----------------------------
+   Color tokens (minimal v0.1)
+------------------------------ */
+
+:root {
+  --fd-color-text: #111827;
+  --fd-color-muted: #6b7280;
+
+  --fd-color-background: #ffffff;
+  --fd-color-surface: #ffffff;
+
+  --fd-color-border: #d1d5db;
+
+  --fd-color-primary: #2563eb;
+  --fd-color-on-primary: #ffffff;
+
+  --fd-color-focus: #2563eb;
+}
+
+/* -----------------------------
+   Focus visibility (important)
+------------------------------ */
+
+:focus-visible {
+  outline: 2px solid var(--fd-color-focus);
+  outline-offset: 2px;
+}
