@@ -1,11 +1,12 @@
 <template>
   <div class="form-control">
     <template if:true={hasLabel}>
-      <label class="label"> {label} </label>
+      <label class="label" for="textarea"> {label} </label>
     </template>
 
     <textarea
       class="textarea"
+      id="textarea"
       name={name}
       value={value}
       placeholder={placeholder}

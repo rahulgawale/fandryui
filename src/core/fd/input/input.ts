@@ -1,7 +1,7 @@
 import { api, track } from 'lwc';
 import Base from 'fd/base';
-export default class Input extends Base {
 
+export default class Input extends Base {
   @api label = '';
   @api helpText = '';
   @api value = '';
