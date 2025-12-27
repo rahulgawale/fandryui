@@ -1,8 +1,13 @@
 {
   "name": "fandryui",
   "version": "0.1.0",
+  "description": "Lightning Web Components (LWC) UI library optimized for longevity, clarity, and discipline",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rahulgawale/fandryui.git"
+  },
   "scripts": {
     "clean": "rimraf node_modules __lwr_cache__ site",
     "dev": "lwr dev",
@@ -13,14 +18,22 @@
     "stage": "npm run build && npm start",
     "stage:prod-compat": "npm run build:prod-compat && npm start",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d site"
+    "deploy": "gh-pages -d site",
+    "lint": "echo 'Lint check placeholder'",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "lwc": "latest",
     "lwr": "0.18.3"
   },
   "devDependencies": {
-    "gh-pages": "^6.2.0"
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "gh-pages": "^6.2.0",
+    "semantic-release": "^24.2.9"
   },
   "engines": {
     "node": "20.13.1"

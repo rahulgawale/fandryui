@@ -85,6 +85,53 @@ Pull requests that violate primitive boundaries will be closed.
 
 ---
 
+## Commit Message Convention (Conventional Commits)
+
+Fandry UI uses [Conventional Commits](https://www.conventionalcommits.org/) for automated versioning and changelog generation.
+
+**Format:**
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+**Types:**
+
+- `fix:` - Bug fixes (triggers PATCH release: 0.1.0 → 0.1.1)
+- `feat:` - New features (triggers MINOR release: 0.1.0 → 0.2.0)
+- `feat!:` or `BREAKING CHANGE:` - Breaking changes (triggers MAJOR release: 0.1.0 → 1.0.0)
+- `docs:` - Documentation only changes (no release)
+- `chore:` - Maintenance tasks (no release)
+- `refactor:` - Code refactoring (no release)
+- `style:` - Code style changes (no release)
+
+**Examples:**
+
+```
+fix(button): correct hover shadow on ghost variant
+
+feat(radio): add fd-radio-group component for proper grouping
+
+feat(input)!: remove deprecated value attribute
+
+BREAKING CHANGE: The value attribute has been replaced with v-model pattern
+```
+
+**Rules:**
+
+- Use lowercase for type and scope
+- Keep subject line under 72 characters
+- Use imperative mood ("add" not "added")
+- Reference issues in footer: `Closes #123`
+
+All commits to `main` branch must follow this convention. PRs should be squash-merged with a proper conventional commit message.
+
+---
+
 ## What We Accept
 
 Contributions are welcome if they:
