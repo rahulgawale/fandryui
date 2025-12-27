@@ -5,6 +5,7 @@
 Fandry UI is an opinionated, extensible UI foundation for **Lightning Web Components**, built from scratch with native LWC.
 
 It provides:
+
 - **Native LWC primitives** for behavior & accessibility
 - **Strict boundaries** to keep the system sane as it grows
 - **Extensibility over completeness** as a core principle
@@ -74,12 +75,12 @@ npm run dev
 Open http://localhost:3000/fandryui in your browser.
 
 You should see:
+
 - fd-input
 - fd-textarea
 - fd-button
 - Native LWC primitives working
 - Slots and events behaving correctly
-
 
 ## Design Principles
 
@@ -93,6 +94,7 @@ If a change feels exciting, it probably doesn’t belong in Core.
 ## Contributing
 
 Read these first:
+
 - CONTRIBUTING.md
 - AGENTS.md
 - packages/core/CORE_BOUNDARIES.md
