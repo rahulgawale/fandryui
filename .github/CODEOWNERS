@@ -1,0 +1,18 @@
+# CODEOWNERS for Fandry UI
+
+# Global owners — modify or add teams as needed
+
+- @rahulgawale
+
+# Owners for docs and workflows
+
+/docs/ @rahulgawale
+.github/workflows/ @rahulgawale
+
+# Owners for core primitives
+
+/src/core/fd/ @rahulgawale
+
+# Owners for demo app and modules
+
+/src/modules/ @rahulgawale
