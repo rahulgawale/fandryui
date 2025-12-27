@@ -1,0 +1,23 @@
+<template>
+  <label class="control" aria-disabled={disabled}>
+    <input
+      class="input"
+      type="checkbox"
+      name={name}
+      value={value}
+      checked={checked}
+      disabled={disabled}
+      role="switch"
+      aria-checked={ariaChecked}
+      onchange={handleChange}
+    />
+
+    <span class="track" aria-hidden="true">
+      <span class="thumb"></span>
+    </span>
+
+    <template if:true={label}>
+      <span class="label">{label}</span>
+    </template>
+  </label>
+</template>

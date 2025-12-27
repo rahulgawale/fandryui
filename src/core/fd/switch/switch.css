@@ -1,0 +1,77 @@
+:host {
+  display: inline-block;
+}
+
+/* Wrapper */
+.control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-2, 8px);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Native input (visually hidden, accessible) */
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Track */
+.track {
+  width: 36px;
+  height: 20px;
+  flex: 0 0 36px;
+  border-radius: 999px;
+  background: hsl(var(--fd-border, 220 13% 80%));
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  transition: background-color 120ms ease, box-shadow 120ms ease;
+}
+
+/* Thumb */
+.thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: hsl(var(--fd-bg, 0 0% 100%));
+  transform: translateX(0);
+  transition: transform 120ms ease;
+}
+
+/* Checked */
+.input:checked + .track {
+  background: hsl(var(--fd-primary, 220 90% 56%));
+}
+
+.input:checked + .track .thumb {
+  transform: translateX(16px);
+}
+
+/* Focus */
+.control:focus-within .track {
+  box-shadow: 0 0 0 var(--fd-ring-width, 2px)
+    hsl(var(--fd-ring-color, 220 90% 56%));
+}
+
+/* Disabled */
+.input:disabled + .track,
+.input:disabled ~ .label {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Label */
+.label {
+  font-size: var(--fd-font-size-sm, 0.875rem);
+}

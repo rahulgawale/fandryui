@@ -1,0 +1,8 @@
+<template>
+  <label class="label" for={htmlFor}>
+    <slot></slot>
+    <template if:true={required}>
+      <span class="required" aria-hidden="true">*</span>
+    </template>
+  </label>
+</template>

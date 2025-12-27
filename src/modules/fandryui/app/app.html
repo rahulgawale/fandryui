@@ -1,10 +1,43 @@
 <template>
   <main>
     <h1>Fandry UI – LWR OSS</h1>
-    <p>
-      Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, and fd-radio
-      primitives
-    </p>
+
+    <section class="intro">
+      <h2>Mission</h2>
+      <p>
+        Fandry UI is a Lightning Web Components (LWC) library optimized for
+        <strong> longevity, clarity, and discipline</strong> — not velocity or
+        novelty.
+      </p>
+      <p>
+        We provide small, boring, and predictable primitives that are extensible
+        via slots and composition. Every component is built with native LWC,
+        uses design tokens consistently, and avoids business logic or hard-coded
+        values.
+      </p>
+      <p>
+        This is a <strong>component library</strong>, not a production
+        application. Architecture and maintainability come first.
+      </p>
+      <p>
+        <strong>Contribute: </strong>
+        <a
+          href="https://github.com/rahulgawale/fandryui"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          github.com/rahulgawale/fandryui
+        </a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Component Primitives</h2>
+      <p>
+        Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
+        fd-switch, and fd-label primitives
+      </p>
+    </section>
 
     <section>
       <h2>Button Examples</h2>
@@ -47,6 +80,45 @@
           label="Enterprise Plan"
         ></fd-radio>
       </fd-radio-group>
+    </section>
+
+    <section>
+      <h2>Switch Example</h2>
+      <fd-switch label="Enable notifications" checked></fd-switch>
+    </section>
+
+    <section>
+      <h2>Label Example</h2>
+      <div style="display: flex; flex-direction: column; gap: 1rem">
+        <div style="display: flex; flex-direction: column; gap: 0.25rem">
+          <fd-label html-for="username">Username</fd-label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Enter username"
+            style="
+              padding: 0.5rem;
+              border: 1px solid hsl(var(--fd-border));
+              border-radius: var(--fd-radius-md);
+              font: inherit;
+            "
+          />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.25rem">
+          <fd-label html-for="password" required>Password</fd-label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter password"
+            style="
+              padding: 0.5rem;
+              border: 1px solid hsl(var(--fd-border));
+              border-radius: var(--fd-radius-md);
+              font: inherit;
+            "
+          />
+        </div>
+      </div>
     </section>
   </main>
 </template>

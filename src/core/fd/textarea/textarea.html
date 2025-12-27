@@ -1,7 +1,7 @@
 <template>
   <div class="form-control">
     <template if:true={hasLabel}>
-      <label class="label" for="textarea"> {label} </label>
+      <fd-label html-for="input" required={required}> {label} </fd-label>
     </template>
 
     <textarea
