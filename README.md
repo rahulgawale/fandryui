@@ -71,7 +71,7 @@ Start the LWR development server:
 npm run dev
 ```
 
-Open http://localhost:3000 in your browser.
+Open http://localhost:3000/fandryui in your browser.
 
 You should see:
 - fd-input
