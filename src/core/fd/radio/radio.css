@@ -1,0 +1,86 @@
+:host {
+  display: inline-block;
+}
+
+/* Wrapper */
+.control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-2, 8px);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Native input (visually hidden, accessible) */
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Outer circle */
+.circle {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  border-radius: 50%;
+  border: 1.5px solid hsl(var(--fd-border));
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 120ms ease, background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+/* Hover */
+.control:hover:not(:has(.input:disabled)) .circle {
+  border-color: hsl(var(--fd-primary));
+}
+
+/* Inner dot */
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--fd-primary));
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+/* Checked */
+.input:checked + .circle {
+  border-color: hsl(var(--fd-primary));
+}
+
+.input:checked + .circle .dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Focus */
+.control:focus-within .circle {
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, hsl(var(--fd-ring-color, 220 90% 56%)) 30%, transparent);
+}
+
+/* Disabled */
+.input:disabled + .circle,
+.input:disabled ~ .label {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Label */
+.label {
+  font-size: var(--fd-font-size-sm, 0.875rem);
+}

@@ -1,0 +1,74 @@
+:host {
+  display: inline-block;
+}
+
+/* Visible Box */
+.box {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  border-radius: var(--fd-radius-sm, 4px);
+  border: 1px solid hsl(var(--fd-border, 220 13% 80%));
+  background: hsl(var(--fd-bg, 0 0% 100%));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 120ms ease, background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+/* Wrapper */
+.control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Native input (visually hidden, accessible) */
+.input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Check mark */
+.check {
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid hsl(var(--fd-on-primary, 0 0% 100%));
+  border-bottom: 2px solid hsl(var(--fd-on-primary, 0 0% 100%));
+  transform: translateY(-1px) rotate(-45deg) scale(0.9);
+  opacity: 0;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+/* Checked */
+.input:checked + .box {
+  background: hsl(var(--fd-primary, 220 90% 56%));
+  border-color: hsl(var(--fd-primary, 220 90% 56%));
+}
+
+.input:checked + .box .check {
+  opacity: 1;
+  transform: translateY(-1px) rotate(-45deg) scale(1);
+}
+
+/* Focus */
+.control:focus-within .box {
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, hsl(var(--fd-ring-color, 220 90% 56%)) 30%, transparent);
+}
+
+/* Disabled */
+.input:disabled + .box,
+.input:disabled ~ .label {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.label {
+  font-size: var(--fd-font-size-sm);
+}

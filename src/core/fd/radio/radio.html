@@ -1,0 +1,21 @@
+<template>
+  <label class="control" aria-disabled={disabled}>
+    <input
+      class="input"
+      type="radio"
+      name={name}
+      value={value}
+      checked={checked}
+      disabled={disabled}
+      onchange={handleChange}
+    />
+
+    <span class="circle" aria-hidden="true">
+      <span class="dot"></span>
+    </span>
+
+    <template if:true={label}>
+      <span class="label">{label}</span>
+    </template>
+  </label>
+</template>

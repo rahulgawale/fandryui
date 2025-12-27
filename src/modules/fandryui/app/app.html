@@ -1,7 +1,10 @@
 <template>
   <main>
     <h1>Fandry UI – LWR OSS</h1>
-    <p>Demonstrating fd-input, fd-textarea, and fd-button primitives</p>
+    <p>
+      Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, and fd-radio
+      primitives
+    </p>
 
     <section>
       <h2>Button Examples</h2>
@@ -26,6 +29,24 @@
       <fd-textarea label="Notes">
         <button slot="trailing">Clear</button>
       </fd-textarea>
+    </section>
+
+    <section>
+      <h2>Checkbox Example</h2>
+      <fd-checkbox label="Accept terms and conditions"></fd-checkbox>
+    </section>
+
+    <section>
+      <h2>Radio Example</h2>
+      <fd-radio-group name="plan" value="pro">
+        <fd-radio name="plan" value="free" label="Free Plan"></fd-radio>
+        <fd-radio name="plan" value="pro" label="Pro Plan" checked></fd-radio>
+        <fd-radio
+          name="plan"
+          value="enterprise"
+          label="Enterprise Plan"
+        ></fd-radio>
+      </fd-radio-group>
     </section>
   </main>
 </template>
