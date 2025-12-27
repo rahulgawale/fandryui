@@ -1,0 +1,16 @@
+{
+  "name": "Fandry UI",
+  "short_name": "Fandry UI",
+  "description": "A Lightning Web Components (LWC) UI library with clean, extensible primitives",
+  "start_url": "/fandryui/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/fandryui/public/assets/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

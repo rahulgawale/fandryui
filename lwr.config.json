@@ -14,14 +14,15 @@
         {
             "id": "fandryui",
             "path": "/",
-            "rootComponent": "fandryui/app"
+            "rootComponent": "fandryui/app",
+            "layoutTemplate": "$layoutsDir/index.html"
         }
     ],
     "assets": [
         {
             "alias": "assetsDir",
             "dir": "$rootDir/src/assets",
-            "urlPath": "/public/assets"
+            "urlPath": "/assets"
         },
         {
             "alias": "favicon",
