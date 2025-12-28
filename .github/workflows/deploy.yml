@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
@@ -36,8 +36,12 @@ jobs:
 
       - name: Move files to root for GitHub Pages
         run: |
-          mv site/fandryui/* site/
-          rm -rf site/fandryui
+          if [ -d site/fandryui ]; then
+            mv site/fandryui/* site/
+            rm -rf site/fandryui
+          else
+            echo "site/fandryui not found — skipping move"
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
