@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import FdTable from '../table';
+import TableSlotHarness from './tableSlotHarness';
 
 const COLUMNS = [
   { id: 'name', accessorKey: 'name', header: 'Name' },
@@ -561,6 +562,174 @@ describe('fd-table', () => {
       DATA.length
     );
     jest.useRealTimers();
+  });
+
+  it('exposes the underlying tanstack table instance via getTanstackTable()', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    document.body.appendChild(element);
+
+    const table = (element as unknown as { getTanstackTable: () => { getRowModel: () => { rows: unknown[] } } }).getTanstackTable();
+    expect(table.getRowModel().rows.length).toBe(DATA.length);
+  });
+
+  it('keeps the pagination state object referentially stable across calls (tanstack memoization)', () => {
+    // Regression check: getPaginationRowModel memoizes off strict reference
+    // equality on `table.getState().pagination`. A fresh object built on
+    // every call would silently defeat that memoization.
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enablePagination = true;
+    document.body.appendChild(element);
+
+    const tableElement = element as unknown as {
+      getTanstackTable: () => { getState: () => { pagination: unknown } };
+    };
+    const first = tableElement.getTanstackTable().getState().pagination;
+    const second = tableElement.getTanstackTable().getState().pagination;
+    expect(second).toBe(first);
+  });
+
+  it('merges the tableOptions escape hatch on top of its own derived options', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.tableOptions = { meta: { custom: true } };
+    document.body.appendChild(element);
+
+    const table = (element as unknown as { getTanstackTable: () => { options: { meta: unknown } } }).getTanstackTable();
+    expect(table.options.meta).toEqual({ custom: true });
+  });
+
+  it('uses a custom getRowId instead of array index when provided', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.getRowId = (row: { name: string }) => row.name;
+    document.body.appendChild(element);
+
+    const rowIds = Array.from(
+      element.shadowRoot!.querySelectorAll('tbody tr')
+    ).map((tr) => (tr as HTMLElement).dataset.rowId);
+    expect(rowIds).toEqual(['Bea', 'Amir', 'Cass']);
+  });
+
+  it('renders empty and warns instead of "[object Object]" when a cell returns a non-primitive value', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = [
+      COLUMNS[0],
+      { id: 'bad', header: 'Bad', cell: () => ({ oops: true }) }
+    ];
+    element.data = DATA;
+    document.body.appendChild(element);
+
+    const firstRowCells = element.shadowRoot!.querySelectorAll('tbody tr td');
+    expect(firstRowCells[1].textContent).toBe('');
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('non-primitive value')
+    );
+
+    warnSpy.mockRestore();
+  });
+
+  it('gives each row selection checkbox a distinct default aria-label, overridable via getRowLabel', async () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    document.body.appendChild(element);
+
+    const getLabels = () =>
+      Array.from(
+        element.shadowRoot!.querySelectorAll('tbody .selection-cell fd-checkbox')
+      ).map((checkbox) => (checkbox as unknown as { ariaLabel: string }).ariaLabel);
+
+    expect(getLabels()).toEqual(['Select row 1', 'Select row 2', 'Select row 3']);
+
+    element.getRowLabel = (row: { name: string }) => row.name;
+    await flush();
+
+    expect(getLabels()).toEqual(['Select Bea', 'Select Amir', 'Select Cass']);
+  });
+
+  // fd-table's slot content only gets distributed via LWC's own compiled
+  // template bookkeeping -- a plain `document.createElement` +
+  // `appendChild` from test code never reaches it, since that bypasses
+  // LWC's compiler (confirmed: `assignedSlot` stayed `null`). A tiny host
+  // component that actually slots content in its own template, the way any
+  // real consumer's template would, is what exercises the real path.
+  it('lets a consumer replace the default search box via slot="search", still driving filtering', async () => {
+    const harness = createElement('table-slot-harness', { is: TableSlotHarness });
+    harness.columns = COLUMNS;
+    harness.data = DATA;
+    harness.enableGlobalFilter = true;
+    document.body.appendChild(harness);
+
+    const tableEl = harness.shadowRoot!.querySelector('fd-table')!;
+    const customSearch = harness.shadowRoot!.querySelector(
+      '.custom-search'
+    ) as HTMLInputElement;
+
+    customSearch.value = 'mir';
+    customSearch.dispatchEvent(new Event('input', { bubbles: true }));
+    await flush();
+
+    const names = Array.from(
+      tableEl.shadowRoot!.querySelectorAll('tbody tr td:first-child')
+    ).map((cell) => cell.textContent);
+    expect(names).toEqual(['Amir']);
+  });
+
+  it('lets a consumer replace the "select all" checkbox via slot="selection-all", still selecting rows', async () => {
+    const harness = createElement('table-slot-harness', { is: TableSlotHarness });
+    harness.columns = COLUMNS;
+    harness.data = DATA;
+    harness.enableRowSelection = true;
+    document.body.appendChild(harness);
+
+    const tableEl = harness.shadowRoot!.querySelector('fd-table')!;
+    const customSelectAll = harness.shadowRoot!.querySelector(
+      '.custom-select-all'
+    ) as HTMLInputElement;
+
+    // Proof that matters: a plain native checkbox drives real row selection
+    // through the delegated `onchange` listener, which reads `.checked` off
+    // whatever dispatched the event rather than requiring the specific
+    // CustomEvent shape only fd-checkbox happens to provide.
+    customSelectAll.checked = true;
+    customSelectAll.dispatchEvent(new Event('change', { bubbles: true }));
+    await flush();
+
+    const rowCheckboxes = Array.from(
+      tableEl.shadowRoot!.querySelectorAll('tbody .selection-cell fd-checkbox')
+    ) as unknown as { checked: boolean }[];
+    expect(rowCheckboxes.every((checkbox) => checkbox.checked)).toBe(true);
+  });
+
+  it('lets a consumer replace Prev/Next pagination controls via named slots, still paging', async () => {
+    const harness = createElement('table-slot-harness', { is: TableSlotHarness });
+    harness.columns = COLUMNS;
+    harness.data = DATA;
+    harness.enablePagination = true;
+    harness.pageSize = 2;
+    document.body.appendChild(harness);
+
+    const tableEl = harness.shadowRoot!.querySelector('fd-table')!;
+    const customNext = harness.shadowRoot!.querySelector('.custom-next')!;
+
+    // Proof that matters: a plain native button drives real pagination
+    // through the delegated `onclick` listener on its wrapper -- any
+    // clickable element works, since a bubbling click is the whole contract.
+    customNext.dispatchEvent(new Event('click', { bubbles: true }));
+    await flush();
+
+    const names = Array.from(
+      tableEl.shadowRoot!.querySelectorAll('tbody tr td:first-child')
+    ).map((cell) => cell.textContent);
+    expect(names).toEqual(['Cass']);
   });
 
   it('renders a caption when provided and omits it otherwise', () => {

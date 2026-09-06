@@ -50,7 +50,10 @@ export default class Input extends Base {
   }
 
   handleChange(event: Event) {
-    event.stopPropagation();
+    // Unlike `input`, the native `change` event is NOT composed -- it
+    // never crosses the shadow boundary on its own, so there's nothing to
+    // stop here (confirmed live: an external `onchange` listener saw only
+    // the semantic CustomEvent below, never a second native delivery).
 
     const target = event.target as HTMLInputElement;
     this.value = target.value;

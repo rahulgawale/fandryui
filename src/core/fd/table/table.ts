@@ -12,10 +12,12 @@ import type {
   ColumnDef,
   Header,
   PaginationState,
+  Row,
   RowData,
   RowSelectionState,
   SortingState,
   Table as TanstackTable,
+  TableOptions,
   Updater
 } from '@tanstack/table-core';
 
@@ -42,6 +44,7 @@ export interface FdTableRow {
   id: string;
   cells: FdTableCell[];
   selected: boolean;
+  selectionAriaLabel: string;
 }
 
 /**
@@ -56,6 +59,33 @@ export default class FdTable extends Base {
   @api data: RowData[] = [];
   @api caption = '';
   @api clickableRows = false;
+
+  /**
+   * Derives a stable row id from a row's own data (e.g. `row => row.id`)
+   * instead of the default array index. Without this, row identity (and
+   * therefore selection state) is tied to array *position* -- combine
+   * enableRowSelection with any manual* prop (server-driven re-fetch,
+   * re-sort, or re-filter) and a selection can silently reattach to
+   * whatever row now lands at that position.
+   */
+  @api getRowId?: (originalRow: RowData, index: number, parent?: Row<RowData>) => string;
+
+  /**
+   * Derives an accessible label for a row's selection checkbox from its own
+   * data (e.g. `row => row.name`), so screen readers can tell rows apart.
+   * Without this, checkboxes fall back to "Select row N" (position-based --
+   * still distinct per row, just not as meaningful as real row content).
+   */
+  @api getRowLabel?: (originalRow: RowData, index: number) => string;
+
+  /**
+   * Escape hatch: shallow-merged on top of every tanstack option this
+   * component derives from its own @api props (consumer values win). For
+   * anything tanstack-core supports that isn't already surfaced as an @api
+   * prop -- extra `_features`, column grouping/pinning options, a custom
+   * `sortingFns` entry, etc. -- without needing to fork the component.
+   */
+  @api tableOptions: Partial<TableOptions<RowData>> = {};
 
   /**
    * While true, the body renders `loadingRowCount` fd-skeleton placeholder
@@ -135,16 +165,53 @@ export default class FdTable extends Base {
   private tableInstance: TanstackTable<RowData> | null = null;
   private globalFilterDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
+  // Cached so `pagination: { pageIndex, pageSize }` keeps a stable object
+  // reference across calls when neither value actually changed. tanstack's
+  // row-model memoization (getPaginationRowModel, etc.) keys off strict
+  // reference equality on `table.getState().pagination` -- a fresh object
+  // literal here every time would silently defeat that memoization, forcing
+  // a full row-model re-slice on every single property read in a render
+  // (resolveTableInstance() is called independently by ~10 different
+  // getters), not just on an actual page change.
+  private cachedPaginationState: PaginationState | null = null;
+
   disconnectedCallback() {
     if (this.globalFilterDebounceTimer !== null) {
       clearTimeout(this.globalFilterDebounceTimer);
     }
   }
 
-  private getTableInstance(): TanstackTable<RowData> {
+  /**
+   * Escape hatch onto the underlying @tanstack/table-core instance, for
+   * anything not already surfaced as an @api prop or event -- column
+   * pinning/grouping/expanding, imperative calls like
+   * `resetRowSelection()`, reading `getState()` directly, etc. Prefer the
+   * declarative @api props where one exists; this is for the rest.
+   */
+  @api
+  getTanstackTable(): TanstackTable<RowData> {
+    return this.resolveTableInstance();
+  }
+
+  private getPaginationState(): PaginationState {
+    if (
+      !this.cachedPaginationState ||
+      this.cachedPaginationState.pageIndex !== this.pageIndex ||
+      this.cachedPaginationState.pageSize !== this.pageSize
+    ) {
+      this.cachedPaginationState = {
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize
+      };
+    }
+    return this.cachedPaginationState;
+  }
+
+  private resolveTableInstance(): TanstackTable<RowData> {
     const baseOptions = {
       columns: this.columns,
       data: this.data,
+      getRowId: this.getRowId,
       manualSorting: this.manualSorting,
       onSortingChange: this.handleSortingChange,
       manualPagination: this.manualPagination,
@@ -167,7 +234,8 @@ export default class FdTable extends Base {
         this.enableGlobalFilter && !this.manualFiltering
           ? getFilteredRowModel()
           : undefined,
-      renderFallbackValue: ''
+      renderFallbackValue: '',
+      ...this.tableOptions
     };
 
     if (!this.tableInstance) {
@@ -187,9 +255,10 @@ export default class FdTable extends Base {
       state: {
         ...this.tableInstance!.initialState,
         sorting: this.sorting,
-        pagination: { pageIndex: this.pageIndex, pageSize: this.pageSize },
+        pagination: this.getPaginationState(),
         rowSelection: this.rowSelection,
-        globalFilter: this.globalFilter
+        globalFilter: this.globalFilter,
+        ...this.tableOptions.state
       }
     }));
 
@@ -231,7 +300,7 @@ export default class FdTable extends Base {
       new CustomEvent('rowselectionchange', {
         detail: {
           rowSelection: this.rowSelection,
-          rows: this.getTableInstance()
+          rows: this.resolveTableInstance()
             .getSelectedRowModel()
             .rows.map((row) => row.original)
         },
@@ -241,30 +310,34 @@ export default class FdTable extends Base {
     );
   };
 
-  get headerGroups(): FdTableHeaderGroup[] {
-    return this.getTableInstance()
-      .getHeaderGroups()
-      .map((headerGroup) => ({
-        id: headerGroup.id,
-        headers: headerGroup.headers.map((header) => this.toHeaderCell(header))
-      }));
+  // fd-table has no column-grouping feature, so tanstack's getHeaderGroups()
+  // always resolves to exactly one group -- exposed singular to match, and
+  // because a named <slot> (used for the "select all" header cell) isn't
+  // allowed inside a `for:each` iterator, which a plural getter would need.
+  get headerGroup(): FdTableHeaderGroup {
+    const [group] = this.resolveTableInstance().getHeaderGroups();
+    return {
+      id: group.id,
+      headers: group.headers.map((header) => this.toHeaderCell(header))
+    };
   }
 
   get rows(): FdTableRow[] {
-    return this.getTableInstance()
+    return this.resolveTableInstance()
       .getRowModel()
-      .rows.map((row) => ({
+      .rows.map((row, index) => ({
         id: row.id,
         cells: row.getVisibleCells().map((cell) => ({
           id: cell.id,
           value: this.toCellValue(cell)
         })),
-        selected: row.getIsSelected()
+        selected: row.getIsSelected(),
+        selectionAriaLabel: this.resolveRowSelectionAriaLabel(row, index)
       }));
   }
 
   get hasRows(): boolean {
-    return this.getTableInstance().getRowModel().rows.length > 0;
+    return this.resolveTableInstance().getRowModel().rows.length > 0;
   }
 
   get hasCaption(): boolean {
@@ -278,16 +351,16 @@ export default class FdTable extends Base {
   }
 
   get columnCount(): number {
-    const leafColumnCount = this.getTableInstance().getAllLeafColumns().length;
+    const leafColumnCount = this.resolveTableInstance().getAllLeafColumns().length;
     return Math.max(leafColumnCount + (this.enableRowSelection ? 1 : 0), 1);
   }
 
   get allRowsSelected(): boolean {
-    return this.getTableInstance().getIsAllRowsSelected();
+    return this.resolveTableInstance().getIsAllRowsSelected();
   }
 
   get someRowsSelected(): boolean {
-    return this.getTableInstance().getIsSomeRowsSelected();
+    return this.resolveTableInstance().getIsSomeRowsSelected();
   }
 
   get enableMultiRowSelection(): boolean {
@@ -299,20 +372,20 @@ export default class FdTable extends Base {
   }
 
   get loadingCells(): number[] {
-    const leafColumnCount = this.getTableInstance().getAllLeafColumns().length;
+    const leafColumnCount = this.resolveTableInstance().getAllLeafColumns().length;
     return Array.from({ length: leafColumnCount }, (_, index) => index);
   }
 
   get previousPageDisabled(): boolean {
-    return !this.getTableInstance().getCanPreviousPage();
+    return !this.resolveTableInstance().getCanPreviousPage();
   }
 
   get nextPageDisabled(): boolean {
-    return !this.getTableInstance().getCanNextPage();
+    return !this.resolveTableInstance().getCanNextPage();
   }
 
   get pageStatus(): string {
-    const pageCount = this.getTableInstance().getPageCount();
+    const pageCount = this.resolveTableInstance().getPageCount();
     const currentPage = this.pageIndex + 1;
     return pageCount >= 0 ? `Page ${currentPage} of ${pageCount}` : `Page ${currentPage}`;
   }
@@ -324,7 +397,7 @@ export default class FdTable extends Base {
   get selectionStatus(): string {
     if (!this.enableRowSelection) return '';
 
-    const table = this.getTableInstance();
+    const table = this.resolveTableInstance();
     const selectedCount = table.getSelectedRowModel().rows.length;
     // Selection spans the whole dataset (not just the current page), so the
     // total it's measured against has to be the same -- getCoreRowModel is
@@ -352,27 +425,57 @@ export default class FdTable extends Base {
     };
   }
 
+  private resolveRowSelectionAriaLabel(row: Row<RowData>, displayIndex: number): string {
+    if (typeof this.getRowLabel === 'function') {
+      const label = this.getRowLabel(row.original, displayIndex);
+      if (label) return `Select ${label}`;
+    }
+    return `Select row ${displayIndex + 1}`;
+  }
+
   private resolveHeaderLabel(header: Header<RowData, unknown>): string {
     const headerDef = header.column.columnDef.header;
     if (typeof headerDef === 'function') {
-      const result = headerDef(header.getContext());
-      return result == null ? '' : String(result);
+      return this.toDisplayValue(headerDef(header.getContext()), `column "${header.column.id}"'s header`);
     }
-    return headerDef == null ? '' : String(headerDef);
+    return this.toDisplayValue(headerDef, `column "${header.column.id}"'s header`);
   }
 
   private toCellValue(cell: Cell<RowData, unknown>): string {
     const cellDef = cell.column.columnDef.cell;
     const result =
       typeof cellDef === 'function' ? cellDef(cell.getContext()) : cell.getValue();
-    return result == null ? '' : String(result);
+    return this.toDisplayValue(result, `column "${cell.column.id}"'s cell`);
+  }
+
+  /**
+   * fd-table only renders primitives -- richer per-cell markup is tracked
+   * in https://github.com/rahulgawale/fandryui/issues/33, not solved here.
+   * A non-primitive return used to be silently `String()`-coerced into
+   * "[object Object]"; this renders nothing instead and warns in the
+   * console so the gap is discoverable during development rather than
+   * showing up as confusing text in the table.
+   */
+  private toDisplayValue(result: unknown, source: string): string {
+    if (result == null) return '';
+
+    const type = typeof result;
+    if (type === 'string' || type === 'number' || type === 'boolean') {
+      return String(result);
+    }
+
+    // eslint-disable-next-line no-console
+    console.warn(
+      `fd-table: ${source} returned a non-primitive value (${type}), which fd-table cannot render. See issue #33 for richer cell content support.`
+    );
+    return '';
   }
 
   handleHeaderClick(event: Event) {
     const columnId = (event.currentTarget as HTMLElement).dataset.columnId;
     if (!columnId) return;
 
-    const column = this.getTableInstance().getColumn(columnId);
+    const column = this.resolveTableInstance().getColumn(columnId);
     column?.toggleSorting();
   }
 
@@ -382,7 +485,7 @@ export default class FdTable extends Base {
     const rowId = (event.currentTarget as HTMLElement).dataset.rowId;
     if (rowId == null) return;
 
-    const row = this.getTableInstance().getRow(rowId, true);
+    const row = this.resolveTableInstance().getRow(rowId, true);
 
     this.dispatchEvent(
       new CustomEvent('rowclick', {
@@ -394,11 +497,11 @@ export default class FdTable extends Base {
   }
 
   handlePreviousPage() {
-    this.getTableInstance().previousPage();
+    this.resolveTableInstance().previousPage();
   }
 
   handleNextPage() {
-    this.getTableInstance().nextPage();
+    this.resolveTableInstance().nextPage();
   }
 
   handleSelectionCellClick(event: Event) {
@@ -408,22 +511,31 @@ export default class FdTable extends Base {
     event.stopPropagation();
   }
 
-  handleToggleRowSelected(event: CustomEvent<boolean>) {
+  handleToggleRowSelected(event: Event) {
     event.stopPropagation();
 
-    const target = event.target as HTMLElement;
+    // Reads `.checked` off whatever dispatched the event rather than
+    // `event.detail`, so slot="selection-all"/the per-row checkbox work
+    // with either fd-checkbox or a plain native <input type="checkbox"> a
+    // consumer swaps in -- both expose `.checked`, only fd-checkbox also
+    // happens to dispatch a CustomEvent with a boolean detail.
+    const target = event.target as HTMLInputElement;
     const rowId = target.dataset.rowId;
     if (rowId == null) return;
 
-    this.getTableInstance().getRow(rowId, true).toggleSelected(event.detail);
+    this.resolveTableInstance().getRow(rowId, true).toggleSelected(target.checked);
   }
 
-  handleToggleAllRowsSelected(event: CustomEvent<boolean>) {
-    this.getTableInstance().toggleAllRowsSelected(event.detail);
+  handleToggleAllRowsSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.resolveTableInstance().toggleAllRowsSelected(target.checked);
   }
 
-  handleGlobalFilterInput(event: CustomEvent<string>) {
-    const value = event.detail;
+  handleGlobalFilterInput(event: Event) {
+    // Same reasoning as the checkbox handlers above: reads `.value` off the
+    // target so slot="search" works with fd-input or a plain native
+    // <input> a consumer swaps in.
+    const value = (event.target as HTMLInputElement).value;
 
     if (this.globalFilterDebounceTimer !== null) {
       clearTimeout(this.globalFilterDebounceTimer);

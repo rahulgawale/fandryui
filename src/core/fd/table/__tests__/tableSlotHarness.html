@@ -1,0 +1,15 @@
+<template>
+  <fd-table
+    columns={columns}
+    data={data}
+    enable-global-filter={enableGlobalFilter}
+    enable-row-selection={enableRowSelection}
+    enable-pagination={enablePagination}
+    page-size={pageSize}
+    global-filter-debounce-ms={globalFilterDebounceMs}
+  >
+    <input class="custom-search" slot="search" />
+    <input class="custom-select-all" type="checkbox" slot="selection-all" />
+    <button class="custom-next" type="button" slot="pagination-next">Next</button>
+  </fd-table>
+</template>

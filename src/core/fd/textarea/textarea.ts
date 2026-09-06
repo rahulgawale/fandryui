@@ -40,7 +40,8 @@ export default class Textarea extends Base {
   }
 
   handleChange(event: Event) {
-    event.stopPropagation();
+    // Unlike `input`, the native `change` event is NOT composed -- see
+    // fd/input's handleChange for why nothing needs to be stopped here.
 
     const target = event.target as HTMLTextAreaElement;
     this.value = target.value;
