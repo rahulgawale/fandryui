@@ -18,7 +18,7 @@
     "stage": "npm run build && npm start",
     "stage:prod-compat": "npm run build:prod-compat && npm start",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d site",
+    "deploy": "gh-pages -d site --nojekyll --cname fandryui.forcetrails.com",
     "lint": "echo 'Lint check placeholder'",
     "typecheck": "tsc --noEmit",
     "test": "jest",
