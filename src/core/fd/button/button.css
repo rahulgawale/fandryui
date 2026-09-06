@@ -37,6 +37,12 @@
   font-size: 0.875rem;
 }
 
+.button--lg {
+  height: 40px;
+  padding: 0 var(--fd-space-5);
+  font-size: var(--fd-font-size-md, 1rem);
+}
+
 /* Variants */
 .button--default {
   background: hsl(var(--fd-primary, 220 90% 56%));

@@ -42,11 +42,16 @@
 
     <section>
       <h2>Button Examples</h2>
-      <div style="display: flex; gap: 1rem; flex-wrap: wrap">
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
         <fd-button>Primary Button</fd-button>
         <fd-button variant="secondary">Secondary</fd-button>
         <fd-button variant="ghost">Ghost</fd-button>
         <fd-button disabled>Disabled</fd-button>
+      </div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-top: 0.75rem;">
+        <fd-button size="sm">Small</fd-button>
+        <fd-button size="md">Medium</fd-button>
+        <fd-button size="lg">Large</fd-button>
       </div>
     </section>
 
@@ -109,6 +114,11 @@
         <span slot="leading">📧</span>
         <span slot="help">Used only for login</span>
       </fd-input>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
+        <fd-input label="Small" size="sm" placeholder="Small input"></fd-input>
+        <fd-input label="Medium" size="md" placeholder="Medium input"></fd-input>
+        <fd-input label="Large" size="lg" placeholder="Large input"></fd-input>
+      </div>
     </section>
 
     <section>

@@ -11,6 +11,7 @@ export default class Input extends Base {
   @api disabled = false;
   @api readonly = false;
   @api required = false;
+  @api size: 'sm' | 'md' | 'lg' = 'md';
 
   @track hasFocus = false;
 
@@ -20,6 +21,10 @@ export default class Input extends Base {
 
   get hasHelpText(): boolean {
     return !!this.helpText;
+  }
+
+  get controlClasses() {
+    return ['control', `control--${this.size}`].join(' ');
   }
 
   handleInput(event: Event) {

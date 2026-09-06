@@ -55,3 +55,19 @@
 .input:focus {
   outline: none;
 }
+
+/* Sizes */
+.control--sm {
+  padding: var(--fd-space-1) var(--fd-space-2);
+  font-size: var(--fd-font-size-xs);
+}
+
+.control--md {
+  padding: var(--fd-space-1) var(--fd-space-2);
+  font-size: var(--fd-font-size-md);
+}
+
+.control--lg {
+  padding: var(--fd-space-2) var(--fd-space-3);
+  font-size: var(--fd-font-size-md);
+}
