@@ -24,6 +24,7 @@
   --fd-border: 220 13% 91%;
   --fd-border-focus: 222 89% 56%;
   --fd-border-width: 1px;
+  --fd-border-width-md: 1.5px;
   --fd-border-width-lg: 3px;
 
   /* ---- Surface tint (semantic-color-derived backgrounds) ---- */
@@ -48,6 +49,7 @@
   --fd-ring-color: 222 89% 56%;
   --fd-ring-width: 2px;
   --fd-ring-offset: 0px;
+  --fd-ring-tint: 30%;
 
   /* ---- Radius ---- */
   --fd-radius-sm: 0.25rem;
@@ -78,6 +80,8 @@
   --fd-font-size-xs: 0.75rem;
   --fd-font-size-sm: 0.875rem;
   --fd-font-size-md: 1rem;
+
+  --fd-line-height-normal: 1.5;
 
   --fd-font-heading: var(--fd-font-sans);
   --fd-heading-weight: 600;

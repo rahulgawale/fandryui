@@ -9,12 +9,12 @@
 }
 
 .label {
-  font-size: 0.875rem;
+  font-size: var(--fd-font-size-sm);
   color: hsl(var(--fd-text));
 }
 
 .textarea {
-  border: 1px solid hsl(var(--fd-border));
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
   border-radius: var(--fd-radius-md);
   padding: var(--fd-space-2);
   font: inherit;
@@ -32,6 +32,6 @@
 }
 
 .help-text {
-  font-size: 0.75rem;
+  font-size: var(--fd-font-size-xs);
   color: hsl(var(--fd-text-muted));
 }

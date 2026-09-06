@@ -36,17 +36,18 @@
   display: inline-flex;
   align-items: center;
   padding: 2px;
-  transition: background-color 120ms ease, box-shadow 120ms ease;
+  transition: background-color var(--fd-duration-fast) ease,
+    box-shadow var(--fd-duration-fast) ease;
 }
 
 /* Thumb */
 .thumb {
-  width: 16px;
-  height: 16px;
+  width: var(--fd-size-sm);
+  height: var(--fd-size-sm);
   border-radius: 50%;
   background: hsl(var(--fd-bg, 0 0% 100%));
   transform: translateX(0);
-  transition: transform 120ms ease;
+  transition: transform var(--fd-duration-fast) ease;
 }
 
 /* Checked */
@@ -67,7 +68,7 @@
 /* Disabled */
 .input:disabled + .track,
 .input:disabled ~ .label {
-  opacity: 0.5;
+  opacity: var(--fd-disabled-opacity);
   cursor: not-allowed;
 }
 

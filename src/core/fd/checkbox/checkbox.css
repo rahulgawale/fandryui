@@ -4,17 +4,18 @@
 
 /* Visible Box */
 .box {
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
+  width: var(--fd-size-sm);
+  height: var(--fd-size-sm);
+  flex: 0 0 var(--fd-size-sm);
   border-radius: var(--fd-radius-sm, 4px);
-  border: 1px solid hsl(var(--fd-border, 220 13% 80%));
+  border: var(--fd-border-width) solid hsl(var(--fd-border, 220 13% 80%));
   background: hsl(var(--fd-bg, 0 0% 100%));
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 120ms ease, background-color 120ms ease,
-    box-shadow 120ms ease;
+  transition: border-color var(--fd-duration-fast) ease,
+    background-color var(--fd-duration-fast) ease,
+    box-shadow var(--fd-duration-fast) ease;
 }
 
 /* Wrapper */
@@ -38,11 +39,12 @@
 .check {
   width: 10px;
   height: 6px;
-  border-left: 2px solid hsl(var(--fd-on-primary, 0 0% 100%));
-  border-bottom: 2px solid hsl(var(--fd-on-primary, 0 0% 100%));
+  border-left: 2px solid hsl(var(--fd-primary-foreground, 0 0% 100%));
+  border-bottom: 2px solid hsl(var(--fd-primary-foreground, 0 0% 100%));
   transform: translateY(-1px) rotate(-45deg) scale(0.9);
   opacity: 0;
-  transition: opacity 120ms ease, transform 120ms ease;
+  transition: opacity var(--fd-duration-fast) ease,
+    transform var(--fd-duration-fast) ease;
 }
 
 /* Checked */
@@ -58,14 +60,14 @@
 
 /* Focus */
 .control:focus-within .box {
-  box-shadow: 0 0 0 2px
-    color-mix(in srgb, hsl(var(--fd-ring-color, 220 90% 56%)) 30%, transparent);
+  box-shadow: 0 0 0 var(--fd-ring-width, 2px)
+    color-mix(in srgb, hsl(var(--fd-ring-color, 220 90% 56%)) var(--fd-ring-tint), transparent);
 }
 
 /* Disabled */
 .input:disabled + .box,
 .input:disabled ~ .label {
-  opacity: 0.5;
+  opacity: var(--fd-disabled-opacity);
   cursor: not-allowed;
 }
 

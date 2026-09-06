@@ -27,7 +27,8 @@
   align-items: center;
   border: var(--fd-border-width) solid hsl(var(--fd-border));
   border-radius: var(--fd-radius-md);
-  transition: border-color 120ms ease, box-shadow 120ms ease;
+  transition: border-color var(--fd-duration-fast) ease,
+    box-shadow var(--fd-duration-fast) ease;
 }
 
 .control:focus-within {
@@ -47,7 +48,7 @@
 }
 
 .select:disabled {
-  opacity: 0.5;
+  opacity: var(--fd-disabled-opacity);
   cursor: not-allowed;
 }
 

@@ -11,7 +11,7 @@
 body {
   font-family: var(--fd-font-sans);
   color: hsl(var(--fd-text));
-  line-height: 1.5;
+  line-height: var(--fd-line-height-normal);
 }
 
 /* ---- Typography ---- */
@@ -23,7 +23,11 @@ p {
 /* ---- Focus (non-form) ---- */
 
 :focus-visible {
-  outline: 2px solid hsl(var(--fd-ring-color));
+  outline: var(--fd-ring-width) solid hsl(var(--fd-ring-color));
+  /* Deliberately not --fd-ring-offset (0px): this is the generic, non-form
+     fallback, and 2px reads better for an outline than for the form
+     controls' box-shadow-based ring, so left as a literal rather than
+     guessing these should be unified. */
   outline-offset: 2px;
 }
 
@@ -33,7 +37,7 @@ button:disabled,
 input:disabled,
 textarea:disabled,
 select:disabled {
-  opacity: 0.5;
+  opacity: var(--fd-disabled-opacity);
   cursor: not-allowed;
 }
 
