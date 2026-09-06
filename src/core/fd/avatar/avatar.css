@@ -1,0 +1,45 @@
+:host {
+  display: inline-block;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background: hsl(var(--fd-bg-muted));
+  color: hsl(var(--fd-text-muted));
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.avatar--sm {
+  width: var(--fd-size-sm);
+  height: var(--fd-size-sm);
+  font-size: calc(var(--fd-size-sm) * 0.4);
+}
+
+.avatar--md {
+  width: var(--fd-size-md);
+  height: var(--fd-size-md);
+  font-size: calc(var(--fd-size-md) * 0.4);
+}
+
+.avatar--lg {
+  width: var(--fd-size-lg);
+  height: var(--fd-size-lg);
+  font-size: calc(var(--fd-size-lg) * 0.4);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.initials {
+  line-height: 1;
+}

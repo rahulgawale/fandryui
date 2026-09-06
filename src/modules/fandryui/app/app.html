@@ -36,7 +36,7 @@
       <p>
         Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
         fd-select, fd-switch, fd-label, fd-badge, fd-card, fd-alert, fd-spinner,
-        fd-divider, and fd-skeleton primitives
+        fd-divider, fd-skeleton, and fd-avatar primitives
       </p>
     </section>
 
@@ -47,6 +47,20 @@
         <fd-button variant="secondary">Secondary</fd-button>
         <fd-button variant="ghost">Ghost</fd-button>
         <fd-button disabled>Disabled</fd-button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Avatar Example</h2>
+      <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap">
+        <fd-avatar initials="JD" size="sm"></fd-avatar>
+        <fd-avatar initials="JD" size="md"></fd-avatar>
+        <fd-avatar initials="JD" size="lg"></fd-avatar>
+        <fd-avatar
+          src="https://broken.example/does-not-exist.jpg"
+          initials="RG"
+          alt="Rahul Gawale"
+        ></fd-avatar>
       </div>
     </section>
 
