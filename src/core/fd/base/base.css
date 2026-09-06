@@ -24,11 +24,7 @@ p {
 
 :focus-visible {
   outline: var(--fd-ring-width) solid hsl(var(--fd-ring-color));
-  /* Deliberately not --fd-ring-offset (0px): this is the generic, non-form
-     fallback, and 2px reads better for an outline than for the form
-     controls' box-shadow-based ring, so left as a literal rather than
-     guessing these should be unified. */
-  outline-offset: 2px;
+  outline-offset: var(--fd-ring-offset);
 }
 
 /* ---- Disabled ---- */

@@ -22,19 +22,18 @@
 }
 
 .help-text {
-  font-size: var(--fd-font-size-xs, 0.75rem);
-  color: var(--fd-color-muted, #666);
+  font-size: var(--fd-font-size-xs);
+  color: hsl(var(--fd-text-muted));
 }
 
 .control {
   display: flex;
   align-items: center;
-  border: var(--fd-border-width) solid var(--fd-color-border, #d1d5db);
-  border-radius: var(--fd-radius-md, 6px);
-  padding: var(--fd-space-1, 4px) var(--fd-space-2, 8px);
-  background: var(--fd-color-surface, #fff);
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-md);
+  padding: var(--fd-space-1) var(--fd-space-2);
+  background: hsl(var(--fd-bg));
 
-  /* Important */
   transition: border-color var(--fd-duration-fast) ease,
     box-shadow var(--fd-duration-fast) ease;
 }
