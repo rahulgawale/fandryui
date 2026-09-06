@@ -35,7 +35,8 @@
       <h2>Component Primitives</h2>
       <p>
         Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
-        fd-select, fd-switch, fd-label, fd-badge, and fd-card primitives
+        fd-select, fd-switch, fd-label, fd-badge, fd-card, and fd-alert
+        primitives
       </p>
     </section>
 
@@ -113,6 +114,22 @@
         </p>
         <fd-badge variant="primary">Popular</fd-badge>
       </fd-card>
+    </section>
+
+    <section>
+      <h2>Alert Example</h2>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem">
+        <fd-alert>An update is available.</fd-alert>
+        <fd-alert variant="success" title="Saved">
+          Your changes have been saved.
+        </fd-alert>
+        <fd-alert variant="warning" title="Heads up">
+          Your session will expire in 5 minutes.
+        </fd-alert>
+        <fd-alert variant="danger" title="Something went wrong">
+          Could not save your changes. Please try again.
+        </fd-alert>
+      </div>
     </section>
 
     <section>

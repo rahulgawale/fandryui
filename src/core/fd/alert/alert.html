@@ -1,0 +1,10 @@
+<template>
+  <div class={classes} role="alert">
+    <template if:true={hasTitle}>
+      <p class="title">{title}</p>
+    </template>
+    <div class="body">
+      <slot></slot>
+    </div>
+  </div>
+</template>
