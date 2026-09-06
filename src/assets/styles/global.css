@@ -123,6 +123,12 @@ code {
   --fd-color-on-primary: #ffffff;
 
   --fd-color-focus: #2563eb;
+
+  --fd-radius-sm: 4px;
+  --fd-radius-md: 6px;
+  --fd-radius-lg: 8px;
+
+  --fd-ring-width: 2px;
 }
 
 /* -----------------------------

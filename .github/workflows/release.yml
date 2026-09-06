@@ -30,10 +30,10 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npm run lint || echo "No lint script defined"
+        run: npm run lint
 
       - name: Type check
-        run: npm run typecheck || echo "No typecheck script defined"
+        run: npm run typecheck
 
       - name: Build
         run: npm run build
