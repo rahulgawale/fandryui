@@ -24,15 +24,32 @@
   --fd-border: 220 13% 91%;
   --fd-border-focus: 222 89% 56%;
   --fd-border-width: 1px;
+  --fd-border-width-md: 1.5px;
   --fd-border-width-lg: 3px;
 
   /* ---- Surface tint (semantic-color-derived backgrounds) ---- */
   --fd-surface-tint: 12%;
 
+  /* ---- Pulse (loading-state opacity dip, e.g. fd-skeleton) ---- */
+  --fd-pulse-opacity: 0.5;
+
+  /* ---- Disabled state ---- */
+  --fd-disabled-opacity: 0.5;
+
+  /* ---- Elevation (hover/pressed shadows) ---- */
+  --fd-shadow-sm: 0 2px 8px;
+  --fd-hover-brightness: 1.1;
+
+  /* ---- Fixed-height controls (buttons, and similar) ---- */
+  --fd-control-height-sm: 32px;
+  --fd-control-height-md: 36px;
+  --fd-control-height-lg: 40px;
+
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;
   --fd-ring-width: 2px;
   --fd-ring-offset: 0px;
+  --fd-ring-tint: 30%;
 
   /* ---- Radius ---- */
   --fd-radius-sm: 0.25rem;
@@ -43,6 +60,8 @@
   --fd-space-1: 0.25rem;
   --fd-space-2: 0.5rem;
   --fd-space-3: 0.75rem;
+  --fd-space-4: 1rem;
+  --fd-space-5: 1.25rem;
 
   /* ---- Size scale (icons, spinners, avatars) ---- */
   --fd-size-sm: 1rem;
@@ -50,7 +69,9 @@
   --fd-size-lg: 2rem;
 
   /* ---- Motion ---- */
+  --fd-duration-fast: 120ms;
   --fd-duration-slow: 0.6s;
+  --fd-duration-slowest: 1.5s;
 
   /* ---- Font ---- */
   --fd-font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
@@ -59,6 +80,8 @@
   --fd-font-size-xs: 0.75rem;
   --fd-font-size-sm: 0.875rem;
   --fd-font-size-md: 1rem;
+
+  --fd-line-height-normal: 1.5;
 
   --fd-font-heading: var(--fd-font-sans);
   --fd-heading-weight: 600;

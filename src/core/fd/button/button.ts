@@ -3,7 +3,7 @@ import Base from 'fd/base';
 
 export default class FdButton extends Base {
   @api variant: 'default' | 'secondary' | 'ghost' = 'default';
-  @api size: 'sm' | 'md' = 'md';
+  @api size: 'sm' | 'md' | 'lg' = 'md';
   @api disabled = false;
   @api type: 'button' | 'submit' | 'reset' = 'button';
 

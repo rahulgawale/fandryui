@@ -8,7 +8,7 @@
   gap: var(--fd-space-1);
 
   font-family: inherit;
-  font-size: 0.75rem;
+  font-size: var(--fd-font-size-xs);
   font-weight: 500;
   line-height: 1;
 

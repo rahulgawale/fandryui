@@ -65,4 +65,21 @@ describe('fd-input', () => {
     expect(nativeInput.disabled).toBe(true);
     expect(nativeInput.required).toBe(true);
   });
+
+  it('renders with the default "md" size class', () => {
+    const element = createElement('fd-input', { is: FdInput });
+    document.body.appendChild(element);
+
+    const control = element.shadowRoot!.querySelector('.control')!;
+    expect(control.className).toBe('control control--md');
+  });
+
+  it('applies the requested size class', () => {
+    const element = createElement('fd-input', { is: FdInput });
+    element.size = 'lg';
+    document.body.appendChild(element);
+
+    const control = element.shadowRoot!.querySelector('.control')!;
+    expect(control.className).toBe('control control--lg');
+  });
 });

@@ -35,6 +35,15 @@ describe('fd-button', () => {
     expect(button.className).toBe('button button--secondary button--sm');
   });
 
+  it('applies the "lg" size class', () => {
+    const element = createElement('fd-button', { is: FdButton });
+    element.size = 'lg';
+    document.body.appendChild(element);
+
+    const button = element.shadowRoot!.querySelector('button')!;
+    expect(button.className).toBe('button button--default button--lg');
+  });
+
   it('defaults to a native button type of "button"', () => {
     const element = createElement('fd-button', { is: FdButton });
     document.body.appendChild(element);
