@@ -7,6 +7,11 @@ export interface FdSelectOption {
   disabled?: boolean;
 }
 
+export interface FdSelectOptionGroup {
+  label: string;
+  options: FdSelectOption[];
+}
+
 export default class Select extends Base {
   @api label = '';
   @api helpText = '';
@@ -14,6 +19,7 @@ export default class Select extends Base {
   @api value = '';
   @api placeholder = '';
   @api options: FdSelectOption[] = [];
+  @api groups: FdSelectOptionGroup[] = [];
   @api disabled = false;
   @api required = false;
 

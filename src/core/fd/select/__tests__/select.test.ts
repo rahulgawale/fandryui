@@ -55,14 +55,71 @@ describe('fd-select', () => {
     expect(firstOption.value).toBe('free');
   });
 
-  it('renders a child fd-label when a label is provided', () => {
+  it('renders the label text natively wrapping the select', () => {
+    // The label must be a real <label> in the SAME shadow root as the
+    // <select> -- a separate fd-label custom element can't associate
+    // via for/id across a shadow boundary (see PR #23 review comment).
     const element = createElement('fd-select', { is: FdSelect });
     element.label = 'Plan';
     element.options = OPTIONS;
     document.body.appendChild(element);
 
-    const label = element.shadowRoot!.querySelector('fd-label');
+    const label = element.shadowRoot!.querySelector('label.form-control')!;
     expect(label).not.toBeNull();
+    expect(label.textContent).toContain('Plan');
+    expect(label.querySelector('select')).not.toBeNull();
+  });
+
+  it('renders a required asterisk inside the label when required', () => {
+    const element = createElement('fd-select', { is: FdSelect });
+    element.label = 'Plan';
+    element.required = true;
+    element.options = OPTIONS;
+    document.body.appendChild(element);
+
+    const required = element.shadowRoot!.querySelector('.required');
+    expect(required).not.toBeNull();
+  });
+
+  it('omits the label element entirely when no label is provided', () => {
+    const element = createElement('fd-select', { is: FdSelect });
+    element.options = OPTIONS;
+    document.body.appendChild(element);
+
+    const label = element.shadowRoot!.querySelector('.label');
+    expect(label).toBeNull();
+  });
+
+  it('renders grouped options as native <optgroup> elements', () => {
+    // A <slot> cannot be used here -- <select> can only ever contain
+    // <option>/<optgroup> per the HTML content model (verified: a <slot>
+    // child renders as literal escaped text, not an element). Grouping is
+    // the compositional extension point that actually fits that constraint.
+    const element = createElement('fd-select', { is: FdSelect });
+    element.options = [{ label: 'Free', value: 'free' }];
+    element.groups = [
+      {
+        label: 'Paid plans',
+        options: [
+          { label: 'Pro', value: 'pro' },
+          { label: 'Enterprise', value: 'enterprise', disabled: true }
+        ]
+      }
+    ];
+    document.body.appendChild(element);
+
+    const select = element.shadowRoot!.querySelector('select')!;
+    const group = select.querySelector('optgroup')!;
+    expect(group.label).toBe('Paid plans');
+
+    const groupOptions = group.querySelectorAll('option');
+    expect(groupOptions.length).toBe(2);
+    expect(groupOptions[0].value).toBe('pro');
+    expect(groupOptions[1].disabled).toBe(true);
+
+    // Flat `options` still render as top-level <option> siblings, outside the group.
+    const topLevelOption = select.querySelector(':scope > option') as HTMLOptionElement;
+    expect(topLevelOption.value).toBe('free');
   });
 
   it('dispatches a semantic "change" event carrying the new value', () => {
