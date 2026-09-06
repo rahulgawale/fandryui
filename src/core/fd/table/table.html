@@ -7,6 +7,19 @@
       <thead>
         <template for:each={headerGroups} for:item="headerGroup">
           <tr key={headerGroup.id}>
+            <template if:true={enableRowSelection}>
+              <th class="selection-cell" scope="col">
+                <template if:true={enableMultiRowSelection}>
+                  <input
+                    type="checkbox"
+                    class="selection-header-checkbox"
+                    checked={allRowsSelected}
+                    aria-label="Select all rows"
+                    onchange={handleToggleAllRowsSelected}
+                  />
+                </template>
+              </th>
+            </template>
             <template for:each={headerGroup.headers} for:item="header">
               <th key={header.id} scope="col" aria-sort={header.ariaSort}>
                 <template if:true={header.canSort}>
@@ -32,6 +45,11 @@
         <template if:true={loading}>
           <template for:each={loadingRows} for:item="loadingRow">
             <tr key={loadingRow} class="loading-row" aria-hidden="true">
+              <template if:true={enableRowSelection}>
+                <td class="selection-cell">
+                  <fd-skeleton variant="circle"></fd-skeleton>
+                </td>
+              </template>
               <template for:each={loadingCells} for:item="loadingCell">
                 <td key={loadingCell}>
                   <fd-skeleton variant="text"></fd-skeleton>
@@ -44,6 +62,17 @@
           <template if:true={hasRows}>
             <template for:each={rows} for:item="row">
               <tr key={row.id} data-row-id={row.id} onclick={handleRowClick}>
+                <template if:true={enableRowSelection}>
+                  <td class="selection-cell" onclick={handleSelectionCellClick}>
+                    <input
+                      type="checkbox"
+                      checked={row.selected}
+                      data-row-id={row.id}
+                      aria-label="Select row"
+                      onchange={handleToggleRowSelected}
+                    />
+                  </td>
+                </template>
                 <template for:each={row.cells} for:item="cell">
                   <td key={cell.id}>{cell.value}</td>
                 </template>

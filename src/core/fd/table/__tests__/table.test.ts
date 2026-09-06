@@ -293,6 +293,108 @@ describe('fd-table', () => {
     );
   });
 
+  it('omits the selection column when enableRowSelection is false (default)', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('.selection-cell')).toBeNull();
+  });
+
+  it('renders a "select all" header checkbox and a per-row checkbox when enableRowSelection is set', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    document.body.appendChild(element);
+
+    expect(
+      element.shadowRoot!.querySelector('.selection-header-checkbox')
+    ).not.toBeNull();
+    expect(
+      element.shadowRoot!.querySelectorAll('tbody .selection-cell input[type="checkbox"]')
+        .length
+    ).toBe(DATA.length);
+  });
+
+  it('dispatches "rowselectionchange" with the selected row\'s original data when its checkbox is checked', async () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    document.body.appendChild(element);
+
+    const handler = jest.fn();
+    element.addEventListener('rowselectionchange', handler);
+
+    const firstRowCheckbox = element.shadowRoot!.querySelector(
+      'tbody .selection-cell input[type="checkbox"]'
+    ) as HTMLInputElement;
+    firstRowCheckbox.checked = true;
+    firstRowCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+    await flush();
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(handler.mock.calls[0][0].detail.rowSelection).toEqual({ '0': true });
+    expect(handler.mock.calls[0][0].detail.rows).toEqual([DATA[0]]);
+  });
+
+  it('toggling the "select all" checkbox selects and deselects every row', async () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    document.body.appendChild(element);
+
+    const selectAll = element.shadowRoot!.querySelector(
+      '.selection-header-checkbox'
+    ) as HTMLInputElement;
+    selectAll.checked = true;
+    selectAll.dispatchEvent(new Event('change', { bubbles: true }));
+    await flush();
+
+    const rowCheckboxes = Array.from(
+      element.shadowRoot!.querySelectorAll(
+        'tbody .selection-cell input[type="checkbox"]'
+      )
+    ) as HTMLInputElement[];
+    expect(rowCheckboxes.every((checkbox) => checkbox.checked)).toBe(true);
+  });
+
+  it('does not trigger "rowclick" when a selection checkbox is clicked, even with clickableRows enabled', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    element.clickableRows = true;
+    document.body.appendChild(element);
+
+    const rowClickHandler = jest.fn();
+    element.addEventListener('rowclick', rowClickHandler);
+
+    const firstRowCheckbox = element.shadowRoot!.querySelector(
+      'tbody .selection-cell input[type="checkbox"]'
+    ) as HTMLInputElement;
+    firstRowCheckbox.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    expect(rowClickHandler).not.toHaveBeenCalled();
+  });
+
+  it('hides the "select all" header checkbox when singleRowSelection is set', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    element.singleRowSelection = true;
+    document.body.appendChild(element);
+
+    expect(
+      element.shadowRoot!.querySelector('.selection-header-checkbox')
+    ).toBeNull();
+    expect(element.shadowRoot!.querySelector('.selection-cell')).not.toBeNull();
+  });
+
   it('renders a caption when provided and omits it otherwise', () => {
     const withCaption = createElement('fd-table', { is: FdTable });
     withCaption.columns = COLUMNS;

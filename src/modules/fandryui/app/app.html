@@ -224,8 +224,10 @@
         enable-pagination
         page-size={tablePageSize}
         loading={tableLoading}
+        enable-row-selection
         onrowclick={handleTableRowClick}
         onpagechange={handleTablePageChange}
+        onrowselectionchange={handleTableRowSelectionChange}
       >
         <span slot="empty">No team members yet.</span>
       </fd-table>

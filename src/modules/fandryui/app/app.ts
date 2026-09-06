@@ -45,4 +45,9 @@ export default class HelloWorldApp extends LightningElement {
   handleTableLoadingToggle(event) {
     this.tableLoading = event.detail;
   }
+
+  handleTableRowSelectionChange(event) {
+    // eslint-disable-next-line no-console
+    console.log('fd-table rowselectionchange', event.detail);
+  }
 }

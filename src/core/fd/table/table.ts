@@ -12,6 +12,7 @@ import type {
   Header,
   PaginationState,
   RowData,
+  RowSelectionState,
   SortingState,
   Table as TanstackTable,
   Updater
@@ -39,6 +40,7 @@ export interface FdTableCell {
 export interface FdTableRow {
   id: string;
   cells: FdTableCell[];
+  selected: boolean;
 }
 
 /**
@@ -87,8 +89,24 @@ export default class FdTable extends Base {
   @api manualPagination = false;
   @api pageCount = -1;
 
+  /**
+   * Opt-in: adds a checkbox column (with a "select all" checkbox in the
+   * header) using tanstack's built-in RowSelection feature rather than the
+   * general cell-extensibility escape hatch -- selection is common enough,
+   * and well-defined enough, to build as a first-class column instead.
+   */
+  @api enableRowSelection = false;
+
+  /**
+   * LWC requires public boolean properties to default to false, so this is
+   * phrased as an opt-out -- multi-row selection (and the "select all"
+   * header checkbox) is on by default once `enableRowSelection` is set.
+   */
+  @api singleRowSelection = false;
+
   @track private sorting: SortingState = [];
   @track private pageIndex = 0;
+  @track private rowSelection: RowSelectionState = {};
 
   private tableInstance: TanstackTable<RowData> | null = null;
 
@@ -101,6 +119,9 @@ export default class FdTable extends Base {
       manualPagination: this.manualPagination,
       onPaginationChange: this.handlePaginationChange,
       pageCount: this.manualPagination ? this.pageCount : undefined,
+      enableRowSelection: this.enableRowSelection,
+      enableMultiRowSelection: !this.singleRowSelection,
+      onRowSelectionChange: this.handleRowSelectionChange,
       onStateChange: () => {
         /* state is fully controlled via the fields merged in below */
       },
@@ -121,16 +142,17 @@ export default class FdTable extends Base {
       this.tableInstance = createTable({ ...baseOptions, state: {} });
     }
 
-    // Every feature other than sorting/pagination stays at its default;
-    // those two are controlled by this component, so they're merged on top
-    // of `initialState` rather than replacing the full state object.
+    // Every feature other than sorting/pagination/rowSelection stays at its
+    // default; those are controlled by this component, so they're merged on
+    // top of `initialState` rather than replacing the full state object.
     this.tableInstance.setOptions((prev) => ({
       ...prev,
       ...baseOptions,
       state: {
         ...this.tableInstance!.initialState,
         sorting: this.sorting,
-        pagination: { pageIndex: this.pageIndex, pageSize: this.pageSize }
+        pagination: { pageIndex: this.pageIndex, pageSize: this.pageSize },
+        rowSelection: this.rowSelection
       }
     }));
 
@@ -164,6 +186,24 @@ export default class FdTable extends Base {
     );
   };
 
+  private handleRowSelectionChange = (updater: Updater<RowSelectionState>) => {
+    this.rowSelection =
+      typeof updater === 'function' ? updater(this.rowSelection) : updater;
+
+    this.dispatchEvent(
+      new CustomEvent('rowselectionchange', {
+        detail: {
+          rowSelection: this.rowSelection,
+          rows: this.getTableInstance()
+            .getSelectedRowModel()
+            .rows.map((row) => row.original)
+        },
+        bubbles: true,
+        composed: true
+      })
+    );
+  };
+
   get headerGroups(): FdTableHeaderGroup[] {
     return this.getTableInstance()
       .getHeaderGroups()
@@ -181,7 +221,8 @@ export default class FdTable extends Base {
         cells: row.getVisibleCells().map((cell) => ({
           id: cell.id,
           value: this.toCellValue(cell)
-        }))
+        })),
+        selected: row.getIsSelected()
       }));
   }
 
@@ -200,7 +241,16 @@ export default class FdTable extends Base {
   }
 
   get columnCount(): number {
-    return Math.max(this.getTableInstance().getAllLeafColumns().length, 1);
+    const leafColumnCount = this.getTableInstance().getAllLeafColumns().length;
+    return Math.max(leafColumnCount + (this.enableRowSelection ? 1 : 0), 1);
+  }
+
+  get allRowsSelected(): boolean {
+    return this.getTableInstance().getIsAllRowsSelected();
+  }
+
+  get enableMultiRowSelection(): boolean {
+    return !this.singleRowSelection;
   }
 
   get loadingRows(): number[] {
@@ -208,7 +258,8 @@ export default class FdTable extends Base {
   }
 
   get loadingCells(): number[] {
-    return Array.from({ length: this.columnCount }, (_, index) => index);
+    const leafColumnCount = this.getTableInstance().getAllLeafColumns().length;
+    return Array.from({ length: leafColumnCount }, (_, index) => index);
   }
 
   get previousPageDisabled(): boolean {
@@ -291,5 +342,41 @@ export default class FdTable extends Base {
 
   handleNextPage() {
     this.getTableInstance().nextPage();
+  }
+
+  handleSelectionCellClick(event: Event) {
+    // The selection <td> lives inside a <tr> that may also carry
+    // `handleRowClick` (clickableRows) -- without this, clicking the
+    // checkbox would also fire a `rowclick`.
+    event.stopPropagation();
+  }
+
+  handleToggleRowSelected(event: Event) {
+    event.stopPropagation();
+
+    const target = event.target as HTMLInputElement;
+    const rowId = target.dataset.rowId;
+    if (rowId == null) return;
+
+    this.getTableInstance().getRow(rowId, true).toggleSelected(target.checked);
+  }
+
+  handleToggleAllRowsSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.getTableInstance().toggleAllRowsSelected(target.checked);
+  }
+
+  renderedCallback() {
+    if (!this.enableRowSelection || this.singleRowSelection) return;
+
+    const selectAllCheckbox = this.template.querySelector(
+      '.selection-header-checkbox'
+    ) as HTMLInputElement | null;
+    if (selectAllCheckbox) {
+      // `indeterminate` is a DOM-only property with no HTML attribute
+      // equivalent, so it can't be set declaratively in the template (same
+      // reason select.ts syncs the native <select>'s value imperatively).
+      selectAllCheckbox.indeterminate = this.getTableInstance().getIsSomeRowsSelected();
+    }
   }
 }
