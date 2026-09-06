@@ -250,6 +250,49 @@ describe('fd-table', () => {
     });
   });
 
+  it('renders fd-skeleton placeholder rows instead of data while loading', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.loading = true;
+    document.body.appendChild(element);
+
+    const loadingRows = element.shadowRoot!.querySelectorAll('.loading-row');
+    expect(loadingRows.length).toBe(5); // default loadingRowCount
+    expect(loadingRows[0].querySelectorAll('fd-skeleton').length).toBe(
+      COLUMNS.length
+    );
+
+    // Real data and the empty-state fallback both stay hidden while loading.
+    expect(element.shadowRoot!.querySelectorAll('td').length).toBe(
+      5 * COLUMNS.length
+    );
+    expect(element.shadowRoot!.querySelector('.empty-row')).toBeNull();
+  });
+
+  it('respects a custom loadingRowCount', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.loading = true;
+    element.loadingRowCount = 2;
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelectorAll('.loading-row').length).toBe(2);
+  });
+
+  it('marks the table aria-busy while loading', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.loading = true;
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('table')!.getAttribute('aria-busy')).toBe(
+      'true'
+    );
+  });
+
   it('renders a caption when provided and omits it otherwise', () => {
     const withCaption = createElement('fd-table', { is: FdTable });
     withCaption.columns = COLUMNS;

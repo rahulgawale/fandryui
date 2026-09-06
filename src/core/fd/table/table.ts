@@ -55,6 +55,14 @@ export default class FdTable extends Base {
   @api clickableRows = false;
 
   /**
+   * While true, the body renders `loadingRowCount` fd-skeleton placeholder
+   * rows instead of `data` -- header/sorting stay interactive so a
+   * click-to-sort during a refetch isn't lost.
+   */
+  @api loading = false;
+  @api loadingRowCount = 5;
+
+  /**
    * When true, sorting state is still tracked and `sortchange` still fires,
    * but rows are rendered in the order `data` was given -- the consumer is
    * expected to sort `data` itself (e.g. a server-side fetch) instead of
@@ -193,6 +201,14 @@ export default class FdTable extends Base {
 
   get columnCount(): number {
     return Math.max(this.getTableInstance().getAllLeafColumns().length, 1);
+  }
+
+  get loadingRows(): number[] {
+    return Array.from({ length: Math.max(this.loadingRowCount, 0) }, (_, index) => index);
+  }
+
+  get loadingCells(): number[] {
+    return Array.from({ length: this.columnCount }, (_, index) => index);
   }
 
   get previousPageDisabled(): boolean {

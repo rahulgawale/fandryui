@@ -211,6 +211,11 @@
 
     <section>
       <h2>Table Example</h2>
+      <fd-switch
+        label="Simulate loading"
+        checked={tableLoading}
+        onchange={handleTableLoadingToggle}
+      ></fd-switch>
       <fd-table
         columns={tableColumns}
         data={tableData}
@@ -218,6 +223,7 @@
         clickable-rows
         enable-pagination
         page-size={tablePageSize}
+        loading={tableLoading}
         onrowclick={handleTableRowClick}
         onpagechange={handleTablePageChange}
       >

@@ -1,6 +1,6 @@
 <template>
   <div class="table-wrapper">
-    <table class={tableClasses}>
+    <table class={tableClasses} aria-busy={loading}>
       <template if:true={hasCaption}>
         <caption class="caption">{caption}</caption>
       </template>
@@ -29,21 +29,34 @@
         </template>
       </thead>
       <tbody>
-        <template if:true={hasRows}>
-          <template for:each={rows} for:item="row">
-            <tr key={row.id} data-row-id={row.id} onclick={handleRowClick}>
-              <template for:each={row.cells} for:item="cell">
-                <td key={cell.id}>{cell.value}</td>
+        <template if:true={loading}>
+          <template for:each={loadingRows} for:item="loadingRow">
+            <tr key={loadingRow} class="loading-row" aria-hidden="true">
+              <template for:each={loadingCells} for:item="loadingCell">
+                <td key={loadingCell}>
+                  <fd-skeleton variant="text"></fd-skeleton>
+                </td>
               </template>
             </tr>
           </template>
         </template>
-        <template if:false={hasRows}>
-          <tr class="empty-row">
-            <td class="empty-cell" colspan={columnCount}>
-              <slot name="empty">No data</slot>
-            </td>
-          </tr>
+        <template if:false={loading}>
+          <template if:true={hasRows}>
+            <template for:each={rows} for:item="row">
+              <tr key={row.id} data-row-id={row.id} onclick={handleRowClick}>
+                <template for:each={row.cells} for:item="cell">
+                  <td key={cell.id}>{cell.value}</td>
+                </template>
+              </tr>
+            </template>
+          </template>
+          <template if:false={hasRows}>
+            <tr class="empty-row">
+              <td class="empty-cell" colspan={columnCount}>
+                <slot name="empty">No data</slot>
+              </td>
+            </tr>
+          </template>
         </template>
       </tbody>
     </table>

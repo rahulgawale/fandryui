@@ -20,6 +20,7 @@ export default class HelloWorldApp extends LightningElement {
   ];
 
   tablePageSize = 3;
+  tableLoading = false;
 
   tableData = [
     { name: 'Ada Lovelace', role: 'Engineer', plan: 'Enterprise' },
@@ -39,5 +40,9 @@ export default class HelloWorldApp extends LightningElement {
   handleTablePageChange(event) {
     // eslint-disable-next-line no-console
     console.log('fd-table pagechange', event.detail);
+  }
+
+  handleTableLoadingToggle(event) {
+    this.tableLoading = event.detail;
   }
 }
