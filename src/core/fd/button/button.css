@@ -14,31 +14,32 @@
   line-height: 1;
 
   border-radius: var(--fd-radius-md, 6px);
-  border: 1px solid transparent;
+  border: var(--fd-border-width) solid transparent;
   cursor: pointer;
 
-  transition: background-color 120ms ease, border-color 120ms ease,
-    box-shadow 120ms ease, color 120ms ease;
+  transition: background-color var(--fd-duration-fast) ease,
+    border-color var(--fd-duration-fast) ease,
+    box-shadow var(--fd-duration-fast) ease, color var(--fd-duration-fast) ease;
 
   background: hsl(var(--fd-primary, 220 90% 56%));
-  color: hsl(var(--fd-on-primary, 0 0% 100%));
+  color: hsl(var(--fd-primary-foreground, 0 0% 100%));
 }
 
 /* Sizes */
 .button--sm {
-  height: 32px;
+  height: var(--fd-control-height-sm);
   padding: 0 var(--fd-space-3, 12px);
-  font-size: 0.875rem;
+  font-size: var(--fd-font-size-sm);
 }
 
 .button--md {
-  height: 36px;
+  height: var(--fd-control-height-md);
   padding: 0 var(--fd-space-4, 16px);
-  font-size: 0.875rem;
+  font-size: var(--fd-font-size-sm);
 }
 
 .button--lg {
-  height: 40px;
+  height: var(--fd-control-height-lg);
   padding: 0 var(--fd-space-5);
   font-size: var(--fd-font-size-md, 1rem);
 }
@@ -46,12 +47,12 @@
 /* Variants */
 .button--default {
   background: hsl(var(--fd-primary, 220 90% 56%));
-  color: hsl(var(--fd-on-primary, 0 0% 100%));
+  color: hsl(var(--fd-primary-foreground, 0 0% 100%));
 }
 
 .button--default:hover:not(:disabled) {
-  filter: brightness(1.1);
-  box-shadow: 0 2px 8px hsla(var(--fd-primary) / 0.3);
+  filter: brightness(var(--fd-hover-brightness));
+  box-shadow: var(--fd-shadow-sm) hsla(var(--fd-primary) / 0.3);
 }
 
 .button--secondary {
@@ -62,7 +63,7 @@
 
 .button--secondary:hover:not(:disabled) {
   background: hsl(var(--fd-bg-muted));
-  box-shadow: 0 2px 8px hsla(0 0% 0% / 0.15);
+  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.15);
 }
 
 .button--ghost {
@@ -73,7 +74,7 @@
 
 .button--ghost:hover:not(:disabled) {
   background: hsl(var(--fd-bg-muted));
-  box-shadow: 0 2px 8px hsla(0 0% 0% / 0.1);
+  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.1);
 }
 
 /* Focus */
@@ -85,7 +86,7 @@
 
 /* Disabled */
 .button:disabled {
-  opacity: 0.5;
+  opacity: var(--fd-disabled-opacity);
   cursor: not-allowed;
 }
 

@@ -32,6 +32,18 @@
   /* ---- Pulse (loading-state opacity dip, e.g. fd-skeleton) ---- */
   --fd-pulse-opacity: 0.5;
 
+  /* ---- Disabled state ---- */
+  --fd-disabled-opacity: 0.5;
+
+  /* ---- Elevation (hover/pressed shadows) ---- */
+  --fd-shadow-sm: 0 2px 8px;
+  --fd-hover-brightness: 1.1;
+
+  /* ---- Fixed-height controls (buttons, and similar) ---- */
+  --fd-control-height-sm: 32px;
+  --fd-control-height-md: 36px;
+  --fd-control-height-lg: 40px;
+
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;
   --fd-ring-width: 2px;
@@ -55,6 +67,7 @@
   --fd-size-lg: 2rem;
 
   /* ---- Motion ---- */
+  --fd-duration-fast: 120ms;
   --fd-duration-slow: 0.6s;
   --fd-duration-slowest: 1.5s;
 
