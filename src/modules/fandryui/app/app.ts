@@ -1,3 +1,15 @@
 import { LightningElement } from 'lwc';
 
-export default class HelloWorldApp extends LightningElement {}
+export default class HelloWorldApp extends LightningElement {
+  planOptions = [{ label: 'Free', value: 'free' }];
+
+  planOptionGroups = [
+    {
+      label: 'Paid plans',
+      options: [
+        { label: 'Pro', value: 'pro' },
+        { label: 'Enterprise', value: 'enterprise', disabled: true }
+      ]
+    }
+  ];
+}

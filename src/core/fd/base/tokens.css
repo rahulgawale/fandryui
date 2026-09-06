@@ -14,6 +14,7 @@
 
   --fd-border: 220 13% 91%;
   --fd-border-focus: 222 89% 56%;
+  --fd-border-width: 1px;
 
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;

@@ -1,0 +1,47 @@
+<template>
+  <label class="form-control">
+    <template if:true={hasLabel}>
+      <span class="label">
+        {label}
+        <template if:true={required}>
+          <span class="required" aria-hidden="true">*</span>
+        </template>
+      </span>
+    </template>
+
+    <div class="control">
+      <select
+        class="select"
+        name={name}
+        disabled={disabled}
+        required={required}
+        aria-describedby="help-text"
+        onchange={handleChange}
+        onfocus={handleFocus}
+        onblur={handleBlur}
+      >
+        <template if:true={hasPlaceholder}>
+          <option value="" disabled>{placeholder}</option>
+        </template>
+        <template for:each={options} for:item="option">
+          <option key={option.value} value={option.value} disabled={option.disabled}>
+            {option.label}
+          </option>
+        </template>
+        <template for:each={groups} for:item="group">
+          <optgroup key={group.label} label={group.label}>
+            <template for:each={group.options} for:item="option">
+              <option key={option.value} value={option.value} disabled={option.disabled}>
+                {option.label}
+              </option>
+            </template>
+          </optgroup>
+        </template>
+      </select>
+    </div>
+
+    <template if:true={hasHelpText}>
+      <div id="help-text" class="help-text">{helpText}</div>
+    </template>
+  </label>
+</template>
