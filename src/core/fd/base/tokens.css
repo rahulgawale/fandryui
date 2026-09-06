@@ -29,6 +29,9 @@
   /* ---- Surface tint (semantic-color-derived backgrounds) ---- */
   --fd-surface-tint: 12%;
 
+  /* ---- Pulse (loading-state opacity dip, e.g. fd-skeleton) ---- */
+  --fd-pulse-opacity: 0.5;
+
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;
   --fd-ring-width: 2px;
