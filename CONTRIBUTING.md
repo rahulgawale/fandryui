@@ -185,6 +185,32 @@ Do not introduce new events casually.
 
 ---
 
+## Testing
+
+Primitives use `@lwc/jest-preset`. Tests live in a colocated `__tests__` folder next to the component:
+
+```
+src/core/fd/button/
+  ├── button.ts
+  ├── button.html
+  ├── button.css
+  └── __tests__/
+      └── button.test.ts
+```
+
+Import the component under test with a relative path (`import FdButton from '../button'`), not the `fd/*` alias — the alias is resolved by the build tooling, not by Jest or `tsc`.
+
+Run tests with:
+
+```bash
+npm test
+npm run test:watch
+```
+
+New primitives should cover their public API surface: rendered output, attribute reflection, and any semantic events dispatched. Do not test implementation details (private methods, internal state shape).
+
+---
+
 ## Pull Request Expectations
 
 Each pull request must include:
