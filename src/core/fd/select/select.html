@@ -1,0 +1,34 @@
+<template>
+  <div class="form-control">
+    <template if:true={hasLabel}>
+      <fd-label html-for="select" required={required}>{label}</fd-label>
+    </template>
+
+    <div class="control">
+      <select
+        class="select"
+        id="select"
+        name={name}
+        disabled={disabled}
+        required={required}
+        aria-describedby="help-text"
+        onchange={handleChange}
+        onfocus={handleFocus}
+        onblur={handleBlur}
+      >
+        <template if:true={hasPlaceholder}>
+          <option value="" disabled>{placeholder}</option>
+        </template>
+        <template for:each={options} for:item="option">
+          <option key={option.value} value={option.value} disabled={option.disabled}>
+            {option.label}
+          </option>
+        </template>
+      </select>
+    </div>
+
+    <template if:true={hasHelpText}>
+      <div id="help-text" class="help-text">{helpText}</div>
+    </template>
+  </div>
+</template>

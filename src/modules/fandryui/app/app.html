@@ -35,7 +35,7 @@
       <h2>Component Primitives</h2>
       <p>
         Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
-        fd-switch, and fd-label primitives
+        fd-select, fd-switch, and fd-label primitives
       </p>
     </section>
 
@@ -80,6 +80,16 @@
           label="Enterprise Plan"
         ></fd-radio>
       </fd-radio-group>
+    </section>
+
+    <section>
+      <h2>Select Example</h2>
+      <fd-select
+        label="Plan"
+        placeholder="Choose a plan"
+        options={planOptions}
+        value="pro"
+      ></fd-select>
     </section>
 
     <section>

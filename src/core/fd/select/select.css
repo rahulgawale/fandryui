@@ -1,0 +1,62 @@
+:host {
+  display: block;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.label {
+  font-size: 0.875rem;
+  color: hsl(var(--fd-text));
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-md);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.control:focus-within {
+  border-color: hsl(var(--fd-border-focus));
+  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+}
+
+.select {
+  flex: 1;
+  appearance: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  color: hsl(var(--fd-text));
+  padding: var(--fd-space-1) var(--fd-space-3) var(--fd-space-1) var(--fd-space-2);
+}
+
+.select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.control::after {
+  content: '';
+  position: absolute;
+  right: var(--fd-space-2);
+  top: 50%;
+  width: 0.4em;
+  height: 0.4em;
+  border-right: 1px solid hsl(var(--fd-text-muted));
+  border-bottom: 1px solid hsl(var(--fd-text-muted));
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.help-text {
+  font-size: var(--fd-font-size-xs, 0.75rem);
+  color: hsl(var(--fd-text-muted));
+}
