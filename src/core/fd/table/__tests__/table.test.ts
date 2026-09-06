@@ -439,6 +439,83 @@ describe('fd-table', () => {
     expect(element.shadowRoot!.querySelector('.table-footer')).toBeNull();
   });
 
+  it('omits the search input when enableGlobalFilter is false (default)', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('.table-toolbar')).toBeNull();
+  });
+
+  it('filters rows client-side as the search input changes', async () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableGlobalFilter = true;
+    document.body.appendChild(element);
+
+    const searchHost = element.shadowRoot!.querySelector('.table-toolbar fd-input')!;
+    const nativeInput = searchHost.shadowRoot!.querySelector(
+      'input'
+    ) as HTMLInputElement;
+    nativeInput.value = 'mir';
+    nativeInput.dispatchEvent(new Event('input'));
+    await flush();
+
+    const names = Array.from(
+      element.shadowRoot!.querySelectorAll('tbody tr td:first-child')
+    ).map((cell) => cell.textContent);
+    expect(names).toEqual(['Amir']);
+  });
+
+  it('dispatches "filterchange" with the new search value', async () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableGlobalFilter = true;
+    document.body.appendChild(element);
+
+    const handler = jest.fn();
+    element.addEventListener('filterchange', handler);
+
+    const searchHost = element.shadowRoot!.querySelector('.table-toolbar fd-input')!;
+    const nativeInput = searchHost.shadowRoot!.querySelector(
+      'input'
+    ) as HTMLInputElement;
+    nativeInput.value = 'cass';
+    nativeInput.dispatchEvent(new Event('input'));
+    await flush();
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(handler.mock.calls[0][0].detail).toEqual({ globalFilter: 'cass' });
+  });
+
+  it('leaves rows unfiltered when manualFiltering is enabled, but still dispatches "filterchange"', async () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableGlobalFilter = true;
+    element.manualFiltering = true;
+    document.body.appendChild(element);
+
+    const handler = jest.fn();
+    element.addEventListener('filterchange', handler);
+
+    const searchHost = element.shadowRoot!.querySelector('.table-toolbar fd-input')!;
+    const nativeInput = searchHost.shadowRoot!.querySelector(
+      'input'
+    ) as HTMLInputElement;
+    nativeInput.value = 'a';
+    nativeInput.dispatchEvent(new Event('input'));
+    await flush();
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(element.shadowRoot!.querySelectorAll('tbody tr').length).toBe(
+      DATA.length
+    );
+  });
+
   it('renders a caption when provided and omits it otherwise', () => {
     const withCaption = createElement('fd-table', { is: FdTable });
     withCaption.columns = COLUMNS;

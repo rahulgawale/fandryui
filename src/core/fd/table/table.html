@@ -1,4 +1,14 @@
 <template>
+  <template if:true={enableGlobalFilter}>
+    <div class="table-toolbar">
+      <fd-input
+        placeholder={globalFilterPlaceholder}
+        value={globalFilter}
+        size="sm"
+        oninput={handleGlobalFilterInput}
+      ></fd-input>
+    </div>
+  </template>
   <div class="table-wrapper">
     <table class={tableClasses} aria-busy={loading}>
       <template if:true={hasCaption}>

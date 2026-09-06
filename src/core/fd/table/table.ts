@@ -3,6 +3,7 @@ import Base from 'fd/base';
 import {
   createTable,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel
 } from '@tanstack/table-core';
@@ -104,9 +105,25 @@ export default class FdTable extends Base {
    */
   @api singleRowSelection = false;
 
+  /**
+   * Opt-in: renders a search fd-input above the table and filters rows
+   * against every column's value via tanstack's built-in GlobalFiltering
+   * feature (client-side by default).
+   */
+  @api enableGlobalFilter = false;
+  @api globalFilterPlaceholder = 'Search...';
+
+  /**
+   * When true, `data` is assumed to already be filtered (e.g. server-side)
+   * -- the built-in filtered row model is skipped and the search input just
+   * tracks its own value + fires `filterchange`, mirroring manualSorting.
+   */
+  @api manualFiltering = false;
+
   @track private sorting: SortingState = [];
   @track private pageIndex = 0;
   @track private rowSelection: RowSelectionState = {};
+  @track private globalFilter = '';
 
   private tableInstance: TanstackTable<RowData> | null = null;
 
@@ -122,6 +139,7 @@ export default class FdTable extends Base {
       enableRowSelection: this.enableRowSelection,
       enableMultiRowSelection: !this.singleRowSelection,
       onRowSelectionChange: this.handleRowSelectionChange,
+      manualFiltering: this.manualFiltering,
       onStateChange: () => {
         /* state is fully controlled via the fields merged in below */
       },
@@ -130,6 +148,10 @@ export default class FdTable extends Base {
       getPaginationRowModel:
         this.enablePagination && !this.manualPagination
           ? getPaginationRowModel()
+          : undefined,
+      getFilteredRowModel:
+        this.enableGlobalFilter && !this.manualFiltering
+          ? getFilteredRowModel()
           : undefined,
       renderFallbackValue: ''
     };
@@ -152,7 +174,8 @@ export default class FdTable extends Base {
         ...this.tableInstance!.initialState,
         sorting: this.sorting,
         pagination: { pageIndex: this.pageIndex, pageSize: this.pageSize },
-        rowSelection: this.rowSelection
+        rowSelection: this.rowSelection,
+        globalFilter: this.globalFilter
       }
     }));
 
@@ -383,5 +406,22 @@ export default class FdTable extends Base {
 
   handleToggleAllRowsSelected(event: CustomEvent<boolean>) {
     this.getTableInstance().toggleAllRowsSelected(event.detail);
+  }
+
+  handleGlobalFilterInput(event: CustomEvent<string>) {
+    // Unlike sorting/pagination/selection, nothing here goes through a
+    // tanstack-owned method (there's no "toggleFilter" the user clicks) --
+    // the search input is entirely ours, so there's no onGlobalFilterChange
+    // callback needed; this just feeds the tracked field the same as any
+    // other @api prop would.
+    this.globalFilter = event.detail;
+
+    this.dispatchEvent(
+      new CustomEvent('filterchange', {
+        detail: { globalFilter: this.globalFilter },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 }

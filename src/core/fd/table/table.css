@@ -2,6 +2,11 @@
   display: block;
 }
 
+.table-toolbar {
+  max-width: 16rem;
+  margin-bottom: var(--fd-space-3);
+}
+
 .table-wrapper {
   overflow-x: auto;
 }
