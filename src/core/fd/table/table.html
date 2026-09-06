@@ -88,26 +88,31 @@
         </template>
       </tbody>
     </table>
-    <template if:true={enablePagination}>
-      <div class="pagination">
-        <fd-button
-          variant="secondary"
-          size="sm"
-          disabled={previousPageDisabled}
-          onclick={handlePreviousPage}
-        >
-          Previous
-        </fd-button>
-        <span class="pagination-status">{pageStatus}</span>
-        <fd-button
-          variant="secondary"
-          size="sm"
-          disabled={nextPageDisabled}
-          onclick={handleNextPage}
-        >
-          Next
-        </fd-button>
-      </div>
-    </template>
   </div>
+  <template if:true={hasFooter}>
+    <div class="table-footer">
+      <span class="selection-status">{selectionStatus}</span>
+      <template if:true={enablePagination}>
+        <div class="pagination">
+          <fd-button
+            variant="secondary"
+            size="sm"
+            disabled={previousPageDisabled}
+            onclick={handlePreviousPage}
+          >
+            Previous
+          </fd-button>
+          <span class="pagination-status">{pageStatus}</span>
+          <fd-button
+            variant="secondary"
+            size="sm"
+            disabled={nextPageDisabled}
+            onclick={handleNextPage}
+          >
+            Next
+          </fd-button>
+        </div>
+      </template>
+    </div>
+  </template>
 </template>

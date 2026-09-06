@@ -280,6 +280,22 @@ export default class FdTable extends Base {
     return pageCount >= 0 ? `Page ${currentPage} of ${pageCount}` : `Page ${currentPage}`;
   }
 
+  get hasFooter(): boolean {
+    return this.enableRowSelection || this.enablePagination;
+  }
+
+  get selectionStatus(): string {
+    if (!this.enableRowSelection) return '';
+
+    const table = this.getTableInstance();
+    const selectedCount = table.getSelectedRowModel().rows.length;
+    // Selection spans the whole dataset (not just the current page), so the
+    // total it's measured against has to be the same -- getCoreRowModel is
+    // the full, unpaginated/unsorted row set.
+    const totalCount = table.getCoreRowModel().rows.length;
+    return `${selectedCount} of ${totalCount} selected`;
+  }
+
   private toHeaderCell(header: Header<RowData, unknown>): FdTableHeaderCell {
     const column = header.column;
     const isSorted = header.isPlaceholder ? false : column.getIsSorted();

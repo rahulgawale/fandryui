@@ -80,12 +80,29 @@ th {
   border-bottom: none;
 }
 
+/*
+ * Lives outside .table-wrapper (which clips overflow-x, and per spec that
+ * forces overflow-y to clip too) so fd-button's hover/focus box-shadow has
+ * room to render instead of being cut off at the wrapper's edge.
+ */
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fd-space-3);
+  margin-top: var(--fd-space-3);
+  padding: var(--fd-space-1) var(--fd-space-1) var(--fd-space-2);
+}
+
+.selection-status {
+  font-size: var(--fd-font-size-xs, 0.75rem);
+  color: hsl(var(--fd-text-muted));
+}
+
 .pagination {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: var(--fd-space-3);
-  padding: var(--fd-space-3) 0 0;
 }
 
 .pagination-status {

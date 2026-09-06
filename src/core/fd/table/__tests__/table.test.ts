@@ -402,6 +402,43 @@ describe('fd-table', () => {
     expect(element.shadowRoot!.querySelector('.selection-cell')).not.toBeNull();
   });
 
+  it('shows a "N of M selected" count that spans the whole dataset, not just the current page', async () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    element.enablePagination = true;
+    element.pageSize = 2;
+    document.body.appendChild(element);
+
+    expect(
+      element.shadowRoot!.querySelector('.selection-status')!.textContent
+    ).toBe('0 of 3 selected');
+
+    const firstRowCheckboxHost = element.shadowRoot!.querySelector(
+      'tbody .selection-cell fd-checkbox'
+    )!;
+    const nativeInput = firstRowCheckboxHost.shadowRoot!.querySelector(
+      'input'
+    ) as HTMLInputElement;
+    nativeInput.checked = true;
+    nativeInput.dispatchEvent(new Event('change'));
+    await flush();
+
+    expect(
+      element.shadowRoot!.querySelector('.selection-status')!.textContent
+    ).toBe('1 of 3 selected');
+  });
+
+  it('omits the footer entirely when neither selection nor pagination is enabled', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('.table-footer')).toBeNull();
+  });
+
   it('renders a caption when provided and omits it otherwise', () => {
     const withCaption = createElement('fd-table', { is: FdTable });
     withCaption.columns = COLUMNS;
