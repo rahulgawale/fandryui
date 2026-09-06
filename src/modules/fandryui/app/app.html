@@ -36,7 +36,7 @@
       <p>
         Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
         fd-select, fd-switch, fd-label, fd-badge, fd-card, fd-alert, fd-spinner,
-        and fd-divider primitives
+        fd-divider, and fd-skeleton primitives
       </p>
     </section>
 
@@ -61,6 +61,20 @@
           Saving…
         </fd-button>
       </div>
+    </section>
+
+    <section>
+      <h2>Skeleton Example</h2>
+      <fd-card>
+        <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+          <fd-skeleton variant="circle"></fd-skeleton>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem;">
+            <fd-skeleton variant="text" style="width: 40%;"></fd-skeleton>
+            <fd-skeleton variant="text"></fd-skeleton>
+            <fd-skeleton variant="rect"></fd-skeleton>
+          </div>
+        </div>
+      </fd-card>
     </section>
 
     <section>
