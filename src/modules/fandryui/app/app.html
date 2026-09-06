@@ -35,8 +35,8 @@
       <h2>Component Primitives</h2>
       <p>
         Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
-        fd-select, fd-switch, fd-label, fd-badge, fd-card, and fd-alert
-        primitives
+        fd-select, fd-switch, fd-label, fd-badge, fd-card, fd-alert, and
+        fd-spinner primitives
       </p>
     </section>
 
@@ -47,6 +47,19 @@
         <fd-button variant="secondary">Secondary</fd-button>
         <fd-button variant="ghost">Ghost</fd-button>
         <fd-button disabled>Disabled</fd-button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Spinner Example</h2>
+      <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap">
+        <fd-spinner size="sm"></fd-spinner>
+        <fd-spinner size="md"></fd-spinner>
+        <fd-spinner size="lg"></fd-spinner>
+        <fd-button variant="secondary" disabled>
+          <fd-spinner size="sm"></fd-spinner>
+          Saving…
+        </fd-button>
       </div>
     </section>
 
