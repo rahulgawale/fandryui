@@ -448,28 +448,41 @@ describe('fd-table', () => {
     expect(element.shadowRoot!.querySelector('.table-toolbar')).toBeNull();
   });
 
-  it('filters rows client-side as the search input changes', async () => {
+  // A real browser's native `input` event is `bubbles: true, composed: true`
+  // -- without both flags set here, this wouldn't exercise the bug where
+  // that native event (retargeted onto the fd-input host, `detail: 0` per
+  // UIEvent's legacy numeric default) used to reach fd-table's `oninput`
+  // listener a second time and stomp the real typed value back to `0`.
+  const typeIntoSearch = (element: Element, value: string) => {
+    const searchHost = element.shadowRoot!.querySelector('.table-toolbar fd-input')!;
+    const nativeInput = searchHost.shadowRoot!.querySelector(
+      'input'
+    ) as HTMLInputElement;
+    nativeInput.value = value;
+    nativeInput.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+  };
+
+  it('filters rows client-side as the search input changes, after the debounce elapses', async () => {
+    jest.useFakeTimers();
     const element = createElement('fd-table', { is: FdTable });
     element.columns = COLUMNS;
     element.data = DATA;
     element.enableGlobalFilter = true;
     document.body.appendChild(element);
 
-    const searchHost = element.shadowRoot!.querySelector('.table-toolbar fd-input')!;
-    const nativeInput = searchHost.shadowRoot!.querySelector(
-      'input'
-    ) as HTMLInputElement;
-    nativeInput.value = 'mir';
-    nativeInput.dispatchEvent(new Event('input'));
+    typeIntoSearch(element, 'mir');
+    jest.advanceTimersByTime(250);
     await flush();
 
     const names = Array.from(
       element.shadowRoot!.querySelectorAll('tbody tr td:first-child')
     ).map((cell) => cell.textContent);
     expect(names).toEqual(['Amir']);
+    jest.useRealTimers();
   });
 
-  it('dispatches "filterchange" with the new search value', async () => {
+  it('does not filter or dispatch "filterchange" before the debounce window elapses', async () => {
+    jest.useFakeTimers();
     const element = createElement('fd-table', { is: FdTable });
     element.columns = COLUMNS;
     element.data = DATA;
@@ -479,19 +492,56 @@ describe('fd-table', () => {
     const handler = jest.fn();
     element.addEventListener('filterchange', handler);
 
-    const searchHost = element.shadowRoot!.querySelector('.table-toolbar fd-input')!;
-    const nativeInput = searchHost.shadowRoot!.querySelector(
-      'input'
-    ) as HTMLInputElement;
-    nativeInput.value = 'cass';
-    nativeInput.dispatchEvent(new Event('input'));
+    typeIntoSearch(element, 'mir');
+    jest.advanceTimersByTime(100);
+    await flush();
+
+    expect(handler).not.toHaveBeenCalled();
+    expect(element.shadowRoot!.querySelectorAll('tbody tr').length).toBe(
+      DATA.length
+    );
+    jest.useRealTimers();
+  });
+
+  it('applies immediately when globalFilterDebounceMs is 0', async () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableGlobalFilter = true;
+    element.globalFilterDebounceMs = 0;
+    document.body.appendChild(element);
+
+    const handler = jest.fn();
+    element.addEventListener('filterchange', handler);
+
+    typeIntoSearch(element, 'mir');
+    await flush();
+
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('dispatches "filterchange" with the new search value', async () => {
+    jest.useFakeTimers();
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableGlobalFilter = true;
+    document.body.appendChild(element);
+
+    const handler = jest.fn();
+    element.addEventListener('filterchange', handler);
+
+    typeIntoSearch(element, 'cass');
+    jest.advanceTimersByTime(250);
     await flush();
 
     expect(handler).toHaveBeenCalledTimes(1);
     expect(handler.mock.calls[0][0].detail).toEqual({ globalFilter: 'cass' });
+    jest.useRealTimers();
   });
 
   it('leaves rows unfiltered when manualFiltering is enabled, but still dispatches "filterchange"', async () => {
+    jest.useFakeTimers();
     const element = createElement('fd-table', { is: FdTable });
     element.columns = COLUMNS;
     element.data = DATA;
@@ -502,18 +552,15 @@ describe('fd-table', () => {
     const handler = jest.fn();
     element.addEventListener('filterchange', handler);
 
-    const searchHost = element.shadowRoot!.querySelector('.table-toolbar fd-input')!;
-    const nativeInput = searchHost.shadowRoot!.querySelector(
-      'input'
-    ) as HTMLInputElement;
-    nativeInput.value = 'a';
-    nativeInput.dispatchEvent(new Event('input'));
+    typeIntoSearch(element, 'a');
+    jest.advanceTimersByTime(250);
     await flush();
 
     expect(handler).toHaveBeenCalledTimes(1);
     expect(element.shadowRoot!.querySelectorAll('tbody tr').length).toBe(
       DATA.length
     );
+    jest.useRealTimers();
   });
 
   it('renders a caption when provided and omits it otherwise', () => {

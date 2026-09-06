@@ -21,6 +21,12 @@ export default class Textarea extends Base {
   }
 
   handleInput(event: Event) {
+    // See fd/input's handleInput -- the native `input` event is
+    // `composed: true` and would otherwise also reach a consumer's
+    // `oninput` listener a second time, with `event.detail` as `0`
+    // (UIEvent's legacy numeric default) instead of the typed value.
+    event.stopPropagation();
+
     const target = event.target as HTMLTextAreaElement;
     this.value = target.value;
 
@@ -34,6 +40,8 @@ export default class Textarea extends Base {
   }
 
   handleChange(event: Event) {
+    event.stopPropagation();
+
     const target = event.target as HTMLTextAreaElement;
     this.value = target.value;
 

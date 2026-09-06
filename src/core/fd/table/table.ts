@@ -114,6 +114,13 @@ export default class FdTable extends Base {
   @api globalFilterPlaceholder = 'Search...';
 
   /**
+   * Milliseconds to wait after the last keystroke before the filter (and
+   * `filterchange`) actually apply -- typing itself is never delayed, only
+   * when the row model re-filters. 0 applies on every keystroke.
+   */
+  @api globalFilterDebounceMs = 250;
+
+  /**
    * When true, `data` is assumed to already be filtered (e.g. server-side)
    * -- the built-in filtered row model is skipped and the search input just
    * tracks its own value + fires `filterchange`, mirroring manualSorting.
@@ -126,6 +133,13 @@ export default class FdTable extends Base {
   @track private globalFilter = '';
 
   private tableInstance: TanstackTable<RowData> | null = null;
+  private globalFilterDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+  disconnectedCallback() {
+    if (this.globalFilterDebounceTimer !== null) {
+      clearTimeout(this.globalFilterDebounceTimer);
+    }
+  }
 
   private getTableInstance(): TanstackTable<RowData> {
     const baseOptions = {
@@ -409,12 +423,31 @@ export default class FdTable extends Base {
   }
 
   handleGlobalFilterInput(event: CustomEvent<string>) {
+    const value = event.detail;
+
+    if (this.globalFilterDebounceTimer !== null) {
+      clearTimeout(this.globalFilterDebounceTimer);
+      this.globalFilterDebounceTimer = null;
+    }
+
+    if (this.globalFilterDebounceMs <= 0) {
+      this.applyGlobalFilter(value);
+      return;
+    }
+
+    this.globalFilterDebounceTimer = setTimeout(() => {
+      this.globalFilterDebounceTimer = null;
+      this.applyGlobalFilter(value);
+    }, this.globalFilterDebounceMs);
+  }
+
+  private applyGlobalFilter(value: string) {
     // Unlike sorting/pagination/selection, nothing here goes through a
     // tanstack-owned method (there's no "toggleFilter" the user clicks) --
     // the search input is entirely ours, so there's no onGlobalFilterChange
     // callback needed; this just feeds the tracked field the same as any
     // other @api prop would.
-    this.globalFilter = event.detail;
+    this.globalFilter = value;
 
     this.dispatchEvent(
       new CustomEvent('filterchange', {
