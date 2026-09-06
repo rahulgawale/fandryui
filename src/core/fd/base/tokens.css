@@ -6,6 +6,15 @@
   --fd-accent: 199 89% 48%;
   --fd-accent-foreground: 0 0% 100%;
 
+  --fd-success: 142 71% 45%;
+  --fd-success-foreground: 0 0% 100%;
+
+  --fd-warning: 38 92% 50%;
+  --fd-warning-foreground: 0 0% 100%;
+
+  --fd-danger: 0 72% 51%;
+  --fd-danger-foreground: 0 0% 100%;
+
   --fd-bg: 0 0% 100%;
   --fd-bg-muted: 220 14% 96%;
 
