@@ -7,7 +7,7 @@
   border-radius: 50%;
   border: var(--fd-border-width-lg) solid hsl(var(--fd-border));
   border-top-color: hsl(var(--fd-primary));
-  animation: fd-spinner-rotate 0.6s linear infinite;
+  animation: fd-spinner-rotate var(--fd-duration-slow) linear infinite;
 }
 
 .spinner--sm {
