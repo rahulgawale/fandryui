@@ -249,6 +249,10 @@ export default class FdTable extends Base {
     return this.getTableInstance().getIsAllRowsSelected();
   }
 
+  get someRowsSelected(): boolean {
+    return this.getTableInstance().getIsSomeRowsSelected();
+  }
+
   get enableMultiRowSelection(): boolean {
     return !this.singleRowSelection;
   }
@@ -351,32 +355,17 @@ export default class FdTable extends Base {
     event.stopPropagation();
   }
 
-  handleToggleRowSelected(event: Event) {
+  handleToggleRowSelected(event: CustomEvent<boolean>) {
     event.stopPropagation();
 
-    const target = event.target as HTMLInputElement;
+    const target = event.target as HTMLElement;
     const rowId = target.dataset.rowId;
     if (rowId == null) return;
 
-    this.getTableInstance().getRow(rowId, true).toggleSelected(target.checked);
+    this.getTableInstance().getRow(rowId, true).toggleSelected(event.detail);
   }
 
-  handleToggleAllRowsSelected(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.getTableInstance().toggleAllRowsSelected(target.checked);
-  }
-
-  renderedCallback() {
-    if (!this.enableRowSelection || this.singleRowSelection) return;
-
-    const selectAllCheckbox = this.template.querySelector(
-      '.selection-header-checkbox'
-    ) as HTMLInputElement | null;
-    if (selectAllCheckbox) {
-      // `indeterminate` is a DOM-only property with no HTML attribute
-      // equivalent, so it can't be set declaratively in the template (same
-      // reason select.ts syncs the native <select>'s value imperatively).
-      selectAllCheckbox.indeterminate = this.getTableInstance().getIsSomeRowsSelected();
-    }
+  handleToggleAllRowsSelected(event: CustomEvent<boolean>) {
+    this.getTableInstance().toggleAllRowsSelected(event.detail);
   }
 }

@@ -302,6 +302,12 @@ describe('fd-table', () => {
     expect(element.shadowRoot!.querySelector('.selection-cell')).toBeNull();
   });
 
+  // fd-table renders <fd-checkbox> for selection, not a raw <input> -- its
+  // native input lives inside fd-checkbox's own shadow root, so interacting
+  // with it the way a user would means drilling one shadow boundary deeper.
+  const getNativeCheckbox = (host: Element) =>
+    host.shadowRoot!.querySelector('input[type="checkbox"]') as HTMLInputElement;
+
   it('renders a "select all" header checkbox and a per-row checkbox when enableRowSelection is set', () => {
     const element = createElement('fd-table', { is: FdTable });
     element.columns = COLUMNS;
@@ -313,8 +319,7 @@ describe('fd-table', () => {
       element.shadowRoot!.querySelector('.selection-header-checkbox')
     ).not.toBeNull();
     expect(
-      element.shadowRoot!.querySelectorAll('tbody .selection-cell input[type="checkbox"]')
-        .length
+      element.shadowRoot!.querySelectorAll('tbody .selection-cell fd-checkbox').length
     ).toBe(DATA.length);
   });
 
@@ -328,11 +333,12 @@ describe('fd-table', () => {
     const handler = jest.fn();
     element.addEventListener('rowselectionchange', handler);
 
-    const firstRowCheckbox = element.shadowRoot!.querySelector(
-      'tbody .selection-cell input[type="checkbox"]'
-    ) as HTMLInputElement;
-    firstRowCheckbox.checked = true;
-    firstRowCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+    const firstRowCheckboxHost = element.shadowRoot!.querySelector(
+      'tbody .selection-cell fd-checkbox'
+    )!;
+    const nativeInput = getNativeCheckbox(firstRowCheckboxHost);
+    nativeInput.checked = true;
+    nativeInput.dispatchEvent(new Event('change'));
     await flush();
 
     expect(handler).toHaveBeenCalledTimes(1);
@@ -347,19 +353,20 @@ describe('fd-table', () => {
     element.enableRowSelection = true;
     document.body.appendChild(element);
 
-    const selectAll = element.shadowRoot!.querySelector(
+    const selectAllHost = element.shadowRoot!.querySelector(
       '.selection-header-checkbox'
-    ) as HTMLInputElement;
-    selectAll.checked = true;
-    selectAll.dispatchEvent(new Event('change', { bubbles: true }));
+    )!;
+    const nativeInput = getNativeCheckbox(selectAllHost);
+    nativeInput.checked = true;
+    nativeInput.dispatchEvent(new Event('change'));
     await flush();
 
-    const rowCheckboxes = Array.from(
-      element.shadowRoot!.querySelectorAll(
-        'tbody .selection-cell input[type="checkbox"]'
-      )
-    ) as HTMLInputElement[];
-    expect(rowCheckboxes.every((checkbox) => checkbox.checked)).toBe(true);
+    const rowCheckboxHosts = Array.from(
+      element.shadowRoot!.querySelectorAll('tbody .selection-cell fd-checkbox')
+    );
+    expect(
+      rowCheckboxHosts.every((host) => getNativeCheckbox(host).checked)
+    ).toBe(true);
   });
 
   it('does not trigger "rowclick" when a selection checkbox is clicked, even with clickableRows enabled', () => {
@@ -373,10 +380,10 @@ describe('fd-table', () => {
     const rowClickHandler = jest.fn();
     element.addEventListener('rowclick', rowClickHandler);
 
-    const firstRowCheckbox = element.shadowRoot!.querySelector(
-      'tbody .selection-cell input[type="checkbox"]'
-    ) as HTMLInputElement;
-    firstRowCheckbox.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    const firstRowCheckboxHost = element.shadowRoot!.querySelector(
+      'tbody .selection-cell fd-checkbox'
+    )!;
+    firstRowCheckboxHost.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
     expect(rowClickHandler).not.toHaveBeenCalled();
   });

@@ -73,10 +73,6 @@ th {
   white-space: nowrap;
 }
 
-.selection-cell input[type='checkbox'] {
-  cursor: pointer;
-}
-
 .empty-row td {
   text-align: center;
   color: hsl(var(--fd-text-muted));

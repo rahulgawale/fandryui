@@ -10,13 +10,13 @@
             <template if:true={enableRowSelection}>
               <th class="selection-cell" scope="col">
                 <template if:true={enableMultiRowSelection}>
-                  <input
-                    type="checkbox"
+                  <fd-checkbox
                     class="selection-header-checkbox"
                     checked={allRowsSelected}
+                    indeterminate={someRowsSelected}
                     aria-label="Select all rows"
                     onchange={handleToggleAllRowsSelected}
-                  />
+                  ></fd-checkbox>
                 </template>
               </th>
             </template>
@@ -64,13 +64,12 @@
               <tr key={row.id} data-row-id={row.id} onclick={handleRowClick}>
                 <template if:true={enableRowSelection}>
                   <td class="selection-cell" onclick={handleSelectionCellClick}>
-                    <input
-                      type="checkbox"
+                    <fd-checkbox
                       checked={row.selected}
                       data-row-id={row.id}
                       aria-label="Select row"
                       onchange={handleToggleRowSelected}
-                    />
+                    ></fd-checkbox>
                   </td>
                 </template>
                 <template for:each={row.cells} for:item="cell">
