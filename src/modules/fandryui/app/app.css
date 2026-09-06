@@ -10,3 +10,17 @@ section {
   width: 100%;
   max-width: 600px;
 }
+
+.demo-input {
+  padding: var(--fd-space-2);
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+  font: inherit;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.demo-input:focus {
+  outline: none;
+  border-color: var(--fd-color-focus);
+  box-shadow: 0 0 0 var(--fd-ring-width) var(--fd-color-focus);
+}
