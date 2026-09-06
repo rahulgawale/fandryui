@@ -35,7 +35,7 @@
       <h2>Component Primitives</h2>
       <p>
         Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
-        fd-select, fd-switch, and fd-label primitives
+        fd-select, fd-switch, fd-label, fd-badge, and fd-card primitives
       </p>
     </section>
 
@@ -91,6 +91,28 @@
         groups={planOptionGroups}
         value="pro"
       ></fd-select>
+    </section>
+
+    <section>
+      <h2>Badge Example</h2>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
+        <fd-badge>Default</fd-badge>
+        <fd-badge variant="primary">Primary</fd-badge>
+        <fd-badge variant="success">Success</fd-badge>
+        <fd-badge variant="warning">Warning</fd-badge>
+        <fd-badge variant="danger">Danger</fd-badge>
+      </div>
+    </section>
+
+    <section>
+      <h2>Card Example</h2>
+      <fd-card>
+        <h3 style="margin: 0 0 0.5rem;">Pro Plan</h3>
+        <p style="margin: 0 0 0.75rem;">
+          Everything in Free, plus priority support.
+        </p>
+        <fd-badge variant="primary">Popular</fd-badge>
+      </fd-card>
     </section>
 
     <section>
