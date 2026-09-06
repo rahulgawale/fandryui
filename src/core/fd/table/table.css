@@ -1,0 +1,112 @@
+:host {
+  display: block;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fd-font-size-sm, 0.875rem);
+  color: hsl(var(--fd-text));
+}
+
+.caption {
+  text-align: left;
+  padding-bottom: var(--fd-space-2);
+  font-size: var(--fd-font-size-xs, 0.75rem);
+  color: hsl(var(--fd-text-muted));
+}
+
+th,
+td {
+  padding: var(--fd-space-2) var(--fd-space-3);
+  text-align: left;
+  border-bottom: var(--fd-border-width) solid hsl(var(--fd-border));
+}
+
+th {
+  font-weight: 600;
+  color: hsl(var(--fd-text-muted));
+  white-space: nowrap;
+}
+
+.sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-1);
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-weight: inherit;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.sort-button:hover {
+  color: hsl(var(--fd-text));
+}
+
+.sort-button:focus-visible {
+  outline: var(--fd-ring-width) solid hsl(var(--fd-ring-color));
+  outline-offset: var(--fd-ring-offset);
+}
+
+.sort-indicator {
+  font-size: var(--fd-font-size-xs, 0.75rem);
+}
+
+.table--clickable tbody tr {
+  cursor: pointer;
+}
+
+.table--clickable tbody tr:hover {
+  background: hsl(var(--fd-bg-muted));
+}
+
+.empty-row td {
+  text-align: center;
+  color: hsl(var(--fd-text-muted));
+  padding: var(--fd-space-5);
+  border-bottom: none;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--fd-space-3);
+  padding: var(--fd-space-3) 0 0;
+}
+
+.pagination-status {
+  font-size: var(--fd-font-size-xs, 0.75rem);
+  color: hsl(var(--fd-text-muted));
+}
+
+.pagination-button {
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-sm);
+  background: hsl(var(--fd-bg));
+  color: hsl(var(--fd-text));
+  font: inherit;
+  padding: var(--fd-space-1) var(--fd-space-3);
+  cursor: pointer;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background: hsl(var(--fd-bg-muted));
+}
+
+.pagination-button:focus-visible {
+  outline: var(--fd-ring-width) solid hsl(var(--fd-ring-color));
+  outline-offset: var(--fd-ring-offset);
+}
+
+.pagination-button:disabled {
+  opacity: var(--fd-disabled-opacity);
+  cursor: not-allowed;
+}

@@ -41,6 +41,15 @@
     </section>
 
     <section>
+      <h2>Application Components</h2>
+      <p>
+        Built on top of the primitives above. fd-table wraps
+        <code>@tanstack/table-core</code> for headless row/column/sorting
+        logic, while rendering stays native LWC.
+      </p>
+    </section>
+
+    <section>
       <h2>Button Examples</h2>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
         <fd-button>Primary Button</fd-button>
@@ -198,6 +207,22 @@
     <section>
       <h2>Switch Example</h2>
       <fd-switch label="Enable notifications" checked></fd-switch>
+    </section>
+
+    <section>
+      <h2>Table Example</h2>
+      <fd-table
+        columns={tableColumns}
+        data={tableData}
+        caption="Team members"
+        clickable-rows
+        enable-pagination
+        page-size={tablePageSize}
+        onrowclick={handleTableRowClick}
+        onpagechange={handleTablePageChange}
+      >
+        <span slot="empty">No team members yet.</span>
+      </fd-table>
     </section>
 
     <section>

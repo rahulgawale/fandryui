@@ -1,0 +1,72 @@
+<template>
+  <div class="table-wrapper">
+    <table class={tableClasses}>
+      <template if:true={hasCaption}>
+        <caption class="caption">{caption}</caption>
+      </template>
+      <thead>
+        <template for:each={headerGroups} for:item="headerGroup">
+          <tr key={headerGroup.id}>
+            <template for:each={headerGroup.headers} for:item="header">
+              <th key={header.id} scope="col" aria-sort={header.ariaSort}>
+                <template if:true={header.canSort}>
+                  <button
+                    type="button"
+                    class="sort-button"
+                    data-column-id={header.columnId}
+                    onclick={handleHeaderClick}
+                  >
+                    <span class="header-label">{header.label}</span>
+                    <span class="sort-indicator" aria-hidden="true">{header.sortIndicator}</span>
+                  </button>
+                </template>
+                <template if:false={header.canSort}>
+                  <span class="header-label">{header.label}</span>
+                </template>
+              </th>
+            </template>
+          </tr>
+        </template>
+      </thead>
+      <tbody>
+        <template if:true={hasRows}>
+          <template for:each={rows} for:item="row">
+            <tr key={row.id} data-row-id={row.id} onclick={handleRowClick}>
+              <template for:each={row.cells} for:item="cell">
+                <td key={cell.id}>{cell.value}</td>
+              </template>
+            </tr>
+          </template>
+        </template>
+        <template if:false={hasRows}>
+          <tr class="empty-row">
+            <td class="empty-cell" colspan={columnCount}>
+              <slot name="empty">No data</slot>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    <template if:true={enablePagination}>
+      <div class="pagination">
+        <button
+          type="button"
+          class="pagination-button"
+          disabled={previousPageDisabled}
+          onclick={handlePreviousPage}
+        >
+          Previous
+        </button>
+        <span class="pagination-status">{pageStatus}</span>
+        <button
+          type="button"
+          class="pagination-button"
+          disabled={nextPageDisabled}
+          onclick={handleNextPage}
+        >
+          Next
+        </button>
+      </div>
+    </template>
+  </div>
+</template>

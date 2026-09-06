@@ -25,6 +25,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@tanstack/table-core": "^8.21.3",
     "lwc": "latest",
     "lwr": "0.18.3"
   },
