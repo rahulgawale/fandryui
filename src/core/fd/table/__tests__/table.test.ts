@@ -201,8 +201,8 @@ describe('fd-table', () => {
     expect(status.textContent).toBe('Page 1 of 2');
 
     const [previousButton, nextButton] = Array.from(
-      element.shadowRoot!.querySelectorAll('.pagination-button')
-    ) as HTMLButtonElement[];
+      element.shadowRoot!.querySelectorAll('.pagination fd-button')
+    ) as (HTMLElement & { disabled: boolean })[];
     expect(previousButton.disabled).toBe(true);
     expect(nextButton.disabled).toBe(false);
 
@@ -238,8 +238,8 @@ describe('fd-table', () => {
     );
 
     const nextButton = element.shadowRoot!.querySelectorAll(
-      '.pagination-button'
-    )[1] as HTMLButtonElement;
+      '.pagination fd-button'
+    )[1] as HTMLElement;
     nextButton.click();
     await flush();
 

@@ -92,27 +92,3 @@ th {
   font-size: var(--fd-font-size-xs, 0.75rem);
   color: hsl(var(--fd-text-muted));
 }
-
-.pagination-button {
-  border: var(--fd-border-width) solid hsl(var(--fd-border));
-  border-radius: var(--fd-radius-sm);
-  background: hsl(var(--fd-bg));
-  color: hsl(var(--fd-text));
-  font: inherit;
-  padding: var(--fd-space-1) var(--fd-space-3);
-  cursor: pointer;
-}
-
-.pagination-button:hover:not(:disabled) {
-  background: hsl(var(--fd-bg-muted));
-}
-
-.pagination-button:focus-visible {
-  outline: var(--fd-ring-width) solid hsl(var(--fd-ring-color));
-  outline-offset: var(--fd-ring-offset);
-}
-
-.pagination-button:disabled {
-  opacity: var(--fd-disabled-opacity);
-  cursor: not-allowed;
-}

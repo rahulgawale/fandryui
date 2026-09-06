@@ -90,23 +90,23 @@
     </table>
     <template if:true={enablePagination}>
       <div class="pagination">
-        <button
-          type="button"
-          class="pagination-button"
+        <fd-button
+          variant="secondary"
+          size="sm"
           disabled={previousPageDisabled}
           onclick={handlePreviousPage}
         >
           Previous
-        </button>
+        </fd-button>
         <span class="pagination-status">{pageStatus}</span>
-        <button
-          type="button"
-          class="pagination-button"
+        <fd-button
+          variant="secondary"
+          size="sm"
           disabled={nextPageDisabled}
           onclick={handleNextPage}
         >
           Next
-        </button>
+        </fd-button>
       </div>
     </template>
   </div>
