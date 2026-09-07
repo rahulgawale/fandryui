@@ -193,6 +193,8 @@ export default class FdTableState extends Base {
   // getters), not just on an actual page change.
   private cachedPaginationState: PaginationState | null = null;
 
+  private hasWarnedAboutMissingRowId = false;
+
   disconnectedCallback() {
     if (this.globalFilterDebounceTimer !== null) {
       clearTimeout(this.globalFilterDebounceTimer);
@@ -225,7 +227,34 @@ export default class FdTableState extends Base {
     return this.cachedPaginationState;
   }
 
+  /**
+   * enableRowSelection combined with a manual* prop (server-driven data)
+   * and no getRowId is a real, silent-failure-prone combination -- row
+   * identity defaults to array index, so a selection can reattach to a
+   * different row the moment `data` is replaced with a new page/filter
+   * result. Warns once (not on every render) rather than failing silently,
+   * matching the console.warn already used for non-primitive cell values.
+   */
+  private warnIfRowSelectionNeedsRowId() {
+    if (
+      this.hasWarnedAboutMissingRowId ||
+      !this.enableRowSelection ||
+      this.getRowId ||
+      !(this.manualSorting || this.manualPagination || this.manualFiltering)
+    ) {
+      return;
+    }
+
+    this.hasWarnedAboutMissingRowId = true;
+    // eslint-disable-next-line no-console
+    console.warn(
+      'fd-table: enableRowSelection is combined with a manual* prop (server-driven data) but no getRowId was provided. Row identity defaults to array index, so a selection can silently reattach to a different row once `data` is replaced. Supply getRowId to key selection by stable row identity instead.'
+    );
+  }
+
   protected resolveTableInstance(): TanstackTable<RowData> {
+    this.warnIfRowSelectionNeedsRowId();
+
     const baseOptions = {
       columns: this.columns,
       data: this.data,
@@ -239,34 +268,47 @@ export default class FdTableState extends Base {
       enableMultiRowSelection: !this.singleRowSelection,
       onRowSelectionChange: this.handleRowSelectionChange,
       manualFiltering: this.manualFiltering,
+      onGlobalFilterChange: this.handleGlobalFilterChange,
       onStateChange: () => {
         /* state is fully controlled via the fields merged in below */
       },
-      getCoreRowModel: getCoreRowModel(),
-      getSortedRowModel: this.manualSorting ? undefined : getSortedRowModel(),
-      getPaginationRowModel:
-        this.enablePagination && !this.manualPagination
-          ? getPaginationRowModel()
-          : undefined,
-      getFilteredRowModel:
-        this.enableGlobalFilter && !this.manualFiltering
-          ? getFilteredRowModel()
-          : undefined,
       renderFallbackValue: '',
       ...this.tableOptions
     };
 
     if (!this.tableInstance) {
+      // Unlike everything in baseOptions, the row-model factories below are
+      // only ever read by tanstack once -- the first time each row model is
+      // actually requested, it caches the result internally and ignores any
+      // later reassignment via setOptions -- so they only need to be
+      // supplied at construction, not recomputed on every call (they'd
+      // otherwise allocate a throwaway closure on every one of the ~10
+      // getters that call resolveTableInstance() per render, for no effect).
+      //
       // `state` is left unset here so the constructor's own per-feature
       // defaults (columnPinning, columnVisibility, ...) seed `initialState`
       // untouched -- passing a partial `state` at this point would replace
       // that whole object rather than merge into it.
-      this.tableInstance = createTable({ ...baseOptions, state: {} });
+      this.tableInstance = createTable({
+        ...baseOptions,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: this.manualSorting ? undefined : getSortedRowModel(),
+        getPaginationRowModel:
+          this.enablePagination && !this.manualPagination
+            ? getPaginationRowModel()
+            : undefined,
+        getFilteredRowModel:
+          this.enableGlobalFilter && !this.manualFiltering
+            ? getFilteredRowModel()
+            : undefined,
+        state: {}
+      });
     }
 
-    // Every feature other than sorting/pagination/rowSelection stays at its
-    // default; those are controlled by this component, so they're merged on
-    // top of `initialState` rather than replacing the full state object.
+    // Every feature other than sorting/pagination/rowSelection/globalFilter
+    // stays at its default; those are controlled by this component, so
+    // they're merged on top of `initialState` rather than replacing the
+    // full state object.
     this.tableInstance.setOptions((prev) => ({
       ...prev,
       ...baseOptions,
@@ -300,6 +342,14 @@ export default class FdTableState extends Base {
     const current = { pageIndex: this.pageIndex, pageSize: this.pageSize };
     const next = typeof updater === 'function' ? updater(current) : updater;
     this.pageIndex = next.pageIndex;
+    // `pageSize` is an @api prop (a consumer sets it directly, same as
+    // `columns`/`data`), but it's also part of tanstack's own pagination
+    // state -- reassigning it here too (the same pattern fd-checkbox/
+    // fd-input already use for their own @api `checked`/`value`) is what
+    // makes the documented getTanstackTable().setPageSize() escape hatch
+    // actually take effect, instead of silently updating pageIndex against
+    // a pageSize that never changed.
+    this.pageSize = next.pageSize;
 
     this.dispatchEvent(
       new CustomEvent('pagechange', {
@@ -589,12 +639,18 @@ export default class FdTableState extends Base {
     }, this.globalFilterDebounceMs);
   }
 
+  // Registered as onGlobalFilterChange so tanstack's own
+  // setGlobalFilter()/resetGlobalFilter() (reachable via the documented
+  // getTanstackTable() escape hatch) actually take effect, not just the
+  // debounced input handler above -- without this, those calls would
+  // silently no-op through tanstack's default onGlobalFilterChange, which
+  // routes into the onStateChange no-op below.
+  private handleGlobalFilterChange = (updater: Updater<string>) => {
+    const next = typeof updater === 'function' ? updater(this.globalFilter) : updater;
+    this.applyGlobalFilter(next);
+  };
+
   protected applyGlobalFilter(value: string) {
-    // Unlike sorting/pagination/selection, nothing here goes through a
-    // tanstack-owned method (there's no "toggleFilter" the user clicks) --
-    // the search input is entirely ours, so there's no onGlobalFilterChange
-    // callback needed; this just feeds the tracked field the same as any
-    // other @api prop would.
     this.globalFilter = value;
 
     this.dispatchEvent(

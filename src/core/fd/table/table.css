@@ -3,7 +3,7 @@
 }
 
 .table-toolbar {
-  max-width: 16rem;
+  max-width: var(--fd-control-max-width-sm);
   margin-bottom: var(--fd-space-3);
 }
 

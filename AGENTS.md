@@ -196,11 +196,19 @@ Core should feel uneventful.
 
 ## Event Model
 
-- Core normalizes **semantic events only**
+- Primitives (`src/core/fd/`, single-concern components like inputs and
+  buttons) normalize to the base semantic vocabulary only:
   - `input`
   - `change`
   - `focus`
   - `blur`
+- Application components (real state/behavior, like fd-table's sorting,
+  pagination, selection, filtering) may introduce additional custom
+  events beyond that base vocabulary when the base vocabulary genuinely
+  can't express the domain event (e.g. `sortchange`, `pagechange`,
+  `rowselectionchange`, `filterchange`, `rowclick`) -- this is not a
+  license to invent an event per prop; each one must earn its place the
+  same way `input`/`change` did.
 - Native DOM events bubble naturally
 - Custom events must be semantic and well-documented
 

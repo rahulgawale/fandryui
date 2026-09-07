@@ -656,6 +656,86 @@ describe('fd-table', () => {
     expect(table.options.meta).toEqual({ custom: true });
   });
 
+  it('applies a pageSize change made via getTanstackTable().setPageSize()', async () => {
+    // Regression: handlePaginationChange only used to apply the updater's
+    // pageIndex, silently dropping pageSize -- making the documented
+    // getTanstackTable() escape hatch's setPageSize() a no-op.
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enablePagination = true;
+    element.pageSize = 2;
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelectorAll('tbody tr').length).toBe(2);
+
+    const table = (
+      element as unknown as { getTanstackTable: () => { setPageSize: (size: number) => void } }
+    ).getTanstackTable();
+    table.setPageSize(1);
+    await flush();
+
+    expect(element.pageSize).toBe(1);
+    expect(element.shadowRoot!.querySelectorAll('tbody tr').length).toBe(1);
+  });
+
+  it('applies a filter set via getTanstackTable().setGlobalFilter()', async () => {
+    // Regression: onGlobalFilterChange was never registered, so tanstack's
+    // own setGlobalFilter()/resetGlobalFilter() silently no-op'd through
+    // the default handler, which routes into the onStateChange no-op.
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableGlobalFilter = true;
+    document.body.appendChild(element);
+
+    const table = (
+      element as unknown as { getTanstackTable: () => { setGlobalFilter: (value: string) => void } }
+    ).getTanstackTable();
+    table.setGlobalFilter('mir');
+    await flush();
+
+    const names = Array.from(
+      element.shadowRoot!.querySelectorAll('tbody tr td:first-child')
+    ).map((cell) => cell.textContent);
+    expect(names).toEqual(['Amir']);
+  });
+
+  it('warns once when enableRowSelection is combined with a manual* prop and no getRowId', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    element.manualSorting = true;
+    document.body.appendChild(element);
+
+    // Triggering resolveTableInstance() again (a second render) shouldn't
+    // warn a second time.
+    element.data = [...DATA];
+
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('getRowId'));
+
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when enableRowSelection + a manual* prop is paired with getRowId', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    element.manualSorting = true;
+    element.getRowId = (row: { name: string }) => row.name;
+    document.body.appendChild(element);
+
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+
   it('uses a custom getRowId instead of array index when provided', () => {
     const element = createElement('fd-table', { is: FdTable });
     element.columns = COLUMNS;
