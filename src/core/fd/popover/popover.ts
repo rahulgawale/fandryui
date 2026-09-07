@@ -63,11 +63,16 @@ export default class Popover extends Base {
 
     this.open = open;
 
+    // bubbles-only, not composed: the parent that consumes fd-popover
+    // listens via ontoggle on the host itself (already in the parent's own
+    // light DOM), so it doesn't need to cross the parent's shadow boundary
+    // to receive this -- composed: true would let it escape past the parent
+    // to every ancestor component, which Salesforce's LWC security
+    // guidelines advise against unless that's actually needed.
     this.dispatchEvent(
       new CustomEvent('toggle', {
         detail: this.open,
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }
