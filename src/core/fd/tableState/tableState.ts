@@ -332,8 +332,7 @@ export default class FdTableState extends Base {
     this.dispatchEvent(
       new CustomEvent('sortchange', {
         detail: { sorting: this.sorting },
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   };
@@ -354,8 +353,7 @@ export default class FdTableState extends Base {
     this.dispatchEvent(
       new CustomEvent('pagechange', {
         detail: { pageIndex: this.pageIndex, pageSize: this.pageSize },
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   };
@@ -372,8 +370,7 @@ export default class FdTableState extends Base {
             .getSelectedRowModel()
             .rows.map((row) => row.original)
         },
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   };
@@ -576,8 +573,7 @@ export default class FdTableState extends Base {
     this.dispatchEvent(
       new CustomEvent('rowclick', {
         detail: { id: row.id, row: row.original },
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }
@@ -656,8 +652,7 @@ export default class FdTableState extends Base {
     this.dispatchEvent(
       new CustomEvent('filterchange', {
         detail: { globalFilter: this.globalFilter },
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }
