@@ -54,8 +54,7 @@ export default class Select extends Base {
     this.dispatchEvent(
       new CustomEvent('change', {
         detail: this.value,
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }
