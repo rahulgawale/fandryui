@@ -356,11 +356,17 @@ export default class FdTable extends Base {
   }
 
   get allRowsSelected(): boolean {
-    return this.resolveTableInstance().getIsAllRowsSelected();
+    // Page-scoped (getIsAllPageRowsSelected), not getIsAllRowsSelected --
+    // the latter operates on every row across every page (via
+    // getPreGroupedRowModel, which sits before pagination in tanstack's
+    // pipeline), so the header checkbox would silently select/reflect rows
+    // that were never rendered. This is also shadcn's own canonical
+    // data-table pattern.
+    return this.resolveTableInstance().getIsAllPageRowsSelected();
   }
 
   get someRowsSelected(): boolean {
-    return this.resolveTableInstance().getIsSomeRowsSelected();
+    return this.resolveTableInstance().getIsSomePageRowsSelected();
   }
 
   get enableMultiRowSelection(): boolean {
@@ -528,7 +534,7 @@ export default class FdTable extends Base {
 
   handleToggleAllRowsSelected(event: Event) {
     const target = event.target as HTMLInputElement;
-    this.resolveTableInstance().toggleAllRowsSelected(target.checked);
+    this.resolveTableInstance().toggleAllPageRowsSelected(target.checked);
   }
 
   handleGlobalFilterInput(event: Event) {

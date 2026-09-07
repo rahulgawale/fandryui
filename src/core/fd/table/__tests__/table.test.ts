@@ -370,6 +370,59 @@ describe('fd-table', () => {
     ).toBe(true);
   });
 
+  it('scopes "select all" to the current page, not every row across every page', async () => {
+    // Regression: tanstack's toggleAllRowsSelected/getIsAllRowsSelected
+    // operate on getPreGroupedRowModel(), which sits BEFORE pagination in
+    // the pipeline -- using them (instead of the toggleAllPageRowsSelected/
+    // getIsAllPageRowsSelected pair, shadcn's own canonical pattern) would
+    // silently select rows on pages the user never saw.
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.enableRowSelection = true;
+    element.enablePagination = true;
+    element.pageSize = 2;
+    document.body.appendChild(element);
+
+    const selectAllHost = element.shadowRoot!.querySelector(
+      '.selection-header-checkbox'
+    )!;
+    const nativeSelectAll = getNativeCheckbox(selectAllHost);
+    nativeSelectAll.checked = true;
+    nativeSelectAll.dispatchEvent(new Event('change'));
+    await flush();
+
+    // Page 1 (Bea, Amir) is fully selected...
+    const page1Checkboxes = Array.from(
+      element.shadowRoot!.querySelectorAll('tbody .selection-cell fd-checkbox')
+    );
+    expect(page1Checkboxes.every((host) => getNativeCheckbox(host).checked)).toBe(
+      true
+    );
+    expect(nativeSelectAll.checked).toBe(true);
+    expect(nativeSelectAll.indeterminate).toBe(false);
+
+    // ...but Cass, on page 2, was never touched.
+    const nextButton = element.shadowRoot!.querySelectorAll(
+      '.pagination fd-button'
+    )[1] as HTMLElement;
+    nextButton.click();
+    await flush();
+
+    const page2Checkboxes = Array.from(
+      element.shadowRoot!.querySelectorAll('tbody .selection-cell fd-checkbox')
+    );
+    expect(page2Checkboxes.some((host) => getNativeCheckbox(host).checked)).toBe(
+      false
+    );
+    // The page-2 "select all" reflects only page 2, so it's unchecked --
+    // not indeterminate, even though 2 rows are selected elsewhere overall.
+    const selectAllOnPage2 = getNativeCheckbox(
+      element.shadowRoot!.querySelector('.selection-header-checkbox')!
+    );
+    expect(selectAllOnPage2.checked).toBe(false);
+  });
+
   it('does not trigger "rowclick" when a selection checkbox is clicked, even with clickableRows enabled', () => {
     const element = createElement('fd-table', { is: FdTable });
     element.columns = COLUMNS;
