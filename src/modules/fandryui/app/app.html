@@ -235,6 +235,22 @@
     </section>
 
     <section>
+      <h2>Custom Table Example (overriding fd-table)</h2>
+      <p>
+        fandryui-custom-table doesn't use fd-table at all -- it extends
+        fd/tableState directly and renders a card grid instead of a
+        &lt;table&gt;, with its own toolbar instead of clickable &lt;th&gt;s.
+        Sorting still works: it's the exact same headless state/handlers
+        fd-table uses, just rendered completely differently. Uses the same
+        <code>tableColumns</code>/<code>tableData</code> as the example above.
+      </p>
+      <fandryui-custom-table
+        columns={tableColumns}
+        data={tableData}
+      ></fandryui-custom-table>
+    </section>
+
+    <section>
       <h2>Label Example</h2>
       <div style="display: flex; flex-direction: column; gap: 1rem">
         <div style="display: flex; flex-direction: column; gap: 0.25rem">
