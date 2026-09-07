@@ -41,6 +41,15 @@
     </section>
 
     <section>
+      <h2>Application Components</h2>
+      <p>
+        Built on top of the primitives above. fd-table wraps
+        <code>@tanstack/table-core</code> for headless row/column/sorting
+        logic, while rendering stays native LWC.
+      </p>
+    </section>
+
+    <section>
       <h2>Button Examples</h2>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
         <fd-button>Primary Button</fd-button>
@@ -198,6 +207,47 @@
     <section>
       <h2>Switch Example</h2>
       <fd-switch label="Enable notifications" checked></fd-switch>
+    </section>
+
+    <section>
+      <h2>Table Example</h2>
+      <fd-switch
+        label="Simulate loading"
+        checked={tableLoading}
+        onchange={handleTableLoadingToggle}
+      ></fd-switch>
+      <fd-table
+        columns={tableColumns}
+        data={tableData}
+        caption="Team members"
+        clickable-rows
+        enable-pagination
+        page-size={tablePageSize}
+        loading={tableLoading}
+        enable-row-selection
+        enable-global-filter
+        onrowclick={handleTableRowClick}
+        onpagechange={handleTablePageChange}
+        onrowselectionchange={handleTableRowSelectionChange}
+      >
+        <span slot="empty">No team members yet.</span>
+      </fd-table>
+    </section>
+
+    <section>
+      <h2>Custom Table Example (overriding fd-table)</h2>
+      <p>
+        fandryui-custom-table doesn't use fd-table at all -- it extends
+        fd/tableState directly and renders a CSS Grid instead of a
+        &lt;table&gt;, with plain buttons (aligned to the grid's columns)
+        instead of clickable &lt;th&gt;s.
+        Sorting still works: it's the exact same headless state/handlers
+        fd-table uses, just rendered completely differently. Uses the same <code>tableColumns</code>/<code>tableData</code> as the example above.
+      </p>
+      <fandryui-custom-table
+        columns={tableColumns}
+        data={tableData}
+      ></fandryui-custom-table>
     </section>
 
     <section>

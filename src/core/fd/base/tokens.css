@@ -45,6 +45,10 @@
   --fd-control-height-md: 36px;
   --fd-control-height-lg: 40px;
 
+  /* ---- Max-width cap for a standalone control (e.g. a search box that
+     shouldn't stretch full-width of its container) ---- */
+  --fd-control-max-width-sm: 16rem;
+
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;
   --fd-ring-width: 2px;

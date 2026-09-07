@@ -1,0 +1,152 @@
+<template>
+  <template if:true={enableGlobalFilter}>
+    <!--
+      `oninput` is delegated onto the wrapper rather than bound to fd-input
+      directly, so a consumer can replace the default search box entirely
+      via slot="search" -- anything projected there just needs to dispatch
+      a bubbling "input" event with the search string as `.detail`, the
+      same contract fd-input already fulfills.
+    -->
+    <div class="table-toolbar" oninput={handleGlobalFilterInput}>
+      <slot name="search">
+        <fd-input
+          placeholder={globalFilterPlaceholder}
+          value={globalFilter}
+          size="sm"
+        ></fd-input>
+      </slot>
+    </div>
+  </template>
+  <div class="table-wrapper">
+    <table class={tableClasses} aria-busy={loading}>
+      <template if:true={hasCaption}>
+        <caption class="caption">{caption}</caption>
+      </template>
+      <thead>
+        <!--
+          A single, un-iterated <tr> -- fd-table has no column-grouping
+          feature, so `headerGroups` always has exactly one entry, and a
+          named <slot> (below) isn't allowed to appear inside a `for:each`
+          iterator, so this can't be written as a for:each over headerGroups.
+        -->
+        <tr>
+          <template if:true={enableRowSelection}>
+            <!--
+              `onchange` delegated onto the <th> (see the search toolbar
+              comment above for why) -- slot="selection-all" to replace
+              the default "select all" control.
+            -->
+            <th class="selection-cell" scope="col" onchange={handleToggleAllRowsSelected}>
+              <template if:true={enableMultiRowSelection}>
+                <slot name="selection-all">
+                  <fd-checkbox
+                    class="selection-header-checkbox"
+                    checked={allRowsSelected}
+                    indeterminate={someRowsSelected}
+                    aria-label="Select all rows"
+                  ></fd-checkbox>
+                </slot>
+              </template>
+            </th>
+          </template>
+          <template for:each={headerGroup.headers} for:item="header">
+            <th key={header.id} scope="col" aria-sort={header.ariaSort}>
+              <template if:true={header.canSort}>
+                <button
+                  type="button"
+                  class="sort-button"
+                  data-column-id={header.columnId}
+                  onclick={handleHeaderClick}
+                >
+                  <span class="header-label">{header.label}</span>
+                  <span class="sort-indicator" aria-hidden="true">{header.sortIndicator}</span>
+                </button>
+              </template>
+              <template if:false={header.canSort}>
+                <span class="header-label">{header.label}</span>
+              </template>
+            </th>
+          </template>
+        </tr>
+      </thead>
+      <tbody>
+        <template if:true={loading}>
+          <template for:each={loadingRows} for:item="loadingRow">
+            <tr key={loadingRow} class="loading-row" aria-hidden="true">
+              <template if:true={enableRowSelection}>
+                <td class="selection-cell">
+                  <fd-skeleton variant="circle"></fd-skeleton>
+                </td>
+              </template>
+              <template for:each={loadingCells} for:item="loadingCell">
+                <td key={loadingCell}>
+                  <fd-skeleton variant="text"></fd-skeleton>
+                </td>
+              </template>
+            </tr>
+          </template>
+        </template>
+        <template if:false={loading}>
+          <template if:true={hasRows}>
+            <template for:each={rows} for:item="row">
+              <tr key={row.id} data-row-id={row.id} onclick={handleRowClick}>
+                <template if:true={enableRowSelection}>
+                  <td class="selection-cell" onclick={handleSelectionCellClick}>
+                    <fd-checkbox
+                      checked={row.selected}
+                      data-row-id={row.id}
+                      aria-label={row.selectionAriaLabel}
+                      onchange={handleToggleRowSelected}
+                    ></fd-checkbox>
+                  </td>
+                </template>
+                <template for:each={row.cells} for:item="cell">
+                  <td key={cell.id}>{cell.value}</td>
+                </template>
+              </tr>
+            </template>
+          </template>
+          <template if:false={hasRows}>
+            <tr class="empty-row">
+              <td class="empty-cell" colspan={columnCount}>
+                <slot name="empty">No data</slot>
+              </td>
+            </tr>
+          </template>
+        </template>
+      </tbody>
+    </table>
+  </div>
+  <template if:true={hasFooter}>
+    <div class="table-footer">
+      <span class="selection-status">{selectionStatus}</span>
+      <template if:true={enablePagination}>
+        <!--
+          `onclick` delegated onto each wrapping <span> -- slot="pagination-previous"
+          / slot="pagination-next" to replace either control (e.g. numbered
+          pages instead of Prev/Next). A disabled native button never fires
+          click, so a consumer's own disabled state is respected for free;
+          `previousPageDisabled`/`nextPageDisabled`/`pageStatus` remain
+          available via getTanstackTable() if custom content needs them.
+        -->
+        <div class="pagination">
+          <span class="pagination-previous" onclick={handlePreviousPage}>
+            <slot name="pagination-previous">
+              <fd-button variant="secondary" size="sm" disabled={previousPageDisabled}>
+                Previous
+              </fd-button>
+            </slot>
+          </span>
+          <span class="pagination-status">{pageStatus}</span>
+          <span class="pagination-next" onclick={handleNextPage}>
+            <slot name="pagination-next">
+              <fd-button variant="secondary" size="sm" disabled={nextPageDisabled}>
+                Next
+              </fd-button>
+            </slot>
+          </span>
+        </div>
+      </template>
+    </div>
+  </template>
+</template>
