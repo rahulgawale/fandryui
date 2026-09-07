@@ -36,7 +36,7 @@
       <p>
         Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
         fd-select, fd-switch, fd-label, fd-badge, fd-card, fd-alert, fd-spinner,
-        fd-divider, fd-skeleton, and fd-avatar primitives
+        fd-divider, fd-skeleton, fd-avatar, and fd-popover primitives
       </p>
     </section>
 
@@ -114,6 +114,38 @@
         <span>Left</span>
         <fd-divider orientation="vertical"></fd-divider>
         <span>Right</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Popover Example</h2>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start;">
+        <fd-popover placement="bottom">
+          <fd-button slot="trigger" variant="secondary">Bottom</fd-button>
+          <div style="width: 12rem;">
+            <p style="margin: 0 0 0.5rem;">Popover content anchored below the trigger.</p>
+            <fd-button size="sm">Action</fd-button>
+          </div>
+        </fd-popover>
+
+        <fd-popover placement="top">
+          <fd-button slot="trigger" variant="secondary">Top</fd-button>
+          <div style="width: 10rem;">Anchored above.</div>
+        </fd-popover>
+
+        <fd-popover placement="right">
+          <fd-button slot="trigger" variant="secondary">Right</fd-button>
+          <div style="width: 10rem;">Anchored to the right.</div>
+        </fd-popover>
+
+        <fd-popover placement="bottom">
+          <fd-button slot="trigger" variant="ghost">Menu</fd-button>
+          <div style="display: flex; flex-direction: column; min-width: 8rem;">
+            <fd-button variant="ghost" size="sm">Edit</fd-button>
+            <fd-button variant="ghost" size="sm">Duplicate</fd-button>
+            <fd-button variant="ghost" size="sm">Delete</fd-button>
+          </div>
+        </fd-popover>
       </div>
     </section>
 

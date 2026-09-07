@@ -1,0 +1,14 @@
+<template>
+  <span
+    class="trigger"
+    aria-haspopup="dialog"
+    aria-expanded={ariaExpanded}
+  >
+    <slot name="trigger"></slot>
+  </span>
+  <template if:true={open}>
+    <div class={panelClasses}>
+      <slot></slot>
+    </div>
+  </template>
+</template>
