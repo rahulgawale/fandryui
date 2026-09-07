@@ -149,6 +149,25 @@ Avoid:
 - “just in case” options
 - implicit behavior
 
+**Booleans are a last resort, not a first instinct.** Before adding a
+`true`/`false` `@api` property, ask whether the variation it controls
+could instead be expressed as a slot, a named region, or an overridable
+piece of the component. A boolean is acceptable when it toggles a
+genuinely binary behavior (`disabled`, `loading`); it is not acceptable
+as a substitute for letting the consumer supply their own markup.
+
+**Do not build a black box.** `lightning-*` base components cannot be
+extended, forked, or partially replaced by a consumer — that opacity is
+exactly what this library exists to avoid. Every primitive should ship a
+simple, ready-to-use default *and* a real seam for a consumer to override
+or replace a piece of it without forking the whole component. Where a
+component carries real internal state (not just presentation), prefer
+splitting it into a template-less base class holding the state/behavior
+and a thin default component that extends it with the ready-made
+template — a consumer who needs different markup extends the same base
+and writes their own template, instead of copying the component's
+internals.
+
 ---
 
 ### 3. Outcomes over implementations

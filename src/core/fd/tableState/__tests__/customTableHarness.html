@@ -1,0 +1,19 @@
+<template>
+  <ul class="custom-rows">
+    <template for:each={headerGroup.headers} for:item="header">
+      <li
+        key={header.id}
+        class="custom-header"
+        data-column-id={header.columnId}
+        onclick={handleHeaderClick}
+      >{header.label} ({header.sortIndicator})</li>
+    </template>
+    <template for:each={rows} for:item="row">
+      <li key={row.id} class="custom-row">
+        <template for:each={row.cells} for:item="cell">
+          <span key={cell.id} class="custom-cell">{cell.value}</span>
+        </template>
+      </li>
+    </template>
+  </ul>
+</template>
