@@ -1,15 +1,23 @@
 :host {
-  /* ---- Colors (HSL, no commas) ---- */
-  --fd-primary: 330 81% 60%;
+  /* ---- Colors (HSL, no commas) ----
+     Lightness on primary/accent/success/warning is darkened from the
+     original palette -- at the original values, white text on these
+     backgrounds (fd-button's default variant, fd-badge's colored variants)
+     fell well short of WCAG AA's 4.5:1 contrast minimum for normal text
+     (measured: primary 3.56:1, accent 2.85:1, success 2.30:1, warning
+     2.14:1). Same hue/saturation, lightness only, each now clears 4.5:1
+     with a small margin (~4.7-4.9:1). --fd-danger was already compliant
+     (4.80:1) and is unchanged. */
+  --fd-primary: 330 81% 48%;
   --fd-primary-foreground: 0 0% 100%;
 
-  --fd-accent: 199 89% 48%;
+  --fd-accent: 199 89% 36%;
   --fd-accent-foreground: 0 0% 100%;
 
-  --fd-success: 142 71% 45%;
+  --fd-success: 142 71% 30%;
   --fd-success-foreground: 0 0% 100%;
 
-  --fd-warning: 38 92% 50%;
+  --fd-warning: 38 92% 32%;
   --fd-warning-foreground: 0 0% 100%;
 
   --fd-danger: 0 72% 51%;

@@ -4,6 +4,19 @@ import Base from 'fd/base';
 export default class RadioGroup extends Base {
   @api name = '';
   @api value = '';
+  @api label = '';
+  @api ariaLabel = '';
+
+  get hasLabel(): boolean {
+    return !!this.label;
+  }
+
+  // aria-labelledby wins over aria-label when both are present, so binding
+  // both here is safe -- a consumer providing only `ariaLabel` (no visible
+  // label) still gets a real accessible name for the group.
+  get labelledBy(): string | null {
+    return this.hasLabel ? 'radio-group-label' : null;
+  }
 
   connectedCallback() {
     this.addEventListener('change', this.handleRadioChange);
