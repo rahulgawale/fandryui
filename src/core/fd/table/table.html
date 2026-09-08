@@ -57,6 +57,7 @@
                   class="sort-button"
                   data-column-id={header.columnId}
                   onclick={handleHeaderClick}
+                  lwc:spread={resolvedSortButtonProps}
                 >
                   <span class="header-label">{header.label}</span>
                   <span class="sort-indicator" aria-hidden="true">{header.sortIndicator}</span>

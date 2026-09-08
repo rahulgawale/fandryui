@@ -1,6 +1,31 @@
 import { api, track } from 'lwc';
 import Base from 'fd/base';
 
+// See fd-checkbox's checkbox.ts for why this list exists: it keeps a
+// consumer's `elementProps` from clobbering a property the component
+// itself controls -- `id` is reserved because fd-label's `html-for="input"`
+// association depends on it staying put (same reasoning as fd-select's
+// reserved `id`). `aria-describedby` has no plain string IDL property (see
+// select.ts's fuller note) -- only the newer `ariaDescribedByElements`
+// (element-reference), reserved here since this component sets
+// `aria-describedby="help-text"` itself.
+const RESERVED_ELEMENT_PROPS = [
+  'id',
+  'type',
+  'name',
+  'value',
+  'disabled',
+  'readonly',
+  'required',
+  'class',
+  'ariaDescribedby',
+  'ariaDescribedByElements',
+  'oninput',
+  'onchange',
+  'onfocus',
+  'onblur'
+];
+
 export default class Input extends Base {
   @api label = '';
   @api helpText = '';
@@ -13,7 +38,39 @@ export default class Input extends Base {
   @api required = false;
   @api size: 'sm' | 'md' | 'lg' = 'md';
 
+  // Spread onto the native <input> via `lwc:spread` -- see checkbox.ts for
+  // why this can't reach `data-*` attributes, and why that's not solved
+  // with a dedicated prop either. No tabIndex default here: unlike
+  // buttons/checkboxes/radios/selects, Safari already includes plain text
+  // fields in the Tab order by default.
+  @api elementProps: Record<string, unknown> = {};
+
+  private lastWarnedElementProps: Record<string, unknown> | null = null;
+
   @track hasFocus = false;
+
+  get resolvedElementProps(): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
+    const rejectedKeys: string[] = [];
+
+    for (const [key, value] of Object.entries(this.elementProps)) {
+      if (RESERVED_ELEMENT_PROPS.includes(key)) {
+        rejectedKeys.push(key);
+      } else {
+        result[key] = value;
+      }
+    }
+
+    if (rejectedKeys.length && this.elementProps !== this.lastWarnedElementProps) {
+      this.lastWarnedElementProps = this.elementProps;
+      // eslint-disable-next-line no-console
+      console.warn(
+        `fd-input: elementProps included ${rejectedKeys.map((key) => `"${key}"`).join(', ')}, which fd-input already controls via its own @api props -- ignored to avoid desyncing the input's state. Use the dedicated @api prop instead (e.g. \`value\`, \`type\`, \`disabled\`).`
+      );
+    }
+
+    return result;
+  }
 
   get hasLabel(): boolean {
     return !!this.label;

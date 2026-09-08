@@ -173,6 +173,39 @@ describe('fd-table', () => {
     ).not.toBeNull();
   });
 
+  it('defaults the sort button tabIndex to 0 (Safari tab-order fix)', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    document.body.appendChild(element);
+
+    const sortButton = element.shadowRoot!.querySelector('button[data-column-id="name"]') as HTMLButtonElement;
+    expect(sortButton.tabIndex).toBe(0);
+  });
+
+  it('lets a consumer override sortButtonProps (e.g. tabIndex) via lwc:spread', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.sortButtonProps = { tabIndex: -1 };
+    document.body.appendChild(element);
+
+    const sortButton = element.shadowRoot!.querySelector('button[data-column-id="name"]') as HTMLButtonElement;
+    expect(sortButton.tabIndex).toBe(-1);
+  });
+
+  it('does not let sortButtonProps clobber the sort button\'s own type/handler wiring', () => {
+    const element = createElement('fd-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = DATA;
+    element.sortButtonProps = { type: 'submit', tabIndex: -1 };
+    document.body.appendChild(element);
+
+    const sortButton = element.shadowRoot!.querySelector('button[data-column-id="name"]') as HTMLButtonElement;
+    expect(sortButton.type).toBe('button');
+    expect(sortButton.tabIndex).toBe(-1);
+  });
+
   it('omits pagination controls and renders every row when pagination is disabled (default)', () => {
     const element = createElement('fd-table', { is: FdTable });
     element.columns = COLUMNS;
