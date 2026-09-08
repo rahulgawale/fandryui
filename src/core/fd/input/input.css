@@ -9,16 +9,8 @@
 }
 
 .label {
-  font-size: 0.875rem;
+  font-size: var(--fd-font-size-sm);
   color: hsl(var(--fd-text));
-}
-
-.control {
-  display: flex;
-  align-items: center;
-  border: 1px solid hsl(var(--fd-border));
-  border-radius: var(--fd-radius-md);
-  padding: var(--fd-space-1) var(--fd-space-2);
 }
 
 .input {
@@ -30,20 +22,20 @@
 }
 
 .help-text {
-  font-size: var(--fd-font-size-xs, 0.75rem);
-  color: var(--fd-color-muted, #666);
+  font-size: var(--fd-font-size-xs);
+  color: hsl(var(--fd-text-muted));
 }
 
 .control {
   display: flex;
   align-items: center;
-  border: 1px solid var(--fd-color-border, #d1d5db);
-  border-radius: var(--fd-radius-md, 6px);
-  padding: var(--fd-space-1, 4px) var(--fd-space-2, 8px);
-  background: var(--fd-color-surface, #fff);
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-md);
+  padding: var(--fd-space-1) var(--fd-space-2);
+  background: hsl(var(--fd-bg));
 
-  /* Important */
-  transition: border-color 120ms ease, box-shadow 120ms ease;
+  transition: border-color var(--fd-duration-fast) ease,
+    box-shadow var(--fd-duration-fast) ease;
 }
 
 /* Focus ring */
@@ -54,4 +46,20 @@
 
 .input:focus {
   outline: none;
+}
+
+/* Sizes */
+.control--sm {
+  padding: var(--fd-space-1) var(--fd-space-2);
+  font-size: var(--fd-font-size-xs);
+}
+
+.control--md {
+  padding: var(--fd-space-1) var(--fd-space-2);
+  font-size: var(--fd-font-size-md);
+}
+
+.control--lg {
+  padding: var(--fd-space-2) var(--fd-space-3);
+  font-size: var(--fd-font-size-md);
 }

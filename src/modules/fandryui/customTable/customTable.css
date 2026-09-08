@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+
+.custom-table {
+  display: grid;
+  column-gap: var(--fd-space-4);
+  row-gap: var(--fd-space-2);
+  align-items: center;
+}
+
+.custom-table__sort-button {
+  border: none;
+  border-bottom: var(--fd-border-width-md) solid hsl(var(--fd-border));
+  background: transparent;
+  color: hsl(var(--fd-text));
+  font: inherit;
+  font-size: var(--fd-font-size-sm);
+  font-weight: 600;
+  text-align: left;
+  padding: 0 0 var(--fd-space-2);
+  cursor: pointer;
+  width: 100%;
+}
+
+.custom-table__sort-button:hover {
+  color: hsl(var(--fd-primary));
+}
+
+.custom-table__sort-button:focus-visible {
+  outline: var(--fd-ring-width) solid hsl(var(--fd-ring-color));
+  outline-offset: var(--fd-ring-offset);
+}
+
+.custom-table__cell {
+  font-size: var(--fd-font-size-sm);
+  color: hsl(var(--fd-text));
+}

@@ -16,7 +16,16 @@
     "useDefineForClassFields": false,
     "baseUrl": ".",
     "paths": {
+      // Exact entries take precedence over the wildcard below and are
+      // needed for any fd/* module that's imported directly by another
+      // component's .ts file (not just referenced as an HTML tag, which
+      // LWC's own template compiler resolves separately) -- the wildcard
+      // can't express the namespace/name/name.ts folder convention with a
+      // single `*` substitution (TS paths only allow one `*` per pattern).
+      "fd/base": ["src/core/fd/base/base"],
+      "fd/tableState": ["src/core/fd/tableState/tableState"],
       "fd/*": ["src/core/fd/*"],
+      "fandryui/planOption": ["src/modules/fandryui/planOption/planOption"],
       "fandryui/*": ["src/modules/fandryui/*"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"]

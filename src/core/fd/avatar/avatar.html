@@ -1,0 +1,16 @@
+<template>
+  <span class={classes}>
+    <template if:true={showImage}>
+      <img
+        class="image"
+        src={src}
+        alt={alt}
+        onerror={handleImageError}
+        lwc:spread={resolvedElementProps}
+      />
+    </template>
+    <template if:true={showInitials}>
+      <span class="initials">{initials}</span>
+    </template>
+  </span>
+</template>

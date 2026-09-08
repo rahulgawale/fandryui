@@ -1,0 +1,37 @@
+:host {
+  display: block;
+}
+
+.skeleton {
+  display: block;
+  background: hsl(var(--fd-bg-muted));
+  animation: fd-skeleton-pulse var(--fd-duration-slowest) ease-in-out infinite;
+}
+
+.skeleton--text {
+  width: 100%;
+  height: 1em;
+  border-radius: var(--fd-radius-sm);
+}
+
+.skeleton--circle {
+  width: var(--fd-size-md);
+  height: var(--fd-size-md);
+  border-radius: 50%;
+}
+
+.skeleton--rect {
+  width: 100%;
+  height: var(--fd-size-lg);
+  border-radius: var(--fd-radius-md);
+}
+
+@keyframes fd-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: var(--fd-pulse-opacity);
+  }
+}

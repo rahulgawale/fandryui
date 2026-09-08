@@ -17,4 +17,9 @@ declare module 'lwc' {
   export function api(target: any, propertyKey?: string): any;
   export function track(target: any, propertyKey?: string): any;
   export function wire(adapter: any, config?: any): any;
+
+  export function createElement<T extends new (...args: any[]) => any>(
+    name: string,
+    options: { is: T }
+  ): InstanceType<T> & HTMLElement;
 }
