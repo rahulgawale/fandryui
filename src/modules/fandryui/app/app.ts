@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import PlanOption from 'fandryui/planOption';
 
 export default class HelloWorldApp extends LightningElement {
   planOptions = [{ label: 'Free', value: 'free' }];
@@ -10,6 +11,20 @@ export default class HelloWorldApp extends LightningElement {
         { label: 'Pro', value: 'pro' },
         { label: 'Enterprise', value: 'enterprise', disabled: true }
       ]
+    }
+  ];
+
+  // Demonstrates swapping an option's rendering for a custom component via
+  // `lwc:is` (LWC requires <slot> names to be static, so a per-option named
+  // slot isn't possible for a data-driven options array).
+  planOptionsWithIcons = [
+    { label: 'Free', value: 'free', component: PlanOption, componentProps: { icon: '🌱', label: 'Free' } },
+    { label: 'Pro', value: 'pro', component: PlanOption, componentProps: { icon: '💎', label: 'Pro' } },
+    {
+      label: 'Enterprise',
+      value: 'enterprise',
+      component: PlanOption,
+      componentProps: { icon: '🏢', label: 'Enterprise' }
     }
   ];
 

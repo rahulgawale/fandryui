@@ -24,6 +24,7 @@
       // single `*` substitution (TS paths only allow one `*` per pattern).
       "fd/tableState": ["src/core/fd/tableState/tableState"],
       "fd/*": ["src/core/fd/*"],
+      "fandryui/planOption": ["src/modules/fandryui/planOption/planOption"],
       "fandryui/*": ["src/modules/fandryui/*"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"]

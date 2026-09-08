@@ -1,47 +1,95 @@
 <template>
-  <label class="form-control">
+  <div class="form-control">
     <template if:true={hasLabel}>
-      <span class="label">
-        {label}
-        <template if:true={required}>
-          <span class="required" aria-hidden="true">*</span>
-        </template>
-      </span>
+      <label class="label" for="trigger">
+        <slot name="label">
+          {label}
+          <template if:true={required}>
+            <span class="required" aria-hidden="true">*</span>
+          </template>
+        </slot>
+      </label>
     </template>
 
-    <div class="control">
-      <select
-        class="select"
-        name={name}
+    <fd-popover class="control" open={open} ontoggle={handleToggle}>
+      <button
+        slot="trigger"
+        id="trigger"
+        type="button"
+        class="trigger"
         disabled={disabled}
-        required={required}
+        data-name={name}
+        role="combobox"
+        aria-haspopup="listbox"
+        aria-expanded={ariaExpanded}
+        aria-controls="listbox"
+        aria-activedescendant={activeOptionId}
         aria-describedby="help-text"
-        onchange={handleChange}
-        onfocus={handleFocus}
-        onblur={handleBlur}
+        aria-required={ariaRequired}
+        onkeydown={handleTriggerKeydown}
+        lwc:spread={resolvedElementProps}
       >
-        <template if:true={hasPlaceholder}>
-          <option value="" disabled>{placeholder}</option>
+        <span class={valueClasses}>
+          <template if:true={selectedComponent}>
+            <lwc:component lwc:is={selectedComponent} lwc:spread={selectedComponentProps}></lwc:component>
+          </template>
+          <template if:false={selectedComponent}>{selectedLabel}</template>
+        </span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+
+      <div id="listbox" class="listbox" role="listbox" onmousedown={handleListboxMouseDown}>
+        <template if:true={renderPlaceholder}>
+          <div
+            id={renderPlaceholder.id}
+            class={renderPlaceholder.classes}
+            role="option"
+            data-value={renderPlaceholder.value}
+            data-option-id={renderPlaceholder.id}
+            aria-selected={renderPlaceholder.ariaSelected}
+            aria-disabled={renderPlaceholder.ariaDisabled}
+          >{renderPlaceholder.label}</div>
         </template>
-        <template for:each={options} for:item="option">
-          <option key={option.value} value={option.value} disabled={option.disabled}>
-            {option.label}
-          </option>
+
+        <template for:each={renderOptions} for:item="option">
+          <div
+            key={option.id}
+            id={option.id}
+            class={option.classes}
+            role="option"
+            data-value={option.value}
+            data-option-id={option.id}
+            aria-selected={option.ariaSelected}
+            aria-disabled={option.ariaDisabled}
+            onclick={handleOptionClick}
+            onmouseenter={handleOptionMouseEnter}
+          ><template if:true={option.component}><lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component></template><template if:false={option.component}>{option.label}</template></div>
         </template>
-        <template for:each={groups} for:item="group">
-          <optgroup key={group.label} label={group.label}>
+
+        <template for:each={renderGroups} for:item="group">
+          <div key={group.label} class="group" role="group" aria-label={group.label}>
+            <div class="group-label" aria-hidden="true">{group.label}</div>
             <template for:each={group.options} for:item="option">
-              <option key={option.value} value={option.value} disabled={option.disabled}>
-                {option.label}
-              </option>
+              <div
+                key={option.id}
+                id={option.id}
+                class={option.classes}
+                role="option"
+                data-value={option.value}
+                data-option-id={option.id}
+                aria-selected={option.ariaSelected}
+                aria-disabled={option.ariaDisabled}
+                onclick={handleOptionClick}
+                onmouseenter={handleOptionMouseEnter}
+              ><template if:true={option.component}><lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component></template><template if:false={option.component}>{option.label}</template></div>
             </template>
-          </optgroup>
+          </div>
         </template>
-      </select>
-    </div>
+      </div>
+    </fd-popover>
 
     <template if:true={hasHelpText}>
       <div id="help-text" class="help-text">{helpText}</div>
     </template>
-  </label>
+  </div>
 </template>
