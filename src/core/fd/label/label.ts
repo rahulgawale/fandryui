@@ -19,28 +19,7 @@ export default class Label extends Base {
   // with a dedicated prop either.
   @api elementProps: Record<string, unknown> = {};
 
-  private lastWarnedElementProps: Record<string, unknown> | null = null;
-
   get resolvedElementProps(): Record<string, unknown> {
-    const result: Record<string, unknown> = {};
-    const rejectedKeys: string[] = [];
-
-    for (const [key, value] of Object.entries(this.elementProps)) {
-      if (RESERVED_ELEMENT_PROPS.includes(key)) {
-        rejectedKeys.push(key);
-      } else {
-        result[key] = value;
-      }
-    }
-
-    if (rejectedKeys.length && this.elementProps !== this.lastWarnedElementProps) {
-      this.lastWarnedElementProps = this.elementProps;
-      // eslint-disable-next-line no-console
-      console.warn(
-        `fd-label: elementProps included ${rejectedKeys.map((key) => `"${key}"`).join(', ')}, which fd-label already controls via its own @api props -- ignored. Use the dedicated @api prop instead (e.g. \`htmlFor\`).`
-      );
-    }
-
-    return result;
+    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fd-label');
   }
 }

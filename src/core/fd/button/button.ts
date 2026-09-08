@@ -16,8 +16,6 @@ export default class FdButton extends Base {
   // with a dedicated prop either.
   @api elementProps: Record<string, unknown> = { tabIndex: 0 };
 
-  private lastWarnedElementProps: Record<string, unknown> | null = null;
-
   get classes() {
     return ['button', `button--${this.variant}`, `button--${this.size}`].join(
       ' '
@@ -25,25 +23,6 @@ export default class FdButton extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    const result: Record<string, unknown> = {};
-    const rejectedKeys: string[] = [];
-
-    for (const [key, value] of Object.entries(this.elementProps)) {
-      if (RESERVED_ELEMENT_PROPS.includes(key)) {
-        rejectedKeys.push(key);
-      } else {
-        result[key] = value;
-      }
-    }
-
-    if (rejectedKeys.length && this.elementProps !== this.lastWarnedElementProps) {
-      this.lastWarnedElementProps = this.elementProps;
-      // eslint-disable-next-line no-console
-      console.warn(
-        `fd-button: elementProps included ${rejectedKeys.map((key) => `"${key}"`).join(', ')}, which fd-button already controls via its own @api props -- ignored to avoid desyncing the button's state. Use the dedicated @api prop instead (e.g. \`disabled\`, \`type\`).`
-      );
-    }
-
-    return result;
+    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fd-button');
   }
 }

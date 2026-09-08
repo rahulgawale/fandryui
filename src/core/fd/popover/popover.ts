@@ -9,10 +9,6 @@ export default class Popover extends Base {
     return ['panel', `panel--${this.placement}`].join(' ');
   }
 
-  get ariaExpanded(): string {
-    return this.open ? 'true' : 'false';
-  }
-
   connectedCallback() {
     // Listening on `this` (the host) catches clicks bubbling up from the
     // slotted trigger even when that trigger is its own custom element with

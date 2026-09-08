@@ -85,8 +85,6 @@ export default class Select extends Base {
   // with a dedicated prop either.
   @api elementProps: Record<string, unknown> = { tabIndex: 0 };
 
-  private lastWarnedElementProps: Record<string, unknown> | null = null;
-
   @track open = false;
   @track activeOptionId: string | null = null;
 
@@ -114,26 +112,7 @@ export default class Select extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    const result: Record<string, unknown> = {};
-    const rejectedKeys: string[] = [];
-
-    for (const [key, value] of Object.entries(this.elementProps)) {
-      if (RESERVED_ELEMENT_PROPS.includes(key)) {
-        rejectedKeys.push(key);
-      } else {
-        result[key] = value;
-      }
-    }
-
-    if (rejectedKeys.length && this.elementProps !== this.lastWarnedElementProps) {
-      this.lastWarnedElementProps = this.elementProps;
-      // eslint-disable-next-line no-console
-      console.warn(
-        `fd-select: elementProps included ${rejectedKeys.map((key) => `"${key}"`).join(', ')}, which fd-select already controls (including ARIA wiring the combobox depends on) -- ignored. Use the dedicated @api prop instead (e.g. \`disabled\`, \`required\`).`
-      );
-    }
-
-    return result;
+    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fd-select');
   }
 
   // Flattened in render order (placeholder, then flat options, then group

@@ -25,12 +25,30 @@ describe('fd-alert', () => {
     expect(alert.className).toBe('alert alert--danger');
   });
 
-  it('exposes role="alert" for assistive technology', () => {
+  it('uses the polite role="status" for info/success (non-urgent) variants', () => {
+    // role="alert" is an assertive live region that interrupts whatever a
+    // screen reader is currently announcing -- too heavy-handed for a
+    // routine info/success message.
     const element = createElement('fd-alert', { is: FdAlert });
     document.body.appendChild(element);
+    expect(element.shadowRoot!.querySelector('[role="status"]')).not.toBeNull();
 
-    const alert = element.shadowRoot!.querySelector('[role="alert"]');
-    expect(alert).not.toBeNull();
+    element.variant = 'success';
+    return Promise.resolve().then(() => {
+      expect(element.shadowRoot!.querySelector('[role="status"]')).not.toBeNull();
+    });
+  });
+
+  it('uses the assertive role="alert" for warning/danger (urgent) variants', () => {
+    const element = createElement('fd-alert', { is: FdAlert });
+    element.variant = 'warning';
+    document.body.appendChild(element);
+    expect(element.shadowRoot!.querySelector('[role="alert"]')).not.toBeNull();
+
+    element.variant = 'danger';
+    return Promise.resolve().then(() => {
+      expect(element.shadowRoot!.querySelector('[role="alert"]')).not.toBeNull();
+    });
   });
 
   it('renders a title when provided', () => {

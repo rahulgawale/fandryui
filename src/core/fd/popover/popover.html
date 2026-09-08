@@ -1,9 +1,17 @@
 <template>
-  <span
-    class="trigger"
-    aria-haspopup="dialog"
-    aria-expanded={ariaExpanded}
-  >
+  <!--
+    No aria-haspopup/aria-expanded here: this span is never focusable, and
+    assistive tech reads those attributes off the element that actually has
+    focus, not a non-focusable ancestor -- setting them here was dead
+    markup that never reached a screen reader (and, when it hardcoded
+    "dialog", was actively wrong for a menu/listbox trigger). fd-popover is
+    a generic overlay primitive with no opinion on what it contains, so
+    that ARIA belongs on the consumer's own slotted trigger element, which
+    already has real focus -- see fd-select's trigger button for the
+    pattern (role="combobox", aria-haspopup="listbox", aria-expanded, all
+    set directly on the button itself).
+  -->
+  <span class="trigger">
     <slot name="trigger"></slot>
   </span>
   <template if:true={open}>

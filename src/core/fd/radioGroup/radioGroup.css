@@ -2,6 +2,18 @@
   display: block;
 }
 
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-2);
+}
+
+.label {
+  font-size: var(--fd-font-size-sm, 0.875rem);
+  font-weight: 500;
+  color: hsl(var(--fd-text));
+}
+
 .radio-group {
   display: flex;
   flex-direction: column;

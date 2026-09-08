@@ -476,13 +476,7 @@ export default class FdTableState extends Base {
   }
 
   get resolvedSortButtonProps(): Record<string, unknown> {
-    const result: Record<string, unknown> = {};
-    for (const [key, value] of Object.entries(this.sortButtonProps)) {
-      if (!RESERVED_SORT_BUTTON_PROPS.includes(key)) {
-        result[key] = value;
-      }
-    }
-    return result;
+    return this.resolveElementProps(this.sortButtonProps, RESERVED_SORT_BUTTON_PROPS, 'fd-table', 'sortButtonProps');
   }
 
   get hasFooter(): boolean {

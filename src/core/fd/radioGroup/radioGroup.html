@@ -1,5 +1,10 @@
 <template>
-  <div class="radio-group">
-    <slot></slot>
+  <div class="form-control">
+    <template if:true={hasLabel}>
+      <span class="label" id="radio-group-label">{label}</span>
+    </template>
+    <div class="radio-group" role="radiogroup" aria-labelledby={labelledBy} aria-label={ariaLabel}>
+      <slot onslotchange={handleSlotChange}></slot>
+    </div>
   </div>
 </template>

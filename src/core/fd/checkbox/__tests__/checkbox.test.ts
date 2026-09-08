@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import FdCheckbox from '../checkbox';
+import SlotHarness from './slotHarness';
 
 const flush = () => Promise.resolve();
 
@@ -8,6 +9,25 @@ describe('fd-checkbox', () => {
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
     }
+  });
+
+  it('lets slotted content replace the plain-text label', () => {
+    // Slotted content only gets distributed by LWC's own compiled template
+    // bookkeeping, so this needs a real compiled harness rather than a
+    // synthetic document.createElement + appendChild (same reasoning as
+    // fd-popover's own trigger-harness tests). Asserting via the slot's
+    // own assignedElements() rather than .label's textContent -- see
+    // fd-radio's equivalent test for why (a jsdom/synthetic-shadow
+    // textContent-composition quirk, not a real bug).
+    const harness = createElement('slot-harness', { is: SlotHarness });
+    document.body.appendChild(harness);
+
+    const checkbox = harness.shadowRoot!.querySelector('fd-checkbox')!;
+    const slot = checkbox.shadowRoot!.querySelector('slot') as HTMLSlotElement;
+    const assigned = slot.assignedElements();
+    expect(assigned).toHaveLength(1);
+    expect(assigned[0].className).toBe('custom-label');
+    expect(assigned[0].textContent).toBe('📄 Accept');
   });
 
   it('reflects ariaLabel onto the native input', () => {
