@@ -53,8 +53,7 @@ export default class Switch extends Base {
     this.dispatchEvent(
       new CustomEvent('change', {
         detail: this.checked,
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }

@@ -106,8 +106,7 @@ export default class Textarea extends Base {
     this.dispatchEvent(
       new CustomEvent('input', {
         detail: this.value,
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }
@@ -122,8 +121,7 @@ export default class Textarea extends Base {
     this.dispatchEvent(
       new CustomEvent('change', {
         detail: this.value,
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }

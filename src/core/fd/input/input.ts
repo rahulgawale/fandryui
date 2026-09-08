@@ -91,7 +91,11 @@ export default class Input extends Base {
     // dispatched below, but with `event.detail` being `0` (UIEvent's
     // legacy numeric default), not the typed value. Confirmed live: an
     // `oninput` listener saw both a CustomEvent(detail: "k") and an
-    // InputEvent(detail: 0) for a single keystroke.
+    // InputEvent(detail: 0) for a single keystroke. Our own replacement
+    // event doesn't need to be composed itself -- it only has to reach the
+    // direct parent's `oninput` listener on this host, which `bubbles`
+    // alone already does (dispatching happens on the host, already inside
+    // that parent's own light DOM).
     event.stopPropagation();
 
     const target = event.target as HTMLInputElement;
@@ -100,8 +104,7 @@ export default class Input extends Base {
     this.dispatchEvent(
       new CustomEvent('input', {
         detail: this.value,
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }
@@ -118,8 +121,7 @@ export default class Input extends Base {
     this.dispatchEvent(
       new CustomEvent('change', {
         detail: this.value,
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }

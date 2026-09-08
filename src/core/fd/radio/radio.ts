@@ -50,8 +50,7 @@ export default class Radio extends Base {
       this.dispatchEvent(
         new CustomEvent('change', {
           detail: { value: this.value, name: this.name },
-          bubbles: true,
-          composed: true
+          bubbles: true
         })
       );
     }

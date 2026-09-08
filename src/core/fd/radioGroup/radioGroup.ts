@@ -25,8 +25,7 @@ export default class RadioGroup extends Base {
       this.dispatchEvent(
         new CustomEvent('change', {
           detail: { value: detail.value },
-          bubbles: true,
-          composed: true
+          bubbles: true
         })
       );
     }

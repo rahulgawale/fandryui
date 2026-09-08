@@ -90,8 +90,7 @@ export default class Checkbox extends Base {
     this.dispatchEvent(
       new CustomEvent('change', {
         detail: this.checked,
-        bubbles: true,
-        composed: true
+        bubbles: true
       })
     );
   }
