@@ -4,7 +4,7 @@
       <span class="label" id="radio-group-label">{label}</span>
     </template>
     <div class="radio-group" role="radiogroup" aria-labelledby={labelledBy} aria-label={ariaLabel}>
-      <slot></slot>
+      <slot onslotchange={handleSlotChange}></slot>
     </div>
   </div>
 </template>
