@@ -18,7 +18,7 @@
     </span>
 
     <template if:true={label}>
-      <span class="label">{label}</span>
+      <span class="label"><slot>{label}</slot></span>
     </template>
   </label>
 </template>
