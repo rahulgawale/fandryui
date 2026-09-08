@@ -1,0 +1,40 @@
+:host {
+  display: inline;
+}
+
+.link {
+  color: hsl(var(--fd-primary, 220 90% 56%));
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: color var(--fd-duration-fast) ease;
+}
+
+.link:hover {
+  filter: brightness(var(--fd-hover-brightness));
+}
+
+.link--muted {
+  color: hsl(var(--fd-text-muted));
+}
+
+.link--muted:hover {
+  color: hsl(var(--fd-text));
+  filter: none;
+}
+
+.link:focus-visible {
+  outline: none;
+  border-radius: var(--fd-radius-sm);
+  box-shadow: 0 0 0 var(--fd-ring-width, 2px) hsl(var(--fd-ring-color, 220 90% 56%));
+}
+
+.link--disabled {
+  color: hsl(var(--fd-text-muted));
+  opacity: var(--fd-disabled-opacity);
+  cursor: not-allowed;
+  text-decoration: none;
+  pointer-events: none;
+}
