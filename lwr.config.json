@@ -9,7 +9,6 @@
             }
         ]
     },
-    "basePath": "/fandryui",
     "routes": [
         {
             "id": "fandryui",

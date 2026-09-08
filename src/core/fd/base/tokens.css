@@ -1,10 +1,27 @@
 :host {
-  /* ---- Colors (HSL, no commas) ---- */
-  --fd-primary: 330 81% 60%;
+  /* ---- Colors (HSL, no commas) ----
+     Lightness on primary/accent/success/warning is darkened from the
+     original palette -- at the original values, white text on these
+     backgrounds (fd-button's default variant, fd-badge's colored variants)
+     fell well short of WCAG AA's 4.5:1 contrast minimum for normal text
+     (measured: primary 3.56:1, accent 2.85:1, success 2.30:1, warning
+     2.14:1). Same hue/saturation, lightness only, each now clears 4.5:1
+     with a small margin (~4.7-4.9:1). --fd-danger was already compliant
+     (4.80:1) and is unchanged. */
+  --fd-primary: 330 81% 48%;
   --fd-primary-foreground: 0 0% 100%;
 
-  --fd-accent: 199 89% 48%;
+  --fd-accent: 199 89% 36%;
   --fd-accent-foreground: 0 0% 100%;
+
+  --fd-success: 142 71% 30%;
+  --fd-success-foreground: 0 0% 100%;
+
+  --fd-warning: 38 92% 32%;
+  --fd-warning-foreground: 0 0% 100%;
+
+  --fd-danger: 0 72% 51%;
+  --fd-danger-foreground: 0 0% 100%;
 
   --fd-bg: 0 0% 100%;
   --fd-bg-muted: 220 14% 96%;
@@ -14,6 +31,31 @@
 
   --fd-border: 220 13% 91%;
   --fd-border-focus: 222 89% 56%;
+  --fd-border-width: 1px;
+  --fd-border-width-md: 1.5px;
+  --fd-border-width-lg: 3px;
+
+  /* ---- Surface tint (semantic-color-derived backgrounds) ---- */
+  --fd-surface-tint: 12%;
+
+  /* ---- Pulse (loading-state opacity dip, e.g. fd-skeleton) ---- */
+  --fd-pulse-opacity: 0.5;
+
+  /* ---- Disabled state ---- */
+  --fd-disabled-opacity: 0.5;
+
+  /* ---- Elevation (hover/pressed shadows) ---- */
+  --fd-shadow-sm: 0 2px 8px;
+  --fd-hover-brightness: 1.1;
+
+  /* ---- Fixed-height controls (buttons, and similar) ---- */
+  --fd-control-height-sm: 32px;
+  --fd-control-height-md: 36px;
+  --fd-control-height-lg: 40px;
+
+  /* ---- Max-width cap for a standalone control (e.g. a search box that
+     shouldn't stretch full-width of its container) ---- */
+  --fd-control-max-width-sm: 16rem;
 
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;
@@ -29,10 +71,28 @@
   --fd-space-1: 0.25rem;
   --fd-space-2: 0.5rem;
   --fd-space-3: 0.75rem;
+  --fd-space-4: 1rem;
+  --fd-space-5: 1.25rem;
+
+  /* ---- Size scale (icons, spinners, avatars) ---- */
+  --fd-size-sm: 1rem;
+  --fd-size-md: 1.5rem;
+  --fd-size-lg: 2rem;
+
+  /* ---- Motion ---- */
+  --fd-duration-fast: 120ms;
+  --fd-duration-slow: 0.6s;
+  --fd-duration-slowest: 1.5s;
 
   /* ---- Font ---- */
   --fd-font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --fd-font-size-xs: 0.75rem;
+  --fd-font-size-sm: 0.875rem;
+  --fd-font-size-md: 1rem;
+
+  --fd-line-height-normal: 1.5;
 
   --fd-font-heading: var(--fd-font-sans);
   --fd-heading-weight: 600;
