@@ -25,4 +25,17 @@ export default class FdButton extends Base {
   get resolvedElementProps(): Record<string, unknown> {
     return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fd-button');
   }
+
+  // Without this, `someFdButton.focus()` is a no-op: a custom element isn't
+  // itself focusable just because its shadow tree contains a focusable
+  // native <button> (confirmed live in a real browser -- fd-popover's own
+  // Escape handler calls `trigger?.focus()` on whatever's slotted as
+  // `slot="trigger"`, and with an fd-button trigger and no override here,
+  // focus silently fell through to document.body instead of landing back
+  // on the button). Same fix as fd-radio's/fd-menu-item's own focus().
+  @api
+  focus() {
+    const button = this.template.querySelector('.button') as HTMLElement | null;
+    button?.focus();
+  }
 }
