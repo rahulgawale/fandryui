@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+.card {
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-lg);
+  padding: var(--fd-space-3);
+  background: hsl(var(--fd-bg));
+}

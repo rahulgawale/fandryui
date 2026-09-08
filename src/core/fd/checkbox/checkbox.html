@@ -8,7 +8,9 @@
       checked={checked}
       disabled={disabled}
       aria-checked={ariaChecked}
+      aria-label={ariaLabel}
       onchange={handleChange}
+      lwc:spread={resolvedElementProps}
     />
 
     <span class="box" aria-hidden="true">
@@ -16,7 +18,7 @@
     </span>
 
     <template if:true={label}>
-      <span class="label">{label}</span>
+      <span class="label"><slot>{label}</slot></span>
     </template>
   </label>
 </template>

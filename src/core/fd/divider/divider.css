@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  /* When used as a flex item (e.g. a vertical divider in a toolbar), stretch
+     to the container's cross-size regardless of the parent's align-items --
+     a horizontal divider's thickness is fixed by .divider--horizontal's own
+     height, so this has no effect on it either way. */
+  align-self: stretch;
+}
+
+.divider {
+  background: hsl(var(--fd-border));
+  border: none;
+}
+
+.divider--horizontal {
+  width: 100%;
+  height: var(--fd-border-width);
+}
+
+.divider--vertical {
+  width: var(--fd-border-width);
+  height: 100%;
+}

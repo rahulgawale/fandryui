@@ -1,0 +1,40 @@
+:host {
+  display: inline-block;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-1);
+
+  font-family: inherit;
+  font-size: var(--fd-font-size-xs);
+  font-weight: 500;
+  line-height: 1;
+
+  padding: var(--fd-space-1) var(--fd-space-2);
+  border-radius: var(--fd-radius-lg);
+
+  background: hsl(var(--fd-bg-muted));
+  color: hsl(var(--fd-text));
+}
+
+.badge--primary {
+  background: hsl(var(--fd-primary));
+  color: hsl(var(--fd-primary-foreground));
+}
+
+.badge--success {
+  background: hsl(var(--fd-success));
+  color: hsl(var(--fd-success-foreground));
+}
+
+.badge--warning {
+  background: hsl(var(--fd-warning));
+  color: hsl(var(--fd-warning-foreground));
+}
+
+.badge--danger {
+  background: hsl(var(--fd-danger));
+  color: hsl(var(--fd-danger-foreground));
+}

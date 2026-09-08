@@ -1,0 +1,116 @@
+:host {
+  display: block;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-1);
+  font-size: var(--fd-font-size-sm, 0.875rem);
+  font-weight: 500;
+  color: hsl(var(--fd-text));
+}
+
+.required {
+  color: hsl(var(--fd-danger));
+}
+
+.control {
+  display: block;
+  width: 100%;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fd-space-2);
+  width: 100%;
+  font: inherit;
+  color: hsl(var(--fd-text));
+  background: hsl(var(--fd-bg));
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-md);
+  padding: var(--fd-space-1) var(--fd-space-3) var(--fd-space-1) var(--fd-space-2);
+  cursor: pointer;
+  transition: border-color var(--fd-duration-fast) ease,
+    box-shadow var(--fd-duration-fast) ease;
+}
+
+.trigger:focus-visible {
+  outline: none;
+  border-color: hsl(var(--fd-border-focus));
+  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+}
+
+.trigger:disabled {
+  opacity: var(--fd-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.value {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.value--placeholder {
+  color: hsl(var(--fd-text-muted));
+}
+
+.chevron {
+  flex-shrink: 0;
+  width: 0.4em;
+  height: 0.4em;
+  border-right: var(--fd-border-width) solid hsl(var(--fd-text-muted));
+  border-bottom: var(--fd-border-width) solid hsl(var(--fd-text-muted));
+  transform: rotate(45deg) translateY(-15%);
+}
+
+.listbox {
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+.option {
+  padding: var(--fd-space-1) var(--fd-space-2);
+  border-radius: var(--fd-radius-sm);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.option--active {
+  background: hsl(var(--fd-bg-muted));
+}
+
+.option--selected {
+  font-weight: 600;
+}
+
+.option--disabled {
+  opacity: var(--fd-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.group-label {
+  padding: var(--fd-space-1) var(--fd-space-2);
+  font-size: var(--fd-font-size-xs, 0.75rem);
+  color: hsl(var(--fd-text-muted));
+}
+
+.help-text {
+  font-size: var(--fd-font-size-xs, 0.75rem);
+  color: hsl(var(--fd-text-muted));
+}
