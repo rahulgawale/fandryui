@@ -1,3 +1,22 @@
+# [0.3.0](https://github.com/rahulgawale/fandryui/compare/v0.2.0...v0.3.0) (2026-09-08)
+
+
+### Bug Fixes
+
+* **a11y:** darken failing semantic colors, group radios, fix alert/popover ARIA ([#38](https://github.com/rahulgawale/fandryui/issues/38)) ([fdded8e](https://github.com/rahulgawale/fandryui/commit/fdded8ef90d2482080c7efd514dd02b8f7d6041e))
+* **button:** prevent label text selection on click ([#39](https://github.com/rahulgawale/fandryui/issues/39)) ([87344d6](https://github.com/rahulgawale/fandryui/commit/87344d6068bd43a01b0f99bfebe866ca5a376fb2))
+* **ci:** bump Release job to Node 22 for semantic-release 25 ([#44](https://github.com/rahulgawale/fandryui/issues/44)) ([7855dd7](https://github.com/rahulgawale/fandryui/commit/7855dd7380cf18060c1eb6bc842d574366f2b976)), closes [#15](https://github.com/rahulgawale/fandryui/issues/15)
+* **ci:** push release commits/tags with a PAT to bypass branch protection ([#45](https://github.com/rahulgawale/fandryui/issues/45)) ([9b13d4c](https://github.com/rahulgawale/fandryui/commit/9b13d4c75e976d6451e0e866d5b2c5866387b5ff))
+* **events:** drop composed:true from all custom events ([#36](https://github.com/rahulgawale/fandryui/issues/36)) ([958d628](https://github.com/rahulgawale/fandryui/commit/958d6287d548a4f679672fbb06548788043e84b0))
+* **release:** publish GitHub Releases from semantic-release ([#41](https://github.com/rahulgawale/fandryui/issues/41)) ([4eb0fdb](https://github.com/rahulgawale/fandryui/commit/4eb0fdb064f9bd3f964c401b5e749cce5de5abd3))
+* **select:** rebuild as a custom listbox combobox, and make native controls Safari-tabbable ([#37](https://github.com/rahulgawale/fandryui/issues/37)) ([9a39a83](https://github.com/rahulgawale/fandryui/commit/9a39a83b9886c0b5a98ef8778ca81b7989d805a2))
+
+
+### Features
+
+* **popover:** add fd-popover primitive ([#35](https://github.com/rahulgawale/fandryui/issues/35)) ([a7c6aed](https://github.com/rahulgawale/fandryui/commit/a7c6aed07200e9ee3b4d8ab135270b5037ca9c90))
+* **table:** add fd-table, an LWC wrapper around @tanstack/table-core ([#34](https://github.com/rahulgawale/fandryui/issues/34)) ([e677bef](https://github.com/rahulgawale/fandryui/commit/e677befa5c695be73c96bf7894d56255d021e716)), closes [#33](https://github.com/rahulgawale/fandryui/issues/33) [#33](https://github.com/rahulgawale/fandryui/issues/33) [#33](https://github.com/rahulgawale/fandryui/issues/33)
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
