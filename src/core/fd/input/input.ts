@@ -45,31 +45,10 @@ export default class Input extends Base {
   // fields in the Tab order by default.
   @api elementProps: Record<string, unknown> = {};
 
-  private lastWarnedElementProps: Record<string, unknown> | null = null;
-
   @track hasFocus = false;
 
   get resolvedElementProps(): Record<string, unknown> {
-    const result: Record<string, unknown> = {};
-    const rejectedKeys: string[] = [];
-
-    for (const [key, value] of Object.entries(this.elementProps)) {
-      if (RESERVED_ELEMENT_PROPS.includes(key)) {
-        rejectedKeys.push(key);
-      } else {
-        result[key] = value;
-      }
-    }
-
-    if (rejectedKeys.length && this.elementProps !== this.lastWarnedElementProps) {
-      this.lastWarnedElementProps = this.elementProps;
-      // eslint-disable-next-line no-console
-      console.warn(
-        `fd-input: elementProps included ${rejectedKeys.map((key) => `"${key}"`).join(', ')}, which fd-input already controls via its own @api props -- ignored to avoid desyncing the input's state. Use the dedicated @api prop instead (e.g. \`value\`, \`type\`, \`disabled\`).`
-      );
-    }
-
-    return result;
+    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fd-input');
   }
 
   get hasLabel(): boolean {

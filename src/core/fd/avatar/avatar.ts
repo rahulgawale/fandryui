@@ -16,31 +16,10 @@ export default class Avatar extends Base {
   // with a dedicated prop either.
   @api elementProps: Record<string, unknown> = {};
 
-  private lastWarnedElementProps: Record<string, unknown> | null = null;
-
   @track imageFailed = false;
 
   get resolvedElementProps(): Record<string, unknown> {
-    const result: Record<string, unknown> = {};
-    const rejectedKeys: string[] = [];
-
-    for (const [key, value] of Object.entries(this.elementProps)) {
-      if (RESERVED_ELEMENT_PROPS.includes(key)) {
-        rejectedKeys.push(key);
-      } else {
-        result[key] = value;
-      }
-    }
-
-    if (rejectedKeys.length && this.elementProps !== this.lastWarnedElementProps) {
-      this.lastWarnedElementProps = this.elementProps;
-      // eslint-disable-next-line no-console
-      console.warn(
-        `fd-avatar: elementProps included ${rejectedKeys.map((key) => `"${key}"`).join(', ')}, which fd-avatar already controls via its own @api props -- ignored. Use the dedicated @api prop instead (e.g. \`src\`, \`alt\`).`
-      );
-    }
-
-    return result;
+    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fd-avatar');
   }
 
   _src = '';

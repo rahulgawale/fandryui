@@ -22,6 +22,7 @@
       // LWC's own template compiler resolves separately) -- the wildcard
       // can't express the namespace/name/name.ts folder convention with a
       // single `*` substitution (TS paths only allow one `*` per pattern).
+      "fd/base": ["src/core/fd/base/base"],
       "fd/tableState": ["src/core/fd/tableState/tableState"],
       "fd/*": ["src/core/fd/*"],
       "fandryui/planOption": ["src/modules/fandryui/planOption/planOption"],
