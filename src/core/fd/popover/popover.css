@@ -1,0 +1,45 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+.trigger {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.panel {
+  position: absolute;
+  z-index: 50;
+  min-width: max-content;
+
+  background: hsl(var(--fd-bg));
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-md);
+  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.15);
+  padding: var(--fd-space-2);
+}
+
+.panel--bottom {
+  top: 100%;
+  left: 0;
+  margin-top: var(--fd-space-1);
+}
+
+.panel--top {
+  bottom: 100%;
+  left: 0;
+  margin-bottom: var(--fd-space-1);
+}
+
+.panel--left {
+  right: 100%;
+  top: 0;
+  margin-right: var(--fd-space-1);
+}
+
+.panel--right {
+  left: 100%;
+  top: 0;
+  margin-left: var(--fd-space-1);
+}
