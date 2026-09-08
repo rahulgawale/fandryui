@@ -16,6 +16,8 @@
   border-radius: var(--fd-radius-md, 6px);
   border: var(--fd-border-width) solid transparent;
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 
   transition: background-color var(--fd-duration-fast) ease,
     border-color var(--fd-duration-fast) ease,
