@@ -196,6 +196,18 @@
         groups={planOptionGroups}
         value="pro"
       ></fd-select>
+
+      <p style="margin-top: 1rem;">
+        Expandable via <code>lwc:is</code> -- each option can render a custom
+        component instead of plain text, and the selected one mirrors into
+        the trigger too:
+      </p>
+      <fd-select
+        label="Plan (with icons)"
+        placeholder="Choose a plan"
+        options={planOptionsWithIcons}
+        value="pro"
+      ></fd-select>
     </section>
 
     <section>

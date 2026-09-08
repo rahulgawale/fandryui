@@ -67,8 +67,7 @@
 
 /* Focus */
 .control:focus-within .box {
-  box-shadow: 0 0 0 var(--fd-ring-width, 2px)
-    color-mix(in srgb, hsl(var(--fd-ring-color, 220 90% 56%)) var(--fd-ring-tint), transparent);
+  box-shadow: 0 0 0 var(--fd-ring-width, 2px) hsl(var(--fd-ring-color, 220 90% 56%));
 }
 
 /* Disabled */

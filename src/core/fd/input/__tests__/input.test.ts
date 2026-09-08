@@ -82,4 +82,27 @@ describe('fd-input', () => {
     const control = element.shadowRoot!.querySelector('.control')!;
     expect(control.className).toBe('control control--lg');
   });
+
+  it('spreads arbitrary IDL properties (e.g. autocomplete) via elementProps', () => {
+    const element = createElement('fd-input', { is: FdInput });
+    element.elementProps = { autocomplete: 'email' };
+    document.body.appendChild(element);
+
+    const nativeInput = element.shadowRoot!.querySelector('input')! as HTMLInputElement;
+    expect(nativeInput.autocomplete).toBe('email');
+  });
+
+  it('does not let elementProps clobber a library-controlled prop, and warns once about it', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const element = createElement('fd-input', { is: FdInput });
+    element.value = 'hello@fandry.dev';
+    element.elementProps = { value: 'hijacked', disabled: true };
+    document.body.appendChild(element);
+
+    const nativeInput = element.shadowRoot!.querySelector('input')! as HTMLInputElement;
+    expect(nativeInput.value).toBe('hello@fandry.dev');
+    expect(nativeInput.disabled).toBe(false);
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    warnSpy.mockRestore();
+  });
 });

@@ -61,4 +61,46 @@ describe('fd-checkbox', () => {
     expect(handler).toHaveBeenCalledTimes(1);
     expect(handler.mock.calls[0][0].detail).toBe(true);
   });
+
+  it('defaults tabIndex to 0 on the native input (Safari tab-order fix)', () => {
+    const element = createElement('fd-checkbox', { is: FdCheckbox });
+    document.body.appendChild(element);
+
+    const input = element.shadowRoot!.querySelector('input')! as HTMLInputElement;
+    expect(input.tabIndex).toBe(0);
+  });
+
+  it('lets a consumer override elementProps (e.g. tabIndex) via lwc:spread', () => {
+    const element = createElement('fd-checkbox', { is: FdCheckbox });
+    element.elementProps = { tabIndex: -1 };
+    document.body.appendChild(element);
+
+    const input = element.shadowRoot!.querySelector('input')! as HTMLInputElement;
+    expect(input.tabIndex).toBe(-1);
+  });
+
+  it('does not let elementProps clobber a library-controlled prop, and warns once about it', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const element = createElement('fd-checkbox', { is: FdCheckbox });
+    element.checked = true;
+    element.elementProps = { checked: false, disabled: true, tabIndex: -1 };
+    document.body.appendChild(element);
+
+    const input = element.shadowRoot!.querySelector('input')! as HTMLInputElement;
+    expect(input.checked).toBe(true);
+    expect(input.disabled).toBe(false);
+    expect(input.tabIndex).toBe(-1);
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy.mock.calls[0][0]).toContain('checked');
+    warnSpy.mockRestore();
+  });
+
+  it('spreads arbitrary IDL properties (e.g. title) onto the native input', () => {
+    const element = createElement('fd-checkbox', { is: FdCheckbox });
+    element.elementProps = { title: 'Accept the terms' };
+    document.body.appendChild(element);
+
+    const input = element.shadowRoot!.querySelector('input')! as HTMLInputElement;
+    expect(input.title).toBe('Accept the terms');
+  });
 });

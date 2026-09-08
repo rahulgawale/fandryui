@@ -30,6 +30,11 @@ export interface FdTableHeaderCell {
   sortIndicator: string;
 }
 
+// See fd-checkbox's checkbox.ts for why this list exists: it keeps a
+// consumer's `sortButtonProps` from clobbering a property the sort button
+// itself depends on.
+const RESERVED_SORT_BUTTON_PROPS = ['type', 'class', 'onclick'];
+
 export interface FdTableHeaderGroup {
   id: string;
   headers: FdTableHeaderCell[];
@@ -174,6 +179,14 @@ export default class FdTableState extends Base {
    * `filterchange`, mirroring manualSorting.
    */
   @api manualFiltering = false;
+
+  /**
+   * Spread onto the sort-toggle <button> in a header cell via `lwc:spread`
+   * -- see fd-checkbox's checkbox.ts for the general pattern. Defaults
+   * tabIndex to 0 because Safari excludes buttons from the Tab order by
+   * default otherwise; a consumer can override it.
+   */
+  @api sortButtonProps: Record<string, unknown> = { tabIndex: 0 };
 
   @track protected sorting: SortingState = [];
   @track protected pageIndex = 0;
@@ -460,6 +473,16 @@ export default class FdTableState extends Base {
     const pageCount = this.resolveTableInstance().getPageCount();
     const currentPage = this.pageIndex + 1;
     return pageCount >= 0 ? `Page ${currentPage} of ${pageCount}` : `Page ${currentPage}`;
+  }
+
+  get resolvedSortButtonProps(): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(this.sortButtonProps)) {
+      if (!RESERVED_SORT_BUTTON_PROPS.includes(key)) {
+        result[key] = value;
+      }
+    }
+    return result;
   }
 
   get hasFooter(): boolean {

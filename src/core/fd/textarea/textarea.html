@@ -1,22 +1,23 @@
 <template>
   <div class="form-control">
     <template if:true={hasLabel}>
-      <fd-label html-for="input" required={required}> {label} </fd-label>
+      <fd-label html-for="textarea" required={required}> {label} </fd-label>
     </template>
 
     <textarea
       class="textarea"
       id="textarea"
       name={name}
-      value={value}
       placeholder={placeholder}
       rows={rows}
       disabled={disabled}
       readonly={readonly}
       required={required}
       aria-describedby="help-text"
+      data-value={value}
       oninput={handleInput}
       onchange={handleChange}
+      lwc:spread={resolvedElementProps}
     ></textarea>
 
     <template if:true={hasHelpText}>

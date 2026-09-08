@@ -88,4 +88,29 @@ describe('fd-avatar', () => {
       });
     });
   });
+
+  it('spreads arbitrary IDL properties (e.g. loading) via elementProps', () => {
+    const element = createElement('fd-avatar', { is: FdAvatar });
+    element.src = 'https://example.com/photo.jpg';
+    element.elementProps = { loading: 'lazy' };
+    document.body.appendChild(element);
+
+    const image = element.shadowRoot!.querySelector('img')! as HTMLImageElement;
+    expect(image.loading).toBe('lazy');
+  });
+
+  it('does not let elementProps clobber a library-controlled prop, and warns once about it', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const element = createElement('fd-avatar', { is: FdAvatar });
+    element.src = 'https://example.com/photo.jpg';
+    element.alt = 'Jane Doe';
+    element.elementProps = { src: 'https://example.com/hijacked.jpg', alt: 'hijacked' };
+    document.body.appendChild(element);
+
+    const image = element.shadowRoot!.querySelector('img')! as HTMLImageElement;
+    expect(image.src).toBe('https://example.com/photo.jpg');
+    expect(image.alt).toBe('Jane Doe');
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    warnSpy.mockRestore();
+  });
 });
