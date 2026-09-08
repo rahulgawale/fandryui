@@ -104,6 +104,67 @@ describe('fd-popover', () => {
     focusSpy.mockRestore();
   });
 
+  it('returns focus to the trigger when closed externally while focus is still inside the panel', async () => {
+    // The consumer-driven close path (e.g. an fd-menu's `onselect` handler
+    // setting `this.menuOpen = false`, which flows into `<fd-popover
+    // open={menuOpen}>` as a plain prop assignment) never calls `setOpen`
+    // directly, unlike the trigger-click/outside-click/Escape paths -- this
+    // is what that path looked like before the fix (focus silently fell
+    // through to the page instead of returning to the trigger).
+    const harness = createElement('popover-trigger-harness', { is: PopoverTriggerHarness });
+    harness.open = true;
+    document.body.appendChild(harness);
+    await flush();
+
+    const popover = harness.shadowRoot!.querySelector('fd-popover') as HTMLElement & { open: boolean };
+    const trigger = harness.shadowRoot!.querySelector('button')!;
+    // Light-DOM panel content lives directly in the harness's own template
+    // (as a slotted child of fd-popover), not inside fd-popover's own
+    // shadow tree, so it's reachable via the harness's shadowRoot directly.
+    const panelContent = harness.shadowRoot!.querySelector('div')!;
+
+    // jsdom's real focus()/activeElement wiring is unreliable across the
+    // synthetic-shadow bridge (see the Escape test above) -- stubbing
+    // `document.activeElement` directly simulates "the panel's own content
+    // currently has focus" without depending on that.
+    const activeElementSpy = jest
+      .spyOn(document, 'activeElement', 'get')
+      .mockReturnValue(panelContent);
+    const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
+
+    popover.open = false;
+    await flush();
+
+    expect(focusSpy.mock.instances).toContain(trigger);
+
+    activeElementSpy.mockRestore();
+    focusSpy.mockRestore();
+  });
+
+  it('does not steal focus back to the trigger when closed externally after focus already moved elsewhere', async () => {
+    const harness = createElement('popover-trigger-harness', { is: PopoverTriggerHarness });
+    harness.open = true;
+    document.body.appendChild(harness);
+    await flush();
+
+    const popover = harness.shadowRoot!.querySelector('fd-popover') as HTMLElement & { open: boolean };
+    const trigger = harness.shadowRoot!.querySelector('button')!;
+
+    const unrelated = document.createElement('input');
+    document.body.appendChild(unrelated);
+
+    const activeElementSpy = jest.spyOn(document, 'activeElement', 'get').mockReturnValue(unrelated);
+    const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
+
+    popover.open = false;
+    await flush();
+
+    expect(focusSpy.mock.instances).not.toContain(trigger);
+
+    activeElementSpy.mockRestore();
+    focusSpy.mockRestore();
+  });
+
   it('dispatches a "toggle" event carrying the new open state', async () => {
     const harness = createElement('popover-trigger-harness', { is: PopoverTriggerHarness });
     document.body.appendChild(harness);
