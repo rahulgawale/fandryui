@@ -1,0 +1,18 @@
+<template>
+  <!--
+    No aria-describedby set here on the trigger -- it's slotted (consumer-
+    owned) light-DOM content, wired directly via setAttribute in tooltip.ts
+    instead of through this template. See fd-popover's own template comment
+    for why ARIA generally belongs on the consumer's slotted trigger, not a
+    non-focusable wrapper span like this one; fd-tooltip's description
+    relationship is the one exception it owns for itself (see tooltip.ts).
+  -->
+  <span class="trigger">
+    <slot name="trigger"></slot>
+  </span>
+  <template if:true={isOpen}>
+    <div class={panelClasses} role="tooltip" id={tooltipId}>
+      <slot></slot>
+    </div>
+  </template>
+</template>

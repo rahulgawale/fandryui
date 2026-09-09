@@ -1,0 +1,57 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+.trigger {
+  display: inline-block;
+}
+
+.panel {
+  position: absolute;
+  z-index: 50;
+  width: max-content;
+  max-width: 16rem;
+
+  /* Non-interactive by design (a tooltip's content is plain descriptive
+     text, never something to click into) -- this also means the pointer
+     can pass over the panel without retriggering mouseover/mouseout
+     handling meant for the trigger. */
+  pointer-events: none;
+
+  background: hsl(var(--fd-text));
+  color: hsl(var(--fd-bg));
+  font-size: var(--fd-font-size-xs);
+  line-height: var(--fd-line-height-normal);
+  border-radius: var(--fd-radius-sm);
+  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.15);
+  padding: var(--fd-space-1) var(--fd-space-2);
+}
+
+.panel--top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: var(--fd-space-1);
+}
+
+.panel--bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: var(--fd-space-1);
+}
+
+.panel--left {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: var(--fd-space-1);
+}
+
+.panel--right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: var(--fd-space-1);
+}
