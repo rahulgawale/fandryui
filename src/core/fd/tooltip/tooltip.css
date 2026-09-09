@@ -24,8 +24,23 @@
   font-size: var(--fd-font-size-xs);
   line-height: var(--fd-line-height-normal);
   border-radius: var(--fd-radius-sm);
-  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.15);
   padding: var(--fd-space-1) var(--fd-space-2);
+
+  /* `filter: drop-shadow`, not `box-shadow` -- box-shadow follows the
+     element's own rectangle, so it would clip off at the panel's edge and
+     leave the arrow below looking like a separate, shadowless shape.
+     drop-shadow follows the actual painted (alpha) silhouette, including
+     a child that pokes outside the box, so the shadow wraps the arrow
+     too. */
+  filter: drop-shadow(var(--fd-shadow-sm) hsla(0 0% 0% / 0.15));
+}
+
+.arrow {
+  position: absolute;
+  width: 0.625rem;
+  height: 0.625rem;
+  background: hsl(var(--fd-text));
+  transform: rotate(45deg);
 }
 
 .panel--top {
@@ -35,11 +50,23 @@
   margin-bottom: var(--fd-space-1);
 }
 
+.panel--top .arrow {
+  bottom: -0.3125rem;
+  left: 50%;
+  margin-left: -0.3125rem;
+}
+
 .panel--bottom {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
   margin-top: var(--fd-space-1);
+}
+
+.panel--bottom .arrow {
+  top: -0.3125rem;
+  left: 50%;
+  margin-left: -0.3125rem;
 }
 
 .panel--left {
@@ -49,9 +76,21 @@
   margin-right: var(--fd-space-1);
 }
 
+.panel--left .arrow {
+  right: -0.3125rem;
+  top: 50%;
+  margin-top: -0.3125rem;
+}
+
 .panel--right {
   left: 100%;
   top: 50%;
   transform: translateY(-50%);
   margin-left: var(--fd-space-1);
+}
+
+.panel--right .arrow {
+  left: -0.3125rem;
+  top: 50%;
+  margin-top: -0.3125rem;
 }

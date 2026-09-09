@@ -13,6 +13,7 @@
   <template if:true={isOpen}>
     <div class={panelClasses} role="tooltip" id={tooltipId}>
       <slot></slot>
+      <span class="arrow" aria-hidden="true"></span>
     </div>
   </template>
 </template>
