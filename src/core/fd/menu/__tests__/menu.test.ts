@@ -95,6 +95,49 @@ describe('fd-menu', () => {
     focusSpy.mockRestore();
   });
 
+  it('recomputes roving tabindex when an item\'s disabled property changes in place (not a slotchange)', async () => {
+    const harness = createElement('menu-standalone-harness', { is: MenuStandaloneHarness });
+    document.body.appendChild(harness);
+    await flush();
+
+    const items = Array.from(harness.shadowRoot!.querySelectorAll('fd-menu-item')) as any[];
+    const first = items[0].shadowRoot!.querySelector('.item') as HTMLElement;
+    const second = items[1].shadowRoot!.querySelector('.item') as HTMLElement;
+
+    expect(first.tabIndex).toBe(0);
+
+    // Simulates a consumer's `for:each` re-rendering with a bound array
+    // whose first row's `disabled` flipped to true -- no node is
+    // added/removed, so `slotchange` never fires for this.
+    items[0].disabled = true;
+    await flush();
+
+    expect(first.tabIndex).toBe(-1);
+    expect(second.tabIndex).toBe(0);
+  });
+
+  it('keeps roving tabindex on the same item when an unrelated item changes', async () => {
+    const harness = createElement('menu-standalone-harness', { is: MenuStandaloneHarness });
+    document.body.appendChild(harness);
+    await flush();
+
+    const items = Array.from(harness.shadowRoot!.querySelectorAll('fd-menu-item')) as any[];
+    const first = items[0].shadowRoot!.querySelector('.item') as HTMLElement;
+    const second = items[1].shadowRoot!.querySelector('.item') as HTMLElement;
+
+    first.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+    await flush();
+    expect(second.tabIndex).toBe(0);
+
+    // Third item flipping from disabled to enabled is a real, unrelated
+    // change -- it shouldn't steal the tab stop back to the first item.
+    items[2].disabled = false;
+    await flush();
+
+    expect(second.tabIndex).toBe(0);
+    expect(first.tabIndex).toBe(-1);
+  });
+
   it('lets a consumer catch a bubbled "select" from an fd-menu-item via onselect on <fd-menu>', async () => {
     const harness = createElement('menu-standalone-harness', { is: MenuStandaloneHarness });
     document.body.appendChild(harness);

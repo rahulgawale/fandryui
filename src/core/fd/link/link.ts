@@ -13,12 +13,13 @@ export default class FdLink extends Base {
   @api variant: 'default' | 'muted' = 'default';
   @api disabled = false;
 
-  // No forced tabIndex default here, unlike fd-button/fd-radio/fd-checkbox
-  // -- a native `<a href>` is already keyboard-focusable without help.
-  // Those primitives need the Safari fix because it specifically skips
-  // form controls (button/checkbox/radio/select) from the Tab order, not
-  // anchors.
-  @api elementProps: Record<string, unknown> = {};
+  // Confirmed live in Safari: it isn't just form controls that get skipped
+  // by default (see fd-button/fd-radio/fd-checkbox) -- a plain `<a href>`
+  // is excluded from the Tab order too unless "Full Keyboard Access" is
+  // set to "All controls" in System Settings, which most users never touch.
+  // An explicit tabIndex overrides that default in WebKit the same way it
+  // does for the form controls, so fd-link needs the same fix.
+  @api elementProps: Record<string, unknown> = { tabIndex: 0 };
 
   get classes(): string {
     return ['link', `link--${this.variant}`, this.disabled ? 'link--disabled' : '']
@@ -27,9 +28,12 @@ export default class FdLink extends Base {
   }
 
   // A disabled link renders with no `href` at all -- an <a> without one
-  // isn't a hyperlink (not keyboard-focusable, not in the accessibility
-  // tree's link role), which removes it from tab order and blocks
-  // navigation for free, with no tabindex or click-blocking needed.
+  // isn't a hyperlink (not in the accessibility tree's link role) and
+  // blocks navigation for free, with no click-blocking needed. That alone
+  // no longer keeps it out of the Tab order now that elementProps defaults
+  // to an explicit tabIndex (see above) -- an explicit tabindex makes any
+  // element focusable regardless of href, so resolvedElementProps below
+  // forces it to -1 while disabled.
   get computedHref(): string | undefined {
     return this.disabled ? undefined : this.href;
   }
@@ -50,6 +54,10 @@ export default class FdLink extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fd-link');
+    const resolved = this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fd-link');
+
+    // Overrides even a consumer-supplied tabIndex -- same "component wins"
+    // rule computedHref already applies to href/the accessibility tree.
+    return this.disabled ? { ...resolved, tabIndex: -1 } : resolved;
   }
 }

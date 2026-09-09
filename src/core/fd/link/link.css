@@ -16,6 +16,17 @@
   filter: brightness(var(--fd-hover-brightness));
 }
 
+/* Browsers only allow a handful of color-related properties to be styled
+   via :visited (a long-standing privacy restriction -- anything else,
+   like filter or box-shadow, is silently ignored here even though it
+   works fine on :hover above). color is one of the allowed ones.
+   Deliberately outranks .link--muted below on specificity alone (0,2,0 vs
+   0,1,0) so a visited muted link still gets a distinguishable color
+   instead of visited silently doing nothing for that variant. */
+.link:visited {
+  color: hsl(var(--fd-link-visited));
+}
+
 .link--muted {
   color: hsl(var(--fd-text-muted));
 }

@@ -37,6 +37,24 @@ export default class HelloWorldApp extends LightningElement {
   menuOpen = false;
   lastMenuSelection = '';
 
+  // Property-bound via `for:each` below (rather than hardcoded <fd-menu-item>
+  // tags) to exercise the same array-bound-data path a `for:each` select
+  // option list uses -- fd-menu-item notifies fd-menu when a bound item's
+  // `disabled` flips in place (see menuItem.ts/menu.ts), which the toggle
+  // below exists to demonstrate.
+  menuActions = [
+    { value: 'edit', label: 'Edit', disabled: false },
+    { value: 'duplicate', label: 'Duplicate', disabled: false },
+    { value: 'delete', label: 'Delete', disabled: true }
+  ];
+
+  handleToggleDuplicateDisabled(event) {
+    const disabled = event.detail;
+    this.menuActions = this.menuActions.map((action) =>
+      action.value === 'duplicate' ? { ...action, disabled } : action
+    );
+  }
+
   // fd-popover's own template deliberately sets no aria-haspopup/expanded
   // on the trigger ("that ARIA belongs on the consumer's own slotted
   // trigger element" -- see popover.html) -- same reasoning applies one

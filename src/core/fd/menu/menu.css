@@ -5,6 +5,6 @@
 .menu {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  min-width: 10rem;
+  gap: var(--fd-space-1);
+  min-width: var(--fd-overlay-min-width-sm);
 }

@@ -193,7 +193,11 @@
         with this component (the consumer) wiring <code>open</code>/<code
           >ontoggle</code
         >
-        and closing the menu from its own <code>onselect</code> handler.
+        and closing the menu from its own <code>onselect</code> handler. Items
+        are rendered from a property-bound array via
+        <code>for:each</code>, not hardcoded -- toggling "Duplicate" below
+        flips <code>disabled</code> on an already-rendered item to show fd-menu
+        picking that up without a slotchange.
       </p>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start">
         <fd-popover open={menuOpen} ontoggle={handleMenuToggle} placement="bottom">
@@ -203,11 +207,20 @@
             element-props={menuTriggerProps}
           >Actions</fd-button>
           <fd-menu onselect={handleMenuSelect}>
-            <fd-menu-item value="edit" label="Edit"></fd-menu-item>
-            <fd-menu-item value="duplicate" label="Duplicate"></fd-menu-item>
-            <fd-menu-item value="delete" label="Delete" disabled></fd-menu-item>
+            <template for:each={menuActions} for:item="action">
+              <fd-menu-item
+                key={action.value}
+                value={action.value}
+                label={action.label}
+                disabled={action.disabled}
+              ></fd-menu-item>
+            </template>
           </fd-menu>
         </fd-popover>
+        <fd-checkbox
+          label="Disable &quot;Duplicate&quot;"
+          onchange={handleToggleDuplicateDisabled}
+        ></fd-checkbox>
         <span if:true={lastMenuSelection}>Last selected: {lastMenuSelection}</span>
       </div>
     </section>

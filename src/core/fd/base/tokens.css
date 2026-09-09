@@ -23,6 +23,11 @@
   --fd-danger: 0 72% 51%;
   --fd-danger-foreground: 0 0% 100%;
 
+  /* Distinct hue from --fd-primary, lightness picked the same way (see
+     block comment above): clears 8.5:1 against a white background, well
+     past WCAG AA's 4.5:1 floor. */
+  --fd-link-visited: 271 55% 40%;
+
   --fd-bg: 0 0% 100%;
   --fd-bg-muted: 220 14% 96%;
 
@@ -56,6 +61,11 @@
   /* ---- Max-width cap for a standalone control (e.g. a search box that
      shouldn't stretch full-width of its container) ---- */
   --fd-control-max-width-sm: 16rem;
+
+  /* ---- Min-width floor for a floating panel with no trigger of its own to
+     size against (e.g. fd-menu -- unlike fd-select's listbox, which sizes
+     itself off its trigger button via `min-width: 100%`). ---- */
+  --fd-overlay-min-width-sm: 10rem;
 
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;

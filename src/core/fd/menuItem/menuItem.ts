@@ -9,7 +9,32 @@ const RESERVED_ELEMENT_PROPS = ['role', 'class', 'ariaDisabled', 'onclick', 'onk
 export default class FdMenuItem extends Base {
   @api value = '';
   @api label = '';
-  @api disabled = false;
+
+  private _disabled = false;
+
+  // A plain field wouldn't tell fd-menu when a property-bound `disabled`
+  // changes on an item that's already in the DOM (e.g. `disabled={row.disabled}`
+  // inside a consumer's own `for:each`) -- `slotchange` only fires on
+  // structural changes (nodes added/removed/reordered), never on a
+  // property mutating in place, so fd-menu's roving tabindex would
+  // otherwise go stale exactly when a row's disabled state flips. This
+  // setter dispatches a bubbling `itemchange` fd-menu listens for (see
+  // menu.ts) so the roving tabindex gets recomputed on every real change,
+  // without fd-menu needing to poll or watch each item's properties itself.
+  @api
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
+  set disabled(value: boolean) {
+    const next = !!value;
+    if (next === this._disabled) {
+      return;
+    }
+
+    this._disabled = next;
+    this.dispatchEvent(new CustomEvent('itemchange', { bubbles: true }));
+  }
 
   // Spread onto the internal div via `lwc:spread` -- see checkbox.ts for
   // why this can't reach `data-*` attributes, and why that's not solved

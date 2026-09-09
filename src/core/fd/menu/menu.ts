@@ -36,13 +36,31 @@ const ARROW_KEYS = ['ArrowDown', 'ArrowUp'];
 // fd-menu's only job is the WAI-ARIA "menu" role/keyboard-navigation
 // contract over its slotted fd-menu-item children.
 export default class FdMenu extends Base {
+  // The item roving tabindex currently sits on -- tracked here (rather than
+  // re-derived as "the first enabled item" every time) so a recompute
+  // triggered by one item's own change (see handleItemChange below) doesn't
+  // silently steal the Tab stop away from a *different* item the
+  // user/consumer already interacted with.
+  private activeItem?: FdMenuItemElement;
+
   connectedCallback() {
     this.addEventListener('keydown', this.handleKeydown);
+    this.addEventListener('itemchange', this.handleItemChange);
   }
 
   disconnectedCallback() {
     this.removeEventListener('keydown', this.handleKeydown);
+    this.removeEventListener('itemchange', this.handleItemChange);
   }
+
+  // fd-menu-item dispatches this when one of its own properties (currently
+  // just `disabled`) changes in place -- e.g. a consumer's `for:each` binds
+  // `disabled={row.disabled}` and the bound array updates. Neither
+  // `slotchange` nor `renderedCallback` fire for that (see the class
+  // comment above and menuItem.ts), so this is the only signal fd-menu gets.
+  handleItemChange = () => {
+    this.updateRovingTabIndex();
+  };
 
   // Keeps roving tabindex correct any time the slotted items change -- see
   // fd-radio-group's radioGroup.ts for why both renderedCallback *and*
@@ -68,7 +86,16 @@ export default class FdMenu extends Base {
   // arrow keys move real DOM focus between them by hand.
   private updateRovingTabIndex(activeItem?: FdMenuItemElement) {
     const items = this.getItems();
-    const active = activeItem ?? items.find((item) => !item.disabled);
+    let active = activeItem ?? this.activeItem;
+
+    // Falls back to the first enabled item whenever there's no prior active
+    // item, or the one being kept no longer qualifies -- removed from the
+    // DOM (a consumer's `for:each` dropped it) or newly disabled.
+    if (!active || active.disabled || !items.includes(active)) {
+      active = items.find((item) => !item.disabled);
+    }
+
+    this.activeItem = active;
 
     items.forEach((item) => {
       item.elementProps = { tabIndex: item === active ? 0 : -1 };

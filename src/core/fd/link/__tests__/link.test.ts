@@ -78,6 +78,26 @@ describe('fd-link', () => {
     expect(anchor.title).toBe('Opens documentation');
   });
 
+  it('defaults to tabIndex 0 so Safari includes it in the Tab order without Full Keyboard Access', () => {
+    const element = createElement('fd-link', { is: FdLink });
+    element.href = 'https://example.com';
+    document.body.appendChild(element);
+
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(anchor.tabIndex).toBe(0);
+  });
+
+  it('forces tabIndex to -1 while disabled, even if a consumer sets their own elementProps.tabIndex', () => {
+    const element = createElement('fd-link', { is: FdLink });
+    element.href = 'https://example.com';
+    element.disabled = true;
+    element.elementProps = { tabIndex: 3 };
+    document.body.appendChild(element);
+
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(anchor.tabIndex).toBe(-1);
+  });
+
   it('does not let elementProps clobber href, and warns once about it', () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const element = createElement('fd-link', { is: FdLink });
