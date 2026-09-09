@@ -53,6 +53,13 @@
   --fd-shadow-sm: 0 2px 8px;
   --fd-hover-brightness: 1.1;
 
+  /* ---- Stacking (floating overlay panels -- fd-popover, fd-tooltip).
+     One shared token so a host page that already runs its own high
+     z-index scale (e.g. an SLDS org, where modals/toasts commonly sit in
+     the thousands) can lift every fd-* overlay above it by overriding
+     this single value, instead of chasing per-component z-indexes. ---- */
+  --fd-z-overlay: 50;
+
   /* ---- Fixed-height controls (buttons, and similar) ---- */
   --fd-control-height-sm: 32px;
   --fd-control-height-md: 36px;
@@ -66,6 +73,13 @@
      size against (e.g. fd-menu -- unlike fd-select's listbox, which sizes
      itself off its trigger button via `min-width: 100%`). ---- */
   --fd-overlay-min-width-sm: 10rem;
+
+  /* ---- Max-width cap for a floating overlay panel's content (e.g.
+     fd-tooltip's bubble) -- kept separate from
+     --fd-control-max-width-sm even though the two currently share a
+     value: one caps a form control, the other caps a block of prose, and
+     a consumer should be able to size those independently. ---- */
+  --fd-overlay-max-width-sm: 16rem;
 
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;

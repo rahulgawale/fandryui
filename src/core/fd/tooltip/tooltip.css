@@ -9,9 +9,9 @@
 
 .panel {
   position: absolute;
-  z-index: 50;
+  z-index: var(--fd-z-overlay);
   width: max-content;
-  max-width: 16rem;
+  max-width: var(--fd-overlay-max-width-sm);
 
   /* Non-interactive by design (a tooltip's content is plain descriptive
      text, never something to click into) -- this also means the pointer
