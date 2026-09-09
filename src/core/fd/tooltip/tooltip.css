@@ -33,6 +33,29 @@
      a child that pokes outside the box, so the shadow wraps the arrow
      too. */
   filter: drop-shadow(var(--fd-shadow-sm) hsla(0 0% 0% / 0.15));
+
+  /* A CSS `transition` doesn't play on initial insertion (there's no
+     prior style to interpolate from -- the element just appears already
+     in its end state), and `if:true={isOpen}` inserts/removes this node
+     outright rather than toggling a class, so there's no "later frame" to
+     transition to either way. `animation` sidesteps both: it plays
+     automatically the moment the element is inserted. */
+  animation: fd-tooltip-in var(--fd-duration-fast) var(--fd-ease-in-out);
+}
+
+@keyframes fd-tooltip-in {
+  from {
+    opacity: 0;
+    /* `var(--fd-tooltip-translate)`, not a bare `scale(...)` -- each
+       placement below already centers the panel via its own translate;
+       overwriting `transform` here instead of composing with it would
+       snap the panel off-center for the animation's duration. */
+    transform: var(--fd-tooltip-translate) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: var(--fd-tooltip-translate) scale(1);
+  }
 }
 
 .arrow {
@@ -46,7 +69,8 @@
 .panel--top {
   bottom: 100%;
   left: 50%;
-  transform: translateX(-50%);
+  --fd-tooltip-translate: translateX(-50%);
+  transform: var(--fd-tooltip-translate);
   margin-bottom: var(--fd-space-1);
 }
 
@@ -59,7 +83,8 @@
 .panel--bottom {
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
+  --fd-tooltip-translate: translateX(-50%);
+  transform: var(--fd-tooltip-translate);
   margin-top: var(--fd-space-1);
 }
 
@@ -72,7 +97,8 @@
 .panel--left {
   right: 100%;
   top: 50%;
-  transform: translateY(-50%);
+  --fd-tooltip-translate: translateY(-50%);
+  transform: var(--fd-tooltip-translate);
   margin-right: var(--fd-space-1);
 }
 
@@ -85,7 +111,8 @@
 .panel--right {
   left: 100%;
   top: 50%;
-  transform: translateY(-50%);
+  --fd-tooltip-translate: translateY(-50%);
+  transform: var(--fd-tooltip-translate);
   margin-left: var(--fd-space-1);
 }
 
