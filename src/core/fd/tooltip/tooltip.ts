@@ -31,11 +31,21 @@ export default class FdTooltip extends Base {
   // to usefully drive.
   @track isOpen = false;
 
+  // Separate from `isOpen`: `if:true={isVisible}` is what actually mounts
+  // /unmounts the panel, and stays true a little longer than `isOpen` on
+  // the way out so the closing animation has a real element to play on --
+  // see hide() and handleAnimationEnd below. `isOpen` alone is what every
+  // other concern (aria-describedby, Escape, the `toggle` event) keys off,
+  // unchanged from before this animation existed.
+  @track isVisible = false;
+
   private readonly tooltipId = `fd-tooltip-${++idCounter}`;
   private openTimerId: number | null = null;
 
   get panelClasses(): string {
-    return ['panel', `panel--${this.placement}`].join(' ');
+    return ['panel', `panel--${this.placement}`, this.isOpen ? '' : 'panel--closing']
+      .filter(Boolean)
+      .join(' ');
   }
 
   // Confirmed live (both in this project's jest environment and a real
@@ -173,6 +183,7 @@ export default class FdTooltip extends Base {
     }
 
     this.isOpen = true;
+    this.isVisible = true;
     this.dispatchEvent(new CustomEvent('toggle', { detail: true, bubbles: true }));
   }
 
@@ -185,5 +196,25 @@ export default class FdTooltip extends Base {
 
     this.isOpen = false;
     this.dispatchEvent(new CustomEvent('toggle', { detail: false, bubbles: true }));
+    // `isVisible` deliberately stays true here -- unmounting it right away
+    // would swap `panelClasses` to include `panel--closing` and then
+    // immediately tear the element down before that class's reversed
+    // animation ever gets a frame to render. handleAnimationEnd unmounts
+    // it once that animation actually finishes.
   }
+
+  // CSS-driven, not a `setTimeout` guessing the animation's duration --
+  // this fires exactly when the animation actually completes, so it can't
+  // drift out of sync if `--fd-duration-fast` ever changes. The panel's
+  // own *entrance* animation also fires this event; only a completed
+  // *exit* run should unmount it, and by the time an exit run finishes,
+  // `isOpen` is already false (hide() set it before the animation even
+  // started) while an entrance run's completion always finds it still
+  // true -- that alone tells the two apart, no need to inspect which
+  // animation actually just ran.
+  handleAnimationEnd = () => {
+    if (!this.isOpen) {
+      this.isVisible = false;
+    }
+  };
 }

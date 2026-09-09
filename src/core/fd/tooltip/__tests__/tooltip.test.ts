@@ -3,6 +3,14 @@ import TooltipTriggerHarness from './tooltipTriggerHarness';
 
 const flush = () => Promise.resolve();
 
+// jsdom doesn't actually run CSS animations, so the exit animation's real
+// `animationend` never fires on its own -- this stands in for the browser
+// finishing it, the same way `jest.advanceTimersByTime` stands in for a
+// real setTimeout elsewhere in this file.
+const endAnimation = (panel: Element) => {
+  panel.dispatchEvent(new Event('animationend'));
+};
+
 const mount = (openDelay = 300) => {
   const harness = createElement('tooltip-trigger-harness', { is: TooltipTriggerHarness });
   harness.openDelay = openDelay;
@@ -85,7 +93,7 @@ describe('fd-tooltip', () => {
     expect(tooltip.shadowRoot!.querySelector('[role="tooltip"]')).not.toBeNull();
   });
 
-  it('closes immediately on blur', async () => {
+  it('plays an exit animation on blur, unmounting only once it ends', async () => {
     const harness = mount(300);
     await flush();
 
@@ -97,6 +105,14 @@ describe('fd-tooltip', () => {
     expect(tooltip.shadowRoot!.querySelector('[role="tooltip"]')).not.toBeNull();
 
     trigger.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+    await flush();
+    // Still mounted right after blur -- it needs to stay in the DOM long
+    // enough to actually play the reversed fade/scale before disappearing.
+    const closingPanel = tooltip.shadowRoot!.querySelector('[role="tooltip"]');
+    expect(closingPanel).not.toBeNull();
+    expect(closingPanel!.classList.contains('panel--closing')).toBe(true);
+
+    endAnimation(closingPanel!);
     await flush();
     expect(tooltip.shadowRoot!.querySelector('[role="tooltip"]')).toBeNull();
   });
@@ -114,7 +130,29 @@ describe('fd-tooltip', () => {
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     await flush();
+    const closingPanel = tooltip.shadowRoot!.querySelector('[role="tooltip"]')!;
+    expect(closingPanel.classList.contains('panel--closing')).toBe(true);
+
+    endAnimation(closingPanel);
+    await flush();
     expect(tooltip.shadowRoot!.querySelector('[role="tooltip"]')).toBeNull();
+  });
+
+  it("does not unmount on the entrance animation's own animationend", async () => {
+    const harness = mount(300);
+    await flush();
+
+    const tooltip = harness.shadowRoot!.querySelector('fd-tooltip')!;
+    const trigger = harness.shadowRoot!.querySelector('button')!;
+
+    trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await flush();
+
+    const panel = tooltip.shadowRoot!.querySelector('[role="tooltip"]')!;
+    endAnimation(panel);
+    await flush();
+
+    expect(tooltip.shadowRoot!.querySelector('[role="tooltip"]')).not.toBeNull();
   });
 
   it('sets aria-describedby on the trigger while open and removes it on close', async () => {

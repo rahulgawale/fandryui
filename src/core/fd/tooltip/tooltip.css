@@ -36,10 +36,11 @@
 
   /* A CSS `transition` doesn't play on initial insertion (there's no
      prior style to interpolate from -- the element just appears already
-     in its end state), and `if:true={isOpen}` inserts/removes this node
-     outright rather than toggling a class, so there's no "later frame" to
-     transition to either way. `animation` sidesteps both: it plays
-     automatically the moment the element is inserted. */
+     in its end state), and mounting/unmounting this node outright (rather
+     than toggling a class on an element that's already present) means
+     there's no "later frame" to transition to either way. `animation`
+     sidesteps both: it plays automatically the moment the element is
+     inserted. */
   animation: fd-tooltip-in var(--fd-duration-fast) var(--fd-ease-in-out);
 }
 
@@ -56,6 +57,34 @@
     opacity: 1;
     transform: var(--fd-tooltip-translate) scale(1);
   }
+}
+
+@keyframes fd-tooltip-out {
+  from {
+    opacity: 1;
+    transform: var(--fd-tooltip-translate) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: var(--fd-tooltip-translate) scale(0.95);
+  }
+}
+
+.panel--closing {
+  /* A genuinely different `animation-name`, not the entrance keyframes
+     played backwards via `animation-direction: reverse` -- confirmed live
+     that toggling just the direction/fill-mode of an *already-finished*
+     animation doesn't reliably restart its timeline in real browsers (it
+     was observed jumping straight to the reversed end state with no
+     visible transition at all, in both Chrome and Safari). Changing
+     `animation-name` itself is what actually forces a fresh run.
+     `forwards` holds the faded-out end state instead of snapping back to
+     the resting (opacity: 1) styles the instant the animation completes
+     -- tooltip.ts's handleAnimationEnd unmounts the element right after
+     that same event fires, but fill-mode covers the gap between "the
+     animation finished" and "the resulting re-render actually happened"
+     so there's no one-frame flash back to visible. */
+  animation: fd-tooltip-out var(--fd-duration-fast) var(--fd-ease-in-out) forwards;
 }
 
 .arrow {
