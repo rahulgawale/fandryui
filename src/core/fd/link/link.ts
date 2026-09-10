@@ -13,13 +13,20 @@ export default class FdLink extends Base {
   @api variant: 'default' | 'muted' = 'default';
   @api disabled = false;
 
-  // Confirmed live in Safari: it isn't just form controls that get skipped
-  // by default (see fd-button/fd-radio/fd-checkbox) -- a plain `<a href>`
-  // is excluded from the Tab order too unless "Full Keyboard Access" is
-  // set to "All controls" in System Settings, which most users never touch.
-  // An explicit tabIndex overrides that default in WebKit the same way it
-  // does for the form controls, so fd-link needs the same fix.
-  @api elementProps: Record<string, unknown> = { tabIndex: 0 };
+  // No forced tabIndex default here, unlike fd-button/fd-radio/fd-checkbox/
+  // fd-select. That looked right by analogy at first (those all need one
+  // because Safari, with "Full Keyboard Access" off, excludes them from
+  // the plain-Tab order by default, and an explicit tabIndex overrides
+  // that) -- but confirmed live afterwards that the analogy doesn't hold
+  // for <a href>: Safari's plain-Tab exclusion of real hyperlinks is
+  // unconditional, tabIndex or not. Option-Tab reaches the link either
+  // way (that's Safari's own full-keyboard-access bypass gesture, present
+  // regardless of anything this component does), which is what exposed
+  // the difference -- fd-button et al. respond to plain Tab once given a
+  // tabIndex, fd-link doesn't. There's no in-page fix for that; it's a
+  // Safari user preference, not a bug here, so this stays at fd-link's
+  // native default instead of pretending otherwise.
+  @api elementProps: Record<string, unknown> = {};
 
   get classes(): string {
     return ['link', `link--${this.variant}`, this.disabled ? 'link--disabled' : '']
@@ -28,12 +35,13 @@ export default class FdLink extends Base {
   }
 
   // A disabled link renders with no `href` at all -- an <a> without one
-  // isn't a hyperlink (not in the accessibility tree's link role) and
-  // blocks navigation for free, with no click-blocking needed. That alone
-  // no longer keeps it out of the Tab order now that elementProps defaults
-  // to an explicit tabIndex (see above) -- an explicit tabindex makes any
-  // element focusable regardless of href, so resolvedElementProps below
-  // forces it to -1 while disabled.
+  // isn't a hyperlink (not keyboard-focusable by default, not in the
+  // accessibility tree's link role), which removes it from tab order and
+  // blocks navigation for free, with no click-blocking needed on its own.
+  // A consumer explicitly passing their own tabIndex via elementProps
+  // could still re-add it to the tab order despite the missing href,
+  // though -- resolvedElementProps below forces that back to -1 while
+  // disabled, same "component wins" rule as href/aria-disabled above.
   get computedHref(): string | undefined {
     return this.disabled ? undefined : this.href;
   }

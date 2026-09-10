@@ -78,13 +78,13 @@ describe('fd-link', () => {
     expect(anchor.title).toBe('Opens documentation');
   });
 
-  it('defaults to tabIndex 0 so Safari includes it in the Tab order without Full Keyboard Access', () => {
+  it('does not force a tabIndex by default -- a native <a href> is already focusable, and an explicit one does not fix Safari\'s plain-Tab exclusion of links anyway (confirmed live: unlike fd-button/fd-radio/fd-checkbox/fd-select, tabIndex has no effect on it)', () => {
     const element = createElement('fd-link', { is: FdLink });
     element.href = 'https://example.com';
     document.body.appendChild(element);
 
     const anchor = element.shadowRoot!.querySelector('a')!;
-    expect(anchor.tabIndex).toBe(0);
+    expect(anchor.hasAttribute('tabindex')).toBe(false);
   });
 
   it('forces tabIndex to -1 while disabled, even if a consumer sets their own elementProps.tabIndex', () => {
