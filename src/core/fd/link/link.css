@@ -22,7 +22,18 @@
    works fine on :hover above). color is one of the allowed ones.
    Deliberately outranks .link--muted below on specificity alone (0,2,0 vs
    0,1,0) so a visited muted link still gets a distinguishable color
-   instead of visited silently doing nothing for that variant. */
+   instead of visited silently doing nothing for that variant.
+
+   This is best-effort, not a guarantee: confirmed live (a bare <a> plus
+   `a:visited { color: red }` on a static, non-shadow-DOM page, no fd-link
+   involved) that a single click-through visit often isn't enough to
+   trigger a visible change in current Chrome/Safari at all -- both have
+   progressively tightened :visited beyond the color-property restriction
+   above, partitioning/heuristically gating *whether* a visit counts
+   toward it in the first place (anti-fingerprinting, since :visited was a
+   classic history-sniffing vector). This rule is spec-correct and will
+   render wherever a browser's own heuristics decide to allow it, but
+   don't expect it to reliably demo in a quick manual test. */
 .link:visited {
   color: hsl(var(--fd-link-visited));
 }
