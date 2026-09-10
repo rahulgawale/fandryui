@@ -50,3 +50,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           # NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Uncomment when ready to publish to npm
         run: npx semantic-release
+
+      - name: Deploy to GitHub Pages
+        env:
+          # gh-pages branch isn't covered by the "Protected Main" ruleset, so
+          # the default GITHUB_TOKEN (with the contents:write permission
+          # granted above) is enough to push it -- no PAT needed here.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx gh-pages -d site --nojekyll --cname fandryui.forcetrails.com \
+            -u "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>" \
+            -r "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
