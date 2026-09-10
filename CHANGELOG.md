@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/rahulgawale/fandryui/compare/v0.3.0...v0.4.0) (2026-09-10)
+
+
+### Features
+
+* add fd-link, fd-menu, fd-menu-item primitives ([#46](https://github.com/rahulgawale/fandryui/issues/46)) ([148263c](https://github.com/rahulgawale/fandryui/commit/148263c962afc3b2fbc3ae3e08e756df0eea0298))
+
 # [0.3.0](https://github.com/rahulgawale/fandryui/compare/v0.2.0...v0.3.0) (2026-09-08)
 
 
