@@ -10,7 +10,7 @@
 
 .panel {
   position: absolute;
-  z-index: 50;
+  z-index: var(--fd-z-overlay);
   min-width: max-content;
 
   background: hsl(var(--fd-bg));

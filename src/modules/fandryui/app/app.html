@@ -226,6 +226,110 @@
     </section>
 
     <section>
+      <h2>Icon Example</h2>
+      <p>
+        fd-icon owns no icon set of its own -- it's a sizing/color frame
+        around whatever glyph a consumer slots in (inline SVG here, but an
+        emoji, an <code>&lt;img&gt;</code>, or an SLDS
+        <code>&lt;lightning-icon&gt;</code> work the same way). Color comes
+        from the ambient <code>currentColor</code>, so it's set by wrapping
+        in a colored ancestor rather than a dedicated <code>color</code>
+        prop.
+      </p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center">
+        <fd-icon size="sm">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
+            ></path>
+          </svg>
+        </fd-icon>
+        <fd-icon size="md">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
+            ></path>
+          </svg>
+        </fd-icon>
+        <fd-icon size="lg">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
+            ></path>
+          </svg>
+        </fd-icon>
+        <span style="color: hsl(var(--fd-danger))">
+          <fd-icon size="md">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
+              ></path>
+            </svg>
+          </fd-icon>
+        </span>
+        <fd-button variant="ghost" size="sm" aria-label="Favorite">
+          <fd-icon label="Favorite" size="sm">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
+              ></path>
+            </svg>
+          </fd-icon>
+        </fd-button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Tooltip Example</h2>
+      <p>
+        Hover or focus a trigger to reveal a short description. Like
+        fd-popover, fd-tooltip owns no trigger of its own -- it composes
+        with whatever a consumer slots in as <code>slot="trigger"</code>,
+        and the description text is plain default-slot content rather than
+        a dedicated prop.
+      </p>
+      <div
+        style="
+          display: flex;
+          gap: 2rem;
+          flex-wrap: wrap;
+          align-items: center;
+          padding: 2rem 0;
+        "
+      >
+        <fd-tooltip placement="top">
+          <fd-button slot="trigger" variant="secondary">Top</fd-button>
+          Saves your changes
+        </fd-tooltip>
+
+        <fd-tooltip placement="bottom">
+          <fd-button slot="trigger" variant="secondary">Bottom</fd-button>
+          Saves your changes
+        </fd-tooltip>
+
+        <fd-tooltip placement="left">
+          <fd-button slot="trigger" variant="secondary">Left</fd-button>
+          Saves your changes
+        </fd-tooltip>
+
+        <fd-tooltip placement="right">
+          <fd-button slot="trigger" variant="secondary">Right</fd-button>
+          Saves your changes
+        </fd-tooltip>
+
+        <fd-tooltip open-delay="0">
+          <fd-link
+            slot="trigger"
+            href="https://github.com/rahulgawale/fandryui"
+            target="_blank"
+            >Plain-text trigger</fd-link
+          >
+          No delay on this one
+        </fd-tooltip>
+      </div>
+    </section>
+
+    <section>
       <h2>Input Example</h2>
       <fd-input label="Email" type="email">
         <span slot="leading">📧</span>

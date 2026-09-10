@@ -1,0 +1,152 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+.trigger {
+  display: inline-block;
+}
+
+.panel {
+  position: absolute;
+  z-index: var(--fd-z-overlay);
+  width: max-content;
+  max-width: var(--fd-overlay-max-width-sm);
+
+  /* Non-interactive by design (a tooltip's content is plain descriptive
+     text, never something to click into) -- this also means the pointer
+     can pass over the panel without retriggering mouseover/mouseout
+     handling meant for the trigger. */
+  pointer-events: none;
+
+  background: hsl(var(--fd-text));
+  color: hsl(var(--fd-bg));
+  font-size: var(--fd-font-size-xs);
+  line-height: var(--fd-line-height-normal);
+  border-radius: var(--fd-radius-sm);
+  padding: var(--fd-space-1) var(--fd-space-2);
+
+  /* `filter: drop-shadow`, not `box-shadow` -- box-shadow follows the
+     element's own rectangle, so it would clip off at the panel's edge and
+     leave the arrow below looking like a separate, shadowless shape.
+     drop-shadow follows the actual painted (alpha) silhouette, including
+     a child that pokes outside the box, so the shadow wraps the arrow
+     too. */
+  filter: drop-shadow(var(--fd-shadow-sm) hsla(0 0% 0% / 0.15));
+
+  /* A CSS `transition` doesn't play on initial insertion (there's no
+     prior style to interpolate from -- the element just appears already
+     in its end state), and mounting/unmounting this node outright (rather
+     than toggling a class on an element that's already present) means
+     there's no "later frame" to transition to either way. `animation`
+     sidesteps both: it plays automatically the moment the element is
+     inserted. */
+  animation: fd-tooltip-in var(--fd-duration-fast) var(--fd-ease-in-out);
+}
+
+@keyframes fd-tooltip-in {
+  from {
+    opacity: 0;
+    /* `var(--fd-tooltip-translate)`, not a bare `scale(...)` -- each
+       placement below already centers the panel via its own translate;
+       overwriting `transform` here instead of composing with it would
+       snap the panel off-center for the animation's duration. */
+    transform: var(--fd-tooltip-translate) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: var(--fd-tooltip-translate) scale(1);
+  }
+}
+
+@keyframes fd-tooltip-out {
+  from {
+    opacity: 1;
+    transform: var(--fd-tooltip-translate) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: var(--fd-tooltip-translate) scale(0.95);
+  }
+}
+
+.panel--closing {
+  /* A genuinely different `animation-name`, not the entrance keyframes
+     played backwards via `animation-direction: reverse` -- confirmed live
+     that toggling just the direction/fill-mode of an *already-finished*
+     animation doesn't reliably restart its timeline in real browsers (it
+     was observed jumping straight to the reversed end state with no
+     visible transition at all, in both Chrome and Safari). Changing
+     `animation-name` itself is what actually forces a fresh run.
+     `forwards` holds the faded-out end state instead of snapping back to
+     the resting (opacity: 1) styles the instant the animation completes
+     -- tooltip.ts's handleAnimationEnd unmounts the element right after
+     that same event fires, but fill-mode covers the gap between "the
+     animation finished" and "the resulting re-render actually happened"
+     so there's no one-frame flash back to visible. */
+  animation: fd-tooltip-out var(--fd-duration-fast) var(--fd-ease-in-out) forwards;
+}
+
+.arrow {
+  position: absolute;
+  width: 0.625rem;
+  height: 0.625rem;
+  background: hsl(var(--fd-text));
+  transform: rotate(45deg);
+}
+
+.panel--top {
+  bottom: 100%;
+  left: 50%;
+  --fd-tooltip-translate: translateX(-50%);
+  transform: var(--fd-tooltip-translate);
+  margin-bottom: var(--fd-space-1);
+}
+
+.panel--top .arrow {
+  bottom: -0.3125rem;
+  left: 50%;
+  margin-left: -0.3125rem;
+}
+
+.panel--bottom {
+  top: 100%;
+  left: 50%;
+  --fd-tooltip-translate: translateX(-50%);
+  transform: var(--fd-tooltip-translate);
+  margin-top: var(--fd-space-1);
+}
+
+.panel--bottom .arrow {
+  top: -0.3125rem;
+  left: 50%;
+  margin-left: -0.3125rem;
+}
+
+.panel--left {
+  right: 100%;
+  top: 50%;
+  --fd-tooltip-translate: translateY(-50%);
+  transform: var(--fd-tooltip-translate);
+  margin-right: var(--fd-space-1);
+}
+
+.panel--left .arrow {
+  right: -0.3125rem;
+  top: 50%;
+  margin-top: -0.3125rem;
+}
+
+.panel--right {
+  left: 100%;
+  top: 50%;
+  --fd-tooltip-translate: translateY(-50%);
+  transform: var(--fd-tooltip-translate);
+  margin-left: var(--fd-space-1);
+}
+
+.panel--right .arrow {
+  left: -0.3125rem;
+  top: 50%;
+  margin-top: -0.3125rem;
+}

@@ -1,0 +1,51 @@
+:host {
+  display: inline-flex;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  /* No `color`/`tone` prop -- an icon's color is already fully addressable
+     via the CSS cascade (ambient text color, or an inline `style="color:
+     ..."` on the host). `color: inherit` plus `currentColor`-based
+     slotted graphics (the SVG icon convention) means this falls out of
+     ambient styling for free. */
+  color: inherit;
+}
+
+/* Each variant's own `var(--fd-icon-size, <fallback>)` -- rather than the
+   variant classes assigning `--fd-icon-size` themselves -- keeps that
+   custom property free for a consumer to set once on the host (e.g.
+   `style="--fd-icon-size: 3rem"`) as an escape hatch for arbitrary sizing
+   beyond the sm/md/lg scale, the same "controlled default + clean
+   override point" role `elementProps` plays on components that wrap a
+   single native element. Reassigning it here directly on `.icon` would
+   instead always win over that inherited override, since a same-element
+   declaration beats inheritance regardless of specificity. */
+.icon--sm {
+  width: var(--fd-icon-size, var(--fd-size-sm));
+  height: var(--fd-icon-size, var(--fd-size-sm));
+}
+
+.icon--md {
+  width: var(--fd-icon-size, var(--fd-size-md));
+  height: var(--fd-icon-size, var(--fd-size-md));
+}
+
+.icon--lg {
+  width: var(--fd-icon-size, var(--fd-size-lg));
+  height: var(--fd-icon-size, var(--fd-size-lg));
+}
+
+::slotted(svg),
+::slotted(img) {
+  width: 100%;
+  height: 100%;
+}
+
+::slotted(svg) {
+  fill: currentColor;
+}
