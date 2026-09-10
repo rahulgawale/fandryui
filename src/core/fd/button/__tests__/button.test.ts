@@ -69,6 +69,18 @@ describe('fd-button', () => {
     expect(button.tabIndex).toBe(-1);
   });
 
+  it('exposes an @api focus() that focuses the internal native button', () => {
+    const element = createElement('fd-button', { is: FdButton });
+    document.body.appendChild(element);
+
+    const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
+    (element as unknown as { focus(): void }).focus();
+
+    const button = element.shadowRoot!.querySelector('button') as HTMLElement;
+    expect(focusSpy.mock.instances).toContain(button);
+    focusSpy.mockRestore();
+  });
+
   it('does not let elementProps clobber a library-controlled prop, and warns once about it', () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const element = createElement('fd-button', { is: FdButton });

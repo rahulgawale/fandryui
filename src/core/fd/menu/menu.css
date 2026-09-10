@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+  min-width: var(--fd-overlay-min-width-sm);
+}

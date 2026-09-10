@@ -177,6 +177,55 @@
     </section>
 
     <section>
+      <h2>Link Example</h2>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center">
+        <fd-link href="https://github.com/rahulgawale/fandryui" target="_blank">Default link</fd-link>
+        <fd-link href="https://github.com/rahulgawale/fandryui" variant="muted" target="_blank">Muted link</fd-link>
+        <fd-link href="https://github.com/rahulgawale/fandryui" disabled>Disabled link</fd-link>
+      </div>
+    </section>
+
+    <section>
+      <h2>Menu Example</h2>
+      <p>
+        fd-menu wraps no trigger and owns no open state of its own -- it
+        composes with fd-popover the same way any two fd-* primitives do,
+        with this component (the consumer) wiring <code>open</code>/<code
+          >ontoggle</code
+        >
+        and closing the menu from its own <code>onselect</code> handler. Items
+        are rendered from a property-bound array via
+        <code>for:each</code>, not hardcoded -- toggling "Duplicate" below
+        flips <code>disabled</code> on an already-rendered item to show fd-menu
+        picking that up without a slotchange.
+      </p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start">
+        <fd-popover open={menuOpen} ontoggle={handleMenuToggle} placement="bottom">
+          <fd-button
+            slot="trigger"
+            variant="secondary"
+            element-props={menuTriggerProps}
+          >Actions</fd-button>
+          <fd-menu onselect={handleMenuSelect}>
+            <template for:each={menuActions} for:item="action">
+              <fd-menu-item
+                key={action.value}
+                value={action.value}
+                label={action.label}
+                disabled={action.disabled}
+              ></fd-menu-item>
+            </template>
+          </fd-menu>
+        </fd-popover>
+        <fd-checkbox
+          label="Disable &quot;Duplicate&quot;"
+          onchange={handleToggleDuplicateDisabled}
+        ></fd-checkbox>
+        <span if:true={lastMenuSelection}>Last selected: {lastMenuSelection}</span>
+      </div>
+    </section>
+
+    <section>
       <h2>Input Example</h2>
       <fd-input label="Email" type="email">
         <span slot="leading">📧</span>

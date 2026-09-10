@@ -1,0 +1,10 @@
+<template>
+  <div
+    class={classes}
+    role="menuitem"
+    aria-disabled={ariaDisabled}
+    onclick={handleClick}
+    onkeydown={handleKeydown}
+    lwc:spread={resolvedElementProps}
+  ><slot>{label}</slot></div>
+</template>
