@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/rahulgawale/fandryui/compare/v0.4.0...v0.5.0) (2026-09-10)
+
+
+### Features
+
+* add fd-icon and fd-tooltip primitives ([#47](https://github.com/rahulgawale/fandryui/issues/47)) ([27eee75](https://github.com/rahulgawale/fandryui/commit/27eee75b5a2a9f3399b2e0e155fd57744a6bb483))
+
 # [0.4.0](https://github.com/rahulgawale/fandryui/compare/v0.3.0...v0.4.0) (2026-09-10)
 
 
