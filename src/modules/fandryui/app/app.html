@@ -36,7 +36,8 @@
       <p>
         Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
         fd-select, fd-switch, fd-label, fd-badge, fd-card, fd-alert, fd-spinner,
-        fd-divider, fd-skeleton, fd-avatar, and fd-popover primitives
+        fd-divider, fd-skeleton, fd-avatar, fd-popover, fd-icon, fd-tooltip,
+        fd-heading, fd-text, fd-toast, and fd-toast-viewport primitives
       </p>
     </section>
 
@@ -226,6 +227,35 @@
     </section>
 
     <section>
+      <h2>Typography Example</h2>
+      <p>
+        LWC templates are static, so neither primitive can swap its real
+        rendered tag off a prop the way <code>level</code>/<code>as</code>
+        imply -- both instead render one element with an ARIA
+        document-structure role standing in for the tag
+        (<code>role="heading" aria-level</code>,
+        <code>role="paragraph"</code>), the same case those roles exist
+        for. fd-heading sizes off the same token scale as everything
+        else; fd-text's <code>as</code> (p/span/div, default p) picks
+        block vs. inline layout and, for "p", the paragraph role.
+      </p>
+      <fd-heading level="1">Heading level 1</fd-heading>
+      <fd-heading level="2">Heading level 2</fd-heading>
+      <fd-heading level="3">Heading level 3</fd-heading>
+      <fd-heading level="4">Heading level 4</fd-heading>
+      <fd-heading level="5">Heading level 5</fd-heading>
+      <fd-heading level="6">Heading level 6</fd-heading>
+      <fd-text>Default body text, rendered as a paragraph by default.</fd-text>
+      <p>
+        <fd-text as="span">Default body text.</fd-text>
+        &nbsp;
+        <fd-text as="span" variant="muted">Muted helper text.</fd-text>
+        &nbsp;
+        <fd-text as="span" size="xs" variant="muted">Extra-small caption text.</fd-text>
+      </p>
+    </section>
+
+    <section>
       <h2>Icon Example</h2>
       <p>
         fd-icon owns no icon set of its own -- it's a sizing/color frame
@@ -326,6 +356,100 @@
           >
           No delay on this one
         </fd-tooltip>
+      </div>
+    </section>
+
+    <section>
+      <h2>Toast Example</h2>
+      <p>
+        fd-toast starts its own auto-dismiss timer on mount and plays an
+        exit animation before notifying the consumer via
+        <code>ondismiss</code>. It owns no queue of its own -- appending a
+        new toast and removing a dismissed one from the list is ordinary
+        application-layer state (see <code>handleToastDismiss</code> in
+        app.ts). fd-toast-viewport is the other half: a fixed-position,
+        four-corner stacking region a consumer places once and slots every
+        fd-toast into, the same "one primitive owns positioning, another
+        owns the message" split as fd-popover's trigger/panel.
+      </p>
+      <p>
+        fd-toast's default slot itself has no restriction on rich content
+        -- the "Show rich toast" button below shows a toast whose body is
+        a real component (toastBody, with a title/detail/action) instead
+        of a plain string. A <code>for:each</code>-driven queue like this
+        one's own <code>toasts</code> array can only bind
+        <code>toast.message</code> as plain escaped text, though, so per
+        -item rich content there needs the same
+        <code>component</code>/<code>componentProps</code> +
+        <code>lwc:is</code> composition fd-select's own
+        <code>planOptionsWithIcons</code> demo already uses -- see
+        <code>handleAddRichToast</code> in app.ts.
+      </p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <fd-button variant="secondary" onclick={handleAddInfoToast}>
+          Show info toast
+        </fd-button>
+        <fd-button variant="secondary" onclick={handleAddSuccessToast}>
+          Show success toast
+        </fd-button>
+        <fd-button variant="secondary" onclick={handleAddWarningToast}>
+          Show warning toast
+        </fd-button>
+        <fd-button variant="secondary" onclick={handleAddDangerToast}>
+          Show danger toast
+        </fd-button>
+        <fd-button variant="secondary" onclick={handleAddRichToast}>
+          Show rich toast
+        </fd-button>
+      </div>
+      <fd-toast-viewport placement="bottom-right" label="Notifications">
+        <template for:each={toasts} for:item="toast">
+          <fd-toast
+            key={toast.id}
+            data-id={toast.id}
+            variant={toast.variant}
+            duration="4000"
+            ondismiss={handleToastDismiss}
+            onaction={handleToastAction}
+          >
+            <template if:true={toast.component}>
+              <lwc:component lwc:is={toast.component} lwc:spread={toast.componentProps}></lwc:component>
+            </template>
+            <template if:false={toast.component}>{toast.message}</template>
+          </fd-toast>
+        </template>
+      </fd-toast-viewport>
+
+      <fd-heading level="3" style="margin-top: var(--fd-space-5);">
+        Contained in a panel
+      </fd-heading>
+      <p>
+        <code>contained</code> switches fd-toast-viewport from
+        <code>position: fixed</code> (pinned to the browser viewport, the
+        example above) to <code>position: absolute</code>, scoped to
+        whatever positioned ancestor a consumer wraps it in -- here, the
+        bordered panel below instead of the whole page. The panel below
+        has <code>overflow: hidden</code>, so a toast staying visible
+        inside it (rather than escaping to the page's own corner) is what
+        proves it's actually scoped, not just visually coincidental.
+      </p>
+      <div class="panel-demo">
+        <fd-button variant="secondary" onclick={handleAddPanelToast}>
+          Show toast within this panel
+        </fd-button>
+        <fd-toast-viewport placement="bottom-right" contained>
+          <template for:each={panelToasts} for:item="toast">
+            <fd-toast
+              key={toast.id}
+              data-id={toast.id}
+              variant={toast.variant}
+              duration="4000"
+              ondismiss={handlePanelToastDismiss}
+            >
+              {toast.message}
+            </fd-toast>
+          </template>
+        </fd-toast-viewport>
       </div>
     </section>
 

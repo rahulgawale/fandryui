@@ -26,6 +26,7 @@
       "fd/tableState": ["src/core/fd/tableState/tableState"],
       "fd/*": ["src/core/fd/*"],
       "fandryui/planOption": ["src/modules/fandryui/planOption/planOption"],
+      "fandryui/toastBody": ["src/modules/fandryui/toastBody/toastBody"],
       "fandryui/*": ["src/modules/fandryui/*"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"]

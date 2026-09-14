@@ -24,3 +24,16 @@ section {
   border-color: var(--fd-color-focus);
   box-shadow: 0 0 0 var(--fd-ring-width) var(--fd-color-focus);
 }
+
+/* Positioned ancestor for the "contained" fd-toast-viewport demo --
+   overflow: hidden makes the panel actually clip anything not scoped to
+   it, so a toast staying visible inside is proof `contained` really
+   switched it to `position: absolute` against this panel. */
+.panel-demo {
+  position: relative;
+  overflow: hidden;
+  min-height: 12rem;
+  padding: var(--fd-space-4);
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+}

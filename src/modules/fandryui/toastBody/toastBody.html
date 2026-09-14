@@ -1,0 +1,10 @@
+<template>
+  <span class="body">
+    <span class="text"><strong>{title}</strong> — {detail}</span>
+    <template if:true={hasAction}>
+      <fd-button variant="ghost" size="sm" onclick={handleActionClick}>
+        {actionLabel}
+      </fd-button>
+    </template>
+  </span>
+</template>
