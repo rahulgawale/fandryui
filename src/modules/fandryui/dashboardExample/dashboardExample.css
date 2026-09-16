@@ -88,16 +88,21 @@
 }
 
 .nav-item:focus-visible {
-  outline: 2px solid hsl(330 81% 48%);
+  outline: 2px solid hsl(var(--brand-primary, 330 81% 48%));
   outline-offset: 2px;
 }
 
 .nav-item--active,
 .nav-item--active:hover {
-  /* Literal brand HSL, not --fd-color-primary -- that legacy global token
-     is a different (blue) value from the pink/magenta --fd-primary every
-     fandry-* primitive on this page actually renders with. */
-  background: hsl(330 81% 48%);
+  /* --brand-primary, not --fd-color-primary or --fd-primary -- the former
+     is a legacy global token, a different (blue) value from the
+     pink/magenta this page actually renders with; the latter is
+     :host-scoped inside each fandry-* primitive's own shadow root and
+     isn't visible out here. --brand-primary is a plain custom property set
+     on <html> by heroDemoGrid.ts's "Apply theme" handler, with the same
+     literal default this always had, so this stays in sync with the rest
+     of the page's retheming. */
+  background: hsl(var(--brand-primary, 330 81% 48%));
   color: #fff;
 }
 
@@ -115,6 +120,36 @@
 
 .stat-card {
   display: block;
+}
+
+/* --fd-card-bg (card.css) lets each stat card carry its own tint instead
+   of the plain surface color -- literal HSL, same hues as featureGrid.css's
+   icon-chip tints, not the --fd-primary/--fd-accent/--fd-success tokens
+   themselves (:host-scoped inside each fandry-* primitive's own shadow
+   root, not visible out here). Light enough that the card's own text
+   tokens (also shadow-scoped, so unaffected by this) stay readable. */
+.stat-card:nth-child(1) {
+  --fd-card-bg: linear-gradient(
+    135deg,
+    hsl(330 81% 48% / 0.14),
+    hsl(330 81% 48% / 0.02)
+  );
+}
+
+.stat-card:nth-child(2) {
+  --fd-card-bg: linear-gradient(
+    135deg,
+    hsl(199 89% 36% / 0.14),
+    hsl(199 89% 36% / 0.02)
+  );
+}
+
+.stat-card:nth-child(3) {
+  --fd-card-bg: linear-gradient(
+    135deg,
+    hsl(142 71% 30% / 0.14),
+    hsl(142 71% 30% / 0.02)
+  );
 }
 
 .orders-title {

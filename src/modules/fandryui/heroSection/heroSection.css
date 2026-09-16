@@ -1,15 +1,22 @@
 :host {
   display: block;
-  /* Literal HSL values (matching fandry/base's --fd-primary/--fd-accent)
-     rather than the custom properties themselves -- those are declared
-     :host-scoped inside each fandry-* primitive's own shadow root and
-     aren't visible out here in this component's light-DOM stylesheet. */
+  /* --brand-primary/--brand-accent (not --fd-primary/--fd-accent) -- those
+     tokens are declared :host-scoped inside each fandry-* primitive's own
+     shadow root and aren't visible out here in this component's light-DOM
+     stylesheet, but --brand-primary/--brand-accent are plain custom
+     properties with no such redeclaration, set on <html> by heroDemoGrid.ts's
+     "Apply theme" handler, so this wash retheme's live along with
+     everything else instead of staying pinned to the default brand hues. */
   background: radial-gradient(
       circle at 15% 0%,
-      hsl(330 81% 48% / 0.12),
+      hsl(var(--brand-primary, 330 81% 48%) / 0.12),
       transparent 55%
     ),
-    radial-gradient(circle at 85% 10%, hsl(199 89% 36% / 0.12), transparent 55%);
+    radial-gradient(
+      circle at 85% 10%,
+      hsl(var(--brand-accent, 199 89% 36%) / 0.12),
+      transparent 55%
+    );
 }
 
 .container {

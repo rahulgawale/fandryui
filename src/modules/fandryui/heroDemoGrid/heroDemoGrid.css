@@ -72,9 +72,17 @@
 .bar {
   width: 100%;
   border-radius: var(--fd-radius-sm) var(--fd-radius-sm) 0 0;
-  /* Same primary/accent hues as the gradient elsewhere on this page, just
-     horizontal instead of vertical and a shade darker on each end. */
-  background: linear-gradient(90deg, hsl(330 81% 40%), hsl(199 89% 28%));
+  /* --brand-primary-dark/--brand-accent-dark are set by this component's
+     own "Apply theme" handler (heroDemoGrid.ts) alongside --brand-primary/
+     --brand-accent -- same hue/saturation as those, just darkened, so this
+     chart retheme's live instead of staying pinned to the default brand
+     colors. Falls back to the original literal values (same hues, a shade
+     darker on each end) when nothing has been applied yet. */
+  background: linear-gradient(
+    90deg,
+    hsl(var(--brand-primary-dark, 330 81% 40%)),
+    hsl(var(--brand-accent-dark, 199 89% 28%))
+  );
 }
 
 /* -------- Live notification card -------- */

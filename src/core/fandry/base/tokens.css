@@ -8,10 +8,18 @@
      2.14:1). Same hue/saturation, lightness only, each now clears 4.5:1
      with a small margin (~4.7-4.9:1). --fd-danger was already compliant
      (4.80:1) and is unchanged. */
-  --fd-primary: 330 81% 48%;
+  /* var(--brand-primary, ...) first -- same pattern as --fd-font-heading
+     below: a page-level source of truth (nothing declares it by default,
+     so this falls back to the literal), settable at runtime via
+     document.documentElement.style.setProperty('--brand-primary', ...)
+     (see heroDemoGrid.ts's "Apply theme" handler) so retheming actually
+     cascades into every fandry-* primitive's shadow root instead of being
+     shadowed by this file's own :host declaration. */
+  --fd-primary: var(--brand-primary, 330 81% 48%);
   --fd-primary-foreground: 0 0% 100%;
 
-  --fd-accent: 199 89% 36%;
+  /* var(--brand-accent, ...) -- see --fd-primary's identical note above. */
+  --fd-accent: var(--brand-accent, 199 89% 36%);
   --fd-accent-foreground: 0 0% 100%;
 
   --fd-success: 142 71% 30%;

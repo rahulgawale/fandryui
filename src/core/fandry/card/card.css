@@ -1,10 +1,29 @@
 :host {
   display: block;
+  /* --fd-card-height is opt-in (default: auto, i.e. today's behavior
+     unchanged) -- a plain unconditional height: 100% here would silently
+     equal-height every fandry-card sitting in ANY display: grid consumer,
+     since Grid's default align-items: stretch already gives the *item box*
+     a definite height and this would just be what finally fills it. Only a
+     consumer that actually wants equal-height cards (featureGrid.css) sets
+     --fd-card-height: 100% on its own wrapper; everyone else (heroDemoGrid,
+     dashboardExample's stat cards, componentsIndex, etc.) keeps auto. */
+  height: var(--fd-card-height, auto);
 }
 
 .card {
   border: var(--fd-border-width) solid hsl(var(--fd-border));
   border-radius: var(--fd-radius-lg);
   padding: var(--fd-space-3);
-  background: hsl(var(--fd-bg));
+  /* --fd-card-bg lets a consumer give one specific card a different
+     background (e.g. a themed gradient) from outside, without touching
+     --fd-bg itself -- that token is redeclared :host-scoped by fandry/base's
+     tokens.css inside this same shadow root, so an external light-DOM rule
+     setting --fd-bg on the host would never reach .card (a component's own
+     :host declaration always wins over an inherited value). --fd-card-bg
+     has no such redeclaration here, so it inherits normally and this falls
+     back to the plain surface color when nothing overrides it. */
+  background: var(--fd-card-bg, hsl(var(--fd-bg)));
+  box-sizing: border-box;
+  height: var(--fd-card-height, auto);
 }
