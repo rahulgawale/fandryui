@@ -1,0 +1,250 @@
+<template>
+  <section class="section">
+    <div class="container">
+      <div class="gallery">
+        <!-- 1. Pricing card -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>01</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Pricing card</fandry-heading>
+          <fandry-text variant="muted" size="sm">A plan card with a badge, feature list, and single CTA.</fandry-text>
+          <fandry-card class="demo">
+            <fandry-badge variant="primary">Popular</fandry-badge>
+            <fandry-heading level="4" class="price-heading">Pro</fandry-heading>
+            <div class="price"><span class="amount">$29</span><span class="period">/mo</span></div>
+            <ul class="check-list">
+              <template for:each={pricingFeatures} for:item="feature">
+                <li key={feature}>
+                  <fandry-icon size="sm">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 6L9 17l-5-5"></path>
+                    </svg>
+                  </fandry-icon>
+                  <fandry-text as="span" size="sm">{feature}</fandry-text>
+                </li>
+              </template>
+            </ul>
+            <fandry-button>Choose Pro</fandry-button>
+          </fandry-card>
+        </div>
+
+        <!-- 2. Login form -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>02</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Login form</fandry-heading>
+          <fandry-text variant="muted" size="sm">Inputs, a checkbox, and a link, wired together.</fandry-text>
+          <fandry-card class="demo">
+            <fandry-heading level="4">Sign in</fandry-heading>
+            <fandry-input label="Email" type="email" placeholder="you@company.com"></fandry-input>
+            <fandry-input label="Password" type="password" placeholder="••••••••"></fandry-input>
+            <div class="form-row">
+              <fandry-checkbox label="Remember me"></fandry-checkbox>
+              <fandry-link variant="muted" href="#" onclick={handleNoopClick}>Forgot password?</fandry-link>
+            </div>
+            <fandry-button>Sign in</fandry-button>
+          </fandry-card>
+        </div>
+
+        <!-- 3. Settings toggles -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>03</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Settings list</fandry-heading>
+          <fandry-text variant="muted" size="sm">Label, description, and a switch, repeated with dividers.</fandry-text>
+          <fandry-card class="demo">
+            <fandry-heading level="4">Notifications</fandry-heading>
+            <div class="setting-row">
+              <div class="setting-copy">
+                <fandry-text as="span">Email alerts</fandry-text>
+                <fandry-text as="span" size="xs" variant="muted">Get notified when an order ships.</fandry-text>
+              </div>
+              <fandry-switch checked></fandry-switch>
+            </div>
+            <fandry-divider></fandry-divider>
+            <div class="setting-row">
+              <div class="setting-copy">
+                <fandry-text as="span">SMS alerts</fandry-text>
+                <fandry-text as="span" size="xs" variant="muted">Text messages for urgent updates.</fandry-text>
+              </div>
+              <fandry-switch></fandry-switch>
+            </div>
+            <fandry-divider></fandry-divider>
+            <div class="setting-row">
+              <div class="setting-copy">
+                <fandry-text as="span">Weekly digest</fandry-text>
+                <fandry-text as="span" size="xs" variant="muted">A Monday summary of account activity.</fandry-text>
+              </div>
+              <fandry-switch checked></fandry-switch>
+            </div>
+          </fandry-card>
+        </div>
+
+        <!-- 4. Empty state -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>04</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Empty state</fandry-heading>
+          <fandry-text variant="muted" size="sm">Icon, heading, muted copy, and a way forward.</fandry-text>
+          <fandry-card class="demo empty-state">
+            <div class="empty-icon">
+              <fandry-icon size="lg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 12h-6l-2 3h-4l-2-3H2 M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                </svg>
+              </fandry-icon>
+            </div>
+            <fandry-heading level="4">No invoices yet</fandry-heading>
+            <fandry-text variant="muted" size="sm">Invoices show up here once you place your first order.</fandry-text>
+            <fandry-button variant="secondary">Browse Products</fandry-button>
+          </fandry-card>
+        </div>
+
+        <!-- 5. Notification list -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>05</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Notification list</fandry-heading>
+          <fandry-text variant="muted" size="sm">A stack of fandry-alert, each with its own variant.</fandry-text>
+          <fandry-card class="demo">
+            <fandry-heading level="4">Notifications</fandry-heading>
+            <div class="notif-list">
+              <fandry-alert variant="info">New comment on ticket #4821.</fandry-alert>
+              <fandry-alert variant="success" title="Payment received">Invoice INV-2044 is now paid.</fandry-alert>
+              <fandry-alert variant="warning" title="Low stock">Valve Assembly is running low.</fandry-alert>
+            </div>
+          </fandry-card>
+        </div>
+
+        <!-- 6. Team list -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>06</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Team list</fandry-heading>
+          <fandry-text variant="muted" size="sm">Avatar, name, role, and a badge, data-driven with for:each.</fandry-text>
+          <fandry-card class="demo">
+            <fandry-heading level="4">Team</fandry-heading>
+            <div class="team-list">
+              <template for:each={teamMembers} for:item="member">
+                <div key={member.key} class="team-row">
+                  <fandry-avatar initials={member.initials} size="sm"></fandry-avatar>
+                  <div class="team-copy">
+                    <fandry-text as="span" size="sm">{member.name}</fandry-text>
+                    <fandry-text as="span" size="xs" variant="muted">{member.role}</fandry-text>
+                  </div>
+                  <fandry-badge variant={member.variant}>{member.badge}</fandry-badge>
+                </div>
+              </template>
+            </div>
+          </fandry-card>
+        </div>
+
+        <!-- 7. Attachment list -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>07</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Attachment list</fandry-heading>
+          <fandry-text variant="muted" size="sm">File icon, filename, size, and a remove action.</fandry-text>
+          <fandry-card class="demo">
+            <fandry-heading level="4">Attachments</fandry-heading>
+            <div class="file-list">
+              <template for:each={files} for:item="file">
+                <div key={file.key} class="file-row">
+                  <fandry-icon size="md">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6"></path>
+                    </svg>
+                  </fandry-icon>
+                  <div class="file-copy">
+                    <fandry-text as="span" size="sm">{file.name}</fandry-text>
+                    <fandry-text as="span" size="xs" variant="muted">{file.size}</fandry-text>
+                  </div>
+                  <fandry-button variant="ghost" size="sm" onclick={handleNoopClick}>Remove</fandry-button>
+                </div>
+              </template>
+            </div>
+          </fandry-card>
+        </div>
+
+        <!-- 8. Onboarding checklist -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>08</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Onboarding checklist</fandry-heading>
+          <fandry-text variant="muted" size="sm">Completed steps locked, the rest genuinely checkable.</fandry-text>
+          <fandry-card class="demo">
+            <fandry-heading level="4">Get started</fandry-heading>
+            <fandry-text variant="muted" size="sm">2 of 4 steps complete</fandry-text>
+            <div class="checklist">
+              <fandry-checkbox label="Create your account" checked disabled></fandry-checkbox>
+              <fandry-checkbox label="Verify your email" checked disabled></fandry-checkbox>
+              <fandry-checkbox label="Invite your team"></fandry-checkbox>
+              <fandry-checkbox label="Place your first order"></fandry-checkbox>
+            </div>
+          </fandry-card>
+        </div>
+
+        <!-- 9. Search bar -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>09</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Search bar</fandry-heading>
+          <fandry-text variant="muted" size="sm">fandry-input's prefix slot plus a static results list.</fandry-text>
+          <fandry-card class="demo">
+            <fandry-input label="Quick search" placeholder="Search orders, products, people…">
+              <span slot="prefix">🔍</span>
+            </fandry-input>
+            <div class="search-results">
+              <template for:each={searchResults} for:item="result">
+                <div key={result.key} class="search-result">
+                  <fandry-text as="span" size="sm">{result.label}</fandry-text>
+                  <fandry-badge>{result.badge}</fandry-badge>
+                </div>
+              </template>
+            </div>
+          </fandry-card>
+        </div>
+
+        <!-- 10. KPI row -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>10</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">KPI row</fandry-heading>
+          <fandry-text variant="muted" size="sm">Three stat tiles with a trend badge each.</fandry-text>
+          <fandry-card class="demo">
+            <fandry-heading level="4">This month</fandry-heading>
+            <div class="kpi-row">
+              <template for:each={kpis} for:item="kpi">
+                <div key={kpi.key} class="kpi">
+                  <fandry-text as="span" size="xs" variant="muted">{kpi.label}</fandry-text>
+                  <fandry-heading level="4">{kpi.value}</fandry-heading>
+                  <fandry-badge variant={kpi.variant}>{kpi.change}</fandry-badge>
+                </div>
+              </template>
+            </div>
+          </fandry-card>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

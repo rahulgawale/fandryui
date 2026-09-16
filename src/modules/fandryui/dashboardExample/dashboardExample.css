@@ -1,0 +1,137 @@
+:host {
+  display: block;
+}
+
+.section {
+  padding: var(--fd-space-6) 0 calc(var(--fd-space-6) * 2);
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--fd-space-6);
+  display: block;
+}
+
+.frame-scroll {
+  overflow-x: auto;
+}
+
+.frame {
+  min-width: 40rem;
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-lg);
+  overflow: hidden;
+  background: var(--fd-color-surface);
+  box-shadow: 0 24px 48px -24px rgba(15, 23, 42, 0.35);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-5);
+  padding: var(--fd-space-3) var(--fd-space-5);
+  border-bottom: 1px solid var(--fd-color-border);
+}
+
+.brand {
+  font-weight: 700;
+}
+
+.topbar-links {
+  flex: 1;
+  display: flex;
+  gap: var(--fd-space-4);
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-2);
+}
+
+.body {
+  display: flex;
+  min-height: 22rem;
+}
+
+.sidebar {
+  width: 12rem;
+  flex-shrink: 0;
+  border-right: 1px solid var(--fd-color-border);
+  padding: var(--fd-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.nav-item {
+  padding: var(--fd-space-2) var(--fd-space-3);
+  border-radius: var(--fd-radius-md);
+  font-size: var(--fd-font-size-sm);
+  color: var(--fd-color-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.nav-item:focus-visible {
+  outline: 2px solid hsl(330 81% 48%);
+  outline-offset: 2px;
+}
+
+.nav-item--active,
+.nav-item--active:hover {
+  /* Literal brand HSL, not --fd-color-primary -- that legacy global token
+     is a different (blue) value from the pink/magenta --fd-primary every
+     fandry-* primitive on this page actually renders with. */
+  background: hsl(330 81% 48%);
+  color: #fff;
+}
+
+.main {
+  flex: 1;
+  padding: var(--fd-space-5);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--fd-space-3);
+  margin: var(--fd-space-4) 0 var(--fd-space-5);
+}
+
+.stat-card {
+  display: block;
+}
+
+.orders-title {
+  display: block;
+  margin-bottom: var(--fd-space-2);
+}
+
+.orders {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr auto;
+  align-items: center;
+  gap: var(--fd-space-3);
+  padding: var(--fd-space-2) 0;
+  border-bottom: 1px solid var(--fd-color-border);
+}
+
+.order-row:last-child {
+  border-bottom: none;
+}

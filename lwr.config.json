@@ -11,9 +11,21 @@
     },
     "routes": [
         {
-            "id": "fandryui",
+            "id": "home",
             "path": "/",
+            "rootComponent": "fandryui/home",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "components",
+            "path": "/components",
             "rootComponent": "fandryui/app",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "examples",
+            "path": "/examples",
+            "rootComponent": "fandryui/examples",
             "layoutTemplate": "$layoutsDir/index.html"
         }
     ],

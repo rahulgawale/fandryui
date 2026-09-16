@@ -17,21 +17,21 @@
 }
 
 .avatar--sm {
-  width: var(--fd-size-sm);
-  height: var(--fd-size-sm);
-  font-size: calc(var(--fd-size-sm) * 0.4);
+  width: var(--fd-avatar-size-sm);
+  height: var(--fd-avatar-size-sm);
+  font-size: calc(var(--fd-avatar-size-sm) * 0.4);
 }
 
 .avatar--md {
-  width: var(--fd-size-md);
-  height: var(--fd-size-md);
-  font-size: calc(var(--fd-size-md) * 0.4);
+  width: var(--fd-avatar-size-md);
+  height: var(--fd-avatar-size-md);
+  font-size: calc(var(--fd-avatar-size-md) * 0.4);
 }
 
 .avatar--lg {
-  width: var(--fd-size-lg);
-  height: var(--fd-size-lg);
-  font-size: calc(var(--fd-size-lg) * 0.4);
+  width: var(--fd-avatar-size-lg);
+  height: var(--fd-avatar-size-lg);
+  font-size: calc(var(--fd-avatar-size-lg) * 0.4);
 }
 
 .image {

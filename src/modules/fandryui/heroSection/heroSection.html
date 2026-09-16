@@ -1,0 +1,31 @@
+<template>
+  <section class="hero">
+    <div class="container">
+      <fandry-badge variant="primary">Native LWC · v0.6</fandry-badge>
+
+      <fandry-heading level="1" class="headline">
+        Make breezy sites on Salesforce.
+      </fandry-heading>
+
+      <fandry-text class="subhead" size="md" variant="muted">
+        Fandry UI is a native Lightning Web Components library for building
+        fast, modern, themeable Salesforce experiences — without fighting
+        Lightning Design System.
+      </fandry-text>
+
+      <div class="cta-row">
+        <fandry-button variant="default" size="lg" onclick={handlePrimaryClick}>
+          Browse Components
+        </fandry-button>
+        <fandry-button variant="secondary" size="lg" onclick={handleGithubClick}>
+          View on GitHub
+        </fandry-button>
+      </div>
+
+    </div>
+
+    <div class="demo-grid-wrap">
+      <fandryui-hero-demo-grid></fandryui-hero-demo-grid>
+    </div>
+  </section>
+</template>

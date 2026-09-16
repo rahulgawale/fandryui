@@ -98,10 +98,18 @@
   --fd-space-4: 1rem;
   --fd-space-5: 1.25rem;
 
-  /* ---- Size scale (icons, spinners, avatars) ---- */
+  /* ---- Size scale (icons, spinners) ---- */
   --fd-size-sm: 1rem;
   --fd-size-md: 1.5rem;
   --fd-size-lg: 2rem;
+
+  /* ---- Avatar size scale -- kept independent of --fd-size-* above.
+     Icons/spinners are decorative glyphs that read fine small; an avatar
+     carries a face or initials, so it needs to stay legible even at its
+     smallest size. ---- */
+  --fd-avatar-size-sm: 1.5rem;
+  --fd-avatar-size-md: 2.25rem;
+  --fd-avatar-size-lg: 3rem;
 
   /* ---- Motion ---- */
   --fd-duration-fast: 120ms;

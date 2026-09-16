@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.intro {
+  padding: calc(var(--fd-space-6) * 1.5) 0 var(--fd-space-6);
+  text-align: center;
+}
+
+.container {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.subhead {
+  max-width: 32rem;
+}

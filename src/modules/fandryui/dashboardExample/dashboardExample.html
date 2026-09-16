@@ -1,0 +1,83 @@
+<template>
+  <section class="section">
+    <div class="container">
+      <fandry-heading level="2" class="title">A B2B dashboard, built entirely from these primitives</fandry-heading>
+
+      <div class="frame-scroll">
+        <div class="frame">
+          <div class="topbar">
+            <span class="brand">ACME</span>
+            <div class="topbar-links">
+              <fandry-link variant="muted" href="#" onclick={handleTopbarLinkClick}>Search</fandry-link>
+              <fandry-link variant="muted" href="#" onclick={handleTopbarLinkClick}>Help</fandry-link>
+            </div>
+            <div class="user">
+              <fandry-avatar initials="A" size="sm"></fandry-avatar>
+              <fandry-text as="span" size="sm">Alex</fandry-text>
+            </div>
+          </div>
+
+          <div class="body">
+            <aside class="sidebar">
+              <template for:each={navItemClasses} for:item="item">
+                <div
+                  key={item.key}
+                  class={item.className}
+                  data-key={item.key}
+                  role="button"
+                  tabindex="0"
+                  onclick={handleNavClick}
+                  onkeydown={handleNavKeydown}
+                >
+                  {item.label}
+                </div>
+              </template>
+            </aside>
+
+            <main class="main">
+              <template if:true={isOverview}>
+                <fandry-heading level="3">Good morning, Alex</fandry-heading>
+                <fandry-text variant="muted">Here's what's happening with your account.</fandry-text>
+
+                <div class="stats">
+                  <template for:each={stats} for:item="stat">
+                    <fandry-card key={stat.key} class="stat-card">
+                      <fandry-text as="span" size="xs" variant="muted">{stat.label}</fandry-text>
+                      <fandry-heading level="4">{stat.value}</fandry-heading>
+                    </fandry-card>
+                  </template>
+                </div>
+
+                <fandry-heading level="4" class="orders-title">Recent Orders</fandry-heading>
+                <div class="orders">
+                  <template for:each={recentOrders} for:item="order">
+                    <div key={order.key} class="order-row">
+                      <fandry-text as="span" size="sm">{order.code}</fandry-text>
+                      <fandry-text as="span" size="sm">{order.label}</fandry-text>
+                      <fandry-badge variant={order.badgeVariant}>{order.badgeLabel}</fandry-badge>
+                    </div>
+                  </template>
+                </div>
+              </template>
+
+              <template if:false={isOverview}>
+                <fandry-heading level="3">{selectedView.title}</fandry-heading>
+                <fandry-text variant="muted">{selectedView.subtitle}</fandry-text>
+
+                <div class="orders">
+                  <template for:each={selectedView.rows} for:item="row">
+                    <div key={row.key} class="order-row">
+                      <fandry-text as="span" size="sm">{row.code}</fandry-text>
+                      <fandry-text as="span" size="sm">{row.label}</fandry-text>
+                      <fandry-badge variant={row.badgeVariant}>{row.badgeLabel}</fandry-badge>
+                    </div>
+                  </template>
+                </div>
+              </template>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

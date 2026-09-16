@@ -1,0 +1,78 @@
+:host {
+  display: block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--fd-space-4);
+  text-align: left;
+}
+
+@media (max-width: 60rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 32rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.demo-card {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* Same reasoning as exampleGallery.css -- fandry-card's shadow tree has no
+   gap of its own between slotted children, so this spaces this
+   component's own light-DOM children directly. */
+.demo-card > * + * {
+  margin-top: var(--fd-space-3);
+  display: block;
+}
+
+.btn-row {
+  display: flex;
+  gap: var(--fd-space-2);
+  flex-wrap: wrap;
+}
+
+.mini-row {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-3);
+  flex-wrap: wrap;
+}
+
+/* -------- Build velocity chart -------- */
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--fd-space-2);
+  height: 6rem;
+}
+
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fd-space-1);
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar {
+  width: 100%;
+  border-radius: var(--fd-radius-sm) var(--fd-radius-sm) 0 0;
+  background: linear-gradient(180deg, hsl(330 81% 48%), hsl(199 89% 36%));
+}
+
+/* -------- Live notification card -------- */
+
+.notif-card {
+  position: relative;
+}
