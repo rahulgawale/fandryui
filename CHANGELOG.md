@@ -1,3 +1,10 @@
+## [0.6.1](https://github.com/rahulgawale/fandryui/compare/v0.6.0...v0.6.1) (2026-09-16)
+
+
+### Bug Fixes
+
+* **ci:** quote github-actions[bot]'s name and email for gh-pages -u ([#57](https://github.com/rahulgawale/fandryui/issues/57)) ([ef05fe9](https://github.com/rahulgawale/fandryui/commit/ef05fe9b0ae248d23b19cd804e90804606feb267)), closes [#pages](https://github.com/rahulgawale/fandryui/issues/pages) [#pages](https://github.com/rahulgawale/fandryui/issues/pages)
+
 # [0.6.0](https://github.com/rahulgawale/fandryui/compare/v0.5.0...v0.6.0) (2026-09-16)
 
 
