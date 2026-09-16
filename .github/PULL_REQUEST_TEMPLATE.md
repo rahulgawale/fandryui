@@ -24,8 +24,8 @@
 
 ### Code Quality
 
-- [ ] Uses design tokens from `fd/base/tokens.css` (no hard-coded values)
-- [ ] New primitives extend `Base` class from `fd/base`
+- [ ] Uses design tokens from `fandry/base/tokens.css` (no hard-coded values)
+- [ ] New primitives extend `Base` class from `fandry/base`
 - [ ] Components use slots for extensibility
 - [ ] TypeScript types are clear and readable
 - [ ] Code follows "boring is success" principle

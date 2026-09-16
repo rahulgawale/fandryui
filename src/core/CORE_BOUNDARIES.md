@@ -14,7 +14,7 @@ Core is not a solution layer.
 ## What Core MAY contain
 
 Core may include:
-- fd-* primitives built with native LWC (input, textarea, checkbox, etc.)
+- fandry-* primitives built with native LWC (input, textarea, checkbox, etc.)
 - structural layout for primitives
 - slots for extensibility
 - design tokens
@@ -52,7 +52,7 @@ If it feels like an app feature, it does not belong in Core.
 - `<textarea>`
 - `<select>`
 
-Native elements must be **properly wrapped** in fd-* components with normalized events and APIs.
+Native elements must be **properly wrapped** in fandry-* components with normalized events and APIs.
 
 ---
 

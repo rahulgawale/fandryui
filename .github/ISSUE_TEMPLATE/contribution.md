@@ -42,7 +42,7 @@ assignees: ''
 
 ### Design Tokens
 
-- [ ] Uses tokens from `fd/base/tokens.css`
+- [ ] Uses tokens from `fandry/base/tokens.css`
 - [ ] No hard-coded values for colors, spacing, borders, etc.
 - [ ] New tokens added to `tokens.css` if needed
 

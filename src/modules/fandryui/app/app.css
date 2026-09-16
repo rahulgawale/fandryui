@@ -25,7 +25,7 @@ section {
   box-shadow: 0 0 0 var(--fd-ring-width) var(--fd-color-focus);
 }
 
-/* Positioned ancestor for the "contained" fd-toast-viewport demo --
+/* Positioned ancestor for the "contained" fandry-toast-viewport demo --
    overflow: hidden makes the panel actually clip anything not scoped to
    it, so a toast staying visible inside is proof `contained` really
    switched it to `position: absolute` against this panel. */

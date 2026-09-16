@@ -49,7 +49,7 @@ src/
 ```
 
 Key rule: **Primitives stay small.**  
-If something feels like an app feature, it does not belong in core/fd/.
+If something feels like an app feature, it does not belong in core/fandry/.
 
 ## Prerequisites
 
@@ -76,9 +76,9 @@ Open http://localhost:3000/fandryui in your browser.
 
 You should see:
 
-- fd-input
-- fd-textarea
-- fd-button
+- fandry-input
+- fandry-textarea
+- fandry-button
 - Native LWC primitives working
 - Slots and events behaving correctly
 

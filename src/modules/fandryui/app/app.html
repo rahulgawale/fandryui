@@ -34,17 +34,17 @@
     <section>
       <h2>Component Primitives</h2>
       <p>
-        Demonstrating fd-input, fd-textarea, fd-button, fd-checkbox, fd-radio,
-        fd-select, fd-switch, fd-label, fd-badge, fd-card, fd-alert, fd-spinner,
-        fd-divider, fd-skeleton, fd-avatar, fd-popover, fd-icon, fd-tooltip,
-        fd-heading, fd-text, fd-toast, and fd-toast-viewport primitives
+        Demonstrating fandry-input, fandry-textarea, fandry-button, fandry-checkbox, fandry-radio,
+        fandry-select, fandry-switch, fandry-label, fandry-badge, fandry-card, fandry-alert, fandry-spinner,
+        fandry-divider, fandry-skeleton, fandry-avatar, fandry-popover, fandry-icon, fandry-tooltip,
+        fandry-heading, fandry-text, fandry-toast, and fandry-toast-viewport primitives
       </p>
     </section>
 
     <section>
       <h2>Application Components</h2>
       <p>
-        Built on top of the primitives above. fd-table wraps
+        Built on top of the primitives above. fandry-table wraps
         <code>@tanstack/table-core</code> for headless row/column/sorting logic,
         while rendering stays native LWC.
       </p>
@@ -55,10 +55,10 @@
       <div
         style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center"
       >
-        <fd-button>Primary Button</fd-button>
-        <fd-button variant="secondary">Secondary</fd-button>
-        <fd-button variant="ghost">Ghost</fd-button>
-        <fd-button disabled>Disabled</fd-button>
+        <fandry-button>Primary Button</fandry-button>
+        <fandry-button variant="secondary">Secondary</fandry-button>
+        <fandry-button variant="ghost">Ghost</fandry-button>
+        <fandry-button disabled>Disabled</fandry-button>
       </div>
       <div
         style="
@@ -69,9 +69,9 @@
           margin-top: 0.75rem;
         "
       >
-        <fd-button size="sm">Small</fd-button>
-        <fd-button size="md">Medium</fd-button>
-        <fd-button size="lg">Large</fd-button>
+        <fandry-button size="sm">Small</fandry-button>
+        <fandry-button size="md">Medium</fandry-button>
+        <fandry-button size="lg">Large</fandry-button>
       </div>
     </section>
 
@@ -80,14 +80,14 @@
       <div
         style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap"
       >
-        <fd-avatar initials="JD" size="sm"></fd-avatar>
-        <fd-avatar initials="JD" size="md"></fd-avatar>
-        <fd-avatar initials="JD" size="lg"></fd-avatar>
-        <fd-avatar
+        <fandry-avatar initials="JD" size="sm"></fandry-avatar>
+        <fandry-avatar initials="JD" size="md"></fandry-avatar>
+        <fandry-avatar initials="JD" size="lg"></fandry-avatar>
+        <fandry-avatar
           src="https://broken.example/does-not-exist.jpg"
           initials="RG"
           alt="Rahul Gawale"
-        ></fd-avatar>
+        ></fandry-avatar>
       </div>
     </section>
 
@@ -96,42 +96,42 @@
       <div
         style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap"
       >
-        <fd-spinner size="sm"></fd-spinner>
-        <fd-spinner size="md"></fd-spinner>
-        <fd-spinner size="lg"></fd-spinner>
-        <fd-button variant="secondary" disabled>
-          <fd-spinner size="sm"></fd-spinner>
+        <fandry-spinner size="sm"></fandry-spinner>
+        <fandry-spinner size="md"></fandry-spinner>
+        <fandry-spinner size="lg"></fandry-spinner>
+        <fandry-button variant="secondary" disabled>
+          <fandry-spinner size="sm"></fandry-spinner>
           Saving…
-        </fd-button>
+        </fandry-button>
       </div>
     </section>
 
     <section>
       <h2>Skeleton Example</h2>
-      <fd-card>
+      <fandry-card>
         <div style="display: flex; gap: 0.75rem; align-items: flex-start">
-          <fd-skeleton variant="circle"></fd-skeleton>
+          <fandry-skeleton variant="circle"></fandry-skeleton>
           <div
             style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem"
           >
-            <fd-skeleton variant="text" style="width: 40%"></fd-skeleton>
-            <fd-skeleton variant="text"></fd-skeleton>
-            <fd-skeleton variant="rect"></fd-skeleton>
+            <fandry-skeleton variant="text" style="width: 40%"></fandry-skeleton>
+            <fandry-skeleton variant="text"></fandry-skeleton>
+            <fandry-skeleton variant="rect"></fandry-skeleton>
           </div>
         </div>
-      </fd-card>
+      </fandry-card>
     </section>
 
     <section>
       <h2>Divider Example</h2>
       <p>Above</p>
-      <fd-divider></fd-divider>
+      <fandry-divider></fandry-divider>
       <p>Below</p>
       <div
         style="display: flex; align-items: center; gap: 0.75rem; height: 2rem"
       >
         <span>Left</span>
-        <fd-divider orientation="vertical"></fd-divider>
+        <fandry-divider orientation="vertical"></fandry-divider>
         <span>Right</span>
       </div>
     </section>
@@ -146,82 +146,82 @@
           align-items: flex-start;
         "
       >
-        <fd-popover placement="bottom">
-          <fd-button slot="trigger" variant="secondary">Bottom</fd-button>
+        <fandry-popover placement="bottom">
+          <fandry-button slot="trigger" variant="secondary">Bottom</fandry-button>
           <div style="width: 12rem">
             <p style="margin: 0 0 0.5rem">
               Popover content anchored below the trigger.
             </p>
-            <fd-button size="sm">Action</fd-button>
+            <fandry-button size="sm">Action</fandry-button>
           </div>
-        </fd-popover>
+        </fandry-popover>
 
-        <fd-popover placement="top">
-          <fd-button slot="trigger" variant="secondary">Top</fd-button>
+        <fandry-popover placement="top">
+          <fandry-button slot="trigger" variant="secondary">Top</fandry-button>
           <div style="width: 10rem">Anchored above.</div>
-        </fd-popover>
+        </fandry-popover>
 
-        <fd-popover placement="right">
-          <fd-button slot="trigger" variant="secondary">Right</fd-button>
+        <fandry-popover placement="right">
+          <fandry-button slot="trigger" variant="secondary">Right</fandry-button>
           <div style="width: 10rem">Anchored to the right.</div>
-        </fd-popover>
+        </fandry-popover>
 
-        <fd-popover placement="bottom">
-          <fd-button slot="trigger" variant="ghost">Menu</fd-button>
+        <fandry-popover placement="bottom">
+          <fandry-button slot="trigger" variant="ghost">Menu</fandry-button>
           <div style="display: flex; flex-direction: column; min-width: 8rem">
-            <fd-button variant="ghost" size="sm">Edit</fd-button>
-            <fd-button variant="ghost" size="sm">Duplicate</fd-button>
-            <fd-button variant="ghost" size="sm">Delete</fd-button>
+            <fandry-button variant="ghost" size="sm">Edit</fandry-button>
+            <fandry-button variant="ghost" size="sm">Duplicate</fandry-button>
+            <fandry-button variant="ghost" size="sm">Delete</fandry-button>
           </div>
-        </fd-popover>
+        </fandry-popover>
       </div>
     </section>
 
     <section>
       <h2>Link Example</h2>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center">
-        <fd-link href="https://github.com/rahulgawale/fandryui" target="_blank">Default link</fd-link>
-        <fd-link href="https://github.com/rahulgawale/fandryui" variant="muted" target="_blank">Muted link</fd-link>
-        <fd-link href="https://github.com/rahulgawale/fandryui" disabled>Disabled link</fd-link>
+        <fandry-link href="https://github.com/rahulgawale/fandryui" target="_blank">Default link</fandry-link>
+        <fandry-link href="https://github.com/rahulgawale/fandryui" variant="muted" target="_blank">Muted link</fandry-link>
+        <fandry-link href="https://github.com/rahulgawale/fandryui" disabled>Disabled link</fandry-link>
       </div>
     </section>
 
     <section>
       <h2>Menu Example</h2>
       <p>
-        fd-menu wraps no trigger and owns no open state of its own -- it
-        composes with fd-popover the same way any two fd-* primitives do,
+        fandry-menu wraps no trigger and owns no open state of its own -- it
+        composes with fandry-popover the same way any two fandry-* primitives do,
         with this component (the consumer) wiring <code>open</code>/<code
           >ontoggle</code
         >
         and closing the menu from its own <code>onselect</code> handler. Items
         are rendered from a property-bound array via
         <code>for:each</code>, not hardcoded -- toggling "Duplicate" below
-        flips <code>disabled</code> on an already-rendered item to show fd-menu
+        flips <code>disabled</code> on an already-rendered item to show fandry-menu
         picking that up without a slotchange.
       </p>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start">
-        <fd-popover open={menuOpen} ontoggle={handleMenuToggle} placement="bottom">
-          <fd-button
+        <fandry-popover open={menuOpen} ontoggle={handleMenuToggle} placement="bottom">
+          <fandry-button
             slot="trigger"
             variant="secondary"
             element-props={menuTriggerProps}
-          >Actions</fd-button>
-          <fd-menu onselect={handleMenuSelect}>
+          >Actions</fandry-button>
+          <fandry-menu onselect={handleMenuSelect}>
             <template for:each={menuActions} for:item="action">
-              <fd-menu-item
+              <fandry-menu-item
                 key={action.value}
                 value={action.value}
                 label={action.label}
                 disabled={action.disabled}
-              ></fd-menu-item>
+              ></fandry-menu-item>
             </template>
-          </fd-menu>
-        </fd-popover>
-        <fd-checkbox
+          </fandry-menu>
+        </fandry-popover>
+        <fandry-checkbox
           label="Disable &quot;Duplicate&quot;"
           onchange={handleToggleDuplicateDisabled}
-        ></fd-checkbox>
+        ></fandry-checkbox>
         <span if:true={lastMenuSelection}>Last selected: {lastMenuSelection}</span>
       </div>
     </section>
@@ -235,30 +235,30 @@
         document-structure role standing in for the tag
         (<code>role="heading" aria-level</code>,
         <code>role="paragraph"</code>), the same case those roles exist
-        for. fd-heading sizes off the same token scale as everything
-        else; fd-text's <code>as</code> (p/span/div, default p) picks
+        for. fandry-heading sizes off the same token scale as everything
+        else; fandry-text's <code>as</code> (p/span/div, default p) picks
         block vs. inline layout and, for "p", the paragraph role.
       </p>
-      <fd-heading level="1">Heading level 1</fd-heading>
-      <fd-heading level="2">Heading level 2</fd-heading>
-      <fd-heading level="3">Heading level 3</fd-heading>
-      <fd-heading level="4">Heading level 4</fd-heading>
-      <fd-heading level="5">Heading level 5</fd-heading>
-      <fd-heading level="6">Heading level 6</fd-heading>
-      <fd-text>Default body text, rendered as a paragraph by default.</fd-text>
+      <fandry-heading level="1">Heading level 1</fandry-heading>
+      <fandry-heading level="2">Heading level 2</fandry-heading>
+      <fandry-heading level="3">Heading level 3</fandry-heading>
+      <fandry-heading level="4">Heading level 4</fandry-heading>
+      <fandry-heading level="5">Heading level 5</fandry-heading>
+      <fandry-heading level="6">Heading level 6</fandry-heading>
+      <fandry-text>Default body text, rendered as a paragraph by default.</fandry-text>
       <p>
-        <fd-text as="span">Default body text.</fd-text>
+        <fandry-text as="span">Default body text.</fandry-text>
         &nbsp;
-        <fd-text as="span" variant="muted">Muted helper text.</fd-text>
+        <fandry-text as="span" variant="muted">Muted helper text.</fandry-text>
         &nbsp;
-        <fd-text as="span" size="xs" variant="muted">Extra-small caption text.</fd-text>
+        <fandry-text as="span" size="xs" variant="muted">Extra-small caption text.</fandry-text>
       </p>
     </section>
 
     <section>
       <h2>Icon Example</h2>
       <p>
-        fd-icon owns no icon set of its own -- it's a sizing/color frame
+        fandry-icon owns no icon set of its own -- it's a sizing/color frame
         around whatever glyph a consumer slots in (inline SVG here, but an
         emoji, an <code>&lt;img&gt;</code>, or an SLDS
         <code>&lt;lightning-icon&gt;</code> work the same way). Color comes
@@ -267,45 +267,45 @@
         prop.
       </p>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center">
-        <fd-icon size="sm">
+        <fandry-icon size="sm">
           <svg viewBox="0 0 24 24">
             <path
               d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
             ></path>
           </svg>
-        </fd-icon>
-        <fd-icon size="md">
+        </fandry-icon>
+        <fandry-icon size="md">
           <svg viewBox="0 0 24 24">
             <path
               d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
             ></path>
           </svg>
-        </fd-icon>
-        <fd-icon size="lg">
+        </fandry-icon>
+        <fandry-icon size="lg">
           <svg viewBox="0 0 24 24">
             <path
               d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
             ></path>
           </svg>
-        </fd-icon>
+        </fandry-icon>
         <span style="color: hsl(var(--fd-danger))">
-          <fd-icon size="md">
+          <fandry-icon size="md">
             <svg viewBox="0 0 24 24">
               <path
                 d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
               ></path>
             </svg>
-          </fd-icon>
+          </fandry-icon>
         </span>
-        <fd-button variant="ghost" size="sm" aria-label="Favorite">
-          <fd-icon label="Favorite" size="sm">
+        <fandry-button variant="ghost" size="sm" aria-label="Favorite">
+          <fandry-icon label="Favorite" size="sm">
             <svg viewBox="0 0 24 24">
               <path
                 d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"
               ></path>
             </svg>
-          </fd-icon>
-        </fd-button>
+          </fandry-icon>
+        </fandry-button>
       </div>
     </section>
 
@@ -313,7 +313,7 @@
       <h2>Tooltip Example</h2>
       <p>
         Hover or focus a trigger to reveal a short description. Like
-        fd-popover, fd-tooltip owns no trigger of its own -- it composes
+        fandry-popover, fandry-tooltip owns no trigger of its own -- it composes
         with whatever a consumer slots in as <code>slot="trigger"</code>,
         and the description text is plain default-slot content rather than
         a dedicated prop.
@@ -327,53 +327,53 @@
           padding: 2rem 0;
         "
       >
-        <fd-tooltip placement="top">
-          <fd-button slot="trigger" variant="secondary">Top</fd-button>
+        <fandry-tooltip placement="top">
+          <fandry-button slot="trigger" variant="secondary">Top</fandry-button>
           Saves your changes
-        </fd-tooltip>
+        </fandry-tooltip>
 
-        <fd-tooltip placement="bottom">
-          <fd-button slot="trigger" variant="secondary">Bottom</fd-button>
+        <fandry-tooltip placement="bottom">
+          <fandry-button slot="trigger" variant="secondary">Bottom</fandry-button>
           Saves your changes
-        </fd-tooltip>
+        </fandry-tooltip>
 
-        <fd-tooltip placement="left">
-          <fd-button slot="trigger" variant="secondary">Left</fd-button>
+        <fandry-tooltip placement="left">
+          <fandry-button slot="trigger" variant="secondary">Left</fandry-button>
           Saves your changes
-        </fd-tooltip>
+        </fandry-tooltip>
 
-        <fd-tooltip placement="right">
-          <fd-button slot="trigger" variant="secondary">Right</fd-button>
+        <fandry-tooltip placement="right">
+          <fandry-button slot="trigger" variant="secondary">Right</fandry-button>
           Saves your changes
-        </fd-tooltip>
+        </fandry-tooltip>
 
-        <fd-tooltip open-delay="0">
-          <fd-link
+        <fandry-tooltip open-delay="0">
+          <fandry-link
             slot="trigger"
             href="https://github.com/rahulgawale/fandryui"
             target="_blank"
-            >Plain-text trigger</fd-link
+            >Plain-text trigger</fandry-link
           >
           No delay on this one
-        </fd-tooltip>
+        </fandry-tooltip>
       </div>
     </section>
 
     <section>
       <h2>Toast Example</h2>
       <p>
-        fd-toast starts its own auto-dismiss timer on mount and plays an
+        fandry-toast starts its own auto-dismiss timer on mount and plays an
         exit animation before notifying the consumer via
         <code>ondismiss</code>. It owns no queue of its own -- appending a
         new toast and removing a dismissed one from the list is ordinary
         application-layer state (see <code>handleToastDismiss</code> in
-        app.ts). fd-toast-viewport is the other half: a fixed-position,
+        app.ts). fandry-toast-viewport is the other half: a fixed-position,
         four-corner stacking region a consumer places once and slots every
-        fd-toast into, the same "one primitive owns positioning, another
-        owns the message" split as fd-popover's trigger/panel.
+        fandry-toast into, the same "one primitive owns positioning, another
+        owns the message" split as fandry-popover's trigger/panel.
       </p>
       <p>
-        fd-toast's default slot itself has no restriction on rich content
+        fandry-toast's default slot itself has no restriction on rich content
         -- the "Show rich toast" button below shows a toast whose body is
         a real component (toastBody, with a title/detail/action) instead
         of a plain string. A <code>for:each</code>-driven queue like this
@@ -381,30 +381,30 @@
         <code>toast.message</code> as plain escaped text, though, so per
         -item rich content there needs the same
         <code>component</code>/<code>componentProps</code> +
-        <code>lwc:is</code> composition fd-select's own
+        <code>lwc:is</code> composition fandry-select's own
         <code>planOptionsWithIcons</code> demo already uses -- see
         <code>handleAddRichToast</code> in app.ts.
       </p>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <fd-button variant="secondary" onclick={handleAddInfoToast}>
+        <fandry-button variant="secondary" onclick={handleAddInfoToast}>
           Show info toast
-        </fd-button>
-        <fd-button variant="secondary" onclick={handleAddSuccessToast}>
+        </fandry-button>
+        <fandry-button variant="secondary" onclick={handleAddSuccessToast}>
           Show success toast
-        </fd-button>
-        <fd-button variant="secondary" onclick={handleAddWarningToast}>
+        </fandry-button>
+        <fandry-button variant="secondary" onclick={handleAddWarningToast}>
           Show warning toast
-        </fd-button>
-        <fd-button variant="secondary" onclick={handleAddDangerToast}>
+        </fandry-button>
+        <fandry-button variant="secondary" onclick={handleAddDangerToast}>
           Show danger toast
-        </fd-button>
-        <fd-button variant="secondary" onclick={handleAddRichToast}>
+        </fandry-button>
+        <fandry-button variant="secondary" onclick={handleAddRichToast}>
           Show rich toast
-        </fd-button>
+        </fandry-button>
       </div>
-      <fd-toast-viewport placement="bottom-right" label="Notifications">
+      <fandry-toast-viewport placement="bottom-right" label="Notifications">
         <template for:each={toasts} for:item="toast">
-          <fd-toast
+          <fandry-toast
             key={toast.id}
             data-id={toast.id}
             variant={toast.variant}
@@ -416,15 +416,15 @@
               <lwc:component lwc:is={toast.component} lwc:spread={toast.componentProps}></lwc:component>
             </template>
             <template if:false={toast.component}>{toast.message}</template>
-          </fd-toast>
+          </fandry-toast>
         </template>
-      </fd-toast-viewport>
+      </fandry-toast-viewport>
 
-      <fd-heading level="3" style="margin-top: var(--fd-space-5);">
+      <fandry-heading level="3" style="margin-top: var(--fd-space-5);">
         Contained in a panel
-      </fd-heading>
+      </fandry-heading>
       <p>
-        <code>contained</code> switches fd-toast-viewport from
+        <code>contained</code> switches fandry-toast-viewport from
         <code>position: fixed</code> (pinned to the browser viewport, the
         example above) to <code>position: absolute</code>, scoped to
         whatever positioned ancestor a consumer wraps it in -- here, the
@@ -434,12 +434,12 @@
         proves it's actually scoped, not just visually coincidental.
       </p>
       <div class="panel-demo">
-        <fd-button variant="secondary" onclick={handleAddPanelToast}>
+        <fandry-button variant="secondary" onclick={handleAddPanelToast}>
           Show toast within this panel
-        </fd-button>
-        <fd-toast-viewport placement="bottom-right" contained>
+        </fandry-button>
+        <fandry-toast-viewport placement="bottom-right" contained>
           <template for:each={panelToasts} for:item="toast">
-            <fd-toast
+            <fandry-toast
               key={toast.id}
               data-id={toast.id}
               variant={toast.variant}
@@ -447,18 +447,18 @@
               ondismiss={handlePanelToastDismiss}
             >
               {toast.message}
-            </fd-toast>
+            </fandry-toast>
           </template>
-        </fd-toast-viewport>
+        </fandry-toast-viewport>
       </div>
     </section>
 
     <section>
       <h2>Input Example</h2>
-      <fd-input label="Email" type="email">
+      <fandry-input label="Email" type="email">
         <span slot="leading">📧</span>
         <span slot="help">Used only for login</span>
-      </fd-input>
+      </fandry-input>
       <div
         style="
           display: flex;
@@ -467,69 +467,69 @@
           margin-top: 0.75rem;
         "
       >
-        <fd-input label="Small" size="sm" placeholder="Small input"></fd-input>
-        <fd-input
+        <fandry-input label="Small" size="sm" placeholder="Small input"></fandry-input>
+        <fandry-input
           label="Medium"
           size="md"
           placeholder="Medium input"
-        ></fd-input>
-        <fd-input label="Large" size="lg" placeholder="Large input"></fd-input>
+        ></fandry-input>
+        <fandry-input label="Large" size="lg" placeholder="Large input"></fandry-input>
       </div>
     </section>
 
     <section>
       <h2>Textarea Example</h2>
-      <fd-textarea label="Notes">
+      <fandry-textarea label="Notes">
         <button slot="trailing">Clear</button>
-      </fd-textarea>
+      </fandry-textarea>
     </section>
 
     <section>
       <h2>Checkbox Example</h2>
-      <fd-checkbox label="Accept terms and conditions"></fd-checkbox>
+      <fandry-checkbox label="Accept terms and conditions"></fandry-checkbox>
     </section>
 
     <section>
       <h2>Radio Example</h2>
-      <fd-radio-group name="plan" value="pro" label="Choose a plan">
-        <fd-radio name="plan" value="free" label="Free Plan"></fd-radio>
-        <fd-radio name="plan" value="pro" label="Pro Plan" checked></fd-radio>
-        <fd-radio
+      <fandry-radio-group name="plan" value="pro" label="Choose a plan">
+        <fandry-radio name="plan" value="free" label="Free Plan"></fandry-radio>
+        <fandry-radio name="plan" value="pro" label="Pro Plan" checked></fandry-radio>
+        <fandry-radio
           name="plan"
           value="enterprise"
           label="Enterprise Plan"
-        ></fd-radio>
-      </fd-radio-group>
+        ></fandry-radio>
+      </fandry-radio-group>
     </section>
 
     <section>
       <h2>Select Example</h2>
-      <fd-select
+      <fandry-select
         label="Plan"
         placeholder="Choose a plan"
         options={planOptions}
         groups={planOptionGroups}
         value="pro"
-      ></fd-select>
+      ></fandry-select>
 
       <p style="margin-top: 1rem">
         Expandable via <code>lwc:is</code> -- each option can render a custom
         component instead of plain text, and the selected one mirrors into the
         trigger too:
       </p>
-      <fd-select
+      <fandry-select
         label="Plan (with icons)"
         placeholder="Choose a plan"
         options={planOptionsWithIcons}
         value="pro"
-      ></fd-select>
+      ></fandry-select>
     </section>
 
     <section>
       <h2>Label Example</h2>
       <div style="display: flex; flex-direction: column; gap: 1rem">
         <div style="display: flex; flex-direction: column; gap: 0.25rem">
-          <fd-label html-for="username">Username</fd-label>
+          <fandry-label html-for="username">Username</fandry-label>
           <input
             id="username"
             type="text"
@@ -538,7 +538,7 @@
           />
         </div>
         <div style="display: flex; flex-direction: column; gap: 0.25rem">
-          <fd-label html-for="password" required>Password</fd-label>
+          <fandry-label html-for="password" required>Password</fandry-label>
           <input
             id="password"
             type="password"
@@ -552,54 +552,54 @@
     <section>
       <h2>Badge Example</h2>
       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
-        <fd-badge>Default</fd-badge>
-        <fd-badge variant="primary">Primary</fd-badge>
-        <fd-badge variant="success">Success</fd-badge>
-        <fd-badge variant="warning">Warning</fd-badge>
-        <fd-badge variant="danger">Danger</fd-badge>
+        <fandry-badge>Default</fandry-badge>
+        <fandry-badge variant="primary">Primary</fandry-badge>
+        <fandry-badge variant="success">Success</fandry-badge>
+        <fandry-badge variant="warning">Warning</fandry-badge>
+        <fandry-badge variant="danger">Danger</fandry-badge>
       </div>
     </section>
 
     <section>
       <h2>Card Example</h2>
-      <fd-card>
+      <fandry-card>
         <h3 style="margin: 0 0 0.5rem">Pro Plan</h3>
         <p style="margin: 0 0 0.75rem">
           Everything in Free, plus priority support.
         </p>
-        <fd-badge variant="primary">Popular</fd-badge>
-      </fd-card>
+        <fandry-badge variant="primary">Popular</fandry-badge>
+      </fandry-card>
     </section>
 
     <section>
       <h2>Alert Example</h2>
       <div style="display: flex; flex-direction: column; gap: 0.75rem">
-        <fd-alert>An update is available.</fd-alert>
-        <fd-alert variant="success" title="Saved">
+        <fandry-alert>An update is available.</fandry-alert>
+        <fandry-alert variant="success" title="Saved">
           Your changes have been saved.
-        </fd-alert>
-        <fd-alert variant="warning" title="Heads up">
+        </fandry-alert>
+        <fandry-alert variant="warning" title="Heads up">
           Your session will expire in 5 minutes.
-        </fd-alert>
-        <fd-alert variant="danger" title="Something went wrong">
+        </fandry-alert>
+        <fandry-alert variant="danger" title="Something went wrong">
           Could not save your changes. Please try again.
-        </fd-alert>
+        </fandry-alert>
       </div>
     </section>
 
     <section>
       <h2>Switch Example</h2>
-      <fd-switch label="Enable notifications" checked></fd-switch>
+      <fandry-switch label="Enable notifications" checked></fandry-switch>
     </section>
 
     <section>
       <h2>Table Example</h2>
-      <fd-switch
+      <fandry-switch
         label="Simulate loading"
         checked={tableLoading}
         onchange={handleTableLoadingToggle}
-      ></fd-switch>
-      <fd-table
+      ></fandry-switch>
+      <fandry-table
         columns={tableColumns}
         data={tableData}
         caption="Team members"
@@ -614,17 +614,17 @@
         onrowselectionchange={handleTableRowSelectionChange}
       >
         <span slot="empty">No team members yet.</span>
-      </fd-table>
+      </fandry-table>
     </section>
 
     <section>
-      <h2>Custom Table Example (overriding fd-table)</h2>
+      <h2>Custom Table Example (overriding fandry-table)</h2>
       <p>
-        fandryui-custom-table doesn't use fd-table at all -- it extends
-        fd/tableState directly and renders a CSS Grid instead of a
+        fandryui-custom-table doesn't use fandry-table at all -- it extends
+        fandry/tableState directly and renders a CSS Grid instead of a
         &lt;table&gt;, with plain buttons (aligned to the grid's columns)
         instead of clickable &lt;th&gt;s. Sorting still works: it's the exact
-        same headless state/handlers fd-table uses, just rendered completely
+        same headless state/handlers fandry-table uses, just rendered completely
         differently. Uses the same <code>tableColumns</code>/<code
           >tableData</code
         >

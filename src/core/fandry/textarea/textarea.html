@@ -1,0 +1,27 @@
+<template>
+  <div class="form-control">
+    <template if:true={hasLabel}>
+      <fandry-label html-for="textarea" required={required}> {label} </fandry-label>
+    </template>
+
+    <textarea
+      class="textarea"
+      id="textarea"
+      name={name}
+      placeholder={placeholder}
+      rows={rows}
+      disabled={disabled}
+      readonly={readonly}
+      required={required}
+      aria-describedby="help-text"
+      data-value={value}
+      oninput={handleInput}
+      onchange={handleChange}
+      lwc:spread={resolvedElementProps}
+    ></textarea>
+
+    <template if:true={hasHelpText}>
+      <div id="help-text" class="help-text">{helpText}</div>
+    </template>
+  </div>
+</template>

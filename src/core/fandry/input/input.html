@@ -1,0 +1,39 @@
+<template>
+  <div class="form-control">
+    <template if:true={hasLabel}>
+      <fandry-label html-for="input" required={required}> {label} </fandry-label>
+    </template>
+
+    <div class={controlClasses}>
+      <span class="prefix">
+        <slot name="prefix"></slot>
+      </span>
+
+      <input
+        class="input"
+        id="input"
+        type={type}
+        name={name}
+        value={value}
+        placeholder={placeholder}
+        disabled={disabled}
+        readonly={readonly}
+        required={required}
+        aria-describedby="help-text"
+        oninput={handleInput}
+        onchange={handleChange}
+        onfocus={handleFocus}
+        onblur={handleBlur}
+        lwc:spread={resolvedElementProps}
+      />
+
+      <span class="suffix">
+        <slot name="suffix"></slot>
+      </span>
+    </div>
+
+    <template if:true={hasHelpText}>
+      <div id="help-text" class="help-text">{helpText}</div>
+    </template>
+  </div>
+</template>

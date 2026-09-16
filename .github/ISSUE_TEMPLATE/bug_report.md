@@ -32,7 +32,7 @@ assignees: ''
 
 ## Component
 
-<!-- Which component is affected? e.g., fd-button, fd-input -->
+<!-- Which component is affected? e.g., fandry-button, fandry-input -->
 
 ## Code Sample
 

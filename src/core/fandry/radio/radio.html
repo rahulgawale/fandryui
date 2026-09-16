@@ -1,0 +1,30 @@
+<template>
+  <label class="control" aria-disabled={disabled}>
+    <!-- elementProps defaults tabIndex to 0 (see radio.ts) because Safari
+         excludes radios from the Tab order by default otherwise. Safe to
+         make overridable/spreadable here because each fandry-radio's input
+         lives in its own shadow tree -- the native same-`name`
+         roving-tabindex grouping never applied across shadow boundaries in
+         the first place (fandry-radio-group already simulates the
+         mutual-exclusivity behavior in JS), so there's no native
+         group-tabbing behavior this could interfere with. -->
+    <input
+      class="input"
+      type="radio"
+      name={name}
+      value={value}
+      checked={checked}
+      disabled={disabled}
+      onchange={handleChange}
+      lwc:spread={resolvedElementProps}
+    />
+
+    <span class="circle" aria-hidden="true">
+      <span class="dot"></span>
+    </span>
+
+    <template if:true={label}>
+      <span class="label"><slot>{label}</slot></span>
+    </template>
+  </label>
+</template>

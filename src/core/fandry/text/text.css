@@ -1,0 +1,50 @@
+/* No box of its own -- lets the inner element's own `display` (block for
+   p/div, inline for span) be what actually governs layout, the same as if
+   that element were a direct child of fandry-text's own parent. Without this,
+   a fixed block-level host would force a line break around `as="span"`
+   usage no matter what the inner element's display says. */
+:host {
+  display: contents;
+}
+
+.text {
+  font-family: var(--fd-font-sans);
+  line-height: var(--fd-line-height-normal);
+}
+
+.text--p {
+  display: block;
+  /* Matches fandry/base's own `p { margin: 0 0 1em; }` rule -- that rule only
+     matches a real <p> tag, which this isn't (see text.ts for why), so it
+     has to be repeated here instead of inherited for free. */
+  margin: 0 0 1em;
+}
+
+.text--div {
+  display: block;
+  margin: 0;
+}
+
+.text--span {
+  display: inline;
+}
+
+.text--xs {
+  font-size: var(--fd-font-size-xs);
+}
+
+.text--sm {
+  font-size: var(--fd-font-size-sm);
+}
+
+.text--md {
+  font-size: var(--fd-font-size-md);
+}
+
+.text--default {
+  color: hsl(var(--fd-text));
+}
+
+.text--muted {
+  color: hsl(var(--fd-text-muted));
+}
