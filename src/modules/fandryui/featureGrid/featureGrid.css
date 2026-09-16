@@ -22,6 +22,12 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--fd-space-5);
+  /* Grid's default align-items:stretch makes a shorter card's .card-wrap
+     grow to match its row's tallest sibling, leaving empty space below
+     the actual card content -- nothing is painted there (verified via
+     computed styles), but "start" removes the stretched region entirely
+     rather than relying on it staying invisible. */
+  align-items: start;
 }
 
 @media (max-width: 60rem) {
@@ -38,12 +44,25 @@
 
 .card-wrap {
   border-radius: var(--fd-radius-lg);
+  /* Explicit clip on this wrapper itself, matching its own border-radius
+     -- transition: transform below can promote this element to its own
+     GPU compositing layer, whose backing-store bounds are rectangular
+     regardless of the child fandry-card's own rounded corners; without an
+     explicit clip here too, that rectangular layer edge can show through
+     faintly as a seam on some GPU/driver combinations, even though this
+     element has no visible border/background of its own. */
+  overflow: hidden;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
-.card-wrap:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.25);
+/* hover: hover excludes touch devices -- see componentsIndex.css's
+   identical rule for why this matters (a tap otherwise leaves the lift/
+   shadow stuck on, with no mouseout event to clear it). */
+@media (hover: hover) {
+  .card-wrap:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.25);
+  }
 }
 
 .icon-chip {

@@ -66,6 +66,10 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--fd-space-4);
+  /* See featureGrid.css's identical rule for why -- removes the stretched
+     empty region a shorter card's row would otherwise get from Grid's
+     default align-items:stretch. */
+  align-items: start;
 }
 
 @media (max-width: 48rem) {
@@ -85,12 +89,23 @@
   text-decoration: none;
   color: inherit;
   border-radius: var(--fd-radius-lg);
+  /* See featureGrid.css's identical rule for why -- an explicit clip
+     matching this element's own radius, guarding against its GPU
+     compositing layer's rectangular bounds (from transition: transform
+     below) showing through as a faint seam. */
+  overflow: hidden;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
-.card-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.25);
+/* hover: hover excludes touch devices -- without it, tapping a card on a
+   touchscreen leaves this lift/shadow "stuck" (there's no mouseout event
+   to clear :hover on touch), which reads as a permanent rendering bug
+   rather than the intentional hover affordance it's meant to be. */
+@media (hover: hover) {
+  .card-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.25);
+  }
 }
 
 .card > * + * {

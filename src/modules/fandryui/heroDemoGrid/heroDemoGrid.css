@@ -21,13 +21,17 @@
   }
 }
 
-.demo-card {
-  background: rgba(255, 255, 255, 0.85);
-}
-
-/* Same reasoning as exampleGallery.css -- fandry-card's shadow tree has no
-   gap of its own between slotted children, so this spaces this
-   component's own light-DOM children directly. */
+/* .demo-card carries no background/radius/overflow of its own -- fandry-
+   card's internal .card div already paints a fully opaque background
+   clipped to its own border-radius, covering the entire visible card. A
+   translucent background on this host (a plain rectangle, no radius of
+   its own) was never actually visible except as a bug: it bled past the
+   inner div's rounded corners, since the two layers' radii can't be
+   perfectly kept in sync across every zoom level/DPI. The class exists
+   purely as a spacing hook for this same reasoning as exampleGallery.css
+   -- fandry-card's shadow tree has no gap of its own between slotted
+   children, so this spaces this component's own light-DOM children
+   directly. */
 .demo-card > * + * {
   margin-top: var(--fd-space-3);
   display: block;
@@ -68,7 +72,9 @@
 .bar {
   width: 100%;
   border-radius: var(--fd-radius-sm) var(--fd-radius-sm) 0 0;
-  background: linear-gradient(180deg, hsl(330 81% 48%), hsl(199 89% 36%));
+  /* Same primary/accent hues as the gradient elsewhere on this page, just
+     horizontal instead of vertical and a shade darker on each end. */
+  background: linear-gradient(90deg, hsl(330 81% 40%), hsl(199 89% 28%));
 }
 
 /* -------- Live notification card -------- */

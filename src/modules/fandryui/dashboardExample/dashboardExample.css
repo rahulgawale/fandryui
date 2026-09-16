@@ -79,8 +79,12 @@
   user-select: none;
 }
 
-.nav-item:hover {
-  background: rgba(0, 0, 0, 0.04);
+/* hover: hover excludes touch devices -- see componentsIndex.css's
+   identical rule for why (a tap otherwise leaves this stuck on). */
+@media (hover: hover) {
+  .nav-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
 }
 
 .nav-item:focus-visible {
