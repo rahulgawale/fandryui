@@ -1,3 +1,15 @@
+# [0.6.0](https://github.com/rahulgawale/fandryui/compare/v0.5.0...v0.6.0) (2026-09-16)
+
+
+### Bug Fixes
+
+* **ci:** resync package-lock.json to fix npm ci under npm 10 ([#56](https://github.com/rahulgawale/fandryui/issues/56)) ([2603c44](https://github.com/rahulgawale/fandryui/commit/2603c445f2a602c77dfb1aebfc1bc6efc02ced7c))
+
+
+### Features
+
+* add fd-heading, fd-text, fd-toast, and fd-toast-viewport primitives ([#55](https://github.com/rahulgawale/fandryui/issues/55)) ([5b07acf](https://github.com/rahulgawale/fandryui/commit/5b07acf1bc8aed8e66a11c5a323ffcaef91d13ef))
+
 # [0.5.0](https://github.com/rahulgawale/fandryui/compare/v0.4.0...v0.5.0) (2026-09-10)
 
 
