@@ -2,7 +2,21 @@ import { api } from 'lwc';
 import Base from 'fd/base';
 
 export default class FdHeading extends Base {
-  @api level: 1 | 2 | 3 | 4 | 5 | 6 = 2;
+  private _level: 1 | 2 | 3 | 4 | 5 | 6 = 2;
+
+  // A getter/setter pair (rather than a plain @api field) because a static
+  // template attribute (e.g. `level="3"`) is always a string -- LWC only
+  // auto-coerces Boolean-defaulted @api props from bare attributes, so a
+  // Number-defaulted one like this needs its own coercion or callers get a
+  // string silently miscast as this union type.
+  @api
+  get level(): 1 | 2 | 3 | 4 | 5 | 6 {
+    return this._level;
+  }
+
+  set level(value: 1 | 2 | 3 | 4 | 5 | 6) {
+    this._level = Number(value) as 1 | 2 | 3 | 4 | 5 | 6;
+  }
 
   // Deliberately `role="heading" aria-level={level}` on one element, not a
   // real h1-h6 -- LWC templates are static, so a tag name can't be

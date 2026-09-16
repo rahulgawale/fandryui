@@ -167,9 +167,13 @@ export default class HelloWorldApp extends LightningElement {
   // external dismiss() call) finishes its exit animation -- removing the
   // dismissed entry from this list is this app's job, not fd-toast's; see
   // the Toast Example section's comment in app.html.
-  handleToastDismiss(event) {
+  removeToastById(list, event) {
     const id = Number(event.target.dataset.id);
-    this.toasts = this.toasts.filter((toast) => toast.id !== id);
+    return list.filter((toast) => toast.id !== id);
+  }
+
+  handleToastDismiss(event) {
+    this.toasts = this.removeToastById(this.toasts, event);
   }
 
   panelToastIdCounter = 0;
@@ -184,7 +188,6 @@ export default class HelloWorldApp extends LightningElement {
   }
 
   handlePanelToastDismiss(event) {
-    const id = Number(event.target.dataset.id);
-    this.panelToasts = this.panelToasts.filter((toast) => toast.id !== id);
+    this.panelToasts = this.removeToastById(this.panelToasts, event);
   }
 }

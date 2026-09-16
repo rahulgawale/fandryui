@@ -4,12 +4,27 @@ import Base from 'fd/base';
 export default class FdToast extends Base {
   @api variant: 'info' | 'success' | 'warning' | 'danger' = 'info';
 
+  private _duration = 5000;
+
   // 0 disables the auto-dismiss timer, leaving the toast open until
   // something else calls dismiss() -- e.g. a close button composed into
   // the default slot by the consumer (see toast.html: deliberately no
   // dedicated close-button prop/slot of its own, same reasoning as
   // fd-card staying a plain slotted wrapper).
-  @api duration = 5000;
+  //
+  // A getter/setter pair (rather than a plain @api field) because a static
+  // template attribute (e.g. `duration="4000"`) is always a string -- LWC
+  // only auto-coerces Boolean-defaulted @api props from bare attributes,
+  // so a Number-defaulted one like this needs its own coercion or callers
+  // get a string silently passed to `window.setTimeout`.
+  @api
+  get duration(): number {
+    return this._duration;
+  }
+
+  set duration(value: number) {
+    this._duration = Number(value);
+  }
 
   @track isClosing = false;
 

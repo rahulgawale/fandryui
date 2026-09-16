@@ -18,8 +18,7 @@ export default class ToastBody extends LightningElement {
     return !!this.actionLabel;
   }
 
-  handleActionClick(event: MouseEvent) {
-    event.preventDefault();
+  handleActionClick() {
     this.dispatchEvent(new CustomEvent('action', { bubbles: true }));
   }
 }
