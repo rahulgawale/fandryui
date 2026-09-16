@@ -415,6 +415,7 @@ export const COMPONENTS: ComponentEntry[] = [
     description: 'An anchored floating panel — owns positioning, not the trigger or content.',
     props: [
       { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'bottom'", description: 'Panel position relative to the trigger.' },
+      { name: 'align', type: "'start' | 'end'", default: "'start'", description: "Which edge of the trigger the panel aligns to, for 'top'/'bottom' placement." },
       { name: 'open', type: 'boolean', default: 'false', description: 'Open state (consumer-controlled via ontoggle).' }
     ],
     code: `<fandry-popover placement="bottom" open={isOpen} ontoggle={handleToggle}>

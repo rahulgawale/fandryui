@@ -32,6 +32,17 @@
   margin-bottom: var(--fd-space-1);
 }
 
+/* align="end" -- right-edge-aligned instead of left-edge-aligned, for a
+   trigger sitting near the right edge of its container (see popover.ts's
+   note on the `align` prop). Only meaningful for top/bottom placement --
+   left/right placement already attaches to a horizontal edge of the
+   trigger, so there's no separate horizontal alignment to make. */
+.panel--bottom.panel--align-end,
+.panel--top.panel--align-end {
+  left: auto;
+  right: 0;
+}
+
 .panel--left {
   right: 100%;
   top: 0;

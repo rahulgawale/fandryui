@@ -4,6 +4,14 @@ import Base from 'fandry/base';
 export default class Popover extends Base {
   @api placement: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
 
+  // Which edge of the trigger the panel's own matching edge lines up with,
+  // for 'top'/'bottom' placement -- 'start' (the default) is today's only
+  // existing behavior (left-aligned), 'end' right-aligns it instead. Needed
+  // for a trigger sitting near the right edge of its container (e.g. an
+  // account avatar in a topbar): a left-aligned panel there overflows past
+  // that edge, since it has nowhere to grow but further right.
+  @api align: 'start' | 'end' = 'start';
+
   private _open = false;
 
   // A plain `@api open = false` field can't distinguish "just closed" from
@@ -30,7 +38,7 @@ export default class Popover extends Base {
   }
 
   get panelClasses(): string {
-    return ['panel', `panel--${this.placement}`].join(' ');
+    return ['panel', `panel--${this.placement}`, `panel--align-${this.align}`].join(' ');
   }
 
   connectedCallback() {
