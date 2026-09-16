@@ -38,9 +38,9 @@ export default class HelloWorldApp extends LightningElement {
   menuOpen = false;
   lastMenuSelection = '';
 
-  // Property-bound via `for:each` below (rather than hardcoded <fd-menu-item>
+  // Property-bound via `for:each` below (rather than hardcoded <fandry-menu-item>
   // tags) to exercise the same array-bound-data path a `for:each` select
-  // option list uses -- fd-menu-item notifies fd-menu when a bound item's
+  // option list uses -- fandry-menu-item notifies fandry-menu when a bound item's
   // `disabled` flips in place (see menuItem.ts/menu.ts), which the toggle
   // below exists to demonstrate.
   menuActions = [
@@ -56,15 +56,15 @@ export default class HelloWorldApp extends LightningElement {
     );
   }
 
-  // fd-popover's own template deliberately sets no aria-haspopup/expanded
+  // fandry-popover's own template deliberately sets no aria-haspopup/expanded
   // on the trigger ("that ARIA belongs on the consumer's own slotted
   // trigger element" -- see popover.html) -- same reasoning applies one
-  // level up for fd-menu, so this app wires it directly onto its fd-button
+  // level up for fandry-menu, so this app wires it directly onto its fandry-button
   // trigger via elementProps.
   get menuTriggerProps() {
-    // Overriding fd-button's own elementProps replaces its default
+    // Overriding fandry-button's own elementProps replaces its default
     // entirely -- tabIndex has to be repeated here to keep its Safari
-    // tab-order fix (see fd-button's button.ts).
+    // tab-order fix (see fandry-button's button.ts).
     return { tabIndex: 0, ariaHasPopup: 'menu', ariaExpanded: this.menuOpen };
   }
 
@@ -92,12 +92,12 @@ export default class HelloWorldApp extends LightningElement {
 
   handleTableRowClick(event) {
     // eslint-disable-next-line no-console
-    console.log('fd-table rowclick', event.detail);
+    console.log('fandry-table rowclick', event.detail);
   }
 
   handleTablePageChange(event) {
     // eslint-disable-next-line no-console
-    console.log('fd-table pagechange', event.detail);
+    console.log('fandry-table pagechange', event.detail);
   }
 
   handleTableLoadingToggle(event) {
@@ -106,7 +106,7 @@ export default class HelloWorldApp extends LightningElement {
 
   handleTableRowSelectionChange(event) {
     // eslint-disable-next-line no-console
-    console.log('fd-table rowselectionchange', event.detail);
+    console.log('fandry-table rowselectionchange', event.detail);
   }
 
   toastIdCounter = 0;
@@ -138,7 +138,7 @@ export default class HelloWorldApp extends LightningElement {
   // instead -- app.html branches on `toast.component` and, when present,
   // renders it via `lwc:is`/`lwc:spread` rather than the plain-text
   // fallback. Same per-item composition `planOptionsWithIcons` above
-  // already uses for fd-select: a `for:each`-driven queue can only bind
+  // already uses for fandry-select: a `for:each`-driven queue can only bind
   // plain text per item directly, so richer content (here, toastBody's
   // title/detail/action) has to come from a real component instead.
   handleAddRichToast() {
@@ -163,9 +163,9 @@ export default class HelloWorldApp extends LightningElement {
     console.log('toastBody action clicked');
   }
 
-  // fd-toast fires `dismiss` once its own auto-dismiss timer (or an
+  // fandry-toast fires `dismiss` once its own auto-dismiss timer (or an
   // external dismiss() call) finishes its exit animation -- removing the
-  // dismissed entry from this list is this app's job, not fd-toast's; see
+  // dismissed entry from this list is this app's job, not fandry-toast's; see
   // the Toast Example section's comment in app.html.
   removeToastById(list, event) {
     const id = Number(event.target.dataset.id);

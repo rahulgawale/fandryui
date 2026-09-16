@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--fd-space-3);
+
+  padding: var(--fd-space-3) var(--fd-space-4);
+  border-radius: var(--fd-radius-md);
+  border-left: var(--fd-border-width-lg) solid hsl(var(--fd-accent));
+  background: hsl(var(--fd-bg));
+  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.15);
+
+  font-size: var(--fd-font-size-sm);
+  color: hsl(var(--fd-text));
+
+  /* Plays on mount the same way fandry-tooltip's entrance animation does --
+     see tooltip.css for why `animation`, not a `transition`, is what
+     actually runs on initial insertion. */
+  animation: fd-toast-in var(--fd-duration-fast) var(--fd-ease-in-out);
+}
+
+.toast--success {
+  border-left-color: hsl(var(--fd-success));
+}
+
+.toast--warning {
+  border-left-color: hsl(var(--fd-warning));
+}
+
+.toast--danger {
+  border-left-color: hsl(var(--fd-danger));
+}
+
+@keyframes fd-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--fd-space-2));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fd-toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(var(--fd-space-2));
+  }
+}
+
+.toast--closing {
+  /* A distinct animation-name, not the entrance keyframes reversed --
+     see fandry-tooltip's own `.panel--closing` for why that doesn't reliably
+     restart in real browsers. `forwards` holds the faded-out end state
+     for the gap between the animation finishing and toast.ts's
+     handleAnimationEnd actually removing this element. */
+  animation: fd-toast-out var(--fd-duration-fast) var(--fd-ease-in-out) forwards;
+}

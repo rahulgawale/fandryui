@@ -1,8 +1,8 @@
-import FdTableState from 'fd/tableState';
+import FdTableState from 'fandry/tableState';
 
 /**
- * Demonstrates overriding fd-table's default markup: extends FdTableState
- * directly (not fd-table) and renders a CSS Grid instead of a <table>, with
+ * Demonstrates overriding fandry-table's default markup: extends FdTableState
+ * directly (not fandry-table) and renders a CSS Grid instead of a <table>, with
  * a plain button toolbar (aligned to the grid's columns) for sorting
  * instead of clickable <th>s. headerGroup/rows/handleHeaderClick etc. are
  * all inherited from FdTableState; the two getters below just flatten that

@@ -13,7 +13,7 @@ If you are an AI assistant, code generator, or automated agent:
 
 Fandry UI is a **single LWR OSS project** with clear boundaries.
 
-Primitives live in `src/core/fd/`.
+Primitives live in `src/core/fandry/`.
 The application lives in `src/modules/fandryui/`.
 
 Primitives are foundational components that:
@@ -29,13 +29,13 @@ Primitives must not.
 
 ## Structure Responsibilities
 
-### Primitives (`src/core/fd/`)
+### Primitives (`src/core/fandry/`)
 
 Primitives are intentionally small.
 
 Primitives provide:
 
-- fd-\* components built with native LWC
+- fandry-\* components built with native LWC
 - extensible structure via Base class
 - slots, tokens, and contracts
 - normalized semantic events
@@ -53,13 +53,13 @@ Primitives must **not**:
 - grow configuration surfaces casually
 - use hard-coded values instead of design tokens
 
-If you are unsure whether something belongs in core/fd/, it probably does not.
+If you are unsure whether something belongs in core/fandry/, it probably does not.
 
 ---
 
 ## Design Tokens (Critical)
 
-**Always use design tokens from `fd/base/tokens.css` instead of hard-coded values.**
+**Always use design tokens from `fandry/base/tokens.css` instead of hard-coded values.**
 
 This is a **component library**, not a production application.
 
@@ -86,13 +86,13 @@ Hard-coded values:
 - Create inconsistency
 - Are not acceptable in primitives
 
-If a token doesn't exist, add it to `fd/base/tokens.css` first.
+If a token doesn't exist, add it to `fandry/base/tokens.css` first.
 
 ---
 
-### Base Class (`src/core/fd/base/`)
+### Base Class (`src/core/fandry/base/`)
 
-All fd-\* primitives extend Base.
+All fandry-\* primitives extend Base.
 
 Base provides:
 
@@ -196,13 +196,13 @@ Core should feel uneventful.
 
 ## Event Model
 
-- Primitives (`src/core/fd/`, single-concern components like inputs and
+- Primitives (`src/core/fandry/`, single-concern components like inputs and
   buttons) normalize to the base semantic vocabulary only:
   - `input`
   - `change`
   - `focus`
   - `blur`
-- Application components (real state/behavior, like fd-table's sorting,
+- Application components (real state/behavior, like fandry-table's sorting,
   pagination, selection, filtering) may introduce additional custom
   events beyond that base vocabulary when the base vocabulary genuinely
   can't express the domain event (e.g. `sortchange`, `pagechange`,
@@ -236,17 +236,17 @@ If a type is hard to read, it is wrong.
 
 ## How to Add a New Primitive
 
-Before adding a new `fd-*` component:
+Before adding a new `fandry-*` component:
 
 1. Verify it is a **primitive**, not a solution
-2. Ensure it extends Base class from fd/base
+2. Ensure it extends Base class from fandry/base
 3. Ensure it can be extended via slots
 4. Keep API surface minimal
 5. Normalize only semantic events
-6. Use design tokens from fd/styles
-7. Import Base using namespace: `import Base from 'fd/base'`
+6. Use design tokens from fandry/styles
+7. Import Base using namespace: `import Base from 'fandry/base'`
 
-If these conditions are not met, the component does not belong in core/fd/.
+If these conditions are not met, the component does not belong in core/fandry/.
 
 ---
 
@@ -277,7 +277,7 @@ If you are an AI agent:
 - Do not refactor structure unless explicitly asked
 - Do not optimize prematurely
 - Do not break primitive boundaries for convenience
-- Always use namespace imports for components: `import Base from 'fd/base'`
+- Always use namespace imports for components: `import Base from 'fandry/base'`
 - Always use npm (not pnpm) for this project
 
 If instructions conflict, **preserve architecture over task completion**.

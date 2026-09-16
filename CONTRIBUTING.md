@@ -33,13 +33,13 @@ npm install
 npm run dev
 ```
 
-If you are unsure where something belongs, it probably does **not** belong in core/fd/.
+If you are unsure where something belongs, it probably does **not** belong in core/fandry/.
 
 ---
 
 ## Primitives Are Intentionally Small
 
-`src/core/fd/` is the foundation of Fandry UI.
+`src/core/fandry/` is the foundation of Fandry UI.
 
 Primitives exist to provide:
 
@@ -56,7 +56,7 @@ Primitives do **not** exist to solve application problems.
 
 This is a **component library**, not a production application.
 
-**Rule: All primitive styles must use design tokens from `fd/base/tokens.css`.**
+**Rule: All primitive styles must use design tokens from `fandry/base/tokens.css`.**
 
 Never use hard-coded values like:
 
@@ -72,12 +72,12 @@ Why:
 - Makes maintenance predictable
 - Preserves architectural intent
 
-If you need a value that doesn't have a token, add it to `fd/base/tokens.css` first.
+If you need a value that doesn't have a token, add it to `fandry/base/tokens.css` first.
 
-All fd-\* components should:
+All fandry-\* components should:
 
-- Extend the Base class from fd/base
-- Use design tokens from fd/styles
+- Extend the Base class from fandry/base
+- Use design tokens from fandry/styles
 - Normalize semantic events only
 - Be composable via slots
 
@@ -114,7 +114,7 @@ Fandry UI uses [Conventional Commits](https://www.conventionalcommits.org/) for 
 ```
 fix(button): correct hover shadow on ghost variant
 
-feat(radio): add fd-radio-group component for proper grouping
+feat(radio): add fandry-radio-group component for proper grouping
 
 feat(input)!: remove deprecated value attribute
 
@@ -190,7 +190,7 @@ Do not introduce new events casually.
 Primitives use `@lwc/jest-preset`. Tests live in a colocated `__tests__` folder next to the component:
 
 ```
-src/core/fd/button/
+src/core/fandry/button/
   ├── button.ts
   ├── button.html
   ├── button.css
@@ -198,7 +198,7 @@ src/core/fd/button/
       └── button.test.ts
 ```
 
-Import the component under test with a relative path (`import FdButton from '../button'`), not the `fd/*` alias — the alias is resolved by the build tooling, not by Jest or `tsc`.
+Import the component under test with a relative path (`import FdButton from '../button'`), not the `fandry/*` alias — the alias is resolved by the build tooling, not by Jest or `tsc`.
 
 Run tests with:
 

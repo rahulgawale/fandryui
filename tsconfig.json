@@ -17,14 +17,14 @@
     "baseUrl": ".",
     "paths": {
       // Exact entries take precedence over the wildcard below and are
-      // needed for any fd/* module that's imported directly by another
+      // needed for any fandry/* module that's imported directly by another
       // component's .ts file (not just referenced as an HTML tag, which
       // LWC's own template compiler resolves separately) -- the wildcard
       // can't express the namespace/name/name.ts folder convention with a
       // single `*` substitution (TS paths only allow one `*` per pattern).
-      "fd/base": ["src/core/fd/base/base"],
-      "fd/tableState": ["src/core/fd/tableState/tableState"],
-      "fd/*": ["src/core/fd/*"],
+      "fandry/base": ["src/core/fandry/base/base"],
+      "fandry/tableState": ["src/core/fandry/tableState/tableState"],
+      "fandry/*": ["src/core/fandry/*"],
       "fandryui/planOption": ["src/modules/fandryui/planOption/planOption"],
       "fandryui/toastBody": ["src/modules/fandryui/toastBody/toastBody"],
       "fandryui/*": ["src/modules/fandryui/*"]
