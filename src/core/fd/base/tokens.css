@@ -116,8 +116,13 @@
   --fd-font-size-xs: 0.75rem;
   --fd-font-size-sm: 0.875rem;
   --fd-font-size-md: 1rem;
+  --fd-font-size-lg: 1.125rem;
+  --fd-font-size-xl: 1.5rem;
+  --fd-font-size-2xl: 1.875rem;
+  --fd-font-size-3xl: 2.25rem;
 
   --fd-line-height-normal: 1.5;
+  --fd-line-height-tight: 1.25;
 
   --fd-font-heading: var(--fd-font-sans);
   --fd-heading-weight: 600;

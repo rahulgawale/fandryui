@@ -1,0 +1,56 @@
+/* No box of its own -- a consumer places this anywhere in their DOM (the
+   end of <body> is typical) without it taking up any layout space there;
+   the `.viewport` div's own `position: fixed` is what actually places it
+   on screen. */
+:host {
+  display: contents;
+}
+
+.viewport {
+  position: fixed;
+  z-index: var(--fd-z-overlay);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-2);
+
+  width: 20rem;
+  max-width: calc(100vw - var(--fd-space-4) * 2);
+
+  /* Lets clicks pass through the empty space around stacked toasts
+     straight to whatever's underneath -- only the toasts themselves
+     (via ::slotted below) should actually intercept pointer input. */
+  pointer-events: none;
+}
+
+.viewport--contained {
+  position: absolute;
+  /* `100%` of the positioned ancestor a consumer wraps this in, not
+     `100vw` -- the viewport-relative calc above only makes sense for the
+     default `position: fixed` (global-overlay) case. */
+  max-width: calc(100% - var(--fd-space-4) * 2);
+}
+
+.viewport ::slotted(*) {
+  pointer-events: auto;
+}
+
+.viewport--top-left {
+  top: var(--fd-space-4);
+  left: var(--fd-space-4);
+}
+
+.viewport--top-right {
+  top: var(--fd-space-4);
+  right: var(--fd-space-4);
+}
+
+.viewport--bottom-left {
+  bottom: var(--fd-space-4);
+  left: var(--fd-space-4);
+}
+
+.viewport--bottom-right {
+  bottom: var(--fd-space-4);
+  right: var(--fd-space-4);
+}

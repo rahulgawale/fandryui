@@ -1,5 +1,6 @@
 import { LightningElement } from 'lwc';
 import PlanOption from 'fandryui/planOption';
+import ToastBody from 'fandryui/toastBody';
 
 export default class HelloWorldApp extends LightningElement {
   planOptions = [{ label: 'Free', value: 'free' }];
@@ -106,5 +107,87 @@ export default class HelloWorldApp extends LightningElement {
   handleTableRowSelectionChange(event) {
     // eslint-disable-next-line no-console
     console.log('fd-table rowselectionchange', event.detail);
+  }
+
+  toastIdCounter = 0;
+  toasts = [];
+
+  addToast(variant, message) {
+    this.toastIdCounter += 1;
+    this.toasts = [...this.toasts, { id: this.toastIdCounter, variant, message }];
+  }
+
+  handleAddInfoToast() {
+    this.addToast('info', 'Heads up: your session refreshes in 5 minutes.');
+  }
+
+  handleAddSuccessToast() {
+    this.addToast('success', 'Changes saved.');
+  }
+
+  handleAddWarningToast() {
+    this.addToast('warning', 'Your plan is approaching its usage limit.');
+  }
+
+  handleAddDangerToast() {
+    this.addToast('danger', 'Failed to save changes.');
+  }
+
+  // Unlike the four toasts above (plain `message` strings, escaped by
+  // `{toast.message}`), this one carries `component`/`componentProps`
+  // instead -- app.html branches on `toast.component` and, when present,
+  // renders it via `lwc:is`/`lwc:spread` rather than the plain-text
+  // fallback. Same per-item composition `planOptionsWithIcons` above
+  // already uses for fd-select: a `for:each`-driven queue can only bind
+  // plain text per item directly, so richer content (here, toastBody's
+  // title/detail/action) has to come from a real component instead.
+  handleAddRichToast() {
+    this.toastIdCounter += 1;
+    this.toasts = [
+      ...this.toasts,
+      {
+        id: this.toastIdCounter,
+        variant: 'info',
+        component: ToastBody,
+        componentProps: {
+          title: 'New comment',
+          detail: 'Ada Lovelace replied to your thread.',
+          actionLabel: 'View'
+        }
+      }
+    ];
+  }
+
+  handleToastAction() {
+    // eslint-disable-next-line no-console
+    console.log('toastBody action clicked');
+  }
+
+  // fd-toast fires `dismiss` once its own auto-dismiss timer (or an
+  // external dismiss() call) finishes its exit animation -- removing the
+  // dismissed entry from this list is this app's job, not fd-toast's; see
+  // the Toast Example section's comment in app.html.
+  removeToastById(list, event) {
+    const id = Number(event.target.dataset.id);
+    return list.filter((toast) => toast.id !== id);
+  }
+
+  handleToastDismiss(event) {
+    this.toasts = this.removeToastById(this.toasts, event);
+  }
+
+  panelToastIdCounter = 0;
+  panelToasts = [];
+
+  handleAddPanelToast() {
+    this.panelToastIdCounter += 1;
+    this.panelToasts = [
+      ...this.panelToasts,
+      { id: this.panelToastIdCounter, variant: 'success', message: 'Saved within this panel.' }
+    ];
+  }
+
+  handlePanelToastDismiss(event) {
+    this.panelToasts = this.removeToastById(this.panelToasts, event);
   }
 }
