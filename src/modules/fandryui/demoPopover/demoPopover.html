@@ -1,0 +1,21 @@
+<template>
+  <div class="row">
+    <fandry-popover placement="bottom">
+      <fandry-button slot="trigger" variant="secondary">Bottom</fandry-button>
+      <div class="panel-content">
+        <fandry-text size="sm">Popover content anchored below the trigger.</fandry-text>
+        <fandry-button size="sm">Action</fandry-button>
+      </div>
+    </fandry-popover>
+
+    <fandry-popover placement="top">
+      <fandry-button slot="trigger" variant="secondary">Top</fandry-button>
+      <div class="panel-content">Anchored above.</div>
+    </fandry-popover>
+
+    <fandry-popover placement="right">
+      <fandry-button slot="trigger" variant="secondary">Right</fandry-button>
+      <div class="panel-content">Anchored to the right.</div>
+    </fandry-popover>
+  </div>
+</template>

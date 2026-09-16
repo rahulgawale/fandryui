@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+
+.item {
+  display: block;
+  padding: var(--fd-space-2) var(--fd-space-3);
+  border-radius: var(--fd-radius-md);
+  color: hsl(var(--fd-text-muted));
+  font-size: var(--fd-font-size-sm);
+  text-decoration: none;
+  line-height: var(--fd-line-height-tight);
+}
+
+.item:hover {
+  background: hsl(var(--fd-bg-muted));
+  color: hsl(var(--fd-text));
+}
+
+.item--active {
+  background: hsl(var(--fd-primary) / 0.1);
+  color: hsl(var(--fd-primary));
+  font-weight: 600;
+}
+
+.item--active:hover {
+  background: hsl(var(--fd-primary) / 0.14);
+}

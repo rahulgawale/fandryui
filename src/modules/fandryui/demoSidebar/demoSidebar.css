@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.frame {
+  display: flex;
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+  overflow: hidden;
+  max-width: 16rem;
+}
+
+.frame fandry-sidebar {
+  width: 100%;
+  padding: var(--fd-space-2);
+}

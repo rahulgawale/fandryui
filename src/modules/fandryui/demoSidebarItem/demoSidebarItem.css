@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+  max-width: 14rem;
+}

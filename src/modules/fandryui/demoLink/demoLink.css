@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  gap: var(--fd-space-4);
+  flex-wrap: wrap;
+  align-items: center;
+}

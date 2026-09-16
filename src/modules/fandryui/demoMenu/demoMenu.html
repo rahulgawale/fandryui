@@ -1,0 +1,13 @@
+<template>
+  <div class="row">
+    <fandry-popover open={menuOpen} ontoggle={handleToggle} placement="bottom">
+      <fandry-button slot="trigger" variant="secondary" element-props={menuTriggerProps}>Actions</fandry-button>
+      <fandry-menu onselect={handleSelect}>
+        <fandry-menu-item value="edit" label="Edit"></fandry-menu-item>
+        <fandry-menu-item value="duplicate" label="Duplicate"></fandry-menu-item>
+        <fandry-menu-item value="delete" label="Delete"></fandry-menu-item>
+      </fandry-menu>
+    </fandry-popover>
+    <span if:true={lastSelection}>Last selected: {lastSelection}</span>
+  </div>
+</template>

@@ -1,0 +1,86 @@
+<template>
+  <fandryui-site-header></fandryui-site-header>
+
+  <div class="layout">
+    <fandry-sidebar aria-label="Components" class="nav">
+      <template for:each={sidebarGroups} for:item="group">
+        <div key={group.category} class="group">
+          <fandry-text as="span" size="xs" variant="muted" class="group-label">{group.category}</fandry-text>
+          <template for:each={group.items} for:item="item">
+            <fandry-sidebar-item key={item.slug} href={item.href} active={item.active}>{item.name}</fandry-sidebar-item>
+          </template>
+        </div>
+      </template>
+    </fandry-sidebar>
+
+    <main class="content">
+      <template if:true={entry}>
+        <fandry-badge>{entry.category}</fandry-badge>
+        <fandry-heading level="1" class="title">{entry.name}</fandry-heading>
+        <fandry-text variant="muted" class="lede">{entry.description}</fandry-text>
+        <fandry-text as="span" size="sm" variant="muted" class="tag">{entry.tag}</fandry-text>
+
+        <section class="section">
+          <fandry-heading level="3">Example</fandry-heading>
+          <fandry-card class="demo-frame">
+            <lwc:component lwc:is={demoComponent}></lwc:component>
+          </fandry-card>
+        </section>
+
+        <section class="section">
+          <fandry-heading level="3">Props</fandry-heading>
+          <template if:true={hasProps}>
+            <div class="props-table-wrap">
+              <table class="props-table">
+                <thead>
+                  <tr>
+                    <th>Prop</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template for:each={entry.props} for:item="prop">
+                    <tr key={prop.name}>
+                      <td><code>{prop.name}</code></td>
+                      <td><code>{prop.type}</code></td>
+                      <td><code>{prop.default}</code></td>
+                      <td>{prop.description}</td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </template>
+          <template if:false={hasProps}>
+            <fandry-text variant="muted" size="sm">
+              This component has no configurable props — compose it via slots.
+            </fandry-text>
+          </template>
+        </section>
+
+        <section class="section">
+          <fandry-heading level="3">Code</fandry-heading>
+          <pre class="code-block"><code>{entry.code}</code></pre>
+        </section>
+
+        <fandry-pagination
+          previous-href={previousHref}
+          previous-label={previousLabel}
+          next-href={nextHref}
+          next-label={nextLabel}
+        ></fandry-pagination>
+      </template>
+
+      <template if:false={entry}>
+        <fandry-heading level="1">Not found</fandry-heading>
+        <fandry-text variant="muted">
+          That component doesn't exist. Pick one from the sidebar.
+        </fandry-text>
+      </template>
+    </main>
+  </div>
+
+  <fandryui-site-footer></fandryui-site-footer>
+</template>

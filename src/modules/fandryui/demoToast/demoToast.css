@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+.wrap {
+  position: relative;
+  min-height: 4rem;
+}
+
+.row {
+  display: flex;
+  gap: var(--fd-space-3);
+  flex-wrap: wrap;
+}

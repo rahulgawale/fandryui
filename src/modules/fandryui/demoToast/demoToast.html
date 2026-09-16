@@ -1,0 +1,21 @@
+<template>
+  <div class="wrap">
+    <div class="row">
+      <fandry-button variant="secondary" onclick={handleAddInfo}>Show info toast</fandry-button>
+      <fandry-button variant="secondary" onclick={handleAddSuccess}>Show success toast</fandry-button>
+    </div>
+    <fandry-toast-viewport placement="bottom-right" contained label="Notifications">
+      <template for:each={toasts} for:item="toast">
+        <fandry-toast
+          key={toast.id}
+          data-id={toast.id}
+          variant={toast.variant}
+          duration="3000"
+          ondismiss={handleDismiss}
+        >
+          {toast.message}
+        </fandry-toast>
+      </template>
+    </fandry-toast-viewport>
+  </div>
+</template>

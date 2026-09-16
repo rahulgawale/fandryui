@@ -1,0 +1,142 @@
+:host {
+  display: block;
+}
+
+.layout {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fd-space-6);
+}
+
+.nav {
+  position: sticky;
+  top: 4rem;
+  height: calc(100vh - 4rem);
+  padding: var(--fd-space-6) var(--fd-space-3) var(--fd-space-6) 0;
+  border-right: 1px solid var(--fd-color-border);
+}
+
+@media (max-width: 56rem) {
+  .layout {
+    flex-direction: column;
+    /* align-items: flex-start above is a cross-axis (vertical) rule in
+       row mode -- once flex-direction flips to column here, the cross
+       axis becomes horizontal, and flex-start would size .content to its
+       own widest child (the props table) instead of the viewport. */
+    align-items: stretch;
+  }
+
+  .nav {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--fd-color-border);
+    padding: var(--fd-space-4) 0;
+  }
+}
+
+.group {
+  margin-bottom: var(--fd-space-4);
+}
+
+.group-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0 var(--fd-space-3);
+  margin-bottom: var(--fd-space-1);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  max-width: 42rem;
+  padding: var(--fd-space-6) 0 calc(var(--fd-space-6) * 2);
+}
+
+.title {
+  margin-top: var(--fd-space-2);
+  display: block;
+}
+
+.lede {
+  display: block;
+  margin-top: var(--fd-space-2);
+}
+
+.tag {
+  display: block;
+  margin-top: var(--fd-space-1);
+  font-family: var(--fd-font-mono, monospace);
+}
+
+.section {
+  margin-top: var(--fd-space-6);
+}
+
+.section > fandry-heading {
+  margin-bottom: var(--fd-space-3);
+  display: block;
+}
+
+.demo-frame {
+  display: block;
+  padding: var(--fd-space-5);
+}
+
+.props-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+}
+
+.props-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fd-font-size-sm);
+}
+
+.props-table th,
+.props-table td {
+  text-align: left;
+  padding: var(--fd-space-2) var(--fd-space-3);
+  border-bottom: 1px solid var(--fd-color-border);
+  vertical-align: top;
+}
+
+.props-table thead th {
+  color: var(--fd-color-muted);
+  font-weight: 600;
+  font-size: var(--fd-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.props-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.props-table code {
+  font-family: var(--fd-font-mono, monospace);
+  font-size: 0.85em;
+}
+
+.code-block {
+  margin: 0;
+  padding: var(--fd-space-4);
+  background: hsl(222 47% 11%);
+  color: hsl(220 14% 96%);
+  border-radius: var(--fd-radius-md);
+  overflow-x: auto;
+  font-size: var(--fd-font-size-sm);
+  line-height: var(--fd-line-height-normal, 1.5);
+}
+
+.code-block code {
+  font-family: var(--fd-font-mono, monospace);
+  white-space: pre;
+}
