@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/rahulgawale/fandryui/compare/v0.6.1...v0.7.0) (2026-09-18)
+
+
+### Features
+
+* retheming, interactive dashboard demo, and docs restructure ([#60](https://github.com/rahulgawale/fandryui/issues/60)) ([3ee9cc4](https://github.com/rahulgawale/fandryui/commit/3ee9cc4609bb13cd78e44d276465201db179714a))
+
 ## [0.6.1](https://github.com/rahulgawale/fandryui/compare/v0.6.0...v0.6.1) (2026-09-16)
 
 
