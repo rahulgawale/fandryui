@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/rahulgawale/fandryui/compare/v0.7.0...v0.8.0) (2026-09-18)
+
+
+### Features
+
+* Container and Grid layout patterns (CSS, not components) ([#61](https://github.com/rahulgawale/fandryui/issues/61)) ([11ee772](https://github.com/rahulgawale/fandryui/commit/11ee7727f13b159585191c5d776196817e2f97a9))
+
 # [0.7.0](https://github.com/rahulgawale/fandryui/compare/v0.6.1...v0.7.0) (2026-09-18)
 
 
