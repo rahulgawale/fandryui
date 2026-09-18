@@ -2,33 +2,32 @@
 
 **Why Should React Have All the Fun?**
 
-Fandry UI is an opinionated, extensible UI foundation for **Lightning Web Components**, built from scratch with native LWC.
-
-It provides:
+Fandry UI is an opinionated, extensible UI foundation for **Lightning Web Components**, built from scratch with native LWC. This repo is both the component library itself and its own marketing/docs site, built entirely out of the library's own primitives.
 
 - **Native LWC primitives** for behavior & accessibility
 - **Strict boundaries** to keep the system sane as it grows
 - **Extensibility over completeness** as a core principle
 
-This is infrastructure, not a component zoo.
+This is infrastructure, not a component zoo — the docs site around it exists to prove that out, not to be the point.
+
+**Live site:** [fandryui.forcetrails.com](https://fandryui.forcetrails.com)
 
 ---
 
 ## What This Is
 
-- A **design-system foundation** for LWC
+- A **design-system foundation** for LWC — 30 primitives (`fandry-*`) across Layout, Typography, Forms, Feedback, and Overlays & Data
 - Focused on **extensibility over feature count**
 - Built for **Salesforce, LWR, and the real world**
 - TypeScript-first, single LWR project, boring by design
-
----
 
 ## What This Is Not
 
 - Not a replacement for SLDS (yet)
 - Not a drag-and-drop page builder
-- Not a collection of flashy demo components
 - Not React, pretending to be LWC
+
+The primitives themselves are deliberately small and un-flashy — see `src/core/CORE_BOUNDARIES.md`. The marketing site is where flashy is allowed, since its whole job is showing what the primitives can compose into.
 
 ---
 
@@ -36,24 +35,31 @@ This is infrastructure, not a component zoo.
 
 ```
 src/
-  ├── assets/          # Static assets
+  ├── assets/                # Static assets, global styles
+  ├── layouts/                # LWR's HTML shell (fonts, meta)
   ├── core/
-  │   └── fd/          # All primitives (native LWC, TypeScript)
-  │       ├── base/    # Base class with shared styles
-  │       ├── button/
-  │       ├── input/
-  │       ├── textarea/
-  │       └── styles/  # Tokens and base styles
+  │   └── fandry/              # Primitives (native LWC, TypeScript) -- the library itself
+  │       ├── base/             # Shared base class + design tokens (tokens.css)
+  │       ├── button/, card/, table/, ...  # One folder per fandry-* primitive
   └── modules/
-      └── fandryui/    # Main app component
+      └── fandryui/             # The site itself: real composites and pages
+          ├── home/, heroSection/, featureGrid/, dashboardExample/, ...
+          ├── examples/, exampleGallery/    # /examples -- 10 interactive patterns
+          ├── componentsIndex/, componentDoc/  # /components -- per-primitive docs
+          └── componentsData/               # Single source of truth for the docs nav/props/code
+      └── fandryuidemos/        # Docs-only illustration components (one demoX per
+                                  # primitive, rendered live inside componentDoc) --
+                                  # kept in their own namespace so they're never
+                                  # mistaken for real site chrome
 ```
 
-Key rule: **Primitives stay small.**  
-If something feels like an app feature, it does not belong in core/fandry/.
+Key rule: **Primitives stay small.** If something feels like an app feature, it does not belong in `src/core/fandry/`.
+
+---
 
 ## Prerequisites
 
-- Node.js **18.17+** (20+ recommended)
+- Node.js **20.13.1+** (this repo is pinned to `20.16.0` via Volta)
 - npm (comes with Node.js)
 
 ## Setup
@@ -72,15 +78,19 @@ Start the LWR development server:
 npm run dev
 ```
 
-Open http://localhost:3000/fandryui in your browser.
+Open http://localhost:3000 in your browser. You should see the marketing home page, with `/examples` (10 interactive patterns) and `/components` (live docs for all 30 primitives) as the other two routes.
 
-You should see:
+## Scripts
 
-- fandry-input
-- fandry-textarea
-- fandry-button
-- Native LWC primitives working
-- Slots and events behaving correctly
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the LWR dev server (hot-reloading) |
+| `npm run build` | Static-site-generate a production build into `site/` |
+| `npm start` | Serve a build already in `site/` |
+| `npm test` / `npm run test:watch` | Run the Jest suite (`@lwc/jest-preset`) |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run clean` | Remove `__lwr_cache__` and `site/` |
+| `npm run deploy` | Build, then publish `site/` to GitHub Pages |
 
 ## Design Principles
 
@@ -89,15 +99,15 @@ You should see:
 - Outcomes > implementations
 - Boring is success
 
-If a change feels exciting, it probably doesn’t belong in Core.
+If a change feels exciting, it probably doesn't belong in `src/core/fandry/`.
 
 ## Contributing
 
 Read these first:
 
-- CONTRIBUTING.md
-- AGENTS.md
-- packages/core/CORE_BOUNDARIES.md
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [AGENTS.md](AGENTS.md)
+- [src/core/CORE_BOUNDARIES.md](src/core/CORE_BOUNDARIES.md)
 
 They exist to protect the architecture, not to slow you down.
 
@@ -108,7 +118,7 @@ They exist to protect the architecture, not to slow you down.
 - Architecture-first
 - APIs may change in v0.x
 
-That’s intentional.
+That's intentional.
 
 ## License
 
