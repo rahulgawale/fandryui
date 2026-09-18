@@ -3,7 +3,7 @@
 }
 
 .section {
-  padding: var(--fd-space-6) 0 calc(var(--fd-space-6) * 2);
+  padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
   /* Light accent-tint gradient, same hue/approach as heroSection.css's
      :host background (literal HSL, not --fd-accent -- that token is
      :host-scoped inside each fandry-* primitive's own shadow root and

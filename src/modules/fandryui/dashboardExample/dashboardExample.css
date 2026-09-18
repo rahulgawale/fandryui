@@ -3,7 +3,7 @@
 }
 
 .section {
-  padding: var(--fd-space-6) 0 calc(var(--fd-space-6) * 2);
+  padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
 }
 
 .container {
