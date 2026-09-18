@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+
+.section {
+  padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--fd-space-2);
+  display: block;
+}
+
+/* fandry-text's :host defaults to display: contents (so an as="span" usage
+   doesn't force a line break) -- overridden back to block here so the
+   margin below actually applies, same as dashboardExample.css's .subtitle. */
+.subtitle {
+  display: block;
+  text-align: center;
+  margin: 0 auto var(--fd-space-6);
+  max-width: 34rem;
+}
+
+/* Bordered "screen" chrome around the demo, purely presentational -- unlike
+   dashboardExample's .frame, this one has no min-width/horizontal scroll:
+   .fandry-grid inside is responsive on its own, so the frame is meant to be
+   squeezed down in the browser to see the columns actually collapse. */
+.frame {
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-lg);
+  background: var(--fd-color-surface);
+  padding-block: var(--fd-space-6);
+}
+
+/* .fandry-grid's item is the fandry-card host itself, not something inside
+   it -- this wrapper is what actually gets the flex column + gap, spacing
+   the card's slotted content the same "no dedicated Stack component,
+   just flexbox" way documented in the README. */
+.order-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fd-space-2);
+}

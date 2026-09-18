@@ -92,6 +92,42 @@ Open http://localhost:3000 in your browser. You should see the marketing home pa
 | `npm run clean` | Remove `__lwr_cache__` and `site/` |
 | `npm run deploy` | Build, then publish `site/` to GitHub Pages |
 
+## Layout Patterns
+
+Use LWC for what LWC is good at. Use HTML and CSS for what HTML and CSS are
+good at. LWC earns its keep on behavior, state, and accessibility; layout is
+already a solved CSS problem, and wrapping it in a component would trade a
+tool people already know for a black-boxed, rigid one they'd have to learn.
+Fandry UI components should not own application layout. Containers, grids,
+and stacks are CSS problems CSS already solves well, so instead of
+`fandry-container`, `fandry-grid`, or `fandry-stack` components, Fandry
+documents these as plain CSS classes/patterns (built on the same design
+tokens as every primitive) in `src/assets/styles/global.css`:
+
+```html
+<div class="fandry-container">
+  <fandry-heading level="1">Orders</fandry-heading>
+
+  <div class="fandry-grid">
+    <fandry-card>...</fandry-card>
+    <fandry-card>...</fandry-card>
+    <fandry-card>...</fandry-card>
+  </div>
+</div>
+```
+
+- `.fandry-container` — centers content, caps it at the site's standard
+  `72rem` max-width, and applies responsive inline padding via
+  `--fd-space-6`.
+- `.fandry-grid` — a responsive `display: grid` (`repeat(auto-fit,
+  minmax(280px, 1fr))`) for cards, dashboard metrics, and similar content
+  blocks, with no breakpoints to configure.
+- A vertical stack doesn't need a class at all: `display: flex;
+  flex-direction: column; gap: var(--fd-space-4);` on any wrapper.
+
+See `src/core/CORE_BOUNDARIES.md` for why these are CSS patterns, not
+components.
+
 ## Design Principles
 
 - Extensibility > completeness
