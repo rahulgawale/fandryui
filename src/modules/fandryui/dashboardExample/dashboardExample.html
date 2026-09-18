@@ -1,0 +1,155 @@
+<template>
+  <section class="section">
+    <div class="container">
+      <fandry-heading level="2" class="title">A B2B dashboard, built entirely from these primitives</fandry-heading>
+      <fandry-text variant="muted" class="subtitle">No custom UI components. Just Fandry primitives composed together.</fandry-text>
+
+      <div class="frame-scroll">
+        <div class="frame">
+          <div class="topbar">
+            <span class="brand">ACME</span>
+            <div class="topbar-links">
+              <fandry-input
+                class="search-input"
+                placeholder="Search…"
+                value={searchQuery}
+                oninput={handleSearchInput}
+              ></fandry-input>
+              <fandry-link variant="muted" href="#" onclick={handleTopbarLinkClick}>Help</fandry-link>
+            </div>
+            <fandry-popover open={accountMenuOpen} ontoggle={handleAccountMenuToggle} placement="bottom" align="end">
+              <fandry-button slot="trigger" variant="ghost" size="md" class="account-trigger" element-props={accountTriggerProps}>
+                <fandry-avatar initials="A" size="md"></fandry-avatar>
+              </fandry-button>
+              <fandry-menu onselect={handleAccountMenuSelect}>
+                <div class="menu-header">
+                  <fandry-text as="span" size="sm">Alex</fandry-text>
+                  <fandry-text as="span" size="xs" variant="muted">alex@acme.com</fandry-text>
+                </div>
+                <fandry-menu-item value="profile" label="Profile"></fandry-menu-item>
+                <fandry-menu-item value="settings" label="Account settings"></fandry-menu-item>
+                <fandry-menu-item value="signout" label="Sign out"></fandry-menu-item>
+              </fandry-menu>
+            </fandry-popover>
+          </div>
+
+          <div class="body">
+            <aside class="sidebar">
+              <template for:each={navItemClasses} for:item="item">
+                <div
+                  key={item.key}
+                  class={item.className}
+                  data-key={item.key}
+                  role="button"
+                  tabindex="0"
+                  onclick={handleNavClick}
+                  onkeydown={handleNavKeydown}
+                >
+                  {item.label}
+                </div>
+              </template>
+            </aside>
+
+            <main class="main">
+              <template if:true={showDetail}>
+                <fandry-link variant="muted" href="#" class="back-link" onclick={handleBackFromDetail}>← Back</fandry-link>
+
+                <div class="detail-head">
+                  <fandry-heading level="3">{detailRow.label}</fandry-heading>
+                  <fandry-badge variant={detailRow.badgeVariant}>{detailRow.badgeLabel}</fandry-badge>
+                </div>
+                <fandry-text as="span" size="sm" variant="muted">{detailRow.code}</fandry-text>
+                <fandry-text class="detail-body">{detailRow.detail}</fandry-text>
+              </template>
+
+              <template if:true={showOverview}>
+                <fandry-heading level="3">Good morning, Alex</fandry-heading>
+                <fandry-text variant="muted">Here's what's happening with your account.</fandry-text>
+
+                <div class="stats">
+                  <template for:each={stats} for:item="stat">
+                    <fandry-card key={stat.key} class="stat-card">
+                      <fandry-text as="span" size="xs" variant="muted">{stat.label}</fandry-text>
+                      <fandry-heading level="4">{stat.value}</fandry-heading>
+                    </fandry-card>
+                  </template>
+                </div>
+
+                <fandry-heading level="4" class="orders-title">Recent Orders</fandry-heading>
+
+                <div if:true={hasStatusFilter} class="filter-bar">
+                  <fandry-text as="span" size="xs" variant="muted">Filtered by "{statusFilter}"</fandry-text>
+                  <fandry-link variant="muted" href="#" onclick={handleClearStatusFilter}>Clear</fandry-link>
+                </div>
+
+                <div class="orders">
+                  <template for:each={visibleRecentOrders} for:item="order">
+                    <div
+                      key={order.key}
+                      data-key={order.key}
+                      class="order-row"
+                      role="button"
+                      tabindex="0"
+                      onclick={handleRowClick}
+                      onkeydown={handleRowKeydown}
+                    >
+                      <fandry-text as="span" size="sm">{order.code}</fandry-text>
+                      <fandry-text as="span" size="sm">{order.label}</fandry-text>
+                      <span
+                        class="status-filter"
+                        role="button"
+                        tabindex="0"
+                        data-status={order.badgeLabel}
+                        onclick={handleStatusClick}
+                        onkeydown={handleStatusKeydown}
+                      >
+                        <fandry-badge variant={order.badgeVariant}>{order.badgeLabel}</fandry-badge>
+                      </span>
+                    </div>
+                  </template>
+                </div>
+              </template>
+
+              <template if:true={showList}>
+                <fandry-heading level="3">{selectedView.title}</fandry-heading>
+                <fandry-text variant="muted">{selectedView.subtitle}</fandry-text>
+
+                <div if:true={hasStatusFilter} class="filter-bar">
+                  <fandry-text as="span" size="xs" variant="muted">Filtered by "{statusFilter}"</fandry-text>
+                  <fandry-link variant="muted" href="#" onclick={handleClearStatusFilter}>Clear</fandry-link>
+                </div>
+
+                <div class="orders">
+                  <template for:each={visibleListRows} for:item="row">
+                    <div
+                      key={row.key}
+                      data-key={row.key}
+                      class="order-row"
+                      role="button"
+                      tabindex="0"
+                      onclick={handleRowClick}
+                      onkeydown={handleRowKeydown}
+                    >
+                      <fandry-text as="span" size="sm">{row.code}</fandry-text>
+                      <fandry-text as="span" size="sm">{row.label}</fandry-text>
+                      <span
+                        class="status-filter"
+                        role="button"
+                        tabindex="0"
+                        data-status={row.badgeLabel}
+                        onclick={handleStatusClick}
+                        onkeydown={handleStatusKeydown}
+                      >
+                        <fandry-badge variant={row.badgeVariant}>{row.badgeLabel}</fandry-badge>
+                      </span>
+                    </div>
+                  </template>
+                </div>
+              </template>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

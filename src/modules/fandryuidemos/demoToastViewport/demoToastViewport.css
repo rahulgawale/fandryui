@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  min-height: 10rem;
+  padding: var(--fd-space-4);
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+}

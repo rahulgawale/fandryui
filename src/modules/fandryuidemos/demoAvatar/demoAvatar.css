@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-3);
+}

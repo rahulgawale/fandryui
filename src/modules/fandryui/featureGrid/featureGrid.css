@@ -1,0 +1,134 @@
+:host {
+  display: block;
+}
+
+.section {
+  padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
+  /* Light accent-tint gradient, same hue/approach as heroSection.css's
+     :host background (literal HSL, not --fd-accent -- that token is
+     :host-scoped inside each fandry-* primitive's own shadow root and
+     isn't visible out here). Single accent hue and much lower opacity than
+     the hero's two-tone version so this reads as a quiet section wash, not
+     a second hero. */
+  background: linear-gradient(
+    180deg,
+    hsl(199 89% 36% / 0.06),
+    transparent 60%
+  );
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--fd-space-6);
+  display: block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--fd-space-5);
+  /* Stretch (Grid's default) so every card in a row matches the tallest
+     sibling's height. This used to leave a bare empty region below a
+     shorter card's actual content, because fandry-card didn't fill the
+     stretched height it was given -- now that card.css's :host/.card both
+     size to height: 100%, stretching is exactly what makes the cards come
+     out equal height instead of leaving that gap. */
+  align-items: stretch;
+}
+
+@media (max-width: 60rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 40rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-wrap {
+  border-radius: var(--fd-radius-lg);
+  /* Opts this section's cards into card.css's height: 100% behavior (see
+     its :host comment) -- .grid's align-items: stretch above already
+     stretches this wrapper to match its row's tallest sibling; this is
+     what makes the fandry-card inside actually fill that stretched box
+     instead of leaving empty space below its own auto-height content. */
+  --fd-card-height: 100%;
+  /* Explicit clip on this wrapper itself, matching its own border-radius
+     -- transition: transform below can promote this element to its own
+     GPU compositing layer, whose backing-store bounds are rectangular
+     regardless of the child fandry-card's own rounded corners; without an
+     explicit clip here too, that rectangular layer edge can show through
+     faintly as a seam on some GPU/driver combinations, even though this
+     element has no visible border/background of its own. */
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+/* hover: hover excludes touch devices -- see componentsIndex.css's
+   identical rule for why this matters (a tap otherwise leaves the lift/
+   shadow stuck on, with no mouseout event to clear it). */
+@media (hover: hover) {
+  .card-wrap:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.25);
+  }
+}
+
+/* fandry-card's shadow tree has no gap of its own between slotted
+   children (see heroDemoGrid.css's identical note), so the heading -> text
+   gap is spaced directly here. fandry-text also needs display: block
+   forced back on -- its :host defaults to display: contents so an
+   as="span" usage doesn't force a line break, which as a side effect means
+   margin-top on the host is otherwise ignored (a display: contents box
+   generates no margin area of its own). */
+.card-wrap fandry-heading + fandry-text {
+  display: block;
+  margin-top: calc(var(--fd-space-3) * 2);
+}
+
+.icon-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--fd-radius-lg);
+  margin-bottom: var(--fd-space-3);
+}
+
+/* Literal HSL values -- these tokens live :host-scoped inside each
+   fandry-* primitive's shadow root, not out here (see heroSection.css on
+   the home page for the fuller version of this note). */
+.tint-primary {
+  background: hsl(330 81% 48% / 0.12);
+  color: hsl(330 81% 40%);
+}
+
+.tint-accent {
+  background: hsl(199 89% 36% / 0.12);
+  color: hsl(199 89% 30%);
+}
+
+.tint-success {
+  background: hsl(142 71% 30% / 0.12);
+  color: hsl(142 71% 26%);
+}
+
+.tint-warning {
+  background: hsl(38 92% 32% / 0.12);
+  color: hsl(38 92% 28%);
+}
+
+.tint-danger {
+  background: hsl(0 72% 51% / 0.12);
+  color: hsl(0 72% 42%);
+}

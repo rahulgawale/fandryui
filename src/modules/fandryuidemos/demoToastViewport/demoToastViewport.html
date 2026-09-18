@@ -1,0 +1,12 @@
+<template>
+  <div class="panel">
+    <fandry-button variant="secondary" onclick={handleAdd}>Show toast within this panel</fandry-button>
+    <fandry-toast-viewport placement="bottom-right" contained>
+      <template for:each={toasts} for:item="toast">
+        <fandry-toast key={toast.id} data-id={toast.id} variant="success" duration="3000" ondismiss={handleDismiss}>
+          {toast.message}
+        </fandry-toast>
+      </template>
+    </fandry-toast-viewport>
+  </div>
+</template>

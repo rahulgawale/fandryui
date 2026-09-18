@@ -1,0 +1,25 @@
+<template>
+  <section class="section">
+    <div class="container">
+      <fandry-heading level="2" class="title">What you get</fandry-heading>
+
+      <div class="grid">
+        <template for:each={features} for:item="feature">
+          <div key={feature.key} class="card-wrap">
+            <fandry-card>
+              <div class={feature.chipClass}>
+                <fandry-icon size="md">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d={feature.iconPath}></path>
+                  </svg>
+                </fandry-icon>
+              </div>
+              <fandry-heading level="3">{feature.title}</fandry-heading>
+              <fandry-text variant="muted">{feature.description}</fandry-text>
+            </fandry-card>
+          </div>
+        </template>
+      </div>
+    </div>
+  </section>
+</template>

@@ -1,0 +1,62 @@
+<template>
+  <div class="grid">
+    <fandry-card class="demo-card controls-card">
+      <div class="btn-row">
+        <fandry-button size="sm">Button</fandry-button>
+        <fandry-button size="sm" variant="secondary">Secondary</fandry-button>
+        <fandry-button size="sm" variant="ghost">Ghost</fandry-button>
+      </div>
+      <fandry-input size="sm" placeholder="Name"></fandry-input>
+      <fandry-textarea placeholder="Message" rows="2"></fandry-textarea>
+      <div class="mini-row">
+        <fandry-badge>Default</fandry-badge>
+        <fandry-badge variant="primary">Primary</fandry-badge>
+        <fandry-checkbox label="Checked" checked></fandry-checkbox>
+        <fandry-switch checked></fandry-switch>
+      </div>
+    </fandry-card>
+
+    <fandry-card class="demo-card chart-card">
+      <fandry-text as="span" size="xs" variant="muted">Build velocity</fandry-text>
+      <fandry-heading level="4">Faster every month</fandry-heading>
+      <div class="bars">
+        <template for:each={bars} for:item="bar">
+          <div key={bar.key} class="bar-col">
+            <div class="bar" style={bar.barStyle}></div>
+            <fandry-text as="span" size="xs" variant="muted">{bar.label}</fandry-text>
+          </div>
+        </template>
+      </div>
+    </fandry-card>
+
+    <fandry-card class="demo-card theme-card">
+      <fandry-heading level="4">Theme your brand</fandry-heading>
+      <fandry-text variant="muted" size="sm">One token scale, retheme anywhere.</fandry-text>
+      <fandry-input label="Primary color" value={primaryColor} oninput={handlePrimaryColorInput}></fandry-input>
+      <fandry-input label="Accent color" value={accentColor} oninput={handleAccentColorInput}></fandry-input>
+      <div class="btn-row">
+        <fandry-button size="sm" onclick={handleApplyTheme}>Apply theme</fandry-button>
+        <fandry-button size="sm" variant="secondary" onclick={handleResetTheme}>Reset</fandry-button>
+      </div>
+    </fandry-card>
+
+    <fandry-card class="demo-card notif-card">
+      <fandry-heading level="4">Try it live</fandry-heading>
+      <fandry-text variant="muted" size="sm">A real fandry-toast, not a screenshot.</fandry-text>
+      <fandry-button size="sm" onclick={handleShowToast}>Show notification</fandry-button>
+      <fandry-toast-viewport placement="bottom-right" contained label="Notifications">
+        <template for:each={toasts} for:item="toast">
+          <fandry-toast
+            key={toast.id}
+            data-id={toast.id}
+            variant="success"
+            duration="3000"
+            ondismiss={handleToastDismiss}
+          >
+            {toast.message}
+          </fandry-toast>
+        </template>
+      </fandry-toast-viewport>
+    </fandry-card>
+  </div>
+</template>

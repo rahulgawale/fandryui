@@ -11,9 +11,201 @@
     },
     "routes": [
         {
-            "id": "fandryui",
+            "id": "home",
             "path": "/",
-            "rootComponent": "fandryui/app",
+            "rootComponent": "fandryui/home",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "components",
+            "path": "/components",
+            "rootComponent": "fandryui/componentsIndex",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-card",
+            "path": "/components/card",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-divider",
+            "path": "/components/divider",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-pagination",
+            "path": "/components/pagination",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-sidebar",
+            "path": "/components/sidebar",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-sidebar-item",
+            "path": "/components/sidebar-item",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-heading",
+            "path": "/components/heading",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-icon",
+            "path": "/components/icon",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-label",
+            "path": "/components/label",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-text",
+            "path": "/components/text",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-button",
+            "path": "/components/button",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-checkbox",
+            "path": "/components/checkbox",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-input",
+            "path": "/components/input",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-link",
+            "path": "/components/link",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-radio",
+            "path": "/components/radio",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-radio-group",
+            "path": "/components/radio-group",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-select",
+            "path": "/components/select",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-switch",
+            "path": "/components/switch",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-textarea",
+            "path": "/components/textarea",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-alert",
+            "path": "/components/alert",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-badge",
+            "path": "/components/badge",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-skeleton",
+            "path": "/components/skeleton",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-spinner",
+            "path": "/components/spinner",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-toast",
+            "path": "/components/toast",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-toast-viewport",
+            "path": "/components/toast-viewport",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-tooltip",
+            "path": "/components/tooltip",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-avatar",
+            "path": "/components/avatar",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-menu",
+            "path": "/components/menu",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-menu-item",
+            "path": "/components/menu-item",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-popover",
+            "path": "/components/popover",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-table",
+            "path": "/components/table",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "examples",
+            "path": "/examples",
+            "rootComponent": "fandryui/examples",
             "layoutTemplate": "$layoutsDir/index.html"
         }
     ],

@@ -1,0 +1,92 @@
+:host {
+  display: block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--fd-space-4);
+  text-align: left;
+}
+
+@media (max-width: 60rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 32rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* .demo-card carries no background/radius/overflow of its own -- fandry-
+   card's internal .card div already paints a fully opaque background
+   clipped to its own border-radius, covering the entire visible card. A
+   translucent background on this host (a plain rectangle, no radius of
+   its own) was never actually visible except as a bug: it bled past the
+   inner div's rounded corners, since the two layers' radii can't be
+   perfectly kept in sync across every zoom level/DPI. The class exists
+   purely as a spacing hook for this same reasoning as exampleGallery.css
+   -- fandry-card's shadow tree has no gap of its own between slotted
+   children, so this spaces this component's own light-DOM children
+   directly. */
+.demo-card > * + * {
+  margin-top: var(--fd-space-3);
+  display: block;
+}
+
+.btn-row {
+  display: flex;
+  gap: var(--fd-space-2);
+  flex-wrap: wrap;
+}
+
+.mini-row {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-3);
+  flex-wrap: wrap;
+}
+
+/* -------- Build velocity chart -------- */
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--fd-space-2);
+  height: 6rem;
+}
+
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fd-space-1);
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar {
+  width: 100%;
+  border-radius: var(--fd-radius-sm) var(--fd-radius-sm) 0 0;
+  /* --brand-primary-dark/--brand-accent-dark are set by this component's
+     own "Apply theme" handler (heroDemoGrid.ts) alongside --brand-primary/
+     --brand-accent -- same hue/saturation as those, just darkened, so this
+     chart retheme's live instead of staying pinned to the default brand
+     colors. Falls back to the original literal values (same hues, a shade
+     darker on each end) when nothing has been applied yet. */
+  background: linear-gradient(
+    90deg,
+    hsl(var(--brand-primary-dark, 330 81% 40%)),
+    hsl(var(--brand-accent-dark, 199 89% 28%))
+  );
+}
+
+/* -------- Live notification card -------- */
+
+.notif-card {
+  position: relative;
+}

@@ -1,0 +1,37 @@
+<template>
+  <fandryui-site-header></fandryui-site-header>
+
+  <div class="layout">
+    <fandry-sidebar aria-label="Components" class="nav">
+      <template for:each={sidebarGroups} for:item="group">
+        <div key={group.category} class="group">
+          <fandry-text as="span" size="xs" variant="muted" class="group-label">{group.category}</fandry-text>
+          <template for:each={group.items} for:item="item">
+            <fandry-sidebar-item key={item.slug} href={item.href} active={item.active}>{item.name}</fandry-sidebar-item>
+          </template>
+        </div>
+      </template>
+    </fandry-sidebar>
+
+    <main class="content">
+      <fandry-heading level="1">Components</fandry-heading>
+      <fandry-text variant="muted" class="lede">
+        Every fandry-* primitive, with a live example, its props, and the code to use it.
+      </fandry-text>
+
+      <div class="grid">
+        <template for:each={componentCards} for:item="component">
+          <a key={component.slug} href={component.href} class="card-link">
+            <fandry-card class="card">
+              <fandry-badge>{component.category}</fandry-badge>
+              <fandry-heading level="3">{component.name}</fandry-heading>
+              <fandry-text variant="muted" size="sm">{component.description}</fandry-text>
+            </fandry-card>
+          </a>
+        </template>
+      </div>
+    </main>
+  </div>
+
+  <fandryui-site-footer></fandryui-site-footer>
+</template>

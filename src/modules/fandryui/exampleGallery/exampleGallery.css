@@ -1,0 +1,245 @@
+:host {
+  display: block;
+}
+
+.section {
+  padding: var(--fd-space-6) 0 calc(var(--fd-space-6) * 2);
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--fd-space-6);
+}
+
+@media (max-width: 48rem) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pattern {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--fd-space-1);
+}
+
+.pattern-head {
+  width: 100%;
+  max-width: 24rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pattern > fandry-heading {
+  margin-top: var(--fd-space-1);
+}
+
+.pattern > fandry-text {
+  max-width: 24rem;
+}
+
+.demo {
+  width: 100%;
+  max-width: 24rem;
+  margin-top: var(--fd-space-3);
+}
+
+/* fandry-card's own shadow tree has no gap between slotted children --
+   this spaces this component's own light-DOM children directly (a plain
+   margin, not something that has to reach into fandry-card's shadow). */
+.demo > * + * {
+  margin-top: var(--fd-space-3);
+  display: block;
+}
+
+/* -------- Pricing card -------- */
+
+.price-heading {
+  margin-top: var(--fd-space-2) !important;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fd-space-1);
+}
+
+.amount {
+  font-size: var(--fd-font-size-2xl, 1.5rem);
+  font-weight: 700;
+}
+
+.period {
+  color: var(--fd-color-muted);
+  font-size: var(--fd-font-size-sm);
+}
+
+.check-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-2);
+}
+
+.check-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-2);
+  color: hsl(142 71% 30%);
+}
+
+.check-list li fandry-text {
+  color: var(--fd-color-text);
+}
+
+/* -------- Login form / form rows -------- */
+
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fd-space-3);
+}
+
+/* -------- Settings list -------- */
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fd-space-4);
+}
+
+.setting-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* -------- Empty state -------- */
+
+.empty-state {
+  text-align: center;
+}
+
+.empty-state > * + * {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--fd-radius-lg);
+  background: hsl(330 81% 48% / 0.1);
+  color: hsl(330 81% 40%);
+}
+
+/* -------- Notification list -------- */
+
+.notif-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-2);
+}
+
+/* -------- Team list -------- */
+
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.team-row {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.team-copy {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* -------- Attachment list -------- */
+
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.file-copy {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* -------- Onboarding checklist -------- */
+
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-2);
+}
+
+/* -------- Search bar -------- */
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fd-space-3);
+  padding: var(--fd-space-2) 0;
+  border-bottom: 1px solid var(--fd-color-border);
+}
+
+.search-result:last-child {
+  border-bottom: none;
+}
+
+/* -------- KPI row -------- */
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--fd-space-3);
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fd-space-1);
+}

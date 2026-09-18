@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-4);
+  max-width: 16rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.native-input {
+  padding: var(--fd-space-2);
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+  font: inherit;
+}

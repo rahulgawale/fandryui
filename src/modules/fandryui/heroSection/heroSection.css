@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  /* --brand-primary/--brand-accent (not --fd-primary/--fd-accent) -- those
+     tokens are declared :host-scoped inside each fandry-* primitive's own
+     shadow root and aren't visible out here in this component's light-DOM
+     stylesheet, but --brand-primary/--brand-accent are plain custom
+     properties with no such redeclaration, set on <html> by heroDemoGrid.ts's
+     "Apply theme" handler, so this wash retheme's live along with
+     everything else instead of staying pinned to the default brand hues. */
+  background: radial-gradient(
+      circle at 15% 0%,
+      hsl(var(--brand-primary, 330 81% 48%) / 0.12),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 85% 10%,
+      hsl(var(--brand-accent, 199 89% 36%) / 0.12),
+      transparent 55%
+    );
+}
+
+.container {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: var(--fd-space-6) var(--fd-space-6) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--fd-space-4);
+}
+
+.headline {
+  margin: 0;
+}
+
+.subhead {
+  max-width: 34rem;
+}
+
+.cta-row {
+  display: flex;
+  gap: var(--fd-space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--fd-space-2);
+}
+
+.demo-grid-wrap {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: calc(var(--fd-space-6) * 1.5) var(--fd-space-6) calc(var(--fd-space-6) * 2);
+}

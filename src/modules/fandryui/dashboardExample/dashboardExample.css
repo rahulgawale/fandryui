@@ -1,0 +1,271 @@
+:host {
+  display: block;
+}
+
+.section {
+  padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--fd-space-2);
+  display: block;
+}
+
+/* fandry-text's :host defaults to display: contents (so an as="span" usage
+   doesn't force a line break) -- overridden back to block here so the
+   margin below actually applies (a display: contents box generates no
+   margin area of its own), same as componentDoc.css's .lede and others. */
+.subtitle {
+  display: block;
+  text-align: center;
+  margin: 0 auto var(--fd-space-6);
+  max-width: 34rem;
+}
+
+.frame-scroll {
+  overflow-x: auto;
+}
+
+.frame {
+  min-width: 40rem;
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-lg);
+  overflow: hidden;
+  background: var(--fd-color-surface);
+  box-shadow: 0 24px 48px -24px rgba(15, 23, 42, 0.35);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-5);
+  padding: var(--fd-space-3) var(--fd-space-5);
+  border-bottom: 1px solid var(--fd-color-border);
+}
+
+.brand {
+  font-weight: 700;
+}
+
+.topbar-links {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-4);
+}
+
+.search-input {
+  display: block;
+  max-width: 14rem;
+}
+
+/* Ghost variant keeps this visually quiet (transparent until hover/focus)
+   so it reads as "the avatar is the button" rather than a boxy control
+   sitting next to it. --fd-button-radius (button.css) swaps its usual
+   token corner radius for a full round shape, and --fd-button-padding-x
+   zeroes out the size's usual horizontal padding -- together those make
+   the button's box come out exactly height x height (36px x 36px, matching
+   the md avatar inside it 1:1), which is what makes the round shape an
+   actual circle instead of an oval: a full round radius on a box wider
+   than it is tall is a stadium/pill, not a circle. */
+.account-trigger {
+  display: inline-flex;
+  --fd-button-radius: 999px;
+  --fd-button-padding-x: 0;
+  --fd-button-border-width: 0;
+}
+
+.menu-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--fd-space-1) var(--fd-space-3) var(--fd-space-2);
+  margin-bottom: var(--fd-space-1);
+  border-bottom: 1px solid var(--fd-color-border);
+}
+
+.body {
+  display: flex;
+  min-height: 22rem;
+}
+
+.sidebar {
+  width: 12rem;
+  flex-shrink: 0;
+  border-right: 1px solid var(--fd-color-border);
+  padding: var(--fd-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.nav-item {
+  padding: var(--fd-space-2) var(--fd-space-3);
+  border-radius: var(--fd-radius-md);
+  font-size: var(--fd-font-size-sm);
+  color: var(--fd-color-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* hover: hover excludes touch devices -- see componentsIndex.css's
+   identical rule for why (a tap otherwise leaves this stuck on). */
+@media (hover: hover) {
+  .nav-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.nav-item:focus-visible {
+  outline: 2px solid hsl(var(--brand-primary, 330 81% 48%));
+  outline-offset: 2px;
+}
+
+.nav-item--active,
+.nav-item--active:hover {
+  /* --brand-primary, not --fd-color-primary or --fd-primary -- the former
+     is a legacy global token, a different (blue) value from the
+     pink/magenta this page actually renders with; the latter is
+     :host-scoped inside each fandry-* primitive's own shadow root and
+     isn't visible out here. --brand-primary is a plain custom property set
+     on <html> by heroDemoGrid.ts's "Apply theme" handler, with the same
+     literal default this always had, so this stays in sync with the rest
+     of the page's retheming. */
+  background: hsl(var(--brand-primary, 330 81% 48%));
+  color: #fff;
+}
+
+.main {
+  flex: 1;
+  padding: var(--fd-space-5);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--fd-space-3);
+  margin: var(--fd-space-4) 0 var(--fd-space-5);
+}
+
+.stat-card {
+  display: block;
+}
+
+/* --fd-card-bg (card.css) lets each stat card carry its own tint instead
+   of the plain surface color -- literal HSL, same hues as featureGrid.css's
+   icon-chip tints, not the --fd-primary/--fd-accent/--fd-success tokens
+   themselves (:host-scoped inside each fandry-* primitive's own shadow
+   root, not visible out here). Light enough that the card's own text
+   tokens (also shadow-scoped, so unaffected by this) stay readable. */
+.stat-card:nth-child(1) {
+  --fd-card-bg: linear-gradient(
+    135deg,
+    hsl(330 81% 48% / 0.14),
+    hsl(330 81% 48% / 0.02)
+  );
+}
+
+.stat-card:nth-child(2) {
+  --fd-card-bg: linear-gradient(
+    135deg,
+    hsl(199 89% 36% / 0.14),
+    hsl(199 89% 36% / 0.02)
+  );
+}
+
+.stat-card:nth-child(3) {
+  --fd-card-bg: linear-gradient(
+    135deg,
+    hsl(142 71% 30% / 0.14),
+    hsl(142 71% 30% / 0.02)
+  );
+}
+
+.orders-title {
+  display: block;
+  margin-bottom: var(--fd-space-2);
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-2);
+  margin-bottom: var(--fd-space-2);
+}
+
+.orders {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr auto;
+  align-items: center;
+  gap: var(--fd-space-3);
+  /* Horizontal padding + a matching negative margin keeps the row's own
+     edges lined up with the heading/text above it (which have none) while
+     still giving the hover/focus background below room to bleed past the
+     text on both sides, not just hug it. */
+  padding: var(--fd-space-2);
+  margin: 0 calc(var(--fd-space-2) * -1);
+  border-bottom: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-sm);
+  cursor: pointer;
+}
+
+.order-row:last-child {
+  border-bottom: none;
+}
+
+/* hover: hover excludes touch devices -- see .nav-item's identical rule
+   above for why (a tap otherwise leaves this stuck on). */
+@media (hover: hover) {
+  .order-row:hover {
+    background: rgba(0, 0, 0, 0.03);
+  }
+}
+
+.order-row:focus-visible {
+  outline: 2px solid hsl(var(--brand-primary, 330 81% 48%));
+  outline-offset: -2px;
+}
+
+.status-filter {
+  display: inline-flex;
+  border-radius: var(--fd-radius-md);
+  cursor: pointer;
+}
+
+.status-filter:hover {
+  filter: brightness(0.95);
+}
+
+.status-filter:focus-visible {
+  outline: 2px solid hsl(var(--brand-primary, 330 81% 48%));
+  outline-offset: 2px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: var(--fd-space-4);
+}
+
+.detail-head {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-2);
+}
+
+.detail-body {
+  display: block;
+  margin-top: var(--fd-space-3);
+  max-width: 32rem;
+}

@@ -1,0 +1,114 @@
+:host {
+  display: block;
+}
+
+.layout {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fd-space-6);
+}
+
+.nav {
+  position: sticky;
+  top: 4rem;
+  height: calc(100vh - 4rem);
+  padding: var(--fd-space-6) var(--fd-space-3) var(--fd-space-6) 0;
+  border-right: 1px solid var(--fd-color-border);
+}
+
+@media (max-width: 56rem) {
+  .layout {
+    flex-direction: column;
+    /* See componentDoc.css's identical rule for why this is needed once
+       flex-direction flips to column. */
+    align-items: stretch;
+  }
+
+  .nav {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--fd-color-border);
+    padding: var(--fd-space-4) 0;
+  }
+}
+
+.group {
+  margin-bottom: var(--fd-space-4);
+}
+
+.group-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0 var(--fd-space-3);
+  margin-bottom: var(--fd-space-1);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: var(--fd-space-6) 0 calc(var(--fd-space-6) * 2);
+}
+
+.lede {
+  display: block;
+  margin-top: var(--fd-space-2);
+  margin-bottom: var(--fd-space-6);
+  max-width: 36rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--fd-space-4);
+  /* See featureGrid.css's identical rule for why -- removes the stretched
+     empty region a shorter card's row would otherwise get from Grid's
+     default align-items:stretch. */
+  align-items: start;
+}
+
+@media (max-width: 48rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 30rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--fd-radius-lg);
+  /* See featureGrid.css's identical rule for why -- an explicit clip
+     matching this element's own radius, guarding against its GPU
+     compositing layer's rectangular bounds (from transition: transform
+     below) showing through as a faint seam. */
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+/* hover: hover excludes touch devices -- without it, tapping a card on a
+   touchscreen leaves this lift/shadow "stuck" (there's no mouseout event
+   to clear :hover on touch), which reads as a permanent rendering bug
+   rather than the intentional hover affordance it's meant to be. */
+@media (hover: hover) {
+  .card-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.25);
+  }
+}
+
+.card > * + * {
+  margin-top: var(--fd-space-2);
+  display: block;
+}
