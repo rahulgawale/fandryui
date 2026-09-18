@@ -1,0 +1,18 @@
+<template>
+  <div class="custom-table" style={gridStyle}>
+    <template for:each={headerGroup.headers} for:item="header">
+      <button
+        key={header.id}
+        type="button"
+        class="custom-table__sort-button"
+        data-column-id={header.columnId}
+        onclick={handleHeaderClick}
+      >
+        {header.label} {header.sortIndicator}
+      </button>
+    </template>
+    <template for:each={flatCells} for:item="cell">
+      <div key={cell.key} class="custom-table__cell">{cell.value}</div>
+    </template>
+  </div>
+</template>

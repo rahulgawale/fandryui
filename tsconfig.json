@@ -26,6 +26,7 @@
       "fandry/tableState": ["src/core/fandry/tableState/tableState"],
       "fandry/*": ["src/core/fandry/*"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
+      "fandryui/customTable": ["src/modules/fandryui/customTable/customTable"],
       "fandryui/demoCard": ["src/modules/fandryui/demoCard/demoCard"],
       "fandryui/demoDivider": ["src/modules/fandryui/demoDivider/demoDivider"],
       "fandryui/demoPagination": ["src/modules/fandryui/demoPagination/demoPagination"],

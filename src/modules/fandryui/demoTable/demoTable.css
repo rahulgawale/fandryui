@@ -1,0 +1,18 @@
+:host {
+  display: block;
+}
+
+.custom-markup {
+  margin-top: var(--fd-space-6);
+  padding-top: var(--fd-space-5);
+  border-top: 1px solid var(--fd-color-border);
+}
+
+/* fandry-text's :host defaults to display: contents (so an as="span" usage
+   doesn't force a line break) -- overridden back to block here so the
+   margin below actually applies (a display: contents box generates no
+   margin area of its own), same as componentDoc.css's .lede and others. */
+.custom-lede {
+  display: block;
+  margin: var(--fd-space-1) 0 var(--fd-space-4);
+}

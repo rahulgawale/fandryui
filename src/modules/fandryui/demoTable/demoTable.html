@@ -10,4 +10,12 @@
   >
     <span slot="empty">No team members yet.</span>
   </fandry-table>
+
+  <div class="custom-markup">
+    <fandry-heading level="4">Custom markup</fandry-heading>
+    <fandry-text variant="muted" size="sm" class="custom-lede">
+      fandry-table is one opinion built on top of fandry/tableState — extend that class directly for full control over markup, like this CSS Grid in place of a table.
+    </fandry-text>
+    <fandryui-custom-table columns={tableColumns} data={tableData}></fandryui-custom-table>
+  </div>
 </template>
