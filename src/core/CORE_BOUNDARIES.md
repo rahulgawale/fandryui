@@ -65,6 +65,21 @@ Core prefers opinionated defaults.
 
 ---
 
+### ❌ Application Layout
+
+Fandry UI components should not own application layout.
+
+- No `fandry-container`, `fandry-grid`, or `fandry-stack` components
+- No page-width, column-count, or breakpoint props on any primitive
+
+Containers, grids, and stacks are ordinary CSS problems, already solved by
+CSS. Fandry documents these as plain classes/patterns (design tokens +
+documented CSS, e.g. `.fandry-container`, `.fandry-grid` in
+`src/assets/styles/global.css`) instead of wrapping them in components that
+would only reintroduce a Lightning-Layout-style config surface.
+
+---
+
 ## Enforcement Rules
 
 - Any addition to Core must justify its presence

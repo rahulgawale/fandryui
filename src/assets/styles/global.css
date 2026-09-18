@@ -150,3 +150,52 @@ code {
   outline: 2px solid var(--fd-color-focus);
   outline-offset: 2px;
 }
+
+/* -----------------------------
+   Layout patterns
+
+   Fandry keeps its component surface small: fandry-* primitives handle UI,
+   behavior, and accessibility, but they don't own application layout.
+   Composing a page (spacing, grids, max-width) is ordinary CSS the host
+   application already knows, so instead of fandry-container/fandry-grid
+   LWCs, Fandry documents these as plain classes -- same spacing tokens as
+   everything else, no component API to learn. Use directly in light-DOM
+   markup alongside fandry-* elements, e.g.:
+
+     <div class="fandry-container">
+       <fandry-heading level="1">Orders</fandry-heading>
+       <div class="fandry-grid">
+         <fandry-card>...</fandry-card>
+         <fandry-card>...</fandry-card>
+       </div>
+     </div>
+
+   A vertical stack needs no named class at all -- it's just
+   `display: flex; flex-direction: column; gap: var(--fd-space-4);`
+   (or var(--fd-space-*) at whatever step the layout calls for) applied to
+   an ordinary wrapper.
+------------------------------ */
+
+/* Centers and caps page content. max-width matches the 72rem already used
+   site-wide (see siteHeader/siteFooter/componentsIndex/dashboardExample,
+   etc.) so a consumer adopting this class lines up with the rest of the
+   site instead of introducing a second, competing max-width. */
+.fandry-container {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: var(--fd-space-6);
+}
+
+/* Responsive card/metric grid with no breakpoints to configure -- columns
+   form and collapse on their own as the container's width changes.
+   minmax(280px, 1fr) is wide enough that a fandry-card's content (a
+   heading, a couple of stat lines, a badge) doesn't wrap awkwardly at the
+   narrowest column width auto-fit will produce. Gap matches the
+   container's own inline padding for a consistent rhythm between a page's
+   outer gutter and the gutters between its grid items. */
+.fandry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--fd-space-6);
+}

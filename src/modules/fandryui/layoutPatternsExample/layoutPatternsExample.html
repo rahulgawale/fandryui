@@ -1,0 +1,31 @@
+<template lwc:render-mode="light">
+  <section class="section">
+    <div class="container">
+      <fandry-heading level="2" class="title">Layout is just CSS</fandry-heading>
+      <fandry-text variant="muted" class="subtitle">
+        <code>.fandry-container</code> and <code>.fandry-grid</code> aren't fandry-* components -- they're plain CSS classes from
+        <code>src/assets/styles/global.css</code>, wrapping ordinary fandry-* primitives.
+      </fandry-text>
+
+      <div class="frame">
+        <div class="fandry-container">
+          <fandry-heading level="1">Orders</fandry-heading>
+          <fandry-text variant="muted">3 orders placed today.</fandry-text>
+
+          <div class="fandry-grid">
+            <template for:each={orders} for:item="order">
+              <fandry-card key={order.key}>
+                <div class="order-card-body">
+                  <fandry-text as="span" size="xs" variant="muted">{order.code}</fandry-text>
+                  <fandry-heading level="4">{order.customer}</fandry-heading>
+                  <fandry-text as="span" size="sm">{order.amount}</fandry-text>
+                  <fandry-badge variant={order.badgeVariant}>{order.badgeLabel}</fandry-badge>
+                </div>
+              </fandry-card>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
