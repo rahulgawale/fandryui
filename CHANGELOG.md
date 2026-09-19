@@ -1,3 +1,10 @@
+# [0.10.0](https://github.com/rahulgawale/fandryui/compare/v0.9.0...v0.10.0) (2026-09-19)
+
+
+### Features
+
+* page mode for fandry-pagination, used by fandry-table's footer ([#64](https://github.com/rahulgawale/fandryui/issues/64)) ([62dea5a](https://github.com/rahulgawale/fandryui/commit/62dea5a69de0590405597bd0f0df6ec0930ee7e3))
+
 # [0.9.0](https://github.com/rahulgawale/fandryui/compare/v0.8.0...v0.9.0) (2026-09-19)
 
 
