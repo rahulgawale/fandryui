@@ -17,6 +17,10 @@ export interface FdLookupRecord {
   [field: string]: unknown;
 }
 
+// A stable empty list, so "nothing" reads as the same array every time (the
+// source cache compares by identity).
+const NO_RECORDS: FdLookupRecord[] = [];
+
 // How long typing must pause before `search` fires. Fixed, not a prop: a
 // consumer that wants something different can debounce on their side.
 const SEARCH_DEBOUNCE_MS = 250;
@@ -68,7 +72,8 @@ const RESERVED_ELEMENT_PROPS = [
  * With `multiple`, bind `records` instead of `record`; `change` then carries
  * `{ values, records }`.
  *
- * `search` fires when the list opens (with the current text, so a consumer
+ * `search` fires when the list opens (on click or ArrowDown -- not on a bare
+ * Tab into the field -- with the current text, so a consumer
  * can offer recent records for an empty query), again after typing pauses,
  * and, with `multiple`, after each pick. Results are shown exactly as given
  * -- the lookup never filters them, since the consumer's query already did
@@ -139,17 +144,29 @@ export default class FdLookup extends FdSearchState {
     items: FdSearchItem[];
   } = { results: null, records: null, items: [] };
 
+  // A consumer binding `results` or `records` to data that hasn't arrived yet
+  // (a wire adapter starts out `undefined`) must get an empty lookup, not a
+  // render error.
+  private get resultList(): FdLookupRecord[] {
+    return this.results ?? NO_RECORDS;
+  }
+
+  private get recordList(): FdLookupRecord[] {
+    return this.records ?? NO_RECORDS;
+  }
+
   protected get source(): FdSearchItem[] {
     const cache = this.sourceCache;
-    const selection = this.multiple ? this.records : null;
+    const results = this.resultList;
+    const selection = this.multiple ? this.recordList : null;
 
-    if (cache.results !== this.results || cache.records !== selection) {
-      cache.results = this.results;
+    if (cache.results !== results || cache.records !== selection) {
+      cache.results = results;
       cache.records = selection;
 
       // Already-chosen records aren't offered again.
       const chosen = new Set((selection ?? []).map((record) => record.id));
-      cache.items = this.results
+      cache.items = results
         .filter((record) => !chosen.has(record.id))
         .map((record) => ({ ...record, value: record.id }));
     }
@@ -163,7 +180,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   protected commit(item: FdSearchItem) {
-    const chosen = this.results.find((record) => record.id === item.value);
+    const chosen = this.resultList.find((record) => record.id === item.value);
     if (!chosen) {
       return;
     }
@@ -171,7 +188,7 @@ export default class FdLookup extends FdSearchState {
     this.setQuery('');
 
     if (this.multiple) {
-      this.records = [...this.records, chosen];
+      this.records = [...this.recordList, chosen];
       this.dispatchChange();
       // Stays open and focused for the next pick; the consumer refreshes the
       // list (an empty query again, so recents, minus what's now chosen).
@@ -204,11 +221,11 @@ export default class FdLookup extends FdSearchState {
   }
 
   get hasChips(): boolean {
-    return this.multiple && this.records.length > 0;
+    return this.multiple && this.recordList.length > 0;
   }
 
   get chips(): Array<{ id: string; label: string; removeLabel: string }> {
-    return this.records.map((record) => ({
+    return this.recordList.map((record) => ({
       id: record.id,
       label: record.label,
       removeLabel: `Remove ${record.label}`
@@ -305,7 +322,7 @@ export default class FdLookup extends FdSearchState {
 
   private dispatchChange() {
     const detail = this.multiple
-      ? { values: this.records.map((record) => record.id), records: this.records }
+      ? { values: this.recordList.map((record) => record.id), records: this.recordList }
       : { value: this.value, record: this.record };
 
     this.dispatchEvent(new CustomEvent('change', { detail, bubbles: true }));
@@ -380,16 +397,21 @@ export default class FdLookup extends FdSearchState {
   handleInputKeydown(event: KeyboardEvent) {
     // Backspace in an empty field takes the last chip back.
     if (event.key === 'Backspace' && this.hasChips && !this.query) {
-      this.records = this.records.slice(0, -1);
+      this.records = this.recordList.slice(0, -1);
       this.dispatchChange();
       return;
     }
 
     if (event.key === 'Escape' && this.open) {
-      event.preventDefault();
       // The list is dismissed first; an enclosing dialog's own Escape
-      // listener must not also fire for the same keypress.
-      event.stopPropagation();
+      // listener must not also fire for the same keypress -- but only when
+      // there was a panel to dismiss. `open` with nothing to show (an empty
+      // query and no recents) would otherwise eat an Escape that visibly did
+      // nothing.
+      if (this.showPanel) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
       this.closeList();
       return;
     }
@@ -416,7 +438,7 @@ export default class FdLookup extends FdSearchState {
 
   handleRemove(event: MouseEvent) {
     const id = (event.currentTarget as HTMLElement).dataset.recordId;
-    this.records = this.records.filter((record) => record.id !== id);
+    this.records = this.recordList.filter((record) => record.id !== id);
     this.focusTarget = 'input';
     this.dispatchChange();
   }
@@ -426,6 +448,16 @@ export default class FdLookup extends FdSearchState {
     this.setQuery('');
     this.focusTarget = 'input';
     this.dispatchChange();
+  }
+
+  // Pressing the field's padding (not a control) would blur the input --
+  // closing the list, which the click below then reopens, firing another
+  // `search`. Keep focus where it is; the click handler focuses the input if
+  // it wasn't already.
+  handleFieldMouseDown(event: MouseEvent) {
+    if (!(event.target as HTMLElement).closest('button, input')) {
+      event.preventDefault();
+    }
   }
 
   // The field is bigger than its input once chips fill it: a click on the

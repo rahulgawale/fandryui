@@ -561,6 +561,44 @@ describe('fandry-lookup', () => {
       expect(pressed(element.shadowRoot!.querySelector('[role="listbox"]')!)).toBe(true);
     });
 
+    it('lets Escape through to an enclosing dialog when the open list has nothing to show', async () => {
+      const element = create({ results: [] }); // empty query, no recents: open, but no panel
+      const outer = jest.fn();
+      document.addEventListener('keydown', outer);
+
+      await click(element);
+      expect(element.shadowRoot!.querySelector('.panel')).toBeNull();
+      await press(element, 'Escape');
+
+      expect(outer).toHaveBeenCalledTimes(1);
+      expect(input(element).getAttribute('aria-expanded')).toBe('false');
+      document.removeEventListener('keydown', outer);
+    });
+
+    it('does not blur the input when the field\'s own padding is pressed (and so never reopens or re-searches)', async () => {
+      const element = create({ multiple: true, records: [ACME], results: RESULTS });
+      const onSearch = jest.fn();
+      element.addEventListener('search', onSearch);
+
+      await click(element);
+      expect(onSearch).toHaveBeenCalledTimes(1);
+
+      const pressed = (target: Element) => {
+        const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
+        target.dispatchEvent(event);
+        return event.defaultPrevented;
+      };
+      expect(pressed(element.shadowRoot!.querySelector('.field')!)).toBe(true);
+      expect(pressed(element.shadowRoot!.querySelector('.tokens')!)).toBe(true);
+      // Controls keep their own default: the input places the caret, buttons press.
+      expect(pressed(input(element))).toBe(false);
+      expect(pressed(element.shadowRoot!.querySelector('.pill-remove')!)).toBe(false);
+
+      (element.shadowRoot!.querySelector('.field') as HTMLElement).click(); // list already open
+      await flush();
+      expect(onSearch).toHaveBeenCalledTimes(1);
+    });
+
     it('closes on blur', async () => {
       const element = create({ results: RESULTS });
 
@@ -602,6 +640,29 @@ describe('fandry-lookup', () => {
       expect(element.shadowRoot!.querySelector('.panel')).toBeNull();
       animations.restore();
     });
+  });
+
+  it('renders an empty lookup, not an error, while results and records are still undefined', async () => {
+    // A render that throws leaves the previous DOM in place (and LWC only
+    // logs it), so "no exception" proves nothing here: assert on something
+    // only a *successful* render of the empty state can produce.
+    jest.useFakeTimers();
+
+    const single = create({ results: undefined });
+    await type(single, 'zzz');
+    jest.advanceTimersByTime(300); // `search` fired, nothing came back
+    await flush();
+    expect(single.shadowRoot!.querySelector('.empty')?.textContent).toContain('No records found');
+
+    const multi = create({ multiple: true, results: null, records: undefined });
+    expect(multi.shadowRoot!.querySelector('.input')).not.toBeNull(); // initial render got past `chips`
+    await type(multi, 'zzz');
+    jest.advanceTimersByTime(300);
+    await flush();
+    expect(multi.shadowRoot!.querySelector('.empty')).not.toBeNull();
+
+    await press(multi, 'Backspace'); // nothing to remove: `slice` on undefined must not run
+    expect(multi.shadowRoot!.querySelectorAll('.pill').length).toBe(0);
   });
 
   it('warns about and ignores reserved elementProps keys', () => {

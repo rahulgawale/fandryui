@@ -237,6 +237,17 @@ describe('fandry-combobox', () => {
     expect(pressed(element.shadowRoot!.querySelector('.panel')!)).toBe(true);
   });
 
+  it('renders an empty combobox, not an error, while options are still undefined', async () => {
+    const element = create({ options: undefined, value: 'x' });
+
+    expect(input(element).value).toBe('');
+    input(element).dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await flush();
+
+    expect(element.shadowRoot!.querySelectorAll('[role="option"]').length).toBe(0);
+    expect(element.shadowRoot!.querySelector('.empty')).not.toBeNull();
+  });
+
   it('does not open when disabled', async () => {
     const element = create({ disabled: true });
 

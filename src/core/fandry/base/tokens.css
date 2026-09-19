@@ -61,8 +61,10 @@
   --fd-shadow-sm: 0 2px 8px;
 
   /* ---- Shadow colors (hsl channels + alpha, used as `hsl(var(...))`).
-     Paired with --fd-shadow-sm above: a floating panel (popover, combobox,
-     lookup) casts a lighter shadow than a modal one (dialog, command). ---- */
+     Paired with --fd-shadow-sm above: a floating panel casts a lighter
+     shadow than a modal one. Used by fandry-combobox, fandry-lookup
+     (floating) and fandry-command (modal); popover, tooltip, toast and
+     dialog still carry the same two values inline. ---- */
   --fd-shadow-color-floating: 0 0% 0% / 0.15;
   --fd-shadow-color-modal: 0 0% 0% / 0.25;
   --fd-hover-brightness: 1.1;

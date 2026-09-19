@@ -15,7 +15,7 @@
     </template>
 
     <div class="control">
-      <div class="field" onclick={handleFieldClick}>
+      <div class="field" onmousedown={handleFieldMouseDown} onclick={handleFieldClick}>
         <template if:true={showSelected}>
           <div class="selected" role="group" aria-labelledby="label">
             <span class="selected-label">{record.label}</span>

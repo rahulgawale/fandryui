@@ -112,6 +112,15 @@ describe('fandry-command', () => {
     expect(rows[1].querySelector('.option-label')).toBeNull();
   });
 
+  it('renders an empty palette, not an error, while items are still undefined', async () => {
+    const element = create({ items: undefined });
+
+    expect(element.shadowRoot!.querySelectorAll('[role="option"]').length).toBe(0);
+    expect(element.shadowRoot!.querySelector('.empty')).not.toBeNull();
+    await type(element, 'abc');
+    expect(element.shadowRoot!.querySelector('.empty')).not.toBeNull();
+  });
+
   it('shows the empty message when nothing matches', async () => {
     const element = create();
 

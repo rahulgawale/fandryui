@@ -754,7 +754,7 @@ export default class PeopleSearch extends FdSearchState {
       { name: 'required', type: 'boolean', default: 'false', description: 'Marks the field required (asterisk + aria-required).' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field and the pill\'s clear button.' },
       { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native input; keys the component controls are ignored with a warning.' },
-      { name: 'search (event)', type: 'CustomEvent<{ query }>', default: '—', description: 'Fires when the list opens (immediately, so an empty query can offer recent records), after typing pauses, and in `multiple` mode after each pick.' },
+      { name: 'search (event)', type: 'CustomEvent<{ query }>', default: '—', description: 'Fires when the list opens by click or ArrowDown (immediately, so an empty query can offer recent records), after typing pauses, and in `multiple` mode after each pick.' },
       { name: 'change (event)', type: 'CustomEvent<{ value, record }> | CustomEvent<{ values, records }>', default: '—', description: 'Single mode: `{ value, record }` on pick, and `{ value: \'\', record: null }` on clear. Multiple mode: `{ values, records }` on every pick, removal and Clear all.' },
       { name: 'empty (slot)', type: 'slot', default: "'No records found'", description: 'Replaces the message shown when a search has no matches.' }
     ],
