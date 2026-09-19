@@ -1,3 +1,10 @@
+## [0.14.1](https://github.com/rahulgawale/fandryui/compare/v0.14.0...v0.14.1) (2026-09-19)
+
+
+### Bug Fixes
+
+* Safari Tab for links; sidebar focus ring and scrollbar ([#71](https://github.com/rahulgawale/fandryui/issues/71)) ([9d678e8](https://github.com/rahulgawale/fandryui/commit/9d678e8d9810b6e65c45594205447cd7b2253501))
+
 # [0.14.0](https://github.com/rahulgawale/fandryui/compare/v0.13.1...v0.14.0) (2026-09-19)
 
 
