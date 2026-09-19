@@ -30,9 +30,11 @@
     <link rel="stylesheet" href="/assets/styles/global.css" />
   </head>
   <body>
-    <main class="wrapper">
+    <!-- A div, not <main>: every page renders its own <main> landmark, and a
+         document should have exactly one. -->
+    <div class="wrapper">
       <div id="main">{{{body}}}</div>
-    </main>
+    </div>
     {{{lwr_resources}}}
   </body>
 </html>

@@ -87,6 +87,10 @@
   margin-top: var(--fd-space-2);
 }
 
+.figure {
+  margin: 0;
+}
+
 .code-label {
   display: block;
   margin-bottom: var(--fd-space-1);
@@ -114,6 +118,12 @@
 .code-block code {
   font-family: var(--font-code, "Geist Mono", monospace);
   white-space: pre;
+}
+
+/* Keyboard users can scroll a wide block, so it must show where focus is. */
+.code-block:focus-visible {
+  outline: 2px solid hsl(var(--brand-primary, 330 81% 48%));
+  outline-offset: 2px;
 }
 
 /* Directory trees are reference material, not something to copy, so they get

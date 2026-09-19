@@ -22,7 +22,7 @@
             <a key={card.slug} href={card.href} class="card-link">
               <fandry-card class="card">
                 <fandry-badge>{card.badge}</fandry-badge>
-                <fandry-heading level="3">{card.name}</fandry-heading>
+                <fandry-heading level="2">{card.name}</fandry-heading>
                 <fandry-text variant="muted" size="sm">{card.description}</fandry-text>
               </fandry-card>
             </a>
@@ -48,14 +48,21 @@
                 </ul>
               </template>
 
+              <!-- figure/figcaption gives each block an accessible name. The pre is
+                   focusable (tabindex="0") so keyboard users can scroll a wide
+                   block; without it a scrollable region is unreachable. -->
               <template if:true={block.isCode}>
-                <fandry-text as="span" size="xs" variant="muted" class="code-label">{block.label}</fandry-text>
-                <pre class="code-block"><code>{block.code}</code></pre>
+                <figure class="figure">
+                  <figcaption><fandry-text as="span" size="xs" variant="muted" class="code-label">{block.label}</fandry-text></figcaption>
+                  <pre class="code-block" tabindex="0"><code>{block.code}</code></pre>
+                </figure>
               </template>
 
               <template if:true={block.isTree}>
-                <fandry-text as="span" size="xs" variant="muted" class="code-label">{block.label}</fandry-text>
-                <pre class="code-block tree"><code>{block.code}</code></pre>
+                <figure class="figure">
+                  <figcaption><fandry-text as="span" size="xs" variant="muted" class="code-label">{block.label}</fandry-text></figcaption>
+                  <pre class="code-block tree" tabindex="0"><code>{block.code}</code></pre>
+                </figure>
               </template>
 
               <template if:true={block.isNote}>
