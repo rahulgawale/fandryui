@@ -129,8 +129,9 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--fd-space-4);
   margin-top: var(--fd-space-6);
-  /* Two cards side by side read best as equal-height; fandry-card fills its
-     grid cell on its own (see card.css). */
+  /* Two cards side by side read best at equal height. Grid stretches each
+     link to the row height; the card inside only fills it when opted in via
+     --fd-card-height (see .card below). */
   align-items: stretch;
 }
 
@@ -154,6 +155,12 @@
     transform: translateY(-2px);
     box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
   }
+}
+
+.card {
+  /* fandry-card is height: auto by default (card.css). Fill the stretched
+     link so its hover lift and shadow hug the card, not a taller box. */
+  --fd-card-height: 100%;
 }
 
 .card > * + * {
