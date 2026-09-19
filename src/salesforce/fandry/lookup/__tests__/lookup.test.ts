@@ -487,6 +487,65 @@ describe('fandry-lookup', () => {
       document.removeEventListener('keydown', outer);
     });
 
+    it('does not change what the fading panel says when dismissed while a search is pending', async () => {
+      jest.useFakeTimers();
+      const animations = mockAnimations();
+      const element = create({ results: [] });
+
+      await type(element, 'zzz');
+      jest.advanceTimersByTime(300); // that search came back empty
+      await flush();
+      expect(element.shadowRoot!.querySelector('.empty')).not.toBeNull();
+
+      await type(element, 'zzzz'); // a new search is now pending
+      await press(element, 'Escape');
+      await settle();
+
+      // Still fading out: it must not flip from "Searching…" to "No records found".
+      expect(element.shadowRoot!.querySelector('.panel--closing')).not.toBeNull();
+      expect(element.shadowRoot!.querySelector('.empty')).toBeNull();
+      expect(element.shadowRoot!.querySelector('fandry-spinner')).not.toBeNull();
+
+      await animations.finish();
+      animations.restore();
+    });
+
+    it('reopens cleanly after being dismissed mid-search', async () => {
+      jest.useFakeTimers();
+      const element = create({ results: [] });
+      const onSearch = jest.fn();
+      element.addEventListener('search', onSearch);
+
+      await type(element, 'zzz');
+      await press(element, 'Escape'); // dropped before it fired
+      jest.advanceTimersByTime(300);
+      expect(onSearch).not.toHaveBeenCalled();
+
+      await click(element); // reopening asks straight away, and clears "pending"
+      expect(onSearch).toHaveBeenCalledTimes(1);
+      await flush();
+      expect(element.shadowRoot!.querySelector('.empty')).not.toBeNull();
+    });
+
+    it('shows the searching row below the results, so starting a search never pushes them down', async () => {
+      const element = create({ results: RESULTS, loading: true });
+
+      await click(element);
+
+      const listbox = element.shadowRoot!.querySelector('[role="listbox"]')!;
+      const status = element.shadowRoot!.querySelector('.status')!;
+      expect(listbox.compareDocumentPosition(status) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it('gives the clear and remove buttons an explicit tabindex (Safari skips bare buttons)', async () => {
+      const single = create({ record: ACME });
+      expect(single.shadowRoot!.querySelector('.clear')!.getAttribute('tabindex')).toBe('0');
+
+      const multi = create({ multiple: true, records: [ACME] });
+      expect(multi.shadowRoot!.querySelector('.pill-remove')!.getAttribute('tabindex')).toBe('0');
+      expect(multi.shadowRoot!.querySelector('.clear-all')!.getAttribute('tabindex')).toBe('0');
+    });
+
     it('keeps the input focused when any part of the panel is pressed, not only the listbox', async () => {
       const element = create({ results: [], loading: true });
       await type(element, 'ac');

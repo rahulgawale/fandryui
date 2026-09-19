@@ -278,7 +278,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   disconnectedCallback() {
-    this.cancelSearch();
+    this.clearSearchTimer();
   }
 
   renderedCallback() {
@@ -312,7 +312,8 @@ export default class FdLookup extends FdSearchState {
   }
 
   private dispatchSearch() {
-    this.cancelSearch();
+    this.clearSearchTimer();
+    this.searchPending = false;
     this.dispatchEvent(
       new CustomEvent('search', {
         detail: { query: this.query },
@@ -322,17 +323,18 @@ export default class FdLookup extends FdSearchState {
   }
 
   private scheduleSearch() {
-    this.cancelSearch();
+    this.clearSearchTimer();
     this.searchPending = true;
     this.searchTimer = setTimeout(() => this.dispatchSearch(), SEARCH_DEBOUNCE_MS);
   }
 
-  private cancelSearch() {
+  // Stops the timer only. `searchPending` is left alone on purpose: see
+  // closeList.
+  private clearSearchTimer() {
     if (this.searchTimer) {
       clearTimeout(this.searchTimer);
       this.searchTimer = null;
     }
-    this.searchPending = false;
   }
 
   private openList() {
@@ -348,7 +350,11 @@ export default class FdLookup extends FdSearchState {
   private closeList() {
     this.open = false;
     // A search still waiting on the debounce is moot once the list is gone.
-    this.cancelSearch();
+    // But `searchPending` is left as it was: the panel is still fading out,
+    // and flipping it here would change what it says mid-fade ("Searching…"
+    // to "No records found"). Every way of opening again either fires the
+    // search (which clears it) or schedules a new one (which sets it).
+    this.clearSearchTimer();
   }
 
   handleInput(event: Event) {

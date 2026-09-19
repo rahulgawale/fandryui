@@ -1,4 +1,7 @@
 <template>
+  <!-- Every native <button> here carries tabindex="0": macOS Safari skips
+       buttons in the Tab order (and won't keep programmatic focus on them)
+       unless they have one -- see fandry-button. -->
   <div class="form-control">
     <template if:true={hasLabel}>
       <label id="label" class="label" for="input">
@@ -19,6 +22,7 @@
             <button
               type="button"
               class="clear"
+              tabindex="0"
               aria-label={clearLabel}
               disabled={disabled}
               onclick={handleClear}
@@ -38,6 +42,7 @@
                 <button
                   type="button"
                   class="pill-remove"
+                  tabindex="0"
                   data-record-id={chip.id}
                   aria-label={chip.removeLabel}
                   disabled={disabled}
@@ -76,20 +81,13 @@
           </div>
 
           <template if:true={hasChips}>
-            <button type="button" class="clear-all" disabled={disabled} onclick={handleClearAll}>Clear all</button>
+            <button type="button" class="clear-all" tabindex="0" disabled={disabled} onclick={handleClearAll}>Clear all</button>
           </template>
         </template>
       </div>
 
       <template if:true={showPanel}>
         <div class={panelClasses} inert={panelInert} onmousedown={handleListboxMouseDown}>
-          <template if:true={searching}>
-            <div class="status">
-              <fandry-spinner size="sm" label="Searching"></fandry-spinner>
-              <span aria-hidden="true">Searching…</span>
-            </div>
-          </template>
-
           <div
             id="listbox"
             class="listbox"
@@ -128,6 +126,15 @@
               </div>
             </template>
           </div>
+
+          <!-- Below the results, not above: inserting it above would push the
+               (stale) list down every time a search starts. -->
+          <template if:true={searching}>
+            <div class="status">
+              <fandry-spinner size="sm" label="Searching"></fandry-spinner>
+              <span aria-hidden="true">Searching…</span>
+            </div>
+          </template>
 
           <template if:true={showEmpty}>
             <div class="empty"><slot name="empty">No records found</slot></div>
