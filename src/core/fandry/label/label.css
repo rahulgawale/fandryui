@@ -5,14 +5,14 @@
 .label {
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-1, 4px);
+  gap: var(--fd-space-1);
 
   font-family: inherit;
-  font-size: var(--fd-font-size-sm, 0.875rem);
-  font-weight: 500;
-  color: hsl(var(--fd-text, 220 13% 20%));
+  font-size: var(--fd-font-size-sm);
+  font-weight: var(--fd-font-weight-medium);
+  color: hsl(var(--fd-text));
 }
 
 .required {
-  color: hsl(var(--fd-danger, 0 72% 51%));
+  color: hsl(var(--fd-danger));
 }

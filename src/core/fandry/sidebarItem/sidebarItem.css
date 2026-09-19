@@ -20,7 +20,7 @@
 .item--active {
   background: hsl(var(--fd-primary) / 0.1);
   color: hsl(var(--fd-primary));
-  font-weight: 600;
+  font-weight: var(--fd-font-weight-semibold);
 }
 
 .item--active:hover {

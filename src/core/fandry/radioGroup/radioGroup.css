@@ -9,8 +9,8 @@
 }
 
 .label {
-  font-size: var(--fd-font-size-sm, 0.875rem);
-  font-weight: 500;
+  font-size: var(--fd-font-size-sm);
+  font-weight: var(--fd-font-weight-medium);
   color: hsl(var(--fd-text));
 }
 

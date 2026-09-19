@@ -104,7 +104,7 @@
 @media (hover: hover) {
   .card-link:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
   }
 }
 

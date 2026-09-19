@@ -64,9 +64,11 @@
      Paired with --fd-shadow-sm above: a floating panel casts a lighter
      shadow than a modal one. Used by fandry-combobox, fandry-lookup
      (floating) and fandry-command (modal); popover, tooltip, toast and
-     dialog still carry the same two values inline. ---- */
+     dialog use them too. --fd-shadow-color-subtle is the lighter one
+     for a button's hover/pressed lift. ---- */
   --fd-shadow-color-floating: 0 0% 0% / 0.15;
   --fd-shadow-color-modal: 0 0% 0% / 0.25;
+  --fd-shadow-color-subtle: 0 0% 0% / 0.1;
   --fd-hover-brightness: 1.1;
 
   /* ---- Stacking (floating overlay panels -- fandry-popover, fandry-tooltip).
@@ -205,6 +207,7 @@
 
   --fd-font-weight-medium: 500;
   --fd-font-weight-semibold: 600;
+  --fd-font-weight-bold: 700;
 
   --fd-font-heading: var(--font-heading, "Sora"), var(--fd-font-sans);
   --fd-heading-weight: 600;

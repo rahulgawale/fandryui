@@ -7,9 +7,9 @@
   width: var(--fd-size-sm);
   height: var(--fd-size-sm);
   flex: 0 0 var(--fd-size-sm);
-  border-radius: var(--fd-radius-sm, 4px);
-  border: var(--fd-border-width) solid hsl(var(--fd-border, 220 13% 80%));
-  background: hsl(var(--fd-bg, 0 0% 100%));
+  border-radius: var(--fd-radius-sm);
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
+  background: hsl(var(--fd-bg));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -46,8 +46,8 @@
 .check {
   width: 10px;
   height: 6px;
-  border-left: 2px solid hsl(var(--fd-primary-foreground, 0 0% 100%));
-  border-bottom: 2px solid hsl(var(--fd-primary-foreground, 0 0% 100%));
+  border-left: 2px solid hsl(var(--fd-primary-foreground));
+  border-bottom: 2px solid hsl(var(--fd-primary-foreground));
   transform: translateY(-1px) rotate(-45deg) scale(0.9);
   opacity: 0;
   transition: opacity var(--fd-duration-fast) ease,
@@ -56,8 +56,8 @@
 
 /* Checked */
 .input:checked + .box {
-  background: hsl(var(--fd-primary, 220 90% 56%));
-  border-color: hsl(var(--fd-primary, 220 90% 56%));
+  background: hsl(var(--fd-primary));
+  border-color: hsl(var(--fd-primary));
 }
 
 .input:checked + .box .check {
@@ -67,7 +67,7 @@
 
 /* Focus */
 .control:focus-within .box {
-  box-shadow: 0 0 0 var(--fd-ring-width, 2px) hsl(var(--fd-ring-color, 220 90% 56%));
+  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
 }
 
 /* Disabled */

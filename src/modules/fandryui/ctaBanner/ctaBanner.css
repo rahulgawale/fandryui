@@ -5,7 +5,7 @@
 .cta {
   padding: calc(var(--fd-space-6) * 2) 0;
   text-align: center;
-  background: radial-gradient(circle at 50% 0%, hsl(330 81% 48% / 0.08), transparent 60%);
+  background: radial-gradient(circle at 50% 0%, hsl(var(--brand-primary, 330 81% 48%) / 0.08), transparent 60%);
   border-top: 1px solid var(--fd-color-border);
 }
 

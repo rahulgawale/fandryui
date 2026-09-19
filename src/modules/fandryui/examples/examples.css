@@ -1,3 +1,19 @@
 :host {
   display: block;
 }
+
+/* Same two-tone wash as heroSection.css's :host, spanning the page intro and
+   the gallery below it. Reads --brand-primary/--brand-accent (set on <html>
+   by "Apply theme") with the default hues as fallback, so it rethemes live. */
+main {
+  background: radial-gradient(
+      circle at 15% 0%,
+      hsl(var(--brand-primary, 330 81% 48%) / 0.12),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 85% 10%,
+      hsl(var(--brand-accent, 199 89% 36%) / 0.12),
+      transparent 55%
+    );
+}

@@ -16,7 +16,7 @@
   background: hsl(var(--fd-bg));
   border: var(--fd-border-width) solid hsl(var(--fd-border));
   border-radius: var(--fd-radius-md);
-  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.15);
+  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating));
   padding: var(--fd-space-2);
 
   /* Slides out from the trigger's side (direction set per placement

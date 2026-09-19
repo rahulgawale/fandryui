@@ -7,7 +7,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-2, 8px);
+  gap: var(--fd-space-2);
   cursor: pointer;
   user-select: none;
 }
@@ -32,7 +32,7 @@
   height: 20px;
   flex: 0 0 36px;
   border-radius: 999px;
-  background: hsl(var(--fd-border, 220 13% 80%));
+  background: hsl(var(--fd-border));
   display: inline-flex;
   align-items: center;
   padding: 2px;
@@ -45,14 +45,14 @@
   width: var(--fd-size-sm);
   height: var(--fd-size-sm);
   border-radius: 50%;
-  background: hsl(var(--fd-bg, 0 0% 100%));
+  background: hsl(var(--fd-bg));
   transform: translateX(0);
   transition: transform var(--fd-duration-fast) ease;
 }
 
 /* Checked */
 .input:checked + .track {
-  background: hsl(var(--fd-primary, 220 90% 56%));
+  background: hsl(var(--fd-primary));
 }
 
 .input:checked + .track .thumb {
@@ -61,8 +61,8 @@
 
 /* Focus */
 .control:focus-within .track {
-  box-shadow: 0 0 0 var(--fd-ring-width, 2px)
-    hsl(var(--fd-ring-color, 220 90% 56%));
+  box-shadow: 0 0 0 var(--fd-ring-width)
+    hsl(var(--fd-ring-color));
 }
 
 /* Disabled */
@@ -74,5 +74,5 @@
 
 /* Label */
 .label {
-  font-size: var(--fd-font-size-sm, 0.875rem);
+  font-size: var(--fd-font-size-sm);
 }

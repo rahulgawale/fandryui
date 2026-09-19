@@ -76,7 +76,7 @@
 
 .amount {
   font-size: var(--fd-font-size-2xl, 1.5rem);
-  font-weight: 700;
+  font-weight: var(--fd-font-weight-bold);
 }
 
 .period {
@@ -146,8 +146,8 @@
   width: 3rem;
   height: 3rem;
   border-radius: var(--fd-radius-lg);
-  background: hsl(330 81% 48% / 0.1);
-  color: hsl(330 81% 40%);
+  background: hsl(var(--brand-primary, 330 81% 48%) / 0.1);
+  color: hsl(var(--brand-primary-dark, 330 81% 40%));
 }
 
 /* -------- Notification list -------- */

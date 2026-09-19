@@ -4,15 +4,16 @@
 
 .section {
   padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
-  /* Light accent-tint gradient, same hue/approach as heroSection.css's
-     :host background (literal HSL, not --fd-accent -- that token is
-     :host-scoped inside each fandry-* primitive's own shadow root and
-     isn't visible out here). Single accent hue and much lower opacity than
-     the hero's two-tone version so this reads as a quiet section wash, not
-     a second hero. */
+  /* Light accent-tint gradient, same approach as heroSection.css's :host
+     background: reads --brand-accent (set on <html> by heroDemoGrid's
+     "Apply theme" handler) with the default hue as fallback, not
+     --fd-accent -- that token is :host-scoped inside each fandry-*
+     primitive's own shadow root and isn't visible out here. Single accent
+     hue and much lower opacity than the hero's two-tone version so this
+     reads as a quiet section wash, not a second hero. */
   background: linear-gradient(
     180deg,
-    hsl(199 89% 36% / 0.06),
+    hsl(var(--brand-accent, 199 89% 36%) / 0.06),
     transparent 60%
   );
 }
@@ -79,7 +80,7 @@
 @media (hover: hover) {
   .card-wrap:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
   }
 }
 
@@ -105,17 +106,19 @@
   margin-bottom: var(--fd-space-3);
 }
 
-/* Literal HSL values -- these tokens live :host-scoped inside each
-   fandry-* primitive's shadow root, not out here (see heroSection.css on
-   the home page for the fuller version of this note). */
+/* Primary/accent chips read --brand-* (default hues as fallback) so "Apply
+   theme" retints them; success/warning/danger stay literal HSL since they're
+   semantic. The --fd-* tokens live :host-scoped inside each fandry-*
+   primitive's shadow root, not out here (see heroSection.css on the home
+   page for the fuller version of this note). */
 .tint-primary {
-  background: hsl(330 81% 48% / 0.12);
-  color: hsl(330 81% 40%);
+  background: hsl(var(--brand-primary, 330 81% 48%) / 0.12);
+  color: hsl(var(--brand-primary-dark, 330 81% 40%));
 }
 
 .tint-accent {
-  background: hsl(199 89% 36% / 0.12);
-  color: hsl(199 89% 30%);
+  background: hsl(var(--brand-accent, 199 89% 36%) / 0.12);
+  color: hsl(var(--brand-accent-dark, 199 89% 30%));
 }
 
 .tint-success {

@@ -32,7 +32,7 @@
      drop-shadow follows the actual painted (alpha) silhouette, including
      a child that pokes outside the box, so the shadow wraps the arrow
      too. */
-  filter: drop-shadow(var(--fd-shadow-sm) hsla(0 0% 0% / 0.15));
+  filter: drop-shadow(var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating)));
 
   /* Motion is defined in base/motion.css; see tooltip.ts / fandry/motion
      for how the panel stays mounted through its exit. */

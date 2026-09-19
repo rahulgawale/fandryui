@@ -40,7 +40,7 @@
 }
 
 .title {
-  font-weight: 600;
+  font-weight: var(--fd-font-weight-semibold);
   font-size: var(--fd-font-size-sm);
   overflow: hidden;
   text-overflow: ellipsis;

@@ -3,7 +3,7 @@
 }
 
 .link {
-  color: hsl(var(--fd-primary, 220 90% 56%));
+  color: hsl(var(--fd-primary));
   font-family: inherit;
   font-size: inherit;
   text-decoration: underline;
@@ -50,7 +50,7 @@
 .link:focus-visible {
   outline: none;
   border-radius: var(--fd-radius-sm);
-  box-shadow: 0 0 0 var(--fd-ring-width, 2px) hsl(var(--fd-ring-color, 220 90% 56%));
+  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
 }
 
 .link--disabled {

@@ -12,8 +12,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--fd-space-1);
-  font-size: var(--fd-font-size-sm, 0.875rem);
-  font-weight: 500;
+  font-size: var(--fd-font-size-sm);
+  font-weight: var(--fd-font-weight-medium);
   color: hsl(var(--fd-text));
 }
 
@@ -96,7 +96,7 @@
 }
 
 .option--selected {
-  font-weight: 600;
+  font-weight: var(--fd-font-weight-semibold);
 }
 
 .option--disabled {
@@ -106,11 +106,11 @@
 
 .group-label {
   padding: var(--fd-space-1) var(--fd-space-2);
-  font-size: var(--fd-font-size-xs, 0.75rem);
+  font-size: var(--fd-font-size-xs);
   color: hsl(var(--fd-text-muted));
 }
 
 .help-text {
-  font-size: var(--fd-font-size-xs, 0.75rem);
+  font-size: var(--fd-font-size-xs);
   color: hsl(var(--fd-text-muted));
 }

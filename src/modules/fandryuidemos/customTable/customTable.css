@@ -16,7 +16,7 @@
   color: hsl(var(--fd-text));
   font: inherit;
   font-size: var(--fd-font-size-sm);
-  font-weight: 600;
+  font-weight: var(--fd-font-weight-semibold);
   text-align: left;
   padding: 0 0 var(--fd-space-2);
   cursor: pointer;
