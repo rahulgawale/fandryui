@@ -15,7 +15,7 @@
     <slot name="trigger"></slot>
   </span>
   <template if:true={isMounted}>
-    <div class={panelClasses} inert={panelInert}>
+    <div class={panelClasses} style={panelStyle} inert={panelInert}>
       <slot></slot>
     </div>
   </template>

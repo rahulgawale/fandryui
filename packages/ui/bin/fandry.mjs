@@ -2,7 +2,7 @@
 // fandry: set up Fandry UI in a project, on either platform.
 //
 //   fandry init [--sfdx | --lwr] [--dir <package-dir>]
-//   fandry add <component...> | --all [--overwrite] [--dry-run]
+//   fandry add <component-or-block...> | --all [--overwrite] [--dry-run]
 //   fandry list
 //
 // LWR / LWC OSS resolves the whole `fandryui` npm package through the bundler,
@@ -356,7 +356,8 @@ function list() {
   for (const [key, { kind, dependencies, requires }] of rows) {
     const deps = dependencies.length ? `  needs: ${dependencies.join(', ')}` : '';
     const dyn = requires?.includes('dynamicComponents') ? '  [uses lwc:is]' : '';
-    console.log(`${key.padEnd(width)}  ${kind === 'module' ? '(shared)' : '        '}${deps}${dyn}`);
+    const tag = { module: '(shared)', block: '(block) ' }[kind] ?? '        ';
+    console.log(`${key.padEnd(width)}  ${tag}${deps}${dyn}`);
   }
 }
 
@@ -373,12 +374,14 @@ Usage
   fandry add --all
       Salesforce DX only. Copies each component's bundle into your project along with
       every bundle it depends on (e.g. \`fandry add table\` also adds input, button, ...).
+      Blocks (ready-made patterns such as \`data-table\`) are added the same way; --all
+      covers components only, so a block is always something you ask for by name.
       Re-running updates bundles you have not touched to the installed version of
       fandryui. Bundles you have edited are skipped; --overwrite replaces only the
       components you name, never their dependencies. Your .js-meta.xml is never rewritten.
 
   fandry list
-      Shows every component and what it depends on.
+      Shows every component and block, and what each depends on.
 `;
 
 function main() {

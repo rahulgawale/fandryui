@@ -41,11 +41,15 @@ src/
   │   └── fandry/              # Primitives (native LWC, TypeScript) -- the library itself
   │       ├── base/             # Shared base class + design tokens (tokens.css)
   │       ├── button/, card/, table/, ...  # One folder per fandry-* primitive
+  ├── blocks/
+  │   └── fandry/              # Blocks: installable patterns built only from primitives
+  │       └── dataTable/, dataTableState/   # search, filters, inline edit, save hooks, ...
   └── modules/
       └── fandryui/             # The site itself: real composites and pages
           ├── home/, heroSection/, featureGrid/, dashboardExample/, ...
           ├── examples/, exampleGallery/    # /examples -- 10 interactive patterns
           ├── componentsIndex/, componentDoc/  # /components -- per-primitive docs
+          ├── blocksIndex/, blockDataTable/    # /blocks -- a working page per block
           └── componentsData/               # Single source of truth for the docs nav/props/code
       └── fandryuidemos/        # Docs-only illustration components (one demoX per
                                   # primitive, rendered live inside componentDoc) --
@@ -98,7 +102,7 @@ Open http://localhost:3000 in your browser. You should see the marketing home pa
 
 ## Distribution: npm and Salesforce
 
-One source, one package (`fandryui`), two platforms. Nothing is hand-maintained twice: `npm run build:npm` derives everything from `src/core/fandry` and `src/salesforce/fandry`, and the only difference is the namespace each platform uses.
+One source, one package (`fandryui`), two platforms. Nothing is hand-maintained twice: `npm run build:npm` derives everything from `src/core/fandry`, `src/salesforce/fandry` and `src/blocks/fandry`, and the only difference is the namespace each platform uses.
 
 | | LWR / LWC OSS | Salesforce platform |
 | --- | --- | --- |

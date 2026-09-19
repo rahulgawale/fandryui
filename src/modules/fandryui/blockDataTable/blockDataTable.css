@@ -1,0 +1,120 @@
+:host {
+  display: block;
+}
+
+.page {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: var(--fd-space-6) var(--fd-space-6) calc(var(--fd-space-6) * 2);
+}
+
+.kind {
+  margin-top: var(--fd-space-4);
+}
+
+.title {
+  display: block;
+  margin-top: var(--fd-space-2);
+}
+
+.lede {
+  display: block;
+  margin-top: var(--fd-space-2);
+  max-width: 44rem;
+}
+
+.section {
+  margin-top: var(--fd-space-6);
+}
+
+.section > fandry-heading {
+  display: block;
+  margin-bottom: var(--fd-space-3);
+}
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-4);
+  margin-bottom: var(--fd-space-3);
+}
+
+.demo-frame {
+  display: block;
+  padding: var(--fd-space-5);
+}
+
+.two-up {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--fd-space-4);
+}
+
+.label,
+.note {
+  display: block;
+  margin: var(--fd-space-3) 0 var(--fd-space-2);
+}
+
+.chip {
+  margin-right: var(--fd-space-1);
+}
+
+code {
+  font-family: var(--font-code, "Geist Mono", monospace);
+  font-size: 0.85em;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fd-font-size-sm);
+}
+
+.doc-table th,
+.doc-table td {
+  text-align: left;
+  padding: var(--fd-space-2) var(--fd-space-3);
+  border-bottom: 1px solid var(--fd-color-border);
+  vertical-align: top;
+}
+
+.doc-table thead th {
+  color: var(--fd-color-muted);
+  font-weight: var(--fd-font-weight-semibold);
+  font-size: var(--fd-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.doc-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.code-block {
+  margin: 0;
+  padding: var(--fd-space-4);
+  background: linear-gradient(
+    135deg,
+    hsl(var(--brand-primary-dark, 330 81% 40%)),
+    hsl(var(--brand-accent-dark, 199 89% 30%))
+  );
+  color: hsl(220 14% 96%);
+  border-radius: var(--fd-radius-md);
+  overflow-x: auto;
+  font-size: var(--fd-font-size-sm);
+  line-height: var(--fd-line-height-normal, 1.5);
+}
+
+.code-block code {
+  font-family: var(--font-code, "Geist Mono", monospace);
+  font-size: inherit;
+  white-space: pre;
+}

@@ -77,27 +77,42 @@ for (const b of ['fandryTable', 'fandryTableState', 'fandryTableCore', 'fandryBa
 check(!installed.has('fandryCarousel') && !installed.has('fandryMenu'), 'installed a bundle nobody asked for or depends on');
 
 // Self-containment, straight from the installed source.
-for (const bundle of installed) {
-  for (const file of readdirSync(join(lwc, bundle))) {
-    if (file.endsWith('.xml')) {
-      check(readFileSync(join(lwc, bundle, file), 'utf8').includes('<apiVersion>66.0</apiVersion>'), `${bundle} meta xml does not use the project's API version`);
-      continue;
+function assertSelfContained(installed) {
+  for (const bundle of installed) {
+    for (const file of readdirSync(join(lwc, bundle))) {
+      if (file.endsWith('.xml')) {
+        check(readFileSync(join(lwc, bundle, file), 'utf8').includes('<apiVersion>66.0</apiVersion>'), `${bundle} meta xml does not use the project's API version`);
+        continue;
+      }
+      const text = readFileSync(join(lwc, bundle, file), 'utf8');
+      for (const [, dep] of text.matchAll(/from\s+['"]c\/(fandry[A-Za-z]+)['"]/g)) {
+        check(installed.has(dep), `${bundle}/${file} imports c/${dep}, which was not installed`);
+      }
+      for (const [, tag] of text.matchAll(/<\/?c-fandry-([a-z-]+)/g)) {
+        const dep = `fandry${kebabToCamel(tag).replace(/^./, (c) => c.toUpperCase())}`;
+        check(installed.has(dep), `${bundle}/${file} renders <c-fandry-${tag}>, which was not installed`);
+      }
+      check(!/from\s+['"]@/.test(text), `${bundle}/${file} imports an npm package`);
     }
-    const text = readFileSync(join(lwc, bundle, file), 'utf8');
-    for (const [, dep] of text.matchAll(/from\s+['"]c\/(fandry[A-Za-z]+)['"]/g)) {
-      check(installed.has(dep), `${bundle}/${file} imports c/${dep}, which was not installed`);
-    }
-    for (const [, tag] of text.matchAll(/<\/?c-fandry-([a-z-]+)/g)) {
-      const dep = `fandry${kebabToCamel(tag).replace(/^./, (c) => c.toUpperCase())}`;
-      check(installed.has(dep), `${bundle}/${file} renders <c-fandry-${tag}>, which was not installed`);
-    }
-    check(!/from\s+['"]@/.test(text), `${bundle}/${file} imports an npm package`);
+    check(existsSync(join(lwc, bundle, `${bundle}.js-meta.xml`)), `${bundle} has no .js-meta.xml`);
   }
-  check(existsSync(join(lwc, bundle, `${bundle}.js-meta.xml`)), `${bundle} has no .js-meta.xml`);
 }
+assertSelfContained(installed);
 
 r = fandry(sf, 'add', 'table');
 check(/Added 0 bundle/.test(r.out), `re-running add was not a no-op: ${r.out}`);
+
+// Blocks install exactly like components, dependencies included -- and are
+// marked as blocks by `fandry list`.
+r = fandry(sf, 'add', 'data-table');
+check(r.code === 0, `add data-table exited ${r.code}: ${r.out}`);
+const withBlock = new Set(readdirSync(lwc));
+for (const b of ['fandryDataTable', 'fandryDataTableState', 'fandryTableState', 'fandryMenu', 'fandryPopover', 'fandryToast', 'fandryToastViewport', 'fandryDialog', 'fandrySelect', 'fandryMotion']) {
+  check(withBlock.has(b), `expected bundle ${b} to be installed by data-table`);
+}
+assertSelfContained(withBlock);
+r = fandry(sf, 'list');
+check(/dataTable\s+\(block\)/.test(r.out), `fandry list did not mark data-table as a block: ${r.out}`);
 
 const edited = join(lwc, 'fandryButton');
 fandry(sf, 'add', 'button');
@@ -188,7 +203,7 @@ if (spawnSync('sf', ['--version']).status === 0) {
   const manifest = join(work, 'package.xml');
   const sfr = spawnSync('sf', ['project', 'generate', 'manifest', '--source-dir', 'fandryui', '--name', manifest], { cwd: sf, encoding: 'utf8' });
   const members = existsSync(manifest) ? [...readFileSync(manifest, 'utf8').matchAll(/<members>/g)].length : -1;
-  check(sfr.status === 0 && members === installed.size, `sf CLI saw ${members} bundles, expected ${installed.size}`);
+  check(sfr.status === 0 && members === withBlock.size, `sf CLI saw ${members} bundles, expected ${withBlock.size}`);
 } else {
   console.log('  (sf CLI not found: skipped manifest check)');
 }

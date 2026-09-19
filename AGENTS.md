@@ -14,6 +14,7 @@ If you are an AI assistant, code generator, or automated agent:
 Fandry UI is a **single LWR OSS project** with clear boundaries.
 
 Primitives live in `src/core/fandry/`.
+Blocks live in `src/blocks/fandry/`.
 The application lives in `src/modules/fandryui/`.
 
 Primitives are foundational components that:
@@ -101,6 +102,35 @@ needs its own `prefers-reduced-motion` query. Do not add animation props,
 a generic motion/transition component, or an animation dependency.
 
 ---
+
+### Blocks (`src/blocks/fandry/`)
+
+Blocks are the *solution* layer that primitives are forbidden from being:
+installable patterns (a data table with search, filters, inline edit and save
+hooks; later, forms, settings pages, ...) composed **only** from primitives.
+They exist so `core/fandry/` can stay small.
+
+A block:
+
+- is built from `fandry-*` primitives and design tokens, with no new
+  dependencies and no hard-coded values
+- is split like `table`: a template-less `<name>State` class holding the
+  behavior, and a thin `<name>` component that adds the ready-made template --
+  a consumer who needs other markup extends the state class
+- is **controlled**: it never mutates the consumer's `data`; it reports
+  outcomes through events and takes requests through function hooks
+  (`saveRow`, `deleteRow`)
+- takes column/field configuration through data the consumer already has (a
+  tanstack column's `meta`), not a second configuration format
+- gets its working page under `/blocks/<name>` in the application, running on
+  dummy data, and its own tests
+- is shipped by the same build as primitives: it appears in `registry.json` as
+  `kind: "block"` and installs with `fandry add <name>`. `fandry add --all`
+  covers components only.
+
+A block may use every primitive; a primitive must never import a block. If a
+primitive needs something a block has, that something belongs in the primitive
+or nowhere.
 
 ### Base Class (`src/core/fandry/base/`)
 

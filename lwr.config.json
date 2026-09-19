@@ -8,6 +8,9 @@
                 "dir": "$rootDir/src/salesforce"
             },
             {
+                "dir": "$rootDir/src/blocks"
+            },
+            {
                 "dir": "$rootDir/src/modules"
             }
         ]
@@ -263,6 +266,18 @@
             "id": "component-lookup",
             "path": "/components/lookup",
             "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "blocks",
+            "path": "/blocks",
+            "rootComponent": "fandryui/blocksIndex",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "block-data-table",
+            "path": "/blocks/data-table",
+            "rootComponent": "fandryui/blockDataTable",
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
