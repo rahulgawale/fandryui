@@ -1,3 +1,10 @@
+# [0.11.0](https://github.com/rahulgawale/fandryui/compare/v0.10.0...v0.11.0) (2026-09-19)
+
+
+### Features
+
+* motion foundation for transient components (popover, menu, dialog, tooltip, toast) ([#65](https://github.com/rahulgawale/fandryui/issues/65)) ([17cffee](https://github.com/rahulgawale/fandryui/commit/17cffeee4fadb4df79dd61aca323ee1f4b88eba2))
+
 # [0.10.0](https://github.com/rahulgawale/fandryui/compare/v0.9.0...v0.10.0) (2026-09-19)
 
 
