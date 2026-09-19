@@ -6,7 +6,8 @@
 # Versioning stays in release.yml (semantic-release bumps package.json, tags,
 # and creates the GitHub Release). Publishing that Release triggers this
 # workflow, which checks out the tagged commit -- so the version stamped into
-# the package is the one that was just released.
+# the package is the one that was just released. Manual runs work only from a
+# tag (see the job condition).
 #
 # No NPM_TOKEN: authentication is OIDC (Trusted Publishing), and provenance is
 # attached automatically.
@@ -24,6 +25,10 @@ permissions:
 
 jobs:
   publish:
+    # A version on npm is permanent. Release events always run on the release's
+    # tag; a manual run (workflow_dispatch) is only allowed from a tag too, so
+    # it can never publish an unreleased branch under a version number.
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -58,6 +63,17 @@ jobs:
       # projects and checks the installed bundles are self-contained.
       - name: Verify the CLI
         run: npm run verify:sfdx
+
+      # The tag is created by semantic-release from the same package.json
+      # version the build stamps into the package; refuse to publish if they
+      # ever disagree.
+      - name: Check the package version matches the tag
+        run: |
+          version="$(node -p "require('./packages/ui/dist/package.json').version")"
+          if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then
+            echo "Package version v${version} does not match tag ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
 
       - name: Publish
         working-directory: packages/ui/dist

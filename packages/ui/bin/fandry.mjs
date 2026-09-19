@@ -14,36 +14,61 @@
 // edit), together with every bundle they depend on, using the dependency
 // graph in registry.json.
 
+import { createHash } from 'node:crypto';
 import {
   cpSync,
   existsSync,
   mkdirSync,
   readdirSync,
   readFileSync,
+  rmSync,
   statSync,
   writeFileSync
 } from 'node:fs';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const PKG_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const CONFIG_FILE = 'fandry.json';
 const DEFAULT_SFDX_DIR = 'fandryui';
 const DEFAULT_API_VERSION = '67.0';
+const META_SUFFIX = '.js-meta.xml';
 
 class CliError extends Error {}
+
+const VALUE_FLAGS = new Set(['dir', 'target']);
+const BOOLEAN_FLAGS = new Set(['sfdx', 'lwr', 'all', 'overwrite', 'dry-run', 'help']);
 
 function parseArgs(argv) {
   const flags = {};
   const positional = [];
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
-    if (arg === '-h') flags.help = true;
-    else if (arg.startsWith('--')) {
-      const [key, inline] = arg.slice(2).split('=');
-      const takesValue = key === 'dir' || key === 'target';
-      flags[key] = takesValue ? (inline ?? argv[++i]) : true;
-    } else positional.push(arg);
+    if (arg === '-h') {
+      flags.help = true;
+    } else if (arg.startsWith('--')) {
+      const eq = arg.indexOf('=');
+      const key = eq === -1 ? arg.slice(2) : arg.slice(2, eq);
+      const inline = eq === -1 ? undefined : arg.slice(eq + 1);
+
+      if (VALUE_FLAGS.has(key)) {
+        const value = inline ?? argv[++i];
+        if (value === undefined || value === '' || value.startsWith('-')) {
+          throw new CliError(`--${key} needs a value.`);
+        }
+        flags[key] = value;
+      } else if (BOOLEAN_FLAGS.has(key)) {
+        if (inline !== undefined) throw new CliError(`--${key} does not take a value.`);
+        flags[key] = true;
+      } else {
+        // A typo such as --dryrun must not silently turn a preview into a write.
+        throw new CliError(`Unknown option --${key}. See \`fandry --help\`.`);
+      }
+    } else if (arg.startsWith('-') && arg !== '-') {
+      throw new CliError(`Unknown option ${arg}. See \`fandry --help\`.`);
+    } else {
+      positional.push(arg);
+    }
   }
   return { command: positional.shift(), positional, flags };
 }
@@ -67,12 +92,15 @@ function loadRegistry() {
   return JSON.parse(readFileSync(path, 'utf8'));
 }
 
-function loadConfig(cwd) {
+function readConfig(cwd) {
   const path = join(cwd, CONFIG_FILE);
-  if (!existsSync(path)) {
-    throw new CliError(`No ${CONFIG_FILE} here. Run \`fandry init\` first.`);
-  }
-  return readJson(path).data;
+  return existsSync(path) ? readJson(path).data : null;
+}
+
+function loadConfig(cwd) {
+  const config = readConfig(cwd);
+  if (!config) throw new CliError(`No ${CONFIG_FILE} here. Run \`fandry init\` first.`);
+  return config;
 }
 
 // --- init
@@ -101,7 +129,20 @@ function initSfdx(cwd, flags) {
   if (!existsSync(projectPath)) {
     throw new CliError('No sfdx-project.json here. Run this from the root of your Salesforce DX project.');
   }
-  const dir = flags.dir ?? DEFAULT_SFDX_DIR;
+
+  // Re-running `init` keeps an earlier choice (and what was installed there)
+  // rather than starting over with the default and orphaning it.
+  const existing = readConfig(cwd);
+  const prior = existing?.target === 'sfdx' ? existing : null;
+  const dir = flags.dir ?? prior?.dir ?? DEFAULT_SFDX_DIR;
+
+  if (prior && dir !== prior.dir && Object.keys(prior.installed ?? {}).length) {
+    throw new CliError(
+      `Fandry components are already installed in "${prior.dir}". Move that directory to "${dir}" ` +
+        `(and update sfdx-project.json) first, or drop --dir to keep using "${prior.dir}".`
+    );
+  }
+
   const { data: project, indent } = readJson(projectPath);
 
   // Fandry lives in its own package directory next to your app code, so the
@@ -113,12 +154,12 @@ function initSfdx(cwd, flags) {
     writeJson(projectPath, project, indent);
   }
   mkdirSync(join(cwd, dir, 'main/default/lwc'), { recursive: true });
-  writeJson(join(cwd, CONFIG_FILE), { target: 'sfdx', dir }, '  ');
+  writeJson(join(cwd, CONFIG_FILE), { ...(prior ?? {}), target: 'sfdx', dir }, '  ');
 
   console.log(`Initialized Fandry UI for Salesforce DX.`);
   console.log(`  ${registered ? 'package directory already in' : 'added package directory to'} sfdx-project.json: ${dir}`);
   console.log(`  wrote ${CONFIG_FILE}`);
-  console.log(`Next: fandry add button input    (dependencies are added automatically)`);
+  console.log(`Next: fandry add button input   (dependencies are added automatically)`);
 }
 
 function initLwr(cwd) {
@@ -178,13 +219,22 @@ function closure(requested, registry) {
 function listFiles(dir, base = dir) {
   return readdirSync(dir).flatMap((f) => {
     const p = join(dir, f);
-    return statSync(p).isDirectory() ? listFiles(p, base) : [relative(base, p)];
+    return statSync(p).isDirectory() ? listFiles(p, base) : [relative(base, p).split(sep).join('/')];
   });
 }
 
-function sameContent(a, b) {
-  const files = listFiles(a);
-  return files.every((f) => existsSync(join(b, f)) && readFileSync(join(a, f), 'utf8') === readFileSync(join(b, f), 'utf8'));
+// A bundle's identity is its source files. The .js-meta.xml is per-project
+// (API version, exposure, targets) and belongs to the user, so it is never
+// part of the comparison and never rewritten once it exists.
+function bundleHash(dir) {
+  const hash = createHash('sha256');
+  for (const file of listFiles(dir).filter((f) => !f.endsWith(META_SUFFIX)).sort()) {
+    hash.update(file);
+    hash.update('\0');
+    hash.update(readFileSync(join(dir, file)));
+    hash.update('\0');
+  }
+  return hash.digest('hex');
 }
 
 const bundleMeta = (apiVersion) => `<?xml version="1.0" encoding="UTF-8"?>
@@ -193,6 +243,16 @@ const bundleMeta = (apiVersion) => `<?xml version="1.0" encoding="UTF-8"?>
     <isExposed>false</isExposed>
 </LightningComponentBundle>
 `;
+
+// Replaces the bundle wholesale, so files the new version dropped don't linger,
+// but carries the user's existing .js-meta.xml across.
+function installBundle(from, to, bundle, apiVersion) {
+  const metaPath = join(to, `${bundle}${META_SUFFIX}`);
+  const meta = existsSync(metaPath) ? readFileSync(metaPath, 'utf8') : bundleMeta(apiVersion);
+  rmSync(to, { recursive: true, force: true });
+  cpSync(from, to, { recursive: true });
+  writeFileSync(metaPath, meta);
+}
 
 function add(cwd, names, flags) {
   const config = loadConfig(cwd);
@@ -216,43 +276,75 @@ function add(cwd, names, flags) {
     : DEFAULT_API_VERSION;
   const lwcDir = join(cwd, config.dir, 'main/default/lwc');
   const all = closure(requested, registry);
+  const named = new Set(requested);
+  const baseline = { ...(config.installed ?? {}) };
+  const dryRun = Boolean(flags['dry-run']);
 
   const added = [];
+  const updated = [];
+  const replaced = [];
   const unchanged = [];
-  const modified = [];
+  const skipped = [];
+
   for (const key of all) {
     const { bundle } = registry.components[key];
     const from = join(PKG_ROOT, 'sfdx/lwc', bundle);
     const to = join(lwcDir, bundle);
+    const fresh = bundleHash(from);
 
-    if (existsSync(to)) {
-      if (sameContent(from, to)) unchanged.push(bundle);
-      else if (!flags.overwrite) {
-        // The source is yours to edit; never clobber it without being told to.
-        modified.push(bundle);
-        continue;
-      } else added.push(bundle);
-    } else added.push(bundle);
-
-    if (!flags['dry-run']) {
-      cpSync(from, to, { recursive: true, force: true });
-      writeFileSync(join(to, `${bundle}.js-meta.xml`), bundleMeta(apiVersion));
+    let action;
+    if (!existsSync(to)) {
+      action = 'add';
+    } else {
+      const current = bundleHash(to);
+      if (current === fresh) action = 'same';
+      // Untouched since Fandry installed it, so a newer package version can
+      // replace it safely. Anything else is the user's own edit (or predates
+      // baseline tracking) and is left alone.
+      else if (baseline[bundle] === current) action = 'update';
+      // --overwrite applies only to what was named, never to its dependencies.
+      else if (flags.overwrite && named.has(key)) action = 'replace';
+      else action = 'skip';
     }
+
+    if (action === 'skip') {
+      skipped.push(bundle);
+      continue;
+    }
+    if (action === 'same') {
+      unchanged.push(bundle);
+    } else {
+      ({ add: added, update: updated, replace: replaced })[action].push(bundle);
+      if (!dryRun) installBundle(from, to, bundle, apiVersion);
+    }
+    baseline[bundle] = fresh;
+  }
+
+  if (!dryRun) {
+    const sorted = Object.fromEntries(Object.entries(baseline).sort(([a], [b]) => a.localeCompare(b)));
+    writeJson(join(cwd, CONFIG_FILE), { ...config, version: registry.version, installed: sorted }, '  ');
   }
 
   // Bundles using `lwc:is` fail to deploy to an org without dynamic components.
   const dynamic = all.filter((k) => registry.components[k].requires?.includes('dynamicComponents'));
   const deps = all.length - requested.length;
-  console.log(`${flags['dry-run'] ? 'Would add' : 'Added'} ${added.length} bundle(s) to ${config.dir}/main/default/lwc` +
-    ` (${requested.length} requested, ${deps} dependenc${deps === 1 ? 'y' : 'ies'})`);
+  console.log(
+    `${dryRun ? 'Would add' : 'Added'} ${added.length} bundle(s) to ${config.dir}/main/default/lwc` +
+      ` (${requested.length} requested, ${deps} dependenc${deps === 1 ? 'y' : 'ies'})`
+  );
   added.forEach((b) => console.log(`  + ${b}`));
+  if (updated.length) console.log(`${dryRun ? 'Would update' : 'Updated'} to this version (you had not edited them): ${updated.join(', ')}`);
+  if (replaced.length) console.log(`${dryRun ? 'Would replace' : 'Replaced'} (--overwrite): ${replaced.join(', ')}`);
   if (unchanged.length) console.log(`Already up to date: ${unchanged.join(', ')}`);
   if (dynamic.length) {
     console.log(`\nNote: ${dynamic.map((k) => registry.components[k].bundle).join(', ')} use lwc:is, which Salesforce only`);
     console.log('accepts in orgs with dynamic components enabled (otherwise deploy fails with LWC1188).');
   }
-  if (modified.length) {
-    console.log(`Skipped (you have edited these; pass --overwrite to replace): ${modified.join(', ')}`);
+  if (skipped.length) {
+    // Two reasons look identical from here: the user edited the bundle, or it
+    // predates baseline tracking. Either way it differs and is not ours to overwrite.
+    console.log(`\nSkipped (differs from this version and has changes of yours): ${skipped.join(', ')}`);
+    console.log('To replace one, name it directly with --overwrite: fandry add <name> --overwrite');
   }
 }
 
@@ -275,12 +367,15 @@ Usage
       Salesforce DX: adds a "${DEFAULT_SFDX_DIR}" package directory (or --dir) to sfdx-project.json.
       LWR / LWC OSS: adds { "npm": "fandryui" } to your lwr.config.json / lwc.config.json.
       The platform is detected from the project; pass --sfdx or --lwr to force it.
+      Re-running keeps the directory you chose earlier.
 
   fandry add <component...> [--overwrite] [--dry-run]
   fandry add --all
       Salesforce DX only. Copies each component's bundle into your project along with
       every bundle it depends on (e.g. \`fandry add table\` also adds input, button, ...).
-      Files you have edited are left alone unless --overwrite is given.
+      Re-running updates bundles you have not touched to the installed version of
+      fandryui. Bundles you have edited are skipped; --overwrite replaces only the
+      components you name, never their dependencies. Your .js-meta.xml is never rewritten.
 
   fandry list
       Shows every component and what it depends on.

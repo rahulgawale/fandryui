@@ -289,11 +289,11 @@ const SALESFORCE: GettingStartedPage = {
           code: `npx fandry list                  # every component and what it depends on
 npx fandry add --all             # everything
 npx fandry add table --dry-run   # show what would be added
-npx fandry add table --overwrite # replace files you have edited`
+npx fandry add table --overwrite # replace table even if you edited it`
         },
         {
           type: 'text',
-          text: 'Each bundle gets a .js-meta.xml using your project\'s sourceApiVersion. Files you have edited are never overwritten unless you pass --overwrite.'
+          text: 'Each bundle gets a .js-meta.xml using your project\'s sourceApiVersion, and it is never rewritten after that, so you can expose a component or add targets safely. Bundles you have edited are never overwritten unless you name them with --overwrite.'
         }
       ]
     },
@@ -416,7 +416,7 @@ sf project deploy start --source-dir fandryui --source-dir force-app --target-or
           items: [
             'Fandry is not a managed package. Components are plain c-namespace source in your project.',
             'The table depends on @tanstack/table-core. Because npm packages cannot be imported on the platform, fandry add table installs it as the fandryTableCore bundle.',
-            'Upgrading: update fandryui, then run fandry add <name> --overwrite for the components you have not edited.'
+            'Upgrading: update fandryui, then run fandry add <name> again. Bundles you have not edited are updated to the new version, edited ones are skipped, and --overwrite replaces only the components you name. Commit fandry.json: it records what was installed so an upgrade can be told apart from an edit.'
           ]
         }
       ]

@@ -7,6 +7,8 @@
 
 import { execFileSync, spawnSync } from 'node:child_process';
 import {
+  appendFileSync,
+  cpSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
@@ -32,10 +34,11 @@ const check = (ok, message) => {
   if (!ok) failures.push(message);
 };
 
-const fandry = (cwd, ...args) => {
-  const r = spawnSync('node', [CLI, ...args], { cwd, encoding: 'utf8' });
+const runCli = (cli, cwd, args) => {
+  const r = spawnSync('node', [cli, ...args], { cwd, encoding: 'utf8' });
   return { code: r.status, out: `${r.stdout}${r.stderr}` };
 };
+const fandry = (cwd, ...args) => runCli(CLI, cwd, args);
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
 const kebabToCamel = (s) => s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 
@@ -106,6 +109,79 @@ check(readFileSync(join(edited, 'fandryButton.css'), 'utf8') !== '/* my edit */\
 
 r = fandry(sf, 'add', 'nope');
 check(r.code === 1 && /Unknown component/.test(r.out), 'unknown component did not fail cleanly');
+
+// ---- regressions found in review of PR #69
+
+// The .js-meta.xml belongs to the user: exposure and targets must survive
+// re-runs, even when the bundle itself is "already up to date".
+const buttonMeta = join(lwc, 'fandryButton/fandryButton.js-meta.xml');
+const customMeta = readFileSync(buttonMeta, 'utf8').replace('<isExposed>false</isExposed>', '<isExposed>true</isExposed><targets><target>lightning__AppPage</target></targets>');
+writeFileSync(buttonMeta, customMeta);
+fandry(sf, 'add', 'button');
+fandry(sf, 'add', 'table');
+check(readFileSync(buttonMeta, 'utf8') === customMeta, 'add reset a customised .js-meta.xml');
+
+// A preview must not write, and a typo must not turn one into a write.
+const before = readFileSync(join(sf, 'fandry.json'), 'utf8');
+r = fandry(sf, 'add', 'card', '--dry-run');
+check(r.code === 0 && !existsSync(join(lwc, 'fandryCard')) && readFileSync(join(sf, 'fandry.json'), 'utf8') === before, '--dry-run wrote to the project');
+r = fandry(sf, 'add', 'card', '--dryrun');
+check(r.code === 1 && /Unknown option --dryrun/.test(r.out) && !existsSync(join(lwc, 'fandryCard')), 'a mistyped flag was silently accepted');
+
+// Argument parsing: values are not swallowed blindly, '=' inside a value survives.
+const argsProject = join(work, 'args');
+mkdirSync(argsProject);
+writeFileSync(join(argsProject, 'sfdx-project.json'), JSON.stringify({ packageDirectories: [{ path: 'force-app', default: true }], sourceApiVersion: '66.0' }));
+r = fandry(argsProject, 'init', '--dir', '--sfdx');
+check(r.code === 1 && /--dir needs a value/.test(r.out) && !existsSync(join(argsProject, '--sfdx')), '--dir consumed the next flag as its value');
+fandry(argsProject, 'init', '--dir=vendor/a=b');
+check(readJson(join(argsProject, 'fandry.json')).dir === 'vendor/a=b', '--dir=value was split at every "="');
+
+// Re-running init keeps an earlier --dir instead of orphaning it.
+const dirProject = join(work, 'dir');
+mkdirSync(dirProject);
+writeFileSync(join(dirProject, 'sfdx-project.json'), JSON.stringify({ packageDirectories: [{ path: 'force-app', default: true }], sourceApiVersion: '66.0' }));
+fandry(dirProject, 'init', '--dir', 'vendor/fandry');
+fandry(dirProject, 'add', 'button');
+fandry(dirProject, 'init');
+check(readJson(join(dirProject, 'fandry.json')).dir === 'vendor/fandry', 'a plain re-run of init dropped the earlier --dir');
+check(readJson(join(dirProject, 'sfdx-project.json')).packageDirectories.length === 2, 'a re-run of init added a second package directory');
+r = fandry(dirProject, 'init', '--dir', 'elsewhere');
+check(r.code === 1 && /already installed/.test(r.out), 'init moved to a new --dir while components were installed in the old one');
+
+// Upgrades vs. edits, against a copy of the package we can "release" a new version of.
+const pkg = join(work, 'pkg');
+cpSync(DIST, pkg, { recursive: true });
+const pkgLwc = join(pkg, 'sfdx/lwc');
+writeFileSync(join(pkgLwc, 'fandryLabel/legacy.css'), '/* v1 only */\n');
+const up = join(work, 'up');
+mkdirSync(up);
+writeFileSync(join(up, 'sfdx-project.json'), JSON.stringify({ packageDirectories: [{ path: 'force-app', default: true }], sourceApiVersion: '66.0' }));
+const cli = join(pkg, 'bin/fandry.mjs');
+runCli(cli, up, ['init']);
+runCli(cli, up, ['add', 'input', 'table']);
+const upLwc = join(up, 'fandryui/main/default/lwc');
+check(existsSync(join(upLwc, 'fandryLabel/legacy.css')), 'test setup: v1 file was not installed');
+
+// "New release": label changes and drops legacy.css; button and base change too.
+rmSync(join(pkgLwc, 'fandryLabel/legacy.css'));
+for (const b of ['fandryLabel', 'fandryButton', 'fandryBase']) {
+  appendFileSync(join(pkgLwc, b, `${b}.js`), '\n// v2\n');
+}
+// The user edited button locally before upgrading.
+appendFileSync(join(upLwc, 'fandryButton/fandryButton.js'), '\n// my edit\n');
+
+r = runCli(cli, up, ['add', 'table']);
+check(/Updated[^\n]*fandryLabel/.test(r.out) && /Updated[^\n]*fandryBase/.test(r.out), `untouched bundles were not upgraded: ${r.out}`);
+check(readFileSync(join(upLwc, 'fandryLabel/fandryLabel.js'), 'utf8').includes('// v2'), 'upgrade did not install the new version');
+check(!existsSync(join(upLwc, 'fandryLabel/legacy.css')), 'upgrade left a file the new version dropped');
+check(/Skipped[^\n]*fandryButton/.test(r.out) && readFileSync(join(upLwc, 'fandryButton/fandryButton.js'), 'utf8').includes('// my edit'), 'an edited bundle was not preserved on upgrade');
+
+// --overwrite is for what you name, not for the dependencies of what you name.
+runCli(cli, up, ['add', 'table', '--overwrite']);
+check(readFileSync(join(upLwc, 'fandryButton/fandryButton.js'), 'utf8').includes('// my edit'), '--overwrite on table clobbered its edited dependency (button)');
+r = runCli(cli, up, ['add', 'button', '--overwrite']);
+check(/Replaced[^\n]*fandryButton/.test(r.out) && !readFileSync(join(upLwc, 'fandryButton/fandryButton.js'), 'utf8').includes('// my edit'), 'naming a component with --overwrite did not replace it');
 
 // Salesforce CLI must see every installed bundle as metadata.
 if (spawnSync('sf', ['--version']).status === 0) {

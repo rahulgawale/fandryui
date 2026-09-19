@@ -27,7 +27,7 @@
     "build:npm": "node scripts/build-dist.mjs",
     "verify:npm": "node scripts/verify-npm.mjs",
     "verify:sfdx": "node scripts/verify-sfdx.mjs",
-    "example:sfdx": "cd examples/salesforce && node ../../packages/ui/dist/bin/fandry.mjs add button input table --overwrite"
+    "example:sfdx": "cd examples/salesforce && node ../../packages/ui/dist/bin/fandry.mjs init && node ../../packages/ui/dist/bin/fandry.mjs add button input table"
   },
   "dependencies": {
     "@tanstack/table-core": "^8.21.3",

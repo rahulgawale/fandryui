@@ -4,7 +4,7 @@ A minimal Salesforce DX project using Fandry UI the way a real project would: th
 
 ```
 sfdx-project.json                          # force-app + fandryui package directories (what `fandry init` writes)
-fandry.json                                # CLI config (also written by `fandry init`)
+fandry.json                                # CLI config + what `fandry add` installed (generated, gitignored here)
 force-app/main/default/lwc/fandryDemo/     # your app: uses <c-fandry-*>
 fandryui/main/default/lwc/fandry*/         # Fandry components installed by `fandry add`
 ```
@@ -16,7 +16,7 @@ fandryui/main/default/lwc/fandry*/         # Fandry components installed by `fan
 ```bash
 # from the repository root
 npm run build:npm        # builds packages/ui/dist, including the CLI
-npm run example:sfdx     # = fandry add button input table, run inside examples/salesforce
+npm run example:sfdx     # = fandry init && fandry add button input table, run inside examples/salesforce
 ```
 
 `add` pulls in everything those three need (bundles such as `base`, `input`, `checkbox`, `pagination`, `tableState`, and so on) and writes each bundle's `.js-meta.xml` using this project's `sourceApiVersion`. Then, against your own org:
@@ -35,8 +35,8 @@ On the platform, code you deploy lives in the default `c` namespace, and bundles
 
 ## Status
 
-Verified offline: `npm run verify:sfdx` (CLI init/add, dependency closure checked against the installed source, `sf` recognizes the bundles), and the installed tree compiles and renders in a browser through LWR, including the table with its vendored `fandryTableCore`.
+Verified offline: `npm run verify:sfdx` (CLI init/add/upgrade behavior, dependency closure checked against the installed source, `sf` recognizes the bundles), and the installed tree compiles and renders in a browser through LWR, including the table with its vendored `fandryTableCore`.
 
-Verified against a real org with a **validate-only deploy** (`--dry-run`, nothing changed in the org): this whole project (the demo plus 10 bundles) passes, and so do 38 of the 42 bundles `fandry add --all` installs. That covers `static stylesheets`, several templates and CSS files per bundle, `lwc:spread`, and the ~130 kB vendored `fandryTableCore`. The 4 that fail are the ones using `lwc:is`: `select`, `combobox`, `command` and `lookup` are rejected with LWC1188 in an org that hasn't enabled dynamic components. `fandry add` prints a warning when you install one of them, and this demo avoids them so it deploys anywhere.
+Verified against a real org (`sf project deploy`): validate-only deploys of all 42 bundles (38 pass; the 4 that use `lwc:is` fail, see below), then a real deploy of this project's demo and the 10 `fandryui` bundles it needs. The demo was run on a Lightning page: `button`, `input`, `table` with its vendored `fandryTableCore`, pagination and the table search all work. That also covers `static stylesheets`, several templates and CSS files per bundle, `lwc:spread` and the ~130 kB vendored bundle.
 
-**Not verified:** running the components on a Lightning page in an org (validation checks that they compile, not how they behave), and the four `lwc:is` components in an org with dynamic components enabled.
+**Not verified:** `select`, `combobox`, `command` and `lookup`. They use `lwc:is`, which an org rejects with LWC1188 unless dynamic components are enabled, so they fail to deploy on an org that has not enabled them and have not been run on one that has. `fandry add` prints a warning when you install one, and this demo avoids them so it deploys anywhere.

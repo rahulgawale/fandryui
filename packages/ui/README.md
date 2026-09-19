@@ -48,7 +48,8 @@ sf project deploy start --source-dir fandryui
 - Components are `<c-fandry-button>` etc., because on-platform code lives in the default `c` namespace.
 - `fandry add` follows dependencies for you (`fandry add table` also adds `input`, `checkbox`, `pagination`, `skeleton`, the shared `base`, and more). `fandry list` shows the graph.
 - Each bundle gets a `.js-meta.xml` using your project's `sourceApiVersion`.
-- The copied files are yours: commit and edit them. Re-running `add` skips files you changed unless you pass `--overwrite`.
+- The copied files are yours: commit and edit them. Your `.js-meta.xml` files (API version, exposure, targets) are never rewritten.
+- **Upgrading:** after updating `fandryui`, run `npx fandry add <name>` again. Bundles you have not edited are updated to the new version; bundles you have edited are skipped. `--overwrite` replaces only the components you name, never their dependencies. Fandry records what it installed in `fandry.json` to tell an upgrade from an edit, so commit that file too.
 - `table` needs `@tanstack/table-core`, which cannot be imported on-platform. `fandry add table` installs it as the bundle `fandryTableCore`, the library bundled unmodified into one ES module.
 - `fandry add --all` installs everything; `--dir <path>` (on `init`) uses a different package directory.
 
@@ -103,7 +104,7 @@ Anything listed in the package's `lwc.config.json` `expose` array is public API.
 
 - **No TypeScript declarations and no source maps.** The library is written in TypeScript, but the published files are the readable JavaScript with types stripped. `.ts` and `.map` files inside an LWC component folder would confuse module resolution, so they are not shipped.
 - **LWR and `lwc@8`.** Fresh installs of `lwr@0.18.3` can currently resolve `@lwc/compiler@9`, which rejects LWR's own loader. If your build fails with `LWC1121` inside `@lwrjs/loader`, pin the `@lwc/*` packages (see `examples/consumer/package.json` in the repository for a working set of `overrides`).
-- **Salesforce: `select`, `combobox`, `command` and `lookup` need dynamic components.** They use `lwc:is` (so a consumer can swap in a custom component per item), which a Salesforce org rejects with LWC1188 unless dynamic components are enabled. `fandry add` warns when you install one, and `fandry list` marks them. The other components, including `table` with its vendored `fandryTableCore`, pass a validate-only deploy to a real org; nothing has been run on a Lightning page yet.
+- **Salesforce: `select`, `combobox`, `command` and `lookup` need dynamic components.** They use `lwc:is` (so a consumer can swap in a custom component per item), which a Salesforce org rejects with LWC1188 unless dynamic components are enabled. `fandry add` warns when you install one, and `fandry list` marks them. The other components, including `table` with its vendored `fandryTableCore`, have been deployed to a real org and run on a Lightning page.
 
 ## Versioning
 

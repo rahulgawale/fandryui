@@ -8,3 +8,4 @@ examples/consumer/node_modules
 examples/consumer/__lwr_cache__
 examples/consumer/site
 examples/salesforce/fandryui
+examples/salesforce/fandry.json
