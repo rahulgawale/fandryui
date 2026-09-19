@@ -1,0 +1,9 @@
+<template>
+  <template if:true={open}>
+    <div class="backdrop" onclick={handleBackdropClick}>
+      <div class="panel" role="dialog" aria-modal="true" aria-label={label} tabindex="-1">
+        <slot></slot>
+      </div>
+    </div>
+  </template>
+</template>

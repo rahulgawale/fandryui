@@ -1,7 +1,7 @@
 import { LightningElement } from 'lwc';
 
 export default class ExampleGallery extends LightningElement {
-  // All 10 patterns below live in this one file -- a single link to it,
+  // All 11 patterns below live in this one file -- a single link to it,
   // rather than a per-pattern line-anchor, since line numbers here drift
   // with every edit and a stale anchor is worse than none.
   sourceUrl =
@@ -32,11 +32,39 @@ export default class ExampleGallery extends LightningElement {
     { key: 'product', label: 'Filter Kit', badge: 'Product' }
   ];
 
+  crumbPages = [
+    { key: 'documents', label: 'Documents', title: 'Documents', body: 'Every file synced to your account, organized by project.' },
+    { key: 'projects', label: 'Projects', title: 'Projects', body: 'One folder per active project across the team.' },
+    { key: 'redesign', label: 'Redesign', title: 'Website Redesign', body: 'Design files, briefs, and assets for the Q3 site redesign.' }
+  ];
+
+  activeCrumbKey = 'redesign';
+
+  get crumbItems() {
+    return this.crumbPages.map((page) => ({ ...page, current: page.key === this.activeCrumbKey }));
+  }
+
+  get activePage() {
+    return this.crumbPages.find((page) => page.key === this.activeCrumbKey) ?? this.crumbPages[0];
+  }
+
   // Decorative "#" links/buttons in these demo cards aren't real
   // navigation -- without this, a click follows href="#" and scrolls the
   // whole marketing page to top (same issue the dashboard's Search/Help
   // links had; see dashboardExample.ts).
   handleNoopClick(event: Event) {
     event.preventDefault();
+  }
+
+  // Each crumb is a real fandry-breadcrumb-item link (href="#" for this
+  // demo, same reasoning as handleNoopClick above) -- clicking one swaps
+  // which card renders below and which crumb reports aria-current="page",
+  // without a real page navigation.
+  handleCrumbClick(event: Event) {
+    event.preventDefault();
+    const key = (event.currentTarget as HTMLElement).dataset.key;
+    if (key) {
+      this.activeCrumbKey = key;
+    }
   }
 }

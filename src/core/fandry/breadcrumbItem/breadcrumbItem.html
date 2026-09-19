@@ -1,0 +1,10 @@
+<template>
+  <li class="item">
+    <template if:false={first}>
+      <span class="separator" aria-hidden="true">/</span>
+    </template>
+    <a class="link" href={computedHref} aria-current={ariaCurrent} lwc:spread={resolvedElementProps}>
+      <slot></slot>
+    </a>
+  </li>
+</template>

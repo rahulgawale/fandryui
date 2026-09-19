@@ -68,6 +68,10 @@
      this single value, instead of chasing per-component z-indexes. ---- */
   --fd-z-overlay: 50;
 
+  /* ---- Overlay backdrop (fandry-dialog's scrim behind the modal panel) ---- */
+  --fd-backdrop: 222 47% 11%;
+  --fd-backdrop-opacity: 0.6;
+
   /* ---- Fixed-height controls (buttons, and similar) ---- */
   --fd-control-height-sm: 32px;
   --fd-control-height-md: 36px;
@@ -88,6 +92,12 @@
      value: one caps a form control, the other caps a block of prose, and
      a consumer should be able to size those independently. ---- */
   --fd-overlay-max-width-sm: 16rem;
+
+  /* ---- Max-width cap for a larger floating overlay's content (e.g.
+     fandry-dialog's panel) -- a step up from --fd-overlay-max-width-sm's
+     tooltip-bubble sizing, for content with real structure (a heading, a
+     paragraph, a row of actions) rather than a short line of prose. ---- */
+  --fd-overlay-max-width-md: 32rem;
 
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;

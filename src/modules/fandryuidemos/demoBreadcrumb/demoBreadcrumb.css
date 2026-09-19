@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+.row {
+  padding: var(--fd-space-3) 0;
+}

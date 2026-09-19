@@ -229,6 +229,14 @@
   border-bottom: none;
 }
 
+/* -------- Breadcrumb navigation -------- */
+
+.crumb-nav {
+  width: 100%;
+  max-width: 24rem;
+  margin-top: var(--fd-space-3);
+}
+
 /* -------- KPI row -------- */
 
 .kpi-row {

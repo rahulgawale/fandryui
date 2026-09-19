@@ -23,6 +23,31 @@ export const CATEGORY_ORDER = ['Layout', 'Typography', 'Forms', 'Feedback', 'Ove
 export const COMPONENTS: ComponentEntry[] = [
   // ---- Layout ----
   {
+    slug: 'breadcrumb',
+    name: 'Breadcrumb',
+    tag: 'fandry-breadcrumb',
+    category: 'Layout',
+    description: 'A navigation trail of ancestor pages — pair with fandry-breadcrumb-item for each crumb.',
+    props: [{ name: 'aria-label', type: 'string', default: "'Breadcrumb'", description: 'Accessible name for the nav landmark.' }],
+    code: `<fandry-breadcrumb>
+  <fandry-breadcrumb-item href="/">Home</fandry-breadcrumb-item>
+  <fandry-breadcrumb-item href="/components">Components</fandry-breadcrumb-item>
+  <fandry-breadcrumb-item current>Breadcrumb</fandry-breadcrumb-item>
+</fandry-breadcrumb>`
+  },
+  {
+    slug: 'breadcrumb-item',
+    name: 'Breadcrumb Item',
+    tag: 'fandry-breadcrumb-item',
+    category: 'Layout',
+    description: 'A single crumb inside fandry-breadcrumb, with a current-page state.',
+    props: [
+      { name: 'href', type: 'string', default: "''", description: 'Link target — omitted (along with the current page) renders as plain text.' },
+      { name: 'current', type: 'boolean', default: 'false', description: "Marks this as the current page (plain text, not a link, + aria-current)." }
+    ],
+    code: `<fandry-breadcrumb-item href="/components">Components</fandry-breadcrumb-item>`
+  },
+  {
     slug: 'card',
     name: 'Card',
     tag: 'fandry-card',
@@ -302,6 +327,20 @@ export const COMPONENTS: ComponentEntry[] = [
     code: `<fandry-badge variant="primary">New</fandry-badge>`
   },
   {
+    slug: 'progress',
+    name: 'Progress',
+    tag: 'fandry-progress',
+    category: 'Feedback',
+    description: 'A determinate or indeterminate progress bar.',
+    props: [
+      { name: 'value', type: 'number', default: '0', description: 'Current progress, from 0 to max.' },
+      { name: 'max', type: 'number', default: '100', description: 'Maximum value.' },
+      { name: 'label', type: 'string', default: "''", description: 'Accessible label.' },
+      { name: 'indeterminate', type: 'boolean', default: 'false', description: 'Shows an animated bar of unknown duration instead of value/max.' }
+    ],
+    code: `<fandry-progress value="60" label="Uploading"></fandry-progress>`
+  },
+  {
     slug: 'skeleton',
     name: 'Skeleton',
     tag: 'fandry-skeleton',
@@ -381,6 +420,21 @@ export const COMPONENTS: ComponentEntry[] = [
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Avatar size.' }
     ],
     code: `<fandry-avatar initials="JD" size="md"></fandry-avatar>`
+  },
+  {
+    slug: 'dialog',
+    name: 'Dialog',
+    tag: 'fandry-dialog',
+    category: 'Overlays & Data',
+    description: 'A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger.',
+    props: [
+      { name: 'open', type: 'boolean', default: 'false', description: 'Open state (consumer-controlled via ontoggle).' },
+      { name: 'label', type: 'string', default: "''", description: 'Accessible name for the dialog (aria-label).' }
+    ],
+    code: `<fandry-dialog open={isOpen} label="Delete item" ontoggle={handleToggle}>
+  <fandry-heading level="3">Delete item?</fandry-heading>
+  <fandry-text variant="muted">This action can't be undone.</fandry-text>
+</fandry-dialog>`
   },
   {
     slug: 'menu',

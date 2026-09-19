@@ -244,6 +244,31 @@
             </div>
           </fandry-card>
         </div>
+
+        <!-- 11. Breadcrumb navigation -->
+        <div class="pattern">
+          <div class="pattern-head">
+            <fandry-badge>11</fandry-badge>
+            <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
+          </div>
+          <fandry-heading level="3">Breadcrumb navigation</fandry-heading>
+          <fandry-text variant="muted" size="sm">Each crumb swaps the card below — fandry-breadcrumb driving real state.</fandry-text>
+          <fandry-breadcrumb class="crumb-nav" aria-label="Folder path">
+            <template for:each={crumbItems} for:item="crumb">
+              <fandry-breadcrumb-item
+                key={crumb.key}
+                href="#"
+                current={crumb.current}
+                data-key={crumb.key}
+                onclick={handleCrumbClick}
+              >{crumb.label}</fandry-breadcrumb-item>
+            </template>
+          </fandry-breadcrumb>
+          <fandry-card class="demo">
+            <fandry-heading level="4">{activePage.title}</fandry-heading>
+            <fandry-text variant="muted" size="sm">{activePage.body}</fandry-text>
+          </fandry-card>
+        </div>
       </div>
     </div>
   </section>

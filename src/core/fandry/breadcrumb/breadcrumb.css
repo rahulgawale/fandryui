@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* Each fandry-breadcrumb-item's own <li> is [separator, link], gapped by
+     --fd-space-1 internally (see breadcrumbItem.css) -- without a matching
+     gap here too, consecutive <li>s touch directly, so a separator sits
+     flush against the *previous* crumb's text and only has breathing room
+     on its *other* side (confirmed live: "Documents/ Projects" instead of
+     "Documents / Projects"). Matching the gap here makes it symmetric. */
+  gap: var(--fd-space-1);
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
