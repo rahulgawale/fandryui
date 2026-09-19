@@ -23,6 +23,18 @@
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
+            "id": "component-breadcrumb",
+            "path": "/components/breadcrumb",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-breadcrumb-item",
+            "path": "/components/breadcrumb-item",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
             "id": "component-card",
             "path": "/components/card",
             "rootComponent": "fandryui/componentDoc",
@@ -143,6 +155,12 @@
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
+            "id": "component-progress",
+            "path": "/components/progress",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
             "id": "component-skeleton",
             "path": "/components/skeleton",
             "rootComponent": "fandryui/componentDoc",
@@ -175,6 +193,12 @@
         {
             "id": "component-avatar",
             "path": "/components/avatar",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-dialog",
+            "path": "/components/dialog",
             "rootComponent": "fandryui/componentDoc",
             "layoutTemplate": "$layoutsDir/index.html"
         },

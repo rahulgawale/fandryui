@@ -1,0 +1,14 @@
+<template>
+  <div class="row">
+    <fandry-button onclick={handleOpen}>Delete item</fandry-button>
+
+    <fandry-dialog open={isOpen} label="Delete item" ontoggle={handleToggle}>
+      <fandry-heading level="3">Delete item?</fandry-heading>
+      <fandry-text variant="muted">This action can't be undone.</fandry-text>
+      <div class="actions">
+        <fandry-button variant="secondary" onclick={handleClose}>Cancel</fandry-button>
+        <fandry-button onclick={handleClose}>Delete</fandry-button>
+      </div>
+    </fandry-dialog>
+  </div>
+</template>

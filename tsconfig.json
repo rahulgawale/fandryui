@@ -33,6 +33,8 @@
       // featureGrid, dashboardExample, page shells, etc.) just by reading a
       // tag or import path.
       "fandryuidemos/customTable": ["src/modules/fandryuidemos/customTable/customTable"],
+      "fandryuidemos/demoBreadcrumb": ["src/modules/fandryuidemos/demoBreadcrumb/demoBreadcrumb"],
+      "fandryuidemos/demoBreadcrumbItem": ["src/modules/fandryuidemos/demoBreadcrumbItem/demoBreadcrumbItem"],
       "fandryuidemos/demoCard": ["src/modules/fandryuidemos/demoCard/demoCard"],
       "fandryuidemos/demoDivider": ["src/modules/fandryuidemos/demoDivider/demoDivider"],
       "fandryuidemos/demoPagination": ["src/modules/fandryuidemos/demoPagination/demoPagination"],
@@ -53,12 +55,14 @@
       "fandryuidemos/demoTextarea": ["src/modules/fandryuidemos/demoTextarea/demoTextarea"],
       "fandryuidemos/demoAlert": ["src/modules/fandryuidemos/demoAlert/demoAlert"],
       "fandryuidemos/demoBadge": ["src/modules/fandryuidemos/demoBadge/demoBadge"],
+      "fandryuidemos/demoProgress": ["src/modules/fandryuidemos/demoProgress/demoProgress"],
       "fandryuidemos/demoSkeleton": ["src/modules/fandryuidemos/demoSkeleton/demoSkeleton"],
       "fandryuidemos/demoSpinner": ["src/modules/fandryuidemos/demoSpinner/demoSpinner"],
       "fandryuidemos/demoToast": ["src/modules/fandryuidemos/demoToast/demoToast"],
       "fandryuidemos/demoToastViewport": ["src/modules/fandryuidemos/demoToastViewport/demoToastViewport"],
       "fandryuidemos/demoTooltip": ["src/modules/fandryuidemos/demoTooltip/demoTooltip"],
       "fandryuidemos/demoAvatar": ["src/modules/fandryuidemos/demoAvatar/demoAvatar"],
+      "fandryuidemos/demoDialog": ["src/modules/fandryuidemos/demoDialog/demoDialog"],
       "fandryuidemos/demoMenu": ["src/modules/fandryuidemos/demoMenu/demoMenu"],
       "fandryuidemos/demoMenuItem": ["src/modules/fandryuidemos/demoMenuItem/demoMenuItem"],
       "fandryuidemos/demoPopover": ["src/modules/fandryuidemos/demoPopover/demoPopover"],

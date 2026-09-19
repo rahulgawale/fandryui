@@ -1,0 +1,33 @@
+:host {
+  display: contents;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-1);
+}
+
+.separator {
+  color: hsl(var(--fd-text-muted));
+}
+
+.link {
+  color: hsl(var(--fd-text-muted));
+  font-size: var(--fd-font-size-sm);
+  text-decoration: none;
+}
+
+.link[href]:hover {
+  color: hsl(var(--fd-text));
+  text-decoration: underline;
+}
+
+/* No href -- the current page (or a crumb with nowhere to go), rendered as
+   plain inert text rather than a link. See breadcrumbItem.ts's
+   computedHref for why this stays the same <a> tag either way. */
+.link:not([href]) {
+  color: hsl(var(--fd-text));
+  font-weight: 500;
+  cursor: default;
+}

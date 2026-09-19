@@ -1,6 +1,8 @@
 import { LightningElement } from 'lwc';
 import { COMPONENTS, CATEGORY_ORDER, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
 
+import DemoBreadcrumb from 'fandryuidemos/demoBreadcrumb';
+import DemoBreadcrumbItem from 'fandryuidemos/demoBreadcrumbItem';
 import DemoCard from 'fandryuidemos/demoCard';
 import DemoDivider from 'fandryuidemos/demoDivider';
 import DemoPagination from 'fandryuidemos/demoPagination';
@@ -21,12 +23,14 @@ import DemoSwitch from 'fandryuidemos/demoSwitch';
 import DemoTextarea from 'fandryuidemos/demoTextarea';
 import DemoAlert from 'fandryuidemos/demoAlert';
 import DemoBadge from 'fandryuidemos/demoBadge';
+import DemoProgress from 'fandryuidemos/demoProgress';
 import DemoSkeleton from 'fandryuidemos/demoSkeleton';
 import DemoSpinner from 'fandryuidemos/demoSpinner';
 import DemoToast from 'fandryuidemos/demoToast';
 import DemoToastViewport from 'fandryuidemos/demoToastViewport';
 import DemoTooltip from 'fandryuidemos/demoTooltip';
 import DemoAvatar from 'fandryuidemos/demoAvatar';
+import DemoDialog from 'fandryuidemos/demoDialog';
 import DemoMenu from 'fandryuidemos/demoMenu';
 import DemoMenuItem from 'fandryuidemos/demoMenuItem';
 import DemoPopover from 'fandryuidemos/demoPopover';
@@ -36,6 +40,8 @@ import DemoTable from 'fandryuidemos/demoTable';
 // constructor reference, so every doc page's live demo is resolved through
 // this single map rather than one route/page file per component.
 const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
+  breadcrumb: DemoBreadcrumb,
+  'breadcrumb-item': DemoBreadcrumbItem,
   card: DemoCard,
   divider: DemoDivider,
   pagination: DemoPagination,
@@ -56,12 +62,14 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   textarea: DemoTextarea,
   alert: DemoAlert,
   badge: DemoBadge,
+  progress: DemoProgress,
   skeleton: DemoSkeleton,
   spinner: DemoSpinner,
   toast: DemoToast,
   'toast-viewport': DemoToastViewport,
   tooltip: DemoTooltip,
   avatar: DemoAvatar,
+  dialog: DemoDialog,
   menu: DemoMenu,
   'menu-item': DemoMenuItem,
   popover: DemoPopover,

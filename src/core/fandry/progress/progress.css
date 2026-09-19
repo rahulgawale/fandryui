@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+.track {
+  width: 100%;
+  height: var(--fd-space-2);
+  border-radius: var(--fd-radius-sm);
+  background: hsl(var(--fd-bg-muted));
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  border-radius: var(--fd-radius-sm);
+  background: hsl(var(--fd-primary));
+  transition: width var(--fd-duration-fast) var(--fd-ease-in-out);
+}
+
+.bar--indeterminate {
+  width: 40%;
+  animation: fd-progress-indeterminate var(--fd-duration-slowest) ease-in-out infinite;
+}
+
+@keyframes fd-progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
