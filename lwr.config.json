@@ -281,6 +281,12 @@
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
+            "id": "block-form",
+            "path": "/blocks/form",
+            "rootComponent": "fandryui/blockForm",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
             "id": "examples",
             "path": "/examples",
             "rootComponent": "fandryui/examples",

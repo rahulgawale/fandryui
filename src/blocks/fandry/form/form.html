@@ -1,0 +1,45 @@
+<template>
+  <div class="form">
+    <div class="fields">
+      <template for:each={renderFields} for:item="item">
+        <fandry-form-field
+          key={item.name}
+          data-name={item.name}
+          field={item.field}
+          value={item.value}
+          error={item.error}
+          mode={mode}
+          disabled={saving}
+          onchange={handleFieldChange}
+          onblur={handleFieldBlur}
+          onsubmit={handleFieldSubmit}
+        ></fandry-form-field>
+      </template>
+    </div>
+
+    <template if:true={hasStatus}>
+      <fandry-alert variant={statusVariant}>{statusMessage}</fandry-alert>
+    </template>
+
+    <!--
+      Replaces the default buttons. A button you put here reaches the form
+      through its methods: form.edit(), form.save(), form.cancel().
+    -->
+    <div class="actions">
+      <slot name="actions">
+        <template if:true={isReading}>
+          <fandry-button variant="secondary" onclick={handleEdit}>Edit</fandry-button>
+        </template>
+        <template if:true={isEditing}>
+          <fandry-button disabled={saving} onclick={handleSave}>
+            <template if:true={saving}>
+              <fandry-spinner size="sm" label="Saving"></fandry-spinner>
+            </template>
+            Save
+          </fandry-button>
+          <fandry-button variant="secondary" disabled={saving} onclick={handleCancel}>Cancel</fandry-button>
+        </template>
+      </slot>
+    </div>
+  </div>
+</template>

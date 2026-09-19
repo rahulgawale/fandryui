@@ -120,7 +120,12 @@ r = fandry(sf, 'add', 'data-table');
 check(r.code === 0, `add data-table exited ${r.code}: ${r.out}`);
 // data-table uses select, whose template uses lwc:is: the capability is written for it.
 check(/fandrySelect uses lwc:is/.test(r.out), `add data-table did not mention select's lwc:is: ${r.out}`);
+r = fandry(sf, 'add', 'form');
+check(r.code === 0, `add form exited ${r.code}: ${r.out}`);
 const withBlock = new Set(readdirSync(lwc));
+for (const b of ['fandryForm', 'fandryFormState', 'fandryFormField', 'fandryRadioGroup', 'fandryRadio', 'fandrySwitch', 'fandryTextarea', 'fandryAlert']) {
+  check(withBlock.has(b), `expected bundle ${b} to be installed by form`);
+}
 for (const b of ['fandryDataTable', 'fandryDataTableState', 'fandryTableState', 'fandryMenu', 'fandryPopover', 'fandryToast', 'fandryToastViewport', 'fandryDialog', 'fandrySelect', 'fandryMotion']) {
   check(withBlock.has(b), `expected bundle ${b} to be installed by data-table`);
 }
@@ -138,6 +143,7 @@ check(
 
 r = fandry(sf, 'list');
 check(/dataTable\s+\(block\)/.test(r.out), `fandry list did not mark data-table as a block: ${r.out}`);
+check(/\bform\s+\(block\)/.test(r.out), `fandry list did not mark form as a block: ${r.out}`);
 
 const edited = join(lwc, 'fandryButton');
 fandry(sf, 'add', 'button');

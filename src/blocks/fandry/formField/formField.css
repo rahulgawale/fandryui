@@ -1,0 +1,35 @@
+:host {
+  display: block;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.read {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.read-value {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.help,
+.error {
+  margin: 0;
+  font-size: var(--fd-font-size-xs);
+}
+
+.help {
+  color: hsl(var(--fd-text-muted));
+}
+
+.error {
+  color: hsl(var(--fd-danger));
+}

@@ -31,6 +31,9 @@
       // Blocks (installable patterns) live in src/blocks (same `fandry` namespace).
       "fandry/dataTableState": ["src/blocks/fandry/dataTableState/dataTableState"],
       "fandry/dataTable": ["src/blocks/fandry/dataTable/dataTable"],
+      "fandry/formState": ["src/blocks/fandry/formState/formState"],
+      "fandry/formField": ["src/blocks/fandry/formField/formField"],
+      "fandry/form": ["src/blocks/fandry/form/form"],
       "fandry/*": ["src/core/fandry/*"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
       "fandryui/gettingStartedData": ["src/modules/fandryui/gettingStartedData/gettingStartedData"],

@@ -1,0 +1,110 @@
+<template>
+  <template if:true={hasField}>
+    <div class="field" onkeydown={handleKeydown} onfocusout={handleFocusOut}>
+      <template if:true={isReadOnly}>
+        <div class="read">
+          <fandry-text as="span" size="sm" variant="muted" class="read-label">{field.label}</fandry-text>
+          <fandry-text as="div" class="read-value">{readText}</fandry-text>
+        </div>
+      </template>
+
+      <template if:false={isReadOnly}>
+        <template if:true={isInput}>
+          <fandry-input
+            class="control"
+            type={inputType}
+            name={field.name}
+            label={field.label}
+            help-text={field.helpText}
+            placeholder={field.placeholder}
+            required={field.required}
+            disabled={disabled}
+            value={stringValue}
+            element-props={controlProps}
+            oninput={handleControlChange}
+            onchange={handleControlChange}
+          ></fandry-input>
+        </template>
+        <template if:true={isTextarea}>
+          <fandry-textarea
+            class="control"
+            name={field.name}
+            label={field.label}
+            help-text={field.helpText}
+            placeholder={field.placeholder}
+            required={field.required}
+            disabled={disabled}
+            value={stringValue}
+            element-props={controlProps}
+            oninput={handleControlChange}
+            onchange={handleControlChange}
+          ></fandry-textarea>
+        </template>
+        <template if:true={isSelect}>
+          <fandry-select
+            class="control"
+            name={field.name}
+            label={field.label}
+            help-text={field.helpText}
+            placeholder={field.placeholder}
+            required={field.required}
+            disabled={disabled}
+            value={stringValue}
+            options={options}
+            element-props={controlProps}
+            onchange={handleControlChange}
+          ></fandry-select>
+        </template>
+        <template if:true={isRadio}>
+          <fandry-radio-group
+            class="control"
+            name={field.name}
+            label={field.label}
+            value={stringValue}
+            onchange={handleControlChange}
+          >
+            <template for:each={radioOptions} for:item="option">
+              <fandry-radio
+                key={option.value}
+                name={field.name}
+                label={option.label}
+                value={option.value}
+                checked={option.checked}
+                disabled={disabled}
+              ></fandry-radio>
+            </template>
+          </fandry-radio-group>
+        </template>
+        <template if:true={isCheckbox}>
+          <fandry-checkbox
+            class="control"
+            name={field.name}
+            label={field.label}
+            disabled={disabled}
+            checked={checked}
+            element-props={controlProps}
+            onchange={handleControlChange}
+          ></fandry-checkbox>
+        </template>
+        <template if:true={isSwitch}>
+          <fandry-switch
+            class="control"
+            name={field.name}
+            label={field.label}
+            disabled={disabled}
+            checked={checked}
+            element-props={controlProps}
+            onchange={handleControlChange}
+          ></fandry-switch>
+        </template>
+
+        <template if:true={showOwnHelpText}>
+          <p class="help">{field.helpText}</p>
+        </template>
+        <template if:true={hasError}>
+          <p class="error" role="alert">{error}</p>
+        </template>
+      </template>
+    </div>
+  </template>
+</template>
