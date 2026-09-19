@@ -223,6 +223,31 @@ describe('fandry-combobox', () => {
     expect(event.defaultPrevented).toBe(true);
   });
 
+  it('keeps the input focused when the empty message or panel padding is pressed', async () => {
+    const element = create();
+    await type(element, 'zzz');
+
+    const pressed = (target: Element) => {
+      const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
+      target.dispatchEvent(event);
+      return event.defaultPrevented;
+    };
+
+    expect(pressed(element.shadowRoot!.querySelector('.empty')!)).toBe(true);
+    expect(pressed(element.shadowRoot!.querySelector('.panel')!)).toBe(true);
+  });
+
+  it('renders an empty combobox, not an error, while options are still undefined', async () => {
+    const element = create({ options: undefined, value: 'x' });
+
+    expect(input(element).value).toBe('');
+    input(element).dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await flush();
+
+    expect(element.shadowRoot!.querySelectorAll('[role="option"]').length).toBe(0);
+    expect(element.shadowRoot!.querySelector('.empty')).not.toBeNull();
+  });
+
   it('does not open when disabled', async () => {
     const element = create({ disabled: true });
 

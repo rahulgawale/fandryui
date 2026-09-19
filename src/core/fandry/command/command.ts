@@ -5,6 +5,9 @@ import { exitFinished } from 'fandry/motion';
 
 export type FdCommandItem = FdSearchItem;
 
+// A stable empty list (the source cache compares by identity).
+const NO_ITEMS: FdSearchItem[] = [];
+
 /**
  * A command palette: a modal search box over a list of things to do. Type to
  * narrow the list, arrow to one, Enter to pick it -- and `select` says which.
@@ -70,8 +73,10 @@ export default class FdCommand extends FdSearchState {
     }
   }
 
+  // `items` bound to data that hasn't arrived yet (`undefined`) is an empty
+  // list, not a render error.
   protected get source(): FdSearchItem[] {
-    return this.items;
+    return this.items ?? NO_ITEMS;
   }
 
   protected commit(item: FdSearchItem) {

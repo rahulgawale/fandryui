@@ -1,0 +1,14 @@
+<template>
+  <fandry-lookup
+    label="Accounts"
+    placeholder="Search accounts"
+    help-text="Pick several. Backspace on an empty field removes the last one."
+    multiple
+    results={results}
+    loading={loading}
+    records={accounts}
+    onsearch={handleSearch}
+    onchange={handleChange}
+  ></fandry-lookup>
+  <p class="selected">Selected: {selected}</p>
+</template>

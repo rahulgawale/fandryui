@@ -59,6 +59,14 @@
 
   /* ---- Elevation (hover/pressed shadows) ---- */
   --fd-shadow-sm: 0 2px 8px;
+
+  /* ---- Shadow colors (hsl channels + alpha, used as `hsl(var(...))`).
+     Paired with --fd-shadow-sm above: a floating panel casts a lighter
+     shadow than a modal one. Used by fandry-combobox, fandry-lookup
+     (floating) and fandry-command (modal); popover, tooltip, toast and
+     dialog still carry the same two values inline. ---- */
+  --fd-shadow-color-floating: 0 0% 0% / 0.15;
+  --fd-shadow-color-modal: 0 0% 0% / 0.25;
   --fd-hover-brightness: 1.1;
 
   /* ---- Stacking (floating overlay panels -- fandry-popover, fandry-tooltip).
@@ -80,6 +88,15 @@
   /* ---- Max-width cap for a standalone control (e.g. a search box that
      shouldn't stretch full-width of its container) ---- */
   --fd-control-max-width-sm: 16rem;
+
+  /* ---- Min-width floor for a text field that shares a row with other
+     content (e.g. fandry-lookup's input beside its chips) -- below this it
+     wraps to its own line instead of shrinking to nothing. ---- */
+  --fd-control-min-width-sm: 8rem;
+
+  /* ---- Max-height of a scrolling option list (fandry-combobox,
+     fandry-lookup) before it scrolls. ---- */
+  --fd-listbox-max-height: 16rem;
 
   /* ---- Min-width floor for a floating panel with no trigger of its own to
      size against (e.g. fandry-menu -- unlike fandry-select's listbox, which sizes
@@ -122,9 +139,14 @@
   --fd-space-5: 1.25rem;
 
   /* ---- Size scale (icons, spinners) ---- */
+  --fd-size-xs: 0.75rem;
   --fd-size-sm: 1rem;
   --fd-size-md: 1.5rem;
   --fd-size-lg: 2rem;
+
+  /* ---- Border-drawn dropdown caret (fandry-combobox), sized relative to
+     the surrounding text. ---- */
+  --fd-chevron-size: 0.4em;
 
   /* ---- Avatar size scale -- kept independent of --fd-size-* above.
      Icons/spinners are decorative glyphs that read fine small; an avatar
@@ -180,6 +202,9 @@
 
   --fd-line-height-normal: 1.5;
   --fd-line-height-tight: 1.25;
+
+  --fd-font-weight-medium: 500;
+  --fd-font-weight-semibold: 600;
 
   --fd-font-heading: var(--font-heading, "Sora"), var(--fd-font-sans);
   --fd-heading-weight: 600;

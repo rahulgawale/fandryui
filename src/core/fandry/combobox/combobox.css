@@ -12,8 +12,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--fd-space-1);
-  font-size: var(--fd-font-size-sm, 0.875rem);
-  font-weight: 500;
+  font-size: var(--fd-font-size-sm);
+  font-weight: var(--fd-font-weight-medium);
   color: hsl(var(--fd-text));
 }
 
@@ -62,8 +62,8 @@
   position: absolute;
   top: 50%;
   right: var(--fd-space-3);
-  width: 0.4em;
-  height: 0.4em;
+  width: var(--fd-chevron-size);
+  height: var(--fd-chevron-size);
   border-right: var(--fd-border-width) solid hsl(var(--fd-text-muted));
   border-bottom: var(--fd-border-width) solid hsl(var(--fd-text-muted));
   transform: translateY(-75%) rotate(45deg);
@@ -81,7 +81,7 @@
   background: hsl(var(--fd-bg));
   border: var(--fd-border-width) solid hsl(var(--fd-border));
   border-radius: var(--fd-radius-md);
-  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.15);
+  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating));
   padding: var(--fd-space-2);
 
   /* Slides down from the field. Motion is defined in base/motion.css; see
@@ -99,7 +99,7 @@
 .listbox {
   display: flex;
   flex-direction: column;
-  max-height: 16rem;
+  max-height: var(--fd-listbox-max-height);
   overflow-y: auto;
 }
 
@@ -116,7 +116,7 @@
 }
 
 .option--selected .option-label {
-  font-weight: 600;
+  font-weight: var(--fd-font-weight-semibold);
 }
 
 .option--disabled {
@@ -125,23 +125,23 @@
 }
 
 .option-description {
-  font-size: var(--fd-font-size-xs, 0.75rem);
+  font-size: var(--fd-font-size-xs);
   color: hsl(var(--fd-text-muted));
 }
 
 .group-label {
   padding: var(--fd-space-1) var(--fd-space-2);
-  font-size: var(--fd-font-size-xs, 0.75rem);
+  font-size: var(--fd-font-size-xs);
   color: hsl(var(--fd-text-muted));
 }
 
 .empty {
   padding: var(--fd-space-1) var(--fd-space-2);
-  font-size: var(--fd-font-size-sm, 0.875rem);
+  font-size: var(--fd-font-size-sm);
   color: hsl(var(--fd-text-muted));
 }
 
 .help-text {
-  font-size: var(--fd-font-size-xs, 0.75rem);
+  font-size: var(--fd-font-size-xs);
   color: hsl(var(--fd-text-muted));
 }

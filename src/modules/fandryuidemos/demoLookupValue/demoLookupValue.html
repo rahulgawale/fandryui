@@ -1,0 +1,36 @@
+<template>
+  <div class="stack">
+    <div>
+      <fandry-lookup
+        label="Account"
+        placeholder="Search accounts"
+        help-text="Starts with only the id 001C. It shows the id, asks for the record, then shows the name."
+        value={accountId}
+        record={account}
+        results={singleResults}
+        loading={singleLoading}
+        onresolve={handleResolveSingle}
+        onsearch={handleSearchSingle}
+        onchange={handleChangeSingle}
+      ></fandry-lookup>
+      <p class="readout">value: {singleReadout}</p>
+    </div>
+
+    <div>
+      <fandry-lookup
+        label="Accounts"
+        placeholder="Search accounts"
+        help-text="Starts with the ids 001A and 001D."
+        multiple
+        value={accountIds}
+        records={accounts}
+        results={multiResults}
+        loading={multiLoading}
+        onresolve={handleResolveMultiple}
+        onsearch={handleSearchMultiple}
+        onchange={handleChangeMultiple}
+      ></fandry-lookup>
+      <p class="readout">value: {multiReadout}</p>
+    </div>
+  </div>
+</template>

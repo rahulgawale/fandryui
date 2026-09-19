@@ -1,0 +1,13 @@
+<template>
+  <fandry-lookup
+    label="Account"
+    placeholder="Search accounts"
+    help-text="Try “acme” or “prospect”. Click the empty field for recent accounts."
+    results={results}
+    loading={loading}
+    record={account}
+    onsearch={handleSearch}
+    onchange={handleChange}
+  ></fandry-lookup>
+  <p class="selected">Selected: {selected}</p>
+</template>

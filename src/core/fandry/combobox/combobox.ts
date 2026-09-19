@@ -5,6 +5,9 @@ import { exitFinished } from 'fandry/motion';
 
 export type FdComboboxOption = FdSearchItem;
 
+// A stable empty list (the source cache compares by identity).
+const NO_OPTIONS: FdSearchItem[] = [];
+
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property (or ARIA wiring) the
 // combobox itself depends on. The ARIA entries use real IDL property names
@@ -71,8 +74,10 @@ export default class FdCombobox extends FdSearchState {
   // search never replaces the value.
   @track isTyping = false;
 
+  // `options` bound to data that hasn't arrived yet (`undefined`) is an empty
+  // list, not a render error.
   protected get source(): FdSearchItem[] {
-    return this.options;
+    return this.options ?? NO_OPTIONS;
   }
 
   protected isSelected(item: FdSearchItem): boolean {
@@ -103,7 +108,7 @@ export default class FdCombobox extends FdSearchState {
   }
 
   get selectedLabel(): string {
-    const selected = this.options.find((option) => option.value === this.value);
+    const selected = this.source.find((option) => option.value === this.value);
     return selected ? selected.label : '';
   }
 

@@ -22,6 +22,9 @@ import CustomSearch from 'fandryuidemos/customSearch';
 import DemoCommand from 'fandryuidemos/demoCommand';
 import DemoInput from 'fandryuidemos/demoInput';
 import DemoLink from 'fandryuidemos/demoLink';
+import DemoLookup from 'fandryuidemos/demoLookup';
+import DemoLookupMultiple from 'fandryuidemos/demoLookupMultiple';
+import DemoLookupValue from 'fandryuidemos/demoLookupValue';
 import DemoRadio from 'fandryuidemos/demoRadio';
 import DemoRadioGroup from 'fandryuidemos/demoRadioGroup';
 import DemoSelect from 'fandryuidemos/demoSelect';
@@ -67,6 +70,9 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   command: DemoCommand,
   input: DemoInput,
   link: DemoLink,
+  lookup: DemoLookup,
+  'lookup-multiple': DemoLookupMultiple,
+  'lookup-value': DemoLookupValue,
   radio: DemoRadio,
   'radio-group': DemoRadioGroup,
   select: DemoSelect,
