@@ -233,9 +233,13 @@ handlePageChange(event) {
     props: [
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected or typed.' },
+      { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'name', type: 'string', default: "''", description: 'Exposed as `data-name` on the input.' },
       { name: 'options', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The options. Search matches label, description, keywords and group; a prefix in the label ranks first.' },
       { name: 'value', type: 'string', default: "''", description: 'Selected value. Listen for `change` (detail is the new value).' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
+      { name: 'required', type: 'boolean', default: 'false', description: 'Marks the field required (asterisk + aria-required).' },
+      { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native input (e.g. `{ tabIndex: 2 }`); keys the component controls are ignored with a warning.' },
       { name: 'empty (slot)', type: 'slot', default: "'No results'", description: 'Replaces the message shown when nothing matches.' }
     ],
     code: `<fandry-combobox
@@ -289,7 +293,7 @@ planOptions = [
       <li key={option.id} id={option.id} class={option.classes}
         role="option" data-option-id={option.id}
         onclick={handleOptionClick}
-        onmouseenter={handleOptionMouseEnter}>
+        onmousemove={handleOptionMouseMove}>
         {option.label}
       </li>
     </template>
@@ -621,7 +625,7 @@ items = [
       <li key={option.id} id={option.id} class={option.classes}
         role="option" data-option-id={option.id}
         onclick={handleOptionClick}
-        onmouseenter={handleOptionMouseEnter}>
+        onmousemove={handleOptionMouseMove}>
         {option.label}
       </li>
     </template>

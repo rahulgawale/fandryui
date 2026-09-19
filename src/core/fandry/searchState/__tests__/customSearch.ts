@@ -7,9 +7,20 @@ import type { FdSearchItem } from '../searchState';
 export default class CustomSearch extends FdSearchState {
   @api people: FdSearchItem[] = [];
   picked = '';
+  private calls = 0;
+
+  @api
+  get filterCalls() {
+    return this.calls;
+  }
 
   protected get source() {
     return this.people;
+  }
+
+  protected filterItems(items: FdSearchItem[], query: string) {
+    this.calls++;
+    return super.filterItems(items, query);
   }
 
   protected commit(item: FdSearchItem) {

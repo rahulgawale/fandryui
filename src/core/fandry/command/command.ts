@@ -137,6 +137,17 @@ export default class FdCommand extends FdSearchState {
     }
   }
 
+  // Every key is handled on the input, so a mousedown anywhere else on the
+  // panel (its padding, the empty message, a group heading) must not blur it
+  // -- that would silently stop the arrow keys and let Tab walk out to the
+  // page behind the backdrop. The input itself still needs the default, to
+  // place the caret.
+  handlePanelMouseDown(event: MouseEvent) {
+    if ((event.target as HTMLElement).tagName !== 'INPUT') {
+      event.preventDefault();
+    }
+  }
+
   handleDocumentKeydown = (event: KeyboardEvent) => {
     if (this.open && event.key === 'Escape') {
       this.close();

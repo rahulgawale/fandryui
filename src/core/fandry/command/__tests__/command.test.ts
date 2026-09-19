@@ -192,6 +192,34 @@ describe('fandry-command', () => {
     expect(onToggle).toHaveBeenCalledTimes(2);
   });
 
+  it('keeps the input focused when the panel (not the input) is pressed', async () => {
+    const element = create();
+    const press = (target: Element) => {
+      const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
+      target.dispatchEvent(event);
+      return event.defaultPrevented;
+    };
+
+    expect(press(element.shadowRoot!.querySelector('.search')!)).toBe(true);
+    expect(press(element.shadowRoot!.querySelector('.listbox')!)).toBe(true);
+    // The input itself keeps its default, so the caret can be placed.
+    expect(press(input(element))).toBe(false);
+  });
+
+  it('ignores Enter while an IME composition is being confirmed', async () => {
+    const element = create();
+    const onSelect = jest.fn();
+    element.addEventListener('select', onSelect);
+
+    input(element).dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', isComposing: true, bubbles: true, composed: true, cancelable: true })
+    );
+    await flush();
+
+    expect(onSelect).not.toHaveBeenCalled();
+    expect(element.open).toBe(true);
+  });
+
   it('keeps Tab from leaving the input', async () => {
     const element = create();
 

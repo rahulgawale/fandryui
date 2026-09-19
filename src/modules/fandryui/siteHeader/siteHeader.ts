@@ -7,6 +7,8 @@ const PAGES = [
   { label: 'Examples', value: '/examples' }
 ];
 
+const IS_APPLE = /Mac|iPhone|iPad/.test(navigator.platform);
+
 export default class SiteHeader extends LightningElement {
   paletteOpen = false;
 
@@ -27,10 +29,8 @@ export default class SiteHeader extends LightningElement {
     )
   ];
 
-  // "⌘K" on Apple platforms, "Ctrl K" elsewhere -- display only; the
-  // shortcut below accepts either modifier everywhere.
   get shortcutHint(): string {
-    return /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘K' : 'Ctrl K';
+    return IS_APPLE ? '⌘K' : 'Ctrl K';
   }
 
   connectedCallback() {
@@ -42,19 +42,33 @@ export default class SiteHeader extends LightningElement {
   }
 
   handleDocumentKeydown = (event: KeyboardEvent) => {
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+    // Cmd on Apple platforms, Ctrl elsewhere -- not both: on macOS, Ctrl+K
+    // is "kill to end of line" in every text field. `key` can be missing on
+    // synthetic events (autofill, some extensions).
+    const modifier = IS_APPLE ? event.metaKey : event.ctrlKey;
+
+    if (modifier && event.key?.toLowerCase() === 'k') {
       // Browsers bind this to their own search/address bar.
       event.preventDefault();
-      this.paletteOpen = !this.paletteOpen;
+      this.setPaletteOpen(!this.paletteOpen);
     }
   };
 
+  // The header's own z-index (below the shared overlay level, so a popover
+  // opening beside it isn't hidden) also caps everything inside its shadow
+  // root, palette included -- so while the palette is open the header is
+  // lifted above the overlay level, and dropped back after.
+  private setPaletteOpen(open: boolean) {
+    this.paletteOpen = open;
+    this.classList.toggle('palette-open', open);
+  }
+
   handlePaletteOpen() {
-    this.paletteOpen = true;
+    this.setPaletteOpen(true);
   }
 
   handlePaletteToggle(event: CustomEvent<boolean>) {
-    this.paletteOpen = event.detail;
+    this.setPaletteOpen(event.detail);
   }
 
   handlePaletteSelect(event: CustomEvent<{ value: string }>) {

@@ -96,7 +96,7 @@ export function scoreItem(item: FdSearchItem, terms: string[]): number {
  *
  *   input   oninput={handleInput}  onkeydown={handleInputKeydown}
  *   listbox onmousedown={handleListboxMouseDown}
- *   option  onclick={handleOptionClick}  onmouseenter={handleOptionMouseEnter}
+ *   option  onclick={handleOptionClick}  onmousemove={handleOptionMouseMove}
  *           data-option-id={option.id}
  *
  * Focus stays in the input the whole time; the "current" option is exposed
@@ -131,7 +131,8 @@ export default class FdSearchState extends Base {
 
   /**
    * Narrows `items` to what matches `query` and orders them best-first. An
-   * empty query keeps everything in its original order.
+   * empty query keeps everything in its original order. Must be a pure
+   * function of `items` and `query`: the result is cached on that pair.
    */
   protected filterItems(items: FdSearchItem[], query: string): FdSearchItem[] {
     const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
@@ -152,11 +153,39 @@ export default class FdSearchState extends Base {
     this.activeId = null;
   }
 
+  // Read several times per render and per event, so the filter/sort runs once
+  // per (source, query) and is reused. Mutating the cache object's own
+  // properties (not reassigning the field) keeps this from being a reactive
+  // write during render -- the getter's reactive reads are still `source`
+  // and `query`. Which is why `filterItems` must be a pure function of its
+  // two arguments.
+  private entriesCache: { source: FdSearchItem[] | null; query: string; entries: Entry[] } = {
+    source: null,
+    query: '',
+    entries: []
+  };
+
   // Matches are gathered under their group (in order of first appearance,
   // so the group holding the best match comes first), and ids are assigned
   // in that final order -- so arrow-key order is exactly render order.
   private get entries(): Entry[] {
-    const filtered = this.filterItems(this.source, this.query);
+    const source = this.source;
+    const query = this.query;
+    const cache = this.entriesCache;
+
+    if (cache.source === source && cache.query === query) {
+      return cache.entries;
+    }
+
+    const entries = this.buildEntries(source, query);
+    cache.source = source;
+    cache.query = query;
+    cache.entries = entries;
+    return entries;
+  }
+
+  private buildEntries(source: FdSearchItem[], query: string): Entry[] {
+    const filtered = this.filterItems(source, query);
     const ungrouped = filtered.filter((item) => !item.group);
     const groupNames = Array.from(new Set(filtered.filter((item) => item.group).map((item) => item.group)));
 
@@ -293,6 +322,12 @@ export default class FdSearchState extends Base {
         break;
 
       case 'Enter': {
+        // Enter that confirms an IME candidate (Japanese, Chinese, Korean...)
+        // belongs to the composition, not to us.
+        if (event.isComposing) {
+          break;
+        }
+
         // Also keeps Enter from submitting an enclosing <form>.
         event.preventDefault();
         const entry = this.enabledEntries.find((candidate) => candidate.id === this.resolvedActiveId);
@@ -323,8 +358,23 @@ export default class FdSearchState extends Base {
     }
   }
 
-  handleOptionMouseEnter(event: MouseEvent) {
+  // A keyboard move scrolls the list, and the row that slid under a
+  // stationary pointer can be reported as a mouseenter -- which would yank
+  // the active option away from the one the keyboard just chose. Bound to
+  // mousemove instead (verified in Chromium: no event fires during keyboard
+  // navigation with the pointer parked over the list). The zero-movement
+  // guard is cheap insurance for a browser that dispatches a synthetic
+  // mousemove after a scroll; a real one always has some movement.
+  handleOptionMouseMove(event: MouseEvent) {
+    if (!event.movementX && !event.movementY) {
+      return;
+    }
+
     const optionId = (event.currentTarget as HTMLElement).dataset.optionId;
+    if (optionId === this.resolvedActiveId) {
+      return;
+    }
+
     const entry = this.entries.find((candidate) => candidate.id === optionId);
 
     if (entry && !entry.item.disabled) {

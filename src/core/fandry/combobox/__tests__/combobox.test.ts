@@ -13,6 +13,13 @@ const OPTIONS = [
 
 const flush = () => Promise.resolve();
 
+// jsdom's MouseEvent ignores `movementX/Y` in its init dict.
+const moveEvent = (movementX: number, movementY: number) => {
+  const event = new MouseEvent('mousemove', { bubbles: true });
+  Object.defineProperties(event, { movementX: { value: movementX }, movementY: { value: movementY } });
+  return event;
+};
+
 const create = (props: Record<string, unknown> = {}) => {
   const element = createElement('fandry-combobox', { is: FdCombobox });
   Object.assign(element, { options: OPTIONS, ...props });
@@ -268,6 +275,54 @@ describe('fandry-combobox', () => {
     const host = rows[1].firstElementChild as Element & { shadowRoot: ShadowRoot };
     expect(host.shadowRoot.querySelector('.custom-item')?.getAttribute('data-icon')).toBe('💎');
     expect(rows[1].querySelector('.option-label')).toBeNull();
+  });
+
+  it('ignores Enter while an IME composition is being confirmed', async () => {
+    const element = create();
+    const handler = jest.fn();
+    element.addEventListener('change', handler);
+
+    await press(element, 'ArrowDown');
+    input(element).dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', isComposing: true, bubbles: true, composed: true, cancelable: true })
+    );
+    await flush();
+
+    expect(handler).not.toHaveBeenCalled();
+    expect(input(element).getAttribute('aria-expanded')).toBe('true');
+  });
+
+  it('activates an option on real pointer movement over it', async () => {
+    const element = create();
+
+    await press(element, 'ArrowDown');
+    const rows = element.shadowRoot!.querySelectorAll('[role="option"]');
+    rows[1].dispatchEvent(moveEvent(3, 2));
+    await flush();
+
+    expect(element.shadowRoot!.querySelector('.option--active')).toBe(rows[1]);
+  });
+
+  it('ignores a zero-movement mousemove (the one a browser fires when a row scrolls under a still pointer)', async () => {
+    const element = create();
+
+    await press(element, 'ArrowDown');
+    const rows = element.shadowRoot!.querySelectorAll('[role="option"]');
+    rows[1].dispatchEvent(moveEvent(0, 0));
+    await flush();
+
+    expect(element.shadowRoot!.querySelector('.option--active')).toBe(rows[0]);
+  });
+
+  it('does not let a mouseenter (a row scrolling under a still pointer) steal the active option', async () => {
+    const element = create();
+
+    await press(element, 'ArrowDown');
+    const rows = element.shadowRoot!.querySelectorAll('[role="option"]');
+    rows[1].dispatchEvent(new MouseEvent('mouseenter'));
+    await flush();
+
+    expect(element.shadowRoot!.querySelector('.option--active')).toBe(rows[0]);
   });
 
   it('renders group headings and gathers items under their group', async () => {

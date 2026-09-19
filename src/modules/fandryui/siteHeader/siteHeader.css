@@ -5,6 +5,14 @@
   z-index: 40;
 }
 
+/* See siteHeader.ts's setPaletteOpen: the palette is inside this stacking
+   context, so it has to be lifted above --fd-z-overlay as a whole. */
+:host(.palette-open) {
+  /* --fd-z-overlay is only defined inside fandry-* shadow roots, hence the
+     fallback (its default). */
+  z-index: calc(var(--fd-z-overlay, 50) + 1);
+}
+
 /* The blur lives on the inner <header>, not :host: backdrop-filter makes its
    element the containing block for position: fixed descendants, and
    fandry-command's full-viewport backdrop is one of them (a sibling of the

@@ -55,7 +55,7 @@
                     aria-selected={option.ariaSelected}
                     aria-disabled={option.ariaDisabled}
                     onclick={handleOptionClick}
-                    onmouseenter={handleOptionMouseEnter}
+                    onmousemove={handleOptionMouseMove}
                   >
                     <template if:true={option.component}>
                       <lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component>
