@@ -89,32 +89,61 @@ describe('fandry-link', () => {
     expect(anchor.tabIndex).toBe(-1);
   });
 
-  it('forwards Enter on the tab stop to the anchor as a click', () => {
+  it('forwards Enter on the tab stop to the anchor as a click, keeping modifier keys, and ignores other keys', () => {
     const element = createElement('fandry-link', { is: FdLink });
     element.href = 'https://example.com';
     document.body.appendChild(element);
 
     const anchor = element.shadowRoot!.querySelector('a')!;
-    const clickSpy = jest.spyOn(anchor, 'click').mockImplementation(() => {});
+    const clicks: MouseEvent[] = [];
+    anchor.addEventListener('click', (event) => {
+      event.preventDefault();
+      clicks.push(event as MouseEvent);
+    });
     const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
     tabStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
-    expect(clickSpy).not.toHaveBeenCalled();
-    tabStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-    expect(clickSpy).toHaveBeenCalledTimes(1);
+    expect(clicks).toHaveLength(0);
+    tabStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', metaKey: true, bubbles: true }));
+    expect(clicks).toHaveLength(1);
+    expect(clicks[0].metaKey).toBe(true);
+    expect(clicks[0].shiftKey).toBe(false);
   });
 
-  it('drops the tab stop while disabled, and ignores a consumer elementProps.tabIndex', () => {
-    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  it('exposes the link role and name on the tab stop and hides the anchor from assistive tech', () => {
+    const element = createElement('fandry-link', { is: FdLink });
+    element.href = 'https://example.com';
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.getAttribute('role')).toBe('link');
+    expect(anchor.getAttribute('aria-hidden')).toBe('true');
+    expect(tabStop.getAttribute('aria-labelledby')).toBe(anchor.getAttribute('id'));
+  });
+
+  it('mirrors disabled onto the tab stop and drops its tab stop', () => {
     const element = createElement('fandry-link', { is: FdLink });
     element.href = 'https://example.com';
     element.disabled = true;
-    element.elementProps = { tabIndex: 3 };
     document.body.appendChild(element);
 
     const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
-    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.getAttribute('aria-disabled')).toBe('true');
     expect(tabStop.hasAttribute('tabindex')).toBe(false);
+  });
+
+  it('applies a consumer elementProps.tabIndex to the tab stop, not the anchor, without warning', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const element = createElement('fandry-link', { is: FdLink });
+    element.href = 'https://example.com';
+    element.elementProps = { tabIndex: -1 };
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop') as HTMLElement;
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.tabIndex).toBe(-1);
     expect(anchor.tabIndex).toBe(-1);
+    expect(warnSpy).not.toHaveBeenCalled();
     warnSpy.mockRestore();
   });
 

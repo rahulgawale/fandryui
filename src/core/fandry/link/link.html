@@ -1,11 +1,20 @@
 <template>
-  <span class="tab-stop" tabindex={tabStopIndex} onkeydown={handleKeydown}>
+  <span
+    class="tab-stop"
+    role="link"
+    tabindex={tabStopIndex}
+    aria-labelledby="anchor"
+    aria-disabled={ariaDisabled}
+    onkeydown={handleKeydown}
+  >
     <a
+      id="anchor"
       class={classes}
       href={computedHref}
       target={target}
       rel={computedRel}
       aria-disabled={ariaDisabled}
+      aria-hidden="true"
       tabindex="-1"
       lwc:spread={resolvedElementProps}
     ><slot></slot></a>

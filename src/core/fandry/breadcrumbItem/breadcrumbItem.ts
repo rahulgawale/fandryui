@@ -37,11 +37,37 @@ export default class BreadcrumbItem extends Base {
     return this.current ? 'page' : undefined;
   }
 
-  get resolvedElementProps(): Record<string, unknown> {
-    const resolved = this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-breadcrumb-item');
+  // Only a crumb with an href is a link. Then the `.tab-stop` wrapper takes
+  // the link role, the tab stop and the label, and the <a> is hidden from
+  // assistive tech (see Base.activateAnchorOnEnter for why). Otherwise the
+  // crumb is plain text and none of this applies.
+  get isLink(): boolean {
+    return Boolean(this.computedHref);
+  }
 
-    // Overrides even a consumer-supplied tabIndex -- same "component wins"
-    // rule fandry-link's disabled state applies to its own href/tabIndex.
-    return this.computedHref ? resolved : { ...resolved, tabIndex: -1 };
+  get linkRole(): 'link' | undefined {
+    return this.isLink ? 'link' : undefined;
+  }
+
+  get labelledBy(): 'anchor' | undefined {
+    return this.isLink ? 'anchor' : undefined;
+  }
+
+  get anchorAriaHidden(): 'true' | undefined {
+    return this.isLink ? 'true' : undefined;
+  }
+
+  get tabStopIndex(): string | undefined {
+    return this.resolveTabStopIndex(this.elementProps, this.isLink);
+  }
+
+  handleKeydown(event: KeyboardEvent): void {
+    this.activateAnchorOnEnter(event);
+  }
+
+  get resolvedElementProps(): Record<string, unknown> {
+    return this.withoutTabIndex(
+      this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-breadcrumb-item')
+    );
   }
 }

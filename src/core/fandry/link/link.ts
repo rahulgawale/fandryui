@@ -4,7 +4,7 @@ import Base from 'fandry/base';
 // See fandry-button's button.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
 // itself controls.
-const RESERVED_ELEMENT_PROPS = ['href', 'target', 'rel', 'class', 'ariaDisabled', 'tabIndex'];
+const RESERVED_ELEMENT_PROPS = ['href', 'target', 'rel', 'class', 'ariaDisabled'];
 
 export default class FdLink extends Base {
   @api href = '';
@@ -15,9 +15,9 @@ export default class FdLink extends Base {
 
   // The <a> is always tabindex="-1"; the `.tab-stop` wrapper around it is
   // the real tab stop (see Base.activateAnchorOnEnter for why -- Safari
-  // skips <a href> in plain Tab order no matter what tabindex it has). A
-  // disabled link has no href, so the wrapper drops out of the tab order
-  // too.
+  // skips <a href> in plain Tab order no matter what tabindex it has), and
+  // takes a consumer's elementProps.tabIndex. A disabled link has no href,
+  // so the wrapper drops out of the tab order too.
   @api elementProps: Record<string, unknown> = {};
 
   get classes(): string {
@@ -50,7 +50,7 @@ export default class FdLink extends Base {
   }
 
   get tabStopIndex(): string | undefined {
-    return this.disabled ? undefined : '0';
+    return this.resolveTabStopIndex(this.elementProps, !this.disabled);
   }
 
   handleKeydown(event: KeyboardEvent): void {
@@ -58,6 +58,6 @@ export default class FdLink extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-link');
+    return this.withoutTabIndex(this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-link'));
   }
 }

@@ -4,7 +4,7 @@ import Base from 'fandry/base';
 // See fandry-link's link.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
 // itself controls.
-const RESERVED_ELEMENT_PROPS = ['href', 'class', 'ariaCurrent', 'tabIndex'];
+const RESERVED_ELEMENT_PROPS = ['href', 'class', 'ariaCurrent'];
 
 export default class SidebarItem extends Base {
   @api href = '';
@@ -25,11 +25,17 @@ export default class SidebarItem extends Base {
     return this.active ? 'page' : undefined;
   }
 
+  get tabStopIndex(): string | undefined {
+    return this.resolveTabStopIndex(this.elementProps, true);
+  }
+
   handleKeydown(event: KeyboardEvent): void {
     this.activateAnchorOnEnter(event);
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-sidebar-item');
+    return this.withoutTabIndex(
+      this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-sidebar-item')
+    );
   }
 }

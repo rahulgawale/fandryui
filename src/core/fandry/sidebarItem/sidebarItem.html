@@ -1,6 +1,21 @@
 <template>
-  <span class="tab-stop" tabindex="0" onkeydown={handleKeydown}>
-    <a class={classes} href={href} aria-current={ariaCurrent} tabindex="-1" lwc:spread={resolvedElementProps}>
+  <span
+    class="tab-stop"
+    role="link"
+    tabindex={tabStopIndex}
+    aria-labelledby="anchor"
+    aria-current={ariaCurrent}
+    onkeydown={handleKeydown}
+  >
+    <a
+      id="anchor"
+      class={classes}
+      href={href}
+      aria-current={ariaCurrent}
+      aria-hidden="true"
+      tabindex="-1"
+      lwc:spread={resolvedElementProps}
+    >
       <slot></slot>
     </a>
   </span>

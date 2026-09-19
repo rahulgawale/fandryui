@@ -31,3 +31,9 @@
   font-weight: var(--fd-font-weight-medium);
   cursor: default;
 }
+
+/* Holds the tab stop for a linked crumb; the <a> is tabindex="-1" (see
+   Base.activateAnchorOnEnter). */
+.tab-stop {
+  border-radius: var(--fd-radius-sm);
+}
