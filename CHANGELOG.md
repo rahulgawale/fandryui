@@ -1,3 +1,15 @@
+# [0.14.0](https://github.com/rahulgawale/fandryui/compare/v0.13.1...v0.14.0) (2026-09-19)
+
+
+### Bug Fixes
+
+* restore nested typescript@4.9.5 in the lockfile so npm ci works on npm 10 ([#70](https://github.com/rahulgawale/fandryui/issues/70)) ([ccd49c3](https://github.com/rahulgawale/fandryui/commit/ccd49c347b15dfe3c1220c53f0aa66a80c09afae))
+
+
+### Features
+
+* distribute Fandry UI on npm and Salesforce with a fandry CLI ([#69](https://github.com/rahulgawale/fandryui/issues/69)) ([d9f7388](https://github.com/rahulgawale/fandryui/commit/d9f73884d4552112c095c290943972b939fa5309))
+
 ## [0.13.1](https://github.com/rahulgawale/fandryui/compare/v0.13.0...v0.13.1) (2026-09-19)
 
 
