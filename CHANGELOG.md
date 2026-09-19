@@ -1,3 +1,10 @@
+## [0.13.1](https://github.com/rahulgawale/fandryui/compare/v0.13.0...v0.13.1) (2026-09-19)
+
+
+### Bug Fixes
+
+* replace hard-coded styles with tokens and make site branding follow Apply theme ([#68](https://github.com/rahulgawale/fandryui/issues/68)) ([d8d2bc6](https://github.com/rahulgawale/fandryui/commit/d8d2bc609aaa82a63abd951cfcbbbac37891aefc)), closes [#fff](https://github.com/rahulgawale/fandryui/issues/fff)
+
 # [0.13.0](https://github.com/rahulgawale/fandryui/compare/v0.12.0...v0.13.0) (2026-09-19)
 
 
