@@ -1,0 +1,12 @@
+<template>
+  <fandry-combobox
+    label="Plan"
+    placeholder="Search plans"
+    help-text="Type something that doesn't match to see the custom empty state."
+    options={planOptions}
+    value={value}
+    onchange={handleChange}
+  >
+    <span slot="empty">No plan matches — <fandry-link href="/components/combobox">see all plans</fandry-link></span>
+  </fandry-combobox>
+</template>

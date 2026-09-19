@@ -1,0 +1,17 @@
+<template>
+  <div class="row">
+    <fandry-button variant="secondary" onclick={handleOpen}>Open command palette</fandry-button>
+    <span if:true={lastRun}>Last run: {lastRun}</span>
+
+    <fandry-command
+      label="Command palette"
+      placeholder="Type a command… (try “zzz” for the empty state)"
+      items={items}
+      open={isOpen}
+      ontoggle={handleToggle}
+      onselect={handleSelect}
+    >
+      <span slot="empty">Nothing to run for that. Try “file” or “theme”.</span>
+    </fandry-command>
+  </div>
+</template>

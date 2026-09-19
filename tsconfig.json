@@ -35,6 +35,10 @@
       // featureGrid, dashboardExample, page shells, etc.) just by reading a
       // tag or import path.
       "fandryuidemos/customTable": ["src/modules/fandryuidemos/customTable/customTable"],
+      "fandryuidemos/customSearch": ["src/modules/fandryuidemos/customSearch/customSearch"],
+      "fandryuidemos/demoOptionRow": ["src/modules/fandryuidemos/demoOptionRow/demoOptionRow"],
+      "fandryuidemos/demoComboboxCustom": ["src/modules/fandryuidemos/demoComboboxCustom/demoComboboxCustom"],
+      "fandryuidemos/demoCommandCustom": ["src/modules/fandryuidemos/demoCommandCustom/demoCommandCustom"],
       "fandryuidemos/demoBreadcrumb": ["src/modules/fandryuidemos/demoBreadcrumb/demoBreadcrumb"],
       "fandryuidemos/demoBreadcrumbItem": ["src/modules/fandryuidemos/demoBreadcrumbItem/demoBreadcrumbItem"],
       "fandryuidemos/demoCard": ["src/modules/fandryuidemos/demoCard/demoCard"],

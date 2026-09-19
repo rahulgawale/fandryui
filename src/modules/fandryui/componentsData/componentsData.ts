@@ -244,7 +244,82 @@ handlePageChange(event) {
   options={frameworkOptions}
   value={value}
   onchange={handleChange}
-></fandry-combobox>`
+></fandry-combobox>`,
+    examples: [
+      {
+        title: 'Custom rows and empty state',
+        demo: 'combobox-custom',
+        code: `<!-- template -->
+<fandry-combobox label="Plan" options={planOptions}
+  value={value} onchange={handleChange}>
+  <span slot="empty">No plan matches.</span>
+</fandry-combobox>
+
+// component
+import PlanRow from 'my/planRow'; // your LWC: @api icon, label, hint
+
+planOptions = [
+  {
+    label: 'Free', value: 'free', component: PlanRow,
+    componentProps: { icon: '🌱', label: 'Free' }
+  },
+  {
+    label: 'Pro', value: 'pro', component: PlanRow,
+    componentProps: { icon: '💎', label: 'Pro', hint: 'Popular' }
+  }
+];
+
+// The component draws only the inside of the row; the row keeps its
+// highlight, hover and click. Search still matches on \`label\`
+// (and keywords/description), so give every item a real one.`
+      },
+      {
+        title: 'Build on the base class: own template, async search',
+        demo: 'search-custom',
+        code: `<!-- template: your own markup, bound to the inherited handlers -->
+<input role="combobox" aria-expanded="true"
+  aria-controls="people"
+  aria-activedescendant={activeDescendant}
+  oninput={handleInput}
+  onkeydown={handleInputKeydown} />
+<ul id="people" role="listbox"
+  onmousedown={handleListboxMouseDown}>
+  <template for:each={renderGroups} for:item="group">
+    <template for:each={group.options} for:item="option">
+      <li key={option.id} id={option.id} class={option.classes}
+        role="option" data-option-id={option.id}
+        onclick={handleOptionClick}
+        onmouseenter={handleOptionMouseEnter}>
+        {option.label}
+      </li>
+    </template>
+  </template>
+</ul>
+
+// component
+import FdSearchState from 'fandry/searchState';
+
+export default class PeopleSearch extends FdSearchState {
+  results = [];
+
+  // what to list
+  protected get source() { return this.results; }
+  // the server already filtered
+  protected filterItems(items) { return items; }
+  // what picking one does
+  protected commit(item) { this.picked = item.label; }
+
+  // start the search
+  protected setQuery(value) {
+    super.setQuery(value);
+    fetchPeople(value).then((people) => (this.results = people));
+  }
+}
+
+// Keep the input and the options in the same template: aria-activedescendant
+// can't point across a shadow boundary.`
+      }
+    ]
   },
   {
     slug: 'input',
@@ -499,7 +574,84 @@ handlePageChange(event) {
 
 // component
 handleToggle(event) { this.isOpen = event.detail; }
-handleSelect(event) { run(event.detail.value); }`
+handleSelect(event) { run(event.detail.value); }`,
+    examples: [
+      {
+        title: 'Custom rows and empty state',
+        demo: 'command-custom',
+        code: `<!-- template -->
+<fandry-command label="Command palette" items={items}
+  open={isOpen} ontoggle={handleToggle} onselect={handleSelect}>
+  <span slot="empty">Nothing to run for that.</span>
+</fandry-command>
+
+// component
+import CommandRow from 'my/commandRow'; // your LWC: @api icon, label, hint
+
+items = [
+  {
+    label: 'New file', value: 'new-file', group: 'File',
+    component: CommandRow,
+    componentProps: { icon: '📄', label: 'New file', hint: '⌘N' }
+  },
+  {
+    label: 'Toggle theme', value: 'toggle-theme', group: 'View',
+    component: CommandRow,
+    componentProps: { icon: '🌗', label: 'Toggle theme' }
+  }
+];
+
+// The component draws only the inside of the row; the row keeps its
+// highlight, hover and click. Search still matches on \`label\`
+// (and keywords/description), so give every item a real one.`
+      },
+      {
+        title: 'Build on the base class: own template, async search',
+        demo: 'search-custom',
+        code: `<!-- template: your own markup, bound to the inherited handlers -->
+<input role="combobox" aria-expanded="true"
+  aria-controls="people"
+  aria-activedescendant={activeDescendant}
+  oninput={handleInput}
+  onkeydown={handleInputKeydown} />
+<ul id="people" role="listbox"
+  onmousedown={handleListboxMouseDown}>
+  <template for:each={renderGroups} for:item="group">
+    <template for:each={group.options} for:item="option">
+      <li key={option.id} id={option.id} class={option.classes}
+        role="option" data-option-id={option.id}
+        onclick={handleOptionClick}
+        onmouseenter={handleOptionMouseEnter}>
+        {option.label}
+      </li>
+    </template>
+  </template>
+</ul>
+
+// component
+import FdSearchState from 'fandry/searchState';
+
+export default class PeopleSearch extends FdSearchState {
+  results = [];
+
+  // what to list
+  protected get source() { return this.results; }
+  // the server already filtered
+  protected filterItems(items) { return items; }
+  // what picking one does
+  protected commit(item) { this.picked = item.label; }
+
+  // start the search
+  protected setQuery(value) {
+    super.setQuery(value);
+    fetchPeople(value).then((people) => (this.results = people));
+  }
+}
+
+// Keep the input and the options in the same template: aria-activedescendant
+// can't point across a shadow boundary.`
+      }
+    ]
   },
   {
     slug: 'dialog',
