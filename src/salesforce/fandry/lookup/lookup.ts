@@ -21,6 +21,21 @@ export interface FdLookupRecord {
 // source cache compares by identity).
 const NO_RECORDS: FdLookupRecord[] = [];
 
+// One selected id, and its record once the lookup has one to show. A record
+// of `null` is an id the consumer set (`value`) that the lookup can't yet
+// name -- it asks (see `resolve`) and shows the raw id meanwhile.
+interface Selected {
+  id: string;
+  record: FdLookupRecord | null;
+}
+
+// `value` takes an id, or (in `multiple` mode) an array of them; a lone
+// string, an array, and "nothing" all normalise to a list of ids.
+function toIds(value: string | string[] | null | undefined): string[] {
+  const list = Array.isArray(value) ? value : value ? [value] : [];
+  return list.filter((id) => typeof id === 'string' && id !== '');
+}
+
 // How long typing must pause before `search` fires. Fixed, not a prop: a
 // consumer that wants something different can debounce on their side.
 const SEARCH_DEBOUNCE_MS = 250;
@@ -72,6 +87,12 @@ const RESERVED_ELEMENT_PROPS = [
  * With `multiple`, bind `records` instead of `record`; `change` then carries
  * `{ values, records }`.
  *
+ * `value` (an id, or an array of ids with `multiple`) renders existing data
+ * without records in hand. The lookup names each id from `record`/`records`
+ * or from `results`; for any it can't, it fires `resolve` with those ids, you
+ * look them up and set `record`/`records` -- and the raw id shows until you
+ * do, so nothing is ever blank or lost.
+ *
  * `search` fires when the list opens (on click or ArrowDown -- not on a bare
  * Tab into the field -- with the current text, so a consumer
  * can offer recent records for an empty query), again after typing pauses,
@@ -103,16 +124,68 @@ export default class FdLookup extends FdSearchState {
    */
   @api multiple = false;
 
-  /** Single mode: the selected record; updated when the user picks or clears. */
-  @api record: FdLookupRecord | null = null;
+  // The one source of truth for what's selected. `value`, `record` and
+  // `records` are three ways in and out of it. Until `value` is set,
+  // `record`/`records` decide *which* ids are selected. Once it has been, it
+  // does, and `record`/`records` only supply names for those ids -- so
+  // `value={ids} records={theOnesIAlreadyHaveNamesFor}` keeps every id.
+  @track selection: Selected[] = [];
+  private valueDriven = false;
 
-  /** Multiple mode: the selected records; updated on every pick and removal. */
-  @api records: FdLookupRecord[] = [];
+  // Ids already announced through `resolve`, so a re-render doesn't ask
+  // again. A plain object (its property mutated, never reassigned) because
+  // this isn't rendered state.
+  private requested = { ids: [] as string[] };
 
-  /** Single mode: id of the selected record ('' when none). Set `record` to change it. */
+  /**
+   * The selected id ('' when none), or with `multiple` an array of ids.
+   * Settable, to render existing data; updated when the user picks or clears.
+   */
   @api
-  get value(): string {
-    return !this.multiple && this.record ? this.record.id : '';
+  get value(): string | string[] {
+    const ids = this.selectedEntries.map((entry) => entry.id);
+    return this.multiple ? ids : (ids[0] ?? '');
+  }
+
+  set value(next: string | string[] | null | undefined) {
+    if (next !== undefined) {
+      this.valueDriven = true;
+    }
+
+    // Ids the consumer echoes back after `change` keep their records: each is
+    // looked up in the current selection first.
+    const ids = toIds(next);
+    this.selection = ids.map((id) => ({ id, record: this.knownRecord(id) }));
+  }
+
+  /** Single mode: the selected record, once it has one to show. */
+  @api
+  get record(): FdLookupRecord | null {
+    return !this.multiple ? (this.selectedEntries[0]?.record ?? null) : null;
+  }
+
+  set record(next: FdLookupRecord | null | undefined) {
+    if (this.valueDriven) {
+      this.learn(next ? [next] : NO_RECORDS);
+      return;
+    }
+
+    this.selection = next ? [{ id: next.id, record: next }] : [];
+  }
+
+  /** Multiple mode: the selected records that have one to show. */
+  @api
+  get records(): FdLookupRecord[] {
+    return this.selectedEntries.flatMap((entry) => (entry.record ? [entry.record] : []));
+  }
+
+  set records(next: FdLookupRecord[] | null | undefined) {
+    if (this.valueDriven) {
+      this.learn(next ?? NO_RECORDS);
+      return;
+    }
+
+    this.selection = (next ?? NO_RECORDS).map((record) => ({ id: record.id, record }));
   }
 
   // Spread onto the native <input> via `lwc:spread` -- see checkbox.ts.
@@ -140,9 +213,9 @@ export default class FdLookup extends FdSearchState {
   // FdSearchState's entries cache.
   private sourceCache: {
     results: FdLookupRecord[] | null;
-    records: FdLookupRecord[] | null;
+    selection: Selected[] | null;
     items: FdSearchItem[];
-  } = { results: null, records: null, items: [] };
+  } = { results: null, selection: null, items: [] };
 
   // A consumer binding `results` or `records` to data that hasn't arrived yet
   // (a wire adapter starts out `undefined`) must get an empty lookup, not a
@@ -151,21 +224,50 @@ export default class FdLookup extends FdSearchState {
     return this.results ?? NO_RECORDS;
   }
 
-  private get recordList(): FdLookupRecord[] {
-    return this.records ?? NO_RECORDS;
+  // Names the ids already selected from `records`, leaving the selection's
+  // membership and order alone. Records for ids that aren't selected are
+  // ignored: `value` said what's selected.
+  private learn(records: FdLookupRecord[]) {
+    const byId = new Map(records.map((record) => [record.id, record]));
+    const named = this.selection.map((entry) => {
+      const record = byId.get(entry.id);
+      return record && record !== entry.record ? { id: entry.id, record } : entry;
+    });
+
+    if (named.some((entry, index) => entry !== this.selection[index])) {
+      this.selection = named;
+    }
+  }
+
+  // The record for an id, from what's already selected or from the results.
+  private knownRecord(id: string): FdLookupRecord | null {
+    return (
+      this.selection.find((entry) => entry.id === id)?.record ??
+      this.resultList.find((record) => record.id === id) ??
+      null
+    );
+  }
+
+  // What the field shows: the selection (one entry in single mode), with any
+  // id that has no record yet looked up in `results` as they arrive.
+  private get selectedEntries(): Selected[] {
+    const shown = this.multiple ? this.selection : this.selection.slice(0, 1);
+    return shown.map((entry) =>
+      entry.record ? entry : { id: entry.id, record: this.resultList.find((record) => record.id === entry.id) ?? null }
+    );
   }
 
   protected get source(): FdSearchItem[] {
     const cache = this.sourceCache;
     const results = this.resultList;
-    const selection = this.multiple ? this.recordList : null;
+    const selection = this.multiple ? this.selection : null;
 
-    if (cache.results !== results || cache.records !== selection) {
+    if (cache.results !== results || cache.selection !== selection) {
       cache.results = results;
-      cache.records = selection;
+      cache.selection = selection;
 
       // Already-chosen records aren't offered again.
-      const chosen = new Set((selection ?? []).map((record) => record.id));
+      const chosen = new Set((selection ?? []).map((entry) => entry.id));
       cache.items = results
         .filter((record) => !chosen.has(record.id))
         .map((record) => ({ ...record, value: record.id }));
@@ -188,7 +290,7 @@ export default class FdLookup extends FdSearchState {
     this.setQuery('');
 
     if (this.multiple) {
-      this.records = [...this.recordList, chosen];
+      this.selection = [...this.selection, { id: chosen.id, record: chosen }];
       this.dispatchChange();
       // Stays open and focused for the next pick; the consumer refreshes the
       // list (an empty query again, so recents, minus what's now chosen).
@@ -196,7 +298,7 @@ export default class FdLookup extends FdSearchState {
       return;
     }
 
-    this.record = chosen;
+    this.selection = [{ id: chosen.id, record: chosen }];
     this.closeList();
     this.focusTarget = 'clear';
     this.dispatchChange();
@@ -213,7 +315,7 @@ export default class FdLookup extends FdSearchState {
   // Single mode with a record chosen: the field shows it as its value and
   // the input goes away. Everywhere else the input is there.
   get showSelected(): boolean {
-    return !this.multiple && !!this.record;
+    return !this.multiple && this.selectedEntries.length > 0;
   }
 
   get showInput(): boolean {
@@ -221,19 +323,35 @@ export default class FdLookup extends FdSearchState {
   }
 
   get hasChips(): boolean {
-    return this.multiple && this.recordList.length > 0;
+    return this.multiple && this.selection.length > 0;
   }
 
-  get chips(): Array<{ id: string; label: string; removeLabel: string }> {
-    return this.recordList.map((record) => ({
-      id: record.id,
-      label: record.label,
-      removeLabel: `Remove ${record.label}`
+  // An id with no record yet shows as itself, muted: something true and
+  // removable, rather than a blank or a forever-"Loading…".
+  private labelOf(entry: Selected): string {
+    return entry.record ? entry.record.label : entry.id;
+  }
+
+  get chips(): Array<{ id: string; label: string; labelClasses: string; removeLabel: string }> {
+    return this.selectedEntries.map((entry) => ({
+      id: entry.id,
+      label: this.labelOf(entry),
+      labelClasses: entry.record ? 'pill-label' : 'pill-label pill-label--unresolved',
+      removeLabel: `Remove ${this.labelOf(entry)}`
     }));
   }
 
+  get selectedLabel(): string {
+    const entry = this.selectedEntries[0];
+    return entry ? this.labelOf(entry) : '';
+  }
+
+  get selectedLabelClasses(): string {
+    return this.selectedEntries[0]?.record ? 'selected-label' : 'selected-label selected-label--unresolved';
+  }
+
   get clearLabel(): string {
-    return this.record ? `Clear ${this.record.label}` : '';
+    return this.showSelected ? `Clear ${this.selectedLabel}` : '';
   }
 
   get ariaMultiselectable(): 'true' | 'false' {
@@ -298,8 +416,25 @@ export default class FdLookup extends FdSearchState {
     this.clearSearchTimer();
   }
 
+  // Asks the consumer for records behind ids it can't name. Done after
+  // render, not in the setters: a setter runs while the *parent* renders, and
+  // an event handler there would be changing the parent's state mid-render.
+  private requestMissing() {
+    const missing = this.selectedEntries.filter((entry) => !entry.record).map((entry) => entry.id);
+
+    // Forget ids that resolved or were removed, so setting one again later asks again.
+    this.requested.ids = this.requested.ids.filter((id) => missing.includes(id));
+
+    const fresh = missing.filter((id) => !this.requested.ids.includes(id));
+    if (fresh.length) {
+      this.requested.ids = [...this.requested.ids, ...fresh];
+      this.dispatchEvent(new CustomEvent('resolve', { detail: { values: fresh }, bubbles: true }));
+    }
+  }
+
   renderedCallback() {
     super.renderedCallback();
+    this.requestMissing();
 
     if (this.focusTarget) {
       const selector = this.focusTarget === 'clear' ? '.clear' : '.input';
@@ -321,9 +456,10 @@ export default class FdLookup extends FdSearchState {
   }
 
   private dispatchChange() {
+    const entries = this.selectedEntries;
     const detail = this.multiple
-      ? { values: this.recordList.map((record) => record.id), records: this.recordList }
-      : { value: this.value, record: this.record };
+      ? { values: entries.map((entry) => entry.id), records: this.records }
+      : { value: entries[0]?.id ?? '', record: entries[0]?.record ?? null };
 
     this.dispatchEvent(new CustomEvent('change', { detail, bubbles: true }));
   }
@@ -397,7 +533,7 @@ export default class FdLookup extends FdSearchState {
   handleInputKeydown(event: KeyboardEvent) {
     // Backspace in an empty field takes the last chip back.
     if (event.key === 'Backspace' && this.hasChips && !this.query) {
-      this.records = this.recordList.slice(0, -1);
+      this.selection = this.selection.slice(0, -1);
       this.dispatchChange();
       return;
     }
@@ -430,7 +566,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   handleClear() {
-    this.record = null;
+    this.selection = [];
     this.setQuery('');
     this.focusTarget = 'input';
     this.dispatchChange();
@@ -438,13 +574,13 @@ export default class FdLookup extends FdSearchState {
 
   handleRemove(event: MouseEvent) {
     const id = (event.currentTarget as HTMLElement).dataset.recordId;
-    this.records = this.recordList.filter((record) => record.id !== id);
+    this.selection = this.selection.filter((entry) => entry.id !== id);
     this.focusTarget = 'input';
     this.dispatchChange();
   }
 
   handleClearAll() {
-    this.records = [];
+    this.selection = [];
     this.setQuery('');
     this.focusTarget = 'input';
     this.dispatchChange();

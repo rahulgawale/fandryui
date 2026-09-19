@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-4);
+}
+
+.readout {
+  margin: var(--fd-space-2) 0 0;
+  font-size: var(--fd-font-size-sm);
+  color: hsl(var(--fd-text-muted));
+}

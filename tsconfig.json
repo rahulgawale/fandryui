@@ -59,6 +59,7 @@
       "fandryuidemos/demoCommand": ["src/modules/fandryuidemos/demoCommand/demoCommand"],
       "fandryuidemos/demoInput": ["src/modules/fandryuidemos/demoInput/demoInput"],
       "fandryuidemos/accountSearch": ["src/modules/fandryuidemos/accountSearch/accountSearch"],
+      "fandryuidemos/demoLookupValue": ["src/modules/fandryuidemos/demoLookupValue/demoLookupValue"],
       "fandryuidemos/demoLookupMultiple": ["src/modules/fandryuidemos/demoLookupMultiple/demoLookupMultiple"],
       "fandryuidemos/demoLookup": ["src/modules/fandryuidemos/demoLookup/demoLookup"],
       "fandryuidemos/demoLink": ["src/modules/fandryuidemos/demoLink/demoLink"],

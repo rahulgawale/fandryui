@@ -16,6 +16,14 @@ const ACCOUNTS: Account[] = [
   { id: '001E', label: 'Umbrella Industries', description: 'Account • Prospect', objectApiName: 'Account' }
 ];
 
+// Stands in for looking records up by id (e.g. a getRecord wire or an Apex
+// method taking a list of ids) -- what a consumer does on `resolve`.
+export function getAccountsByIds(ids: string[]): Promise<Account[]> {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(ACCOUNTS.filter((account) => ids.includes(account.id))), 600);
+  });
+}
+
 export function findAccounts(query: string): Promise<Account[]> {
   const needle = query.trim().toLowerCase();
 

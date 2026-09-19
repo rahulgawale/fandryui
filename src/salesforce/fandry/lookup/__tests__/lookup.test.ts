@@ -452,13 +452,6 @@ describe('fandry-lookup', () => {
       expect((element.shadowRoot!.querySelector('.clear-all') as HTMLButtonElement).disabled).toBe(true);
     });
 
-    it('does not offer a single-select value or clear button', () => {
-      const element = create({ multiple: true, records: [ACME], record: GLOBEX });
-
-      expect(element.value).toBe('');
-      expect(element.shadowRoot!.querySelector('.clear')).toBeNull();
-    });
-
     it('is single-select unless asked', async () => {
       const element = create({ results: RESULTS });
 
@@ -467,6 +460,330 @@ describe('fandry-lookup', () => {
 
       expect(element.shadowRoot!.querySelector('[role="listbox"]')).toBeNull();
       expect(element.shadowRoot!.querySelector('.clear-all')).toBeNull();
+    });
+  });
+
+  describe('value', () => {
+    const UNKNOWN = 'a-001X';
+
+    // The `resolve` listener must be attached before the element connects: a
+    // value set up front is asked about on the very first render.
+    const build = (props: Record<string, unknown>) => {
+      const element = createElement('fandry-lookup', { is: FdLookup });
+      const onResolve = jest.fn();
+      element.addEventListener('resolve', onResolve);
+      Object.assign(element, props);
+      document.body.appendChild(element);
+      return { element, onResolve };
+    };
+    const shown = (element: Element) => element.shadowRoot!.querySelector('.selected-label');
+    const chipTexts = (element: Element) =>
+      Array.from(element.shadowRoot!.querySelectorAll('.pill-label')).map((node) => node.textContent);
+
+    describe('single', () => {
+      it('renders an id by finding its record in results, without asking', () => {
+        const { element, onResolve } = build({ value: '001A', results: RESULTS });
+
+        expect(shown(element)?.textContent).toBe('Acme Corp');
+        expect(shown(element)!.classList.contains('selected-label--unresolved')).toBe(false);
+        expect(onResolve).not.toHaveBeenCalled();
+      });
+
+      it('renders an id by finding its record in `record`, without asking', () => {
+        const { element, onResolve } = build({ value: '001A', record: ACME });
+
+        expect(shown(element)?.textContent).toBe('Acme Corp');
+        expect(onResolve).not.toHaveBeenCalled();
+      });
+
+      it('shows an unknown id as itself, muted, and asks for it once', async () => {
+        const { element, onResolve } = build({ value: UNKNOWN, label: 'Account' });
+
+        expect(shown(element)?.textContent).toBe(UNKNOWN);
+        expect(shown(element)!.classList.contains('selected-label--unresolved')).toBe(true);
+        expect(onResolve).toHaveBeenCalledTimes(1);
+        expect(onResolve.mock.calls[0][0].detail).toEqual({ values: [UNKNOWN] });
+
+        // Re-rendering (the label is in the template) must not ask again.
+        element.label = 'Accounts';
+        await flush();
+        expect(element.shadowRoot!.querySelector('.label')!.textContent).toContain('Accounts');
+        expect(onResolve).toHaveBeenCalledTimes(1);
+      });
+
+      it('names the id once the consumer supplies the record, and does not ask again', async () => {
+        const { element, onResolve } = build({ value: '001A' });
+        expect(shown(element)?.textContent).toBe('001A');
+
+        element.record = ACME;
+        await flush();
+
+        expect(shown(element)?.textContent).toBe('Acme Corp');
+        expect(shown(element)!.classList.contains('selected-label--unresolved')).toBe(false);
+        expect(onResolve).toHaveBeenCalledTimes(1);
+      });
+
+      it('also names it when the record shows up in results later', async () => {
+        const { element } = build({ value: '001B' });
+
+        element.results = RESULTS;
+        await flush();
+
+        expect(shown(element)?.textContent).toBe('Globex');
+      });
+
+      it('labels the clear button after the shown name, or the id while unresolved', async () => {
+        const { element } = build({ value: '001A' });
+        expect(element.shadowRoot!.querySelector('.clear')!.getAttribute('aria-label')).toBe('Clear 001A');
+
+        element.record = ACME;
+        await flush();
+        expect(element.shadowRoot!.querySelector('.clear')!.getAttribute('aria-label')).toBe('Clear Acme Corp');
+      });
+
+      it('reads back the id, before and after the user picks, and after they clear', async () => {
+        const { element } = build({ value: '001A', results: RESULTS });
+        expect(element.value).toBe('001A');
+        expect(element.record.label).toBe('Acme Corp');
+
+        (element.shadowRoot!.querySelector('.clear') as HTMLElement).click();
+        await flush();
+        expect(element.value).toBe('');
+        expect(element.record).toBeNull();
+
+        await click(element);
+        await press(element, 'ArrowDown');
+        await press(element, 'Enter');
+        expect(element.value).toBe('001B');
+      });
+
+      it('clears an unresolved id, reporting a null record', async () => {
+        const { element } = build({ value: UNKNOWN });
+        const onChange = jest.fn();
+        element.addEventListener('change', onChange);
+
+        (element.shadowRoot!.querySelector('.clear') as HTMLElement).click();
+        await flush();
+
+        expect(onChange.mock.calls[0][0].detail).toEqual({ value: '', record: null });
+      });
+
+      it('reports the id and record on change after a pick', async () => {
+        const { element } = build({ value: '', results: RESULTS });
+        const onChange = jest.fn();
+        element.addEventListener('change', onChange);
+
+        await click(element);
+        await press(element, 'Enter');
+
+        expect(onChange.mock.calls[0][0].detail.value).toBe('001A');
+        expect(onChange.mock.calls[0][0].detail.record.label).toBe('Acme Corp');
+      });
+
+      it('clears when value is set to empty, null or undefined', async () => {
+        for (const empty of ['', null, undefined]) {
+          const { element } = build({ value: '001A', results: RESULTS });
+          element.value = empty;
+          await flush();
+          expect(shown(element)).toBeNull();
+          expect(input(element)).not.toBeNull();
+        }
+      });
+
+      it('asks again when value changes to a different unknown id', async () => {
+        const { element, onResolve } = build({ value: UNKNOWN });
+
+        element.value = 'a-001Y';
+        await flush();
+
+        expect(onResolve).toHaveBeenCalledTimes(2);
+        expect(onResolve.mock.calls[1][0].detail).toEqual({ values: ['a-001Y'] });
+      });
+
+      it('ignores extra ids in single mode', () => {
+        const { element } = build({ value: ['001A', '001B'], results: RESULTS });
+
+        expect(shown(element)?.textContent).toBe('Acme Corp');
+        expect(element.value).toBe('001A');
+      });
+
+      it('lets value decide what is selected: a record for some other id is ignored', async () => {
+        const { element } = build({ value: '001A', results: RESULTS });
+
+        element.record = GLOBEX; // value said 001A; this only supplies names
+        await flush();
+
+        expect(shown(element)?.textContent).toBe('Acme Corp');
+        expect(element.value).toBe('001A');
+      });
+
+      it('does not ask about an empty value', () => {
+        const { onResolve } = build({ value: '' });
+
+        expect(onResolve).not.toHaveBeenCalled();
+      });
+
+      it('agrees with record when both are bound, in either order', () => {
+        const a = build({ value: '001A', record: ACME });
+        const b = build({ record: ACME, value: '001A' });
+
+        for (const { element, onResolve } of [a, b]) {
+          expect(shown(element)?.textContent).toBe('Acme Corp');
+          expect(onResolve).not.toHaveBeenCalled();
+        }
+      });
+    });
+
+    describe('multiple', () => {
+      it('renders ids as chips, naming each from records or results', () => {
+        const { element, onResolve } = build({
+          multiple: true,
+          value: ['001A', '001B'],
+          records: [ACME],
+          results: [GLOBEX]
+        });
+
+        expect(chipTexts(element)).toEqual(['Acme Corp', 'Globex']);
+        expect(onResolve).not.toHaveBeenCalled();
+      });
+
+      it('asks only for the ids it cannot name, in one event', () => {
+        const { element, onResolve } = build({ multiple: true, value: ['001A', UNKNOWN, 'a-001Y'], records: [ACME] });
+
+        expect(chipTexts(element)).toEqual(['Acme Corp', UNKNOWN, 'a-001Y']);
+        const muted = element.shadowRoot!.querySelectorAll('.pill-label--unresolved');
+        expect(muted.length).toBe(2);
+        expect(onResolve).toHaveBeenCalledTimes(1);
+        expect(onResolve.mock.calls[0][0].detail).toEqual({ values: [UNKNOWN, 'a-001Y'] });
+      });
+
+      it('does not ask again just because it re-rendered', async () => {
+        const { element, onResolve } = build({ multiple: true, value: [UNKNOWN] });
+
+        element.placeholder = 'Search'; // rendered on the input
+        await flush();
+
+        expect(input(element).getAttribute('placeholder')).toBe('Search');
+        expect(onResolve).toHaveBeenCalledTimes(1);
+      });
+
+      it('names the ids as the consumer supplies their records, without asking again', async () => {
+        const { element, onResolve } = build({ multiple: true, value: ['001A', '001B'] });
+        expect(chipTexts(element)).toEqual(['001A', '001B']);
+
+        element.records = [ACME, GLOBEX];
+        await flush();
+
+        expect(chipTexts(element)).toEqual(['Acme Corp', 'Globex']);
+        expect(element.shadowRoot!.querySelectorAll('.pill-label--unresolved').length).toBe(0);
+        expect(onResolve).toHaveBeenCalledTimes(1);
+      });
+
+      it('is independent of attribute order: multiple may be set after value', () => {
+        const { element } = build({ value: ['001A', '001B'], records: [ACME, GLOBEX], multiple: true });
+
+        expect(chipTexts(element)).toEqual(['Acme Corp', 'Globex']);
+      });
+
+      it('reads back the ids as an array, updated on pick, removal and clear all', async () => {
+        const { element } = build({ multiple: true, value: ['001A'], records: [ACME], results: RESULTS });
+        expect(element.value).toEqual(['001A']);
+
+        await click(element);
+        await press(element, 'Enter'); // Acme is hidden, so this picks Globex
+        await flush();
+        expect(element.value).toEqual(['001A', '001B']);
+        expect(element.records.map((record: { id: string }) => record.id)).toEqual(['001A', '001B']);
+
+        (element.shadowRoot!.querySelectorAll('.pill-remove')[0] as HTMLElement).click();
+        await flush();
+        expect(element.value).toEqual(['001B']);
+
+        (element.shadowRoot!.querySelector('.clear-all') as HTMLElement).click();
+        await flush();
+        expect(element.value).toEqual([]);
+      });
+
+      it('does not offer an id that is only selected by value (no record yet)', async () => {
+        const { element } = build({ multiple: true, value: ['001A'], results: RESULTS });
+
+        await click(element);
+
+        expect(labels(element)).toEqual(['Globex']);
+      });
+
+      it('lets an unresolved chip be removed, and reports the remaining ids', async () => {
+        const { element } = build({ multiple: true, value: ['001A', UNKNOWN], records: [ACME] });
+        const onChange = jest.fn();
+        element.addEventListener('change', onChange);
+
+        const remove = element.shadowRoot!.querySelectorAll('.pill-remove')[1] as HTMLElement;
+        expect(remove.getAttribute('aria-label')).toBe(`Remove ${UNKNOWN}`);
+        remove.click();
+        await flush();
+
+        expect(onChange.mock.calls[0][0].detail.values).toEqual(['001A']);
+        expect(chipTexts(element)).toEqual(['Acme Corp']);
+      });
+
+      it('reports every id on change, including ones still unresolved, but only resolved records', async () => {
+        const { element } = build({ multiple: true, value: ['001A', UNKNOWN], records: [ACME], results: [GLOBEX] });
+        const onChange = jest.fn();
+        element.addEventListener('change', onChange);
+
+        await click(element);
+        await press(element, 'Enter'); // picks Globex
+
+        const detail = onChange.mock.calls[0][0].detail;
+        expect(detail.values).toEqual(['001A', UNKNOWN, '001B']);
+        expect(detail.records.map((record: { id: string }) => record.id)).toEqual(['001A', '001B']);
+      });
+
+      it('takes Backspace to remove the last chip, resolved or not', async () => {
+        const { element } = build({ multiple: true, value: ['001A', UNKNOWN], records: [ACME] });
+
+        await press(element, 'Backspace');
+
+        expect(element.value).toEqual(['001A']);
+      });
+
+      it('does not re-ask, or reset the chips, when the consumer echoes value back after a change', async () => {
+        const { element, onResolve } = build({ multiple: true, value: ['001A'], records: [ACME], results: RESULTS });
+
+        await click(element);
+        await press(element, 'Enter');
+        await flush();
+        const reported = element.value;
+        element.value = [...reported]; // what a `value={ids}` binding does after `onchange`
+        await flush();
+
+        expect(chipTexts(element)).toEqual(['Acme Corp', 'Globex']);
+        expect(onResolve).not.toHaveBeenCalled();
+      });
+
+      it('asks again for an id that was removed and later set again', async () => {
+        const { element, onResolve } = build({ multiple: true, value: [UNKNOWN] });
+        expect(onResolve).toHaveBeenCalledTimes(1);
+
+        element.value = [];
+        await flush();
+        element.value = [UNKNOWN];
+        await flush();
+
+        expect(onResolve).toHaveBeenCalledTimes(2);
+      });
+
+      it('accepts a lone string, null and undefined as value', async () => {
+        const { element } = build({ multiple: true, value: '001A', records: [ACME] });
+        expect(chipTexts(element)).toEqual(['Acme Corp']);
+
+        element.value = null;
+        await flush();
+        expect(chipTexts(element)).toEqual([]);
+        element.value = undefined;
+        await flush();
+        expect(element.value).toEqual([]);
+      });
     });
   });
 

@@ -18,7 +18,7 @@
       <div class="field" onmousedown={handleFieldMouseDown} onclick={handleFieldClick}>
         <template if:true={showSelected}>
           <div class="selected" role="group" aria-labelledby="label">
-            <span class="selected-label">{record.label}</span>
+            <span class={selectedLabelClasses}>{selectedLabel}</span>
             <button
               type="button"
               class="clear"
@@ -38,7 +38,7 @@
           <div class="tokens">
             <template for:each={chips} for:item="chip">
               <span key={chip.id} class="pill">
-                <span class="pill-label">{chip.label}</span>
+                <span class={chip.labelClasses}>{chip.label}</span>
                 <button
                   type="button"
                   class="pill-remove"

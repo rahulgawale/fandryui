@@ -121,6 +121,13 @@
   white-space: nowrap;
 }
 
+/* An id the consumer set that the lookup has no record for yet -- see
+   `resolve`. Muted so it reads as provisional. */
+.selected-label--unresolved,
+.pill-label--unresolved {
+  color: hsl(var(--fd-text-muted));
+}
+
 .clear,
 .pill-remove {
   display: inline-flex;

@@ -748,13 +748,14 @@ export default class PeopleSearch extends FdSearchState {
       { name: 'results', type: '{ id, label, description?, disabled?, … }[]', default: '[]', description: 'Matches for the current search, shown exactly as given (never re-filtered). Extra fields ride along and come back in `change`.' },
       { name: 'loading', type: 'boolean', default: 'false', description: 'Shows a searching indicator while your query is in flight.' },
       { name: 'multiple', type: 'boolean', default: 'false', description: 'Allow any number of records, shown as removable chips with a “Clear all”. The list stays open after each pick, already-chosen records are not offered again, and Backspace in an empty field removes the last chip.' },
-      { name: 'record', type: '{ id, label, … } | null', default: 'null', description: 'Single mode: the selected record, shown as the field\'s value with a clear button. Set it to preselect; it updates when the user picks or clears.' },
-      { name: 'records', type: '{ id, label, … }[]', default: '[]', description: 'Multiple mode: the selected records. Set it to preselect; it updates on every pick and removal.' },
-      { name: 'value', type: 'string', default: "''", description: 'Read-only, single mode: the selected record\'s id. Set `record` to change it.' },
+      { name: 'value', type: 'string | string[]', default: "''", description: 'The selected id (an array of ids with `multiple`). Set it to render existing data; it updates when the user picks or clears. The lookup names each id from `record`/`records` or `results`; for any it can\'t, it fires `resolve` and shows the raw id (muted) until you supply the record.' },
+      { name: 'record', type: '{ id, label, … } | null', default: 'null', description: 'Single mode: the selected record, shown as the field\'s value with a clear button. On its own it preselects; once `value` has been set it only supplies the name for that id.' },
+      { name: 'records', type: '{ id, label, … }[]', default: '[]', description: 'Multiple mode: the selected records. On its own it preselects; once `value` has been set it only supplies names for those ids (any subset is fine).' },
       { name: 'required', type: 'boolean', default: 'false', description: 'Marks the field required (asterisk + aria-required).' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field and the pill\'s clear button.' },
       { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native input; keys the component controls are ignored with a warning.' },
       { name: 'search (event)', type: 'CustomEvent<{ query }>', default: '—', description: 'Fires when the list opens by click or ArrowDown (immediately, so an empty query can offer recent records), after typing pauses, and in `multiple` mode after each pick.' },
+      { name: 'resolve (event)', type: 'CustomEvent<{ values }>', default: '—', description: 'Fires once for ids set through `value` that the lookup can\'t name yet. Look them up and set `record`/`records`. It does not repeat for an id already asked about.' },
       { name: 'change (event)', type: 'CustomEvent<{ value, record }> | CustomEvent<{ values, records }>', default: '—', description: 'Single mode: `{ value, record }` on pick, and `{ value: \'\', record: null }` on clear. Multiple mode: `{ values, records }` on every pick, removal and Clear all.' },
       { name: 'empty (slot)', type: 'slot', default: "'No records found'", description: 'Replaces the message shown when a search has no matches.' }
     ],
@@ -806,6 +807,52 @@ handleChange(event) {
 // The list stays open after each pick and fires \`search\` again with an
 // empty query, so refresh it (recent records, minus what's now chosen).
 // Records already chosen are hidden from \`results\` automatically.`
+      },
+      {
+        title: 'Existing value (single and multiple)',
+        demo: 'lookup-value',
+        code: `<!-- template: bind \`value\`. Bind \`record\`/\`records\` too, to supply names. -->
+<fandry-lookup
+  label="Account"
+  value={accountId}
+  record={account}
+  onresolve={handleResolve}
+  onchange={handleChange}
+></fandry-lookup>
+
+<fandry-lookup
+  label="Accounts"
+  multiple
+  value={accountIds}
+  records={accounts}
+  onresolve={handleResolveMany}
+  onchange={handleChangeMany}
+></fandry-lookup>
+
+// component
+accountId = '001C';               // straight off a saved record
+accountIds = ['001A', '001D'];
+
+// The lookup can't name an id it has no record for. It shows the id, and asks:
+async handleResolve(event) {
+  const [account] = await getAccounts(event.detail.values);
+  this.account = account;
+}
+
+async handleResolveMany(event) {
+  const found = await getAccounts(event.detail.values);
+  this.accounts = [...this.accounts, ...found];
+}
+
+// Only the ids it asked about are in event.detail.values. Records for ids
+// that aren't in \`value\` are ignored: value decides what's selected.
+handleChange(event) {
+  this.accountId = event.detail.value;
+}
+handleChangeMany(event) {
+  this.accountIds = event.detail.values;
+  this.accounts = event.detail.records;
+}`
       }
     ]
   }
