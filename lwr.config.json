@@ -5,6 +5,9 @@
                 "dir": "$rootDir/src/core"
             },
             {
+                "dir": "$rootDir/src/salesforce"
+            },
+            {
                 "dir": "$rootDir/src/modules"
             }
         ]
@@ -235,6 +238,12 @@
         {
             "id": "component-command",
             "path": "/components/command",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-lookup",
+            "path": "/components/lookup",
             "rootComponent": "fandryui/componentDoc",
             "layoutTemplate": "$layoutsDir/index.html"
         },

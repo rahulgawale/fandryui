@@ -1,0 +1,144 @@
+<template>
+  <div class="form-control">
+    <template if:true={hasLabel}>
+      <label id="label" class="label" for="input">
+        <slot name="label">
+          {label}
+          <template if:true={required}>
+            <span class="required" aria-hidden="true">*</span>
+          </template>
+        </slot>
+      </label>
+    </template>
+
+    <div class="control">
+      <div class="field" onclick={handleFieldClick}>
+        <template if:true={showSelected}>
+          <div class="selected" role="group" aria-labelledby="label">
+            <span class="selected-label">{record.label}</span>
+            <button
+              type="button"
+              class="clear"
+              aria-label={clearLabel}
+              disabled={disabled}
+              onclick={handleClear}
+            >
+              <svg class="icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                <path d="M2.5 2.5l7 7M9.5 2.5l-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </template>
+
+        <template if:true={showInput}>
+          <div class="tokens">
+            <template for:each={chips} for:item="chip">
+              <span key={chip.id} class="pill">
+                <span class="pill-label">{chip.label}</span>
+                <button
+                  type="button"
+                  class="pill-remove"
+                  data-record-id={chip.id}
+                  aria-label={chip.removeLabel}
+                  disabled={disabled}
+                  onclick={handleRemove}
+                >
+                  <svg class="icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                    <path d="M2.5 2.5l7 7M9.5 2.5l-7 7"></path>
+                  </svg>
+                </button>
+              </span>
+            </template>
+
+            <input
+              id="input"
+              class="input"
+              type="text"
+              autocomplete="off"
+              data-name={name}
+              value={query}
+              placeholder={placeholder}
+              disabled={disabled}
+              role="combobox"
+              aria-autocomplete="list"
+              aria-haspopup="listbox"
+              aria-expanded={ariaExpanded}
+              aria-controls="listbox"
+              aria-activedescendant={openActiveDescendant}
+              aria-describedby="help-text"
+              aria-required={ariaRequired}
+              oninput={handleInput}
+              onclick={handleInputClick}
+              onblur={handleInputBlur}
+              onkeydown={handleInputKeydown}
+              lwc:spread={resolvedElementProps}
+            />
+          </div>
+
+          <template if:true={hasChips}>
+            <button type="button" class="clear-all" disabled={disabled} onclick={handleClearAll}>Clear all</button>
+          </template>
+        </template>
+      </div>
+
+      <template if:true={showPanel}>
+        <div class={panelClasses} inert={panelInert}>
+          <template if:true={loading}>
+            <div class="status">
+              <fandry-spinner size="sm" label="Searching"></fandry-spinner>
+              <span aria-hidden="true">Searching…</span>
+            </div>
+          </template>
+
+          <div
+            id="listbox"
+            class="listbox"
+            role="listbox"
+            aria-busy={ariaBusy}
+            aria-multiselectable={ariaMultiselectable}
+            onmousedown={handleListboxMouseDown}
+          >
+            <template for:each={renderGroups} for:item="group">
+              <div key={group.key} class="group" role="group" aria-label={group.label}>
+                <template if:true={group.hasLabel}>
+                  <div class="group-label" aria-hidden="true">{group.label}</div>
+                </template>
+                <template for:each={group.options} for:item="option">
+                  <div
+                    key={option.id}
+                    id={option.id}
+                    class={option.classes}
+                    role="option"
+                    data-option-id={option.id}
+                    aria-selected={option.ariaSelected}
+                    aria-disabled={option.ariaDisabled}
+                    onclick={handleOptionClick}
+                    onmousemove={handleOptionMouseMove}
+                  >
+                    <template if:true={option.component}>
+                      <lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component>
+                    </template>
+                    <template if:false={option.component}>
+                      <span class="option-label">{option.label}</span>
+                      <template if:true={option.hasDescription}>
+                        <span class="option-description">{option.description}</span>
+                      </template>
+                    </template>
+                  </div>
+                </template>
+              </div>
+            </template>
+          </div>
+
+          <template if:true={showEmpty}>
+            <div class="empty"><slot name="empty">No records found</slot></div>
+          </template>
+        </div>
+      </template>
+    </div>
+
+    <template if:true={hasHelpText}>
+      <div id="help-text" class="help-text">{helpText}</div>
+    </template>
+  </div>
+</template>

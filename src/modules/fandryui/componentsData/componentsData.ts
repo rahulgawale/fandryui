@@ -27,7 +27,7 @@ export interface ComponentEntry {
 // Sidebar/pagination order follows this list, category by category -- so
 // prev/next walks the sidebar top-to-bottom rather than some unrelated
 // order.
-export const CATEGORY_ORDER = ['Layout', 'Typography', 'Forms', 'Feedback', 'Overlays & Data'];
+export const CATEGORY_ORDER = ['Layout', 'Typography', 'Forms', 'Feedback', 'Overlays & Data', 'Salesforce'];
 
 export const COMPONENTS: ComponentEntry[] = [
   // ---- Layout ----
@@ -732,6 +732,82 @@ export default class PeopleSearch extends FdSearchState {
   caption="Team members"
   enable-pagination
 ></fandry-table>`
+  },
+  // ---- Salesforce ----
+  {
+    slug: 'lookup',
+    name: 'Lookup',
+    tag: 'fandry-lookup',
+    category: 'Salesforce',
+    description: 'Find and pick a record — one by default, or several with `multiple`. It fetches nothing itself: it reports what was typed, you run the query and hand the records back.',
+    props: [
+      { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
+      { name: 'placeholder', type: 'string', default: "''", description: 'Shown in the empty search box.' },
+      { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'name', type: 'string', default: "''", description: 'Exposed as `data-name` on the input.' },
+      { name: 'results', type: '{ id, label, description?, disabled?, … }[]', default: '[]', description: 'Matches for the current search, shown exactly as given (never re-filtered). Extra fields ride along and come back in `change`.' },
+      { name: 'loading', type: 'boolean', default: 'false', description: 'Shows a searching indicator while your query is in flight.' },
+      { name: 'multiple', type: 'boolean', default: 'false', description: 'Allow any number of records, shown as removable chips with a “Clear all”. The list stays open after each pick, already-chosen records are not offered again, and Backspace in an empty field removes the last chip.' },
+      { name: 'record', type: '{ id, label, … } | null', default: 'null', description: 'Single mode: the selected record, shown as the field\'s value with a clear button. Set it to preselect; it updates when the user picks or clears.' },
+      { name: 'records', type: '{ id, label, … }[]', default: '[]', description: 'Multiple mode: the selected records. Set it to preselect; it updates on every pick and removal.' },
+      { name: 'value', type: 'string', default: "''", description: 'Read-only, single mode: the selected record\'s id. Set `record` to change it.' },
+      { name: 'required', type: 'boolean', default: 'false', description: 'Marks the field required (asterisk + aria-required).' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field and the pill\'s clear button.' },
+      { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native input; keys the component controls are ignored with a warning.' },
+      { name: 'search (event)', type: 'CustomEvent<{ query }>', default: '—', description: 'Fires when the list opens (immediately, so an empty query can offer recent records), after typing pauses, and in `multiple` mode after each pick.' },
+      { name: 'change (event)', type: 'CustomEvent<{ value, record }> | CustomEvent<{ values, records }>', default: '—', description: 'Single mode: `{ value, record }` on pick, and `{ value: \'\', record: null }` on clear. Multiple mode: `{ values, records }` on every pick, removal and Clear all.' },
+      { name: 'empty (slot)', type: 'slot', default: "'No records found'", description: 'Replaces the message shown when a search has no matches.' }
+    ],
+    code: `<!-- template -->
+<fandry-lookup
+  label="Account"
+  placeholder="Search accounts"
+  results={results}
+  loading={loading}
+  record={account}
+  onsearch={handleSearch}
+  onchange={handleChange}
+></fandry-lookup>
+
+// component
+async handleSearch(event) {
+  this.loading = true;
+  // Apex, GraphQL, UI API -- whatever you already use:
+  this.results = await findAccounts(event.detail.query);
+  this.loading = false;
+}
+
+handleChange(event) {
+  this.account = event.detail.record; // null when cleared
+}
+
+// Ignore a slow earlier answer landing after a newer one: keep a request
+// counter and only apply the result of the latest.`,
+    examples: [
+      {
+        title: 'Multiple records',
+        demo: 'lookup-multiple',
+        code: `<!-- template: bind \`records\` instead of \`record\` -->
+<fandry-lookup
+  label="Accounts"
+  multiple
+  results={results}
+  loading={loading}
+  records={accounts}
+  onsearch={handleSearch}
+  onchange={handleChange}
+></fandry-lookup>
+
+// component
+handleChange(event) {
+  this.accounts = event.detail.records; // also event.detail.values (the ids)
+}
+
+// The list stays open after each pick and fires \`search\` again with an
+// empty query, so refresh it (recent records, minus what's now chosen).
+// Records already chosen are hidden from \`results\` automatically.`
+      }
+    ]
   }
 ];
 

@@ -1,0 +1,270 @@
+:host {
+  display: block;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-1);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-1);
+  font-size: var(--fd-font-size-sm);
+  font-weight: var(--fd-font-weight-medium);
+  color: hsl(var(--fd-text));
+}
+
+.required {
+  color: hsl(var(--fd-danger));
+}
+
+/* The panel is positioned against this wrapper, so it lines up with the
+   field's own edges. */
+.control {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+/* One bordered field for every state: the input, the single chosen value, or
+   the chips with the input running on after them. The panel hangs off
+   .control, below it. */
+.field {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fd-space-2);
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--fd-space-1) var(--fd-space-2);
+  color: hsl(var(--fd-text));
+  background: hsl(var(--fd-bg));
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-md);
+  transition: border-color var(--fd-duration-fast) ease,
+    box-shadow var(--fd-duration-fast) ease;
+}
+
+.field:focus-within {
+  border-color: hsl(var(--fd-border-focus));
+  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+}
+
+.tokens {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-1);
+  min-width: 0;
+}
+
+.input {
+  flex: 1;
+  /* Wraps to its own line once the chips leave less than this. */
+  min-width: var(--fd-control-min-width-sm);
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+}
+
+.input::placeholder {
+  color: hsl(var(--fd-text-muted));
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input:disabled {
+  opacity: var(--fd-disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* Single mode, a record chosen: it reads as the field's value (not a chip --
+   a chip would suggest room for more), with a clear button at the far edge. */
+.selected {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fd-space-2);
+  min-width: 0;
+}
+
+.selected-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Multiple mode: each record is a removable chip. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-1);
+  max-width: 100%;
+  padding: 0 var(--fd-space-1) 0 var(--fd-space-2);
+  border-radius: var(--fd-radius-sm);
+  background: hsl(var(--fd-bg-muted));
+}
+
+.pill-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clear,
+.pill-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--fd-space-1);
+  font: inherit;
+  color: hsl(var(--fd-text-muted));
+  background: transparent;
+  border: none;
+  border-radius: var(--fd-radius-sm);
+  cursor: pointer;
+}
+
+/* The button's own padding must not make the field taller than the bare
+   input it replaces, or choosing a record would shift the layout. */
+.clear {
+  margin-block: calc(var(--fd-space-1) * -1);
+}
+
+.clear:hover:not(:disabled),
+.pill-remove:hover:not(:disabled) {
+  color: hsl(var(--fd-text));
+}
+
+.clear:focus-visible,
+.pill-remove:focus-visible,
+.clear-all:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+}
+
+.clear:disabled,
+.pill-remove:disabled,
+.clear-all:disabled {
+  opacity: var(--fd-disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* An SVG cross, not a "×" character: a glyph sits below the visual center of
+   its line box (and by a different amount in every font), an SVG doesn't. */
+.icon {
+  display: block;
+  width: var(--fd-size-xs);
+  height: var(--fd-size-xs);
+}
+
+.clear-all {
+  flex-shrink: 0;
+  padding: 0 var(--fd-space-1);
+  font: inherit;
+  font-size: var(--fd-font-size-sm);
+  color: hsl(var(--fd-text-muted));
+  background: transparent;
+  border: none;
+  border-radius: var(--fd-radius-sm);
+  cursor: pointer;
+}
+
+.clear-all:hover:not(:disabled) {
+  color: hsl(var(--fd-text));
+}
+
+.panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: var(--fd-z-overlay);
+  margin-top: var(--fd-space-1);
+
+  background: hsl(var(--fd-bg));
+  border: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-radius: var(--fd-radius-md);
+  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating));
+  padding: var(--fd-space-2);
+
+  /* Slides down from the field. Motion is defined in base/motion.css; see
+     lookup.ts / fandry/motion for how the panel stays mounted through its
+     exit. */
+  --fd-slide-y: calc(var(--fd-space-2) * -1);
+  animation: fd-slide-in var(--fd-duration-normal) var(--fd-ease-standard);
+}
+
+.panel--closing {
+  animation: fd-slide-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  pointer-events: none;
+}
+
+.listbox {
+  display: flex;
+  flex-direction: column;
+  max-height: var(--fd-listbox-max-height);
+  overflow-y: auto;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  padding: var(--fd-space-1) var(--fd-space-2);
+  border-radius: var(--fd-radius-sm);
+  cursor: pointer;
+}
+
+.option--active {
+  background: hsl(var(--fd-bg-muted));
+}
+
+.option--selected .option-label {
+  font-weight: var(--fd-font-weight-semibold);
+}
+
+.option--disabled {
+  opacity: var(--fd-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-2);
+  padding: var(--fd-space-1) var(--fd-space-2);
+  font-size: var(--fd-font-size-sm);
+  color: hsl(var(--fd-text-muted));
+}
+
+.option-description {
+  font-size: var(--fd-font-size-xs);
+  color: hsl(var(--fd-text-muted));
+}
+
+.group-label {
+  padding: var(--fd-space-1) var(--fd-space-2);
+  font-size: var(--fd-font-size-xs);
+  color: hsl(var(--fd-text-muted));
+}
+
+.empty {
+  padding: var(--fd-space-1) var(--fd-space-2);
+  font-size: var(--fd-font-size-sm);
+  color: hsl(var(--fd-text-muted));
+}
+
+.help-text {
+  font-size: var(--fd-font-size-xs);
+  color: hsl(var(--fd-text-muted));
+}

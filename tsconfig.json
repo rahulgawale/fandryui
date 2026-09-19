@@ -25,6 +25,8 @@
       "fandry/base": ["src/core/fandry/base/base"],
       "fandry/motion": ["src/core/fandry/motion/motion"],
       "fandry/searchState": ["src/core/fandry/searchState/searchState"],
+      // Record-aware components live in src/salesforce (same `fandry` namespace).
+      "fandry/lookup": ["src/salesforce/fandry/lookup/lookup"],
       "fandry/tableState": ["src/core/fandry/tableState/tableState"],
       "fandry/*": ["src/core/fandry/*"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
@@ -56,6 +58,9 @@
       "fandryuidemos/demoCombobox": ["src/modules/fandryuidemos/demoCombobox/demoCombobox"],
       "fandryuidemos/demoCommand": ["src/modules/fandryuidemos/demoCommand/demoCommand"],
       "fandryuidemos/demoInput": ["src/modules/fandryuidemos/demoInput/demoInput"],
+      "fandryuidemos/accountSearch": ["src/modules/fandryuidemos/accountSearch/accountSearch"],
+      "fandryuidemos/demoLookupMultiple": ["src/modules/fandryuidemos/demoLookupMultiple/demoLookupMultiple"],
+      "fandryuidemos/demoLookup": ["src/modules/fandryuidemos/demoLookup/demoLookup"],
       "fandryuidemos/demoLink": ["src/modules/fandryuidemos/demoLink/demoLink"],
       "fandryuidemos/demoRadio": ["src/modules/fandryuidemos/demoRadio/demoRadio"],
       "fandryuidemos/demoRadioGroup": ["src/modules/fandryuidemos/demoRadioGroup/demoRadioGroup"],
