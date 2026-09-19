@@ -72,6 +72,13 @@ export default class Textarea extends Base {
     return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-textarea');
   }
 
+  // The host isn't itself focusable, only the native control in its shadow
+  // tree is -- same fix as fandry-input's focus().
+  @api
+  focus() {
+    (this.template.querySelector('textarea') as HTMLElement | null)?.focus();
+  }
+
   handleInput(event: Event) {
     // See fandry/input's handleInput -- the native `input` event is
     // `composed: true` and would otherwise also reach a consumer's

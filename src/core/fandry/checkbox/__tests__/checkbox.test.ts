@@ -123,4 +123,15 @@ describe('fandry-checkbox', () => {
     const input = element.shadowRoot!.querySelector('input')! as HTMLInputElement;
     expect(input.title).toBe('Accept the terms');
   });
+
+  it('focuses its native control when the host is focused', () => {
+    // The host isn't itself focusable; without focus() this is a no-op.
+    const element = createElement('fandry-checkbox', { is: FdCheckbox });
+    document.body.appendChild(element);
+
+    (element as any).focus();
+
+    const control = element.shadowRoot!.querySelector('input')!;
+    expect(element.shadowRoot!.activeElement).toBe(control);
+  });
 });

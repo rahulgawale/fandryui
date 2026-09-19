@@ -25,6 +25,13 @@ export default class Switch extends Base {
     return this.checked ? 'true' : 'false';
   }
 
+  // The host isn't itself focusable, only the native control in its shadow
+  // tree is -- same fix as fandry-input's focus().
+  @api
+  focus() {
+    (this.template.querySelector('.input') as HTMLElement | null)?.focus();
+  }
+
   handleChange(event: Event) {
     const input = event.target as HTMLInputElement;
     this.checked = input.checked;
