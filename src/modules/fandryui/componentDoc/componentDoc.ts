@@ -15,6 +15,11 @@ import DemoLabel from 'fandryuidemos/demoLabel';
 import DemoText from 'fandryuidemos/demoText';
 import DemoButton from 'fandryuidemos/demoButton';
 import DemoCheckbox from 'fandryuidemos/demoCheckbox';
+import DemoCombobox from 'fandryuidemos/demoCombobox';
+import DemoComboboxCustom from 'fandryuidemos/demoComboboxCustom';
+import DemoCommandCustom from 'fandryuidemos/demoCommandCustom';
+import CustomSearch from 'fandryuidemos/customSearch';
+import DemoCommand from 'fandryuidemos/demoCommand';
 import DemoInput from 'fandryuidemos/demoInput';
 import DemoLink from 'fandryuidemos/demoLink';
 import DemoRadio from 'fandryuidemos/demoRadio';
@@ -55,6 +60,11 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   text: DemoText,
   button: DemoButton,
   checkbox: DemoCheckbox,
+  combobox: DemoCombobox,
+  'combobox-custom': DemoComboboxCustom,
+  'command-custom': DemoCommandCustom,
+  'search-custom': CustomSearch,
+  command: DemoCommand,
   input: DemoInput,
   link: DemoLink,
   radio: DemoRadio,

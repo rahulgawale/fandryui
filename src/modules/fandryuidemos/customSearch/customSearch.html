@@ -1,0 +1,42 @@
+<template>
+  <div class="search">
+    <label class="label" for="person">Find a person</label>
+    <input
+      id="person"
+      class="input"
+      type="text"
+      autocomplete="off"
+      placeholder="Try “ada” or “math”"
+      role="combobox"
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-controls="people"
+      aria-activedescendant={activeDescendant}
+      oninput={handleInput}
+      onkeydown={handleInputKeydown}
+    />
+
+    <ul id="people" class="list" role="listbox" aria-label="People" onmousedown={handleListboxMouseDown}>
+      <template for:each={renderGroups} for:item="group">
+        <template for:each={group.options} for:item="option">
+          <li
+            key={option.id}
+            id={option.id}
+            class={option.classes}
+            role="option"
+            aria-selected={option.ariaSelected}
+            data-option-id={option.id}
+            onclick={handleOptionClick}
+            onmousemove={handleOptionMouseMove}
+          >
+            <strong>{option.label}</strong>
+            <span class="description">{option.description}</span>
+          </li>
+        </template>
+      </template>
+    </ul>
+
+    <p class="status" aria-live="polite">{status}</p>
+    <p if:true={picked}>Picked: {picked}</p>
+  </div>
+</template>

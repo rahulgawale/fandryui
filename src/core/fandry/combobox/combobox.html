@@ -1,0 +1,85 @@
+<template>
+  <div class="form-control">
+    <template if:true={hasLabel}>
+      <label class="label" for="input">
+        <slot name="label">
+          {label}
+          <template if:true={required}>
+            <span class="required" aria-hidden="true">*</span>
+          </template>
+        </slot>
+      </label>
+    </template>
+
+    <div class="control">
+      <input
+        id="input"
+        class="input"
+        type="text"
+        autocomplete="off"
+        data-name={name}
+        value={displayValue}
+        placeholder={placeholder}
+        disabled={disabled}
+        role="combobox"
+        aria-autocomplete="list"
+        aria-haspopup="listbox"
+        aria-expanded={ariaExpanded}
+        aria-controls="listbox"
+        aria-activedescendant={openActiveDescendant}
+        aria-describedby="help-text"
+        aria-required={ariaRequired}
+        oninput={handleInput}
+        onclick={handleInputClick}
+        onblur={handleInputBlur}
+        onkeydown={handleInputKeydown}
+        lwc:spread={resolvedElementProps}
+      />
+      <span class="chevron" aria-hidden="true"></span>
+
+      <template if:true={isMounted}>
+        <div class={panelClasses} inert={panelInert}>
+          <div id="listbox" class="listbox" role="listbox" onmousedown={handleListboxMouseDown}>
+            <template for:each={renderGroups} for:item="group">
+              <div key={group.key} class="group" role="group" aria-label={group.label}>
+                <template if:true={group.hasLabel}>
+                  <div class="group-label" aria-hidden="true">{group.label}</div>
+                </template>
+                <template for:each={group.options} for:item="option">
+                  <div
+                    key={option.id}
+                    id={option.id}
+                    class={option.classes}
+                    role="option"
+                    data-option-id={option.id}
+                    aria-selected={option.ariaSelected}
+                    aria-disabled={option.ariaDisabled}
+                    onclick={handleOptionClick}
+                    onmousemove={handleOptionMouseMove}
+                  >
+                    <template if:true={option.component}>
+                      <lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component>
+                    </template>
+                    <template if:false={option.component}>
+                      <span class="option-label">{option.label}</span>
+                      <template if:true={option.hasDescription}>
+                        <span class="option-description">{option.description}</span>
+                      </template>
+                    </template>
+                  </div>
+                </template>
+              </div>
+            </template>
+          </div>
+          <template if:false={hasResults}>
+            <div class="empty"><slot name="empty">No results</slot></div>
+          </template>
+        </div>
+      </template>
+    </div>
+
+    <template if:true={hasHelpText}>
+      <div id="help-text" class="help-text">{helpText}</div>
+    </template>
+  </div>
+</template>

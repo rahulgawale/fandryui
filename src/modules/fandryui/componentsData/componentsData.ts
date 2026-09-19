@@ -225,6 +225,107 @@ handlePageChange(event) {
     code: `<fandry-checkbox label="Accept terms" onchange={handleChange}></fandry-checkbox>`
   },
   {
+    slug: 'combobox',
+    name: 'Combobox',
+    tag: 'fandry-combobox',
+    category: 'Forms',
+    description: 'A searchable select — type to narrow the options, then pick one.',
+    props: [
+      { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
+      { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected or typed.' },
+      { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'name', type: 'string', default: "''", description: 'Exposed as `data-name` on the input.' },
+      { name: 'options', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The options. Search matches label, description, keywords and group; a prefix in the label ranks first.' },
+      { name: 'value', type: 'string', default: "''", description: 'Selected value. Listen for `change` (detail is the new value).' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
+      { name: 'required', type: 'boolean', default: 'false', description: 'Marks the field required (asterisk + aria-required).' },
+      { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native input (e.g. `{ tabIndex: 2 }`); keys the component controls are ignored with a warning.' },
+      { name: 'empty (slot)', type: 'slot', default: "'No results'", description: 'Replaces the message shown when nothing matches.' }
+    ],
+    code: `<fandry-combobox
+  label="Framework"
+  placeholder="Search frameworks"
+  options={frameworkOptions}
+  value={value}
+  onchange={handleChange}
+></fandry-combobox>`,
+    examples: [
+      {
+        title: 'Custom rows and empty state',
+        demo: 'combobox-custom',
+        code: `<!-- template -->
+<fandry-combobox label="Plan" options={planOptions}
+  value={value} onchange={handleChange}>
+  <span slot="empty">No plan matches.</span>
+</fandry-combobox>
+
+// component
+import PlanRow from 'my/planRow'; // your LWC: @api icon, label, hint
+
+planOptions = [
+  {
+    label: 'Free', value: 'free', component: PlanRow,
+    componentProps: { icon: '🌱', label: 'Free' }
+  },
+  {
+    label: 'Pro', value: 'pro', component: PlanRow,
+    componentProps: { icon: '💎', label: 'Pro', hint: 'Popular' }
+  }
+];
+
+// The component draws only the inside of the row; the row keeps its
+// highlight, hover and click. Search still matches on \`label\`
+// (and keywords/description), so give every item a real one.`
+      },
+      {
+        title: 'Build on the base class: own template, async search',
+        demo: 'search-custom',
+        code: `<!-- template: your own markup, bound to the inherited handlers -->
+<input role="combobox" aria-expanded="true"
+  aria-controls="people"
+  aria-activedescendant={activeDescendant}
+  oninput={handleInput}
+  onkeydown={handleInputKeydown} />
+<ul id="people" role="listbox"
+  onmousedown={handleListboxMouseDown}>
+  <template for:each={renderGroups} for:item="group">
+    <template for:each={group.options} for:item="option">
+      <li key={option.id} id={option.id} class={option.classes}
+        role="option" data-option-id={option.id}
+        onclick={handleOptionClick}
+        onmousemove={handleOptionMouseMove}>
+        {option.label}
+      </li>
+    </template>
+  </template>
+</ul>
+
+// component
+import FdSearchState from 'fandry/searchState';
+
+export default class PeopleSearch extends FdSearchState {
+  results = [];
+
+  // what to list
+  protected get source() { return this.results; }
+  // the server already filtered
+  protected filterItems(items) { return items; }
+  // what picking one does
+  protected commit(item) { this.picked = item.label; }
+
+  // start the search
+  protected setQuery(value) {
+    super.setQuery(value);
+    fetchPeople(value).then((people) => (this.results = people));
+  }
+}
+
+// Keep the input and the options in the same template: aria-activedescendant
+// can't point across a shadow boundary.`
+      }
+    ]
+  },
+  {
     slug: 'input',
     name: 'Input',
     tag: 'fandry-input',
@@ -451,6 +552,110 @@ handlePageChange(event) {
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Avatar size.' }
     ],
     code: `<fandry-avatar initials="JD" size="md"></fandry-avatar>`
+  },
+  {
+    slug: 'command',
+    name: 'Command',
+    tag: 'fandry-command',
+    category: 'Overlays & Data',
+    description: 'A command palette — a modal search box over a list of actions. Generic: it reports the chosen value and leaves what it does (and the Cmd+K shortcut) to you.',
+    props: [
+      { name: 'open', type: 'boolean', default: 'false', description: 'Whether the palette is shown. Listen for `toggle` (detail is the new state) and update it.' },
+      { name: 'label', type: 'string', default: "''", description: 'Accessible name of the palette.' },
+      { name: 'placeholder', type: 'string', default: "''", description: 'Hint shown in the empty search box.' },
+      { name: 'items', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The commands. Ungrouped items list first; grouped items sit under their heading.' },
+      { name: 'select (event)', type: 'CustomEvent<{ value }>', default: '—', description: 'Fired when an item is picked; the palette then closes itself.' },
+      { name: 'empty (slot)', type: 'slot', default: "'No results found'", description: 'Replaces the message shown when nothing matches.' }
+    ],
+    code: `<fandry-command
+  label="Command palette"
+  placeholder="Type a command or search…"
+  items={items}
+  open={isOpen}
+  ontoggle={handleToggle}
+  onselect={handleSelect}
+></fandry-command>
+
+// component
+handleToggle(event) { this.isOpen = event.detail; }
+handleSelect(event) { run(event.detail.value); }`,
+    examples: [
+      {
+        title: 'Custom rows and empty state',
+        demo: 'command-custom',
+        code: `<!-- template -->
+<fandry-command label="Command palette" items={items}
+  open={isOpen} ontoggle={handleToggle} onselect={handleSelect}>
+  <span slot="empty">Nothing to run for that.</span>
+</fandry-command>
+
+// component
+import CommandRow from 'my/commandRow'; // your LWC: @api icon, label, hint
+
+items = [
+  {
+    label: 'New file', value: 'new-file', group: 'File',
+    component: CommandRow,
+    componentProps: { icon: '📄', label: 'New file', hint: '⌘N' }
+  },
+  {
+    label: 'Toggle theme', value: 'toggle-theme', group: 'View',
+    component: CommandRow,
+    componentProps: { icon: '🌗', label: 'Toggle theme' }
+  }
+];
+
+// The component draws only the inside of the row; the row keeps its
+// highlight, hover and click. Search still matches on \`label\`
+// (and keywords/description), so give every item a real one.`
+      },
+      {
+        title: 'Build on the base class: own template, async search',
+        demo: 'search-custom',
+        code: `<!-- template: your own markup, bound to the inherited handlers -->
+<input role="combobox" aria-expanded="true"
+  aria-controls="people"
+  aria-activedescendant={activeDescendant}
+  oninput={handleInput}
+  onkeydown={handleInputKeydown} />
+<ul id="people" role="listbox"
+  onmousedown={handleListboxMouseDown}>
+  <template for:each={renderGroups} for:item="group">
+    <template for:each={group.options} for:item="option">
+      <li key={option.id} id={option.id} class={option.classes}
+        role="option" data-option-id={option.id}
+        onclick={handleOptionClick}
+        onmousemove={handleOptionMouseMove}>
+        {option.label}
+      </li>
+    </template>
+  </template>
+</ul>
+
+// component
+import FdSearchState from 'fandry/searchState';
+
+export default class PeopleSearch extends FdSearchState {
+  results = [];
+
+  // what to list
+  protected get source() { return this.results; }
+  // the server already filtered
+  protected filterItems(items) { return items; }
+  // what picking one does
+  protected commit(item) { this.picked = item.label; }
+
+  // start the search
+  protected setQuery(value) {
+    super.setQuery(value);
+    fetchPeople(value).then((people) => (this.results = people));
+  }
+}
+
+// Keep the input and the options in the same template: aria-activedescendant
+// can't point across a shadow boundary.`
+      }
+    ]
   },
   {
     slug: 'dialog',
