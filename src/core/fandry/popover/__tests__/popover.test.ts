@@ -1,6 +1,7 @@
 import { createElement } from 'lwc';
 import FdPopover from '../popover';
 import PopoverTriggerHarness from './popoverTriggerHarness';
+import { mockAnimations, settle, AnimationMock } from '../../motion/__tests__/animationMock';
 
 const flush = () => Promise.resolve();
 
@@ -45,7 +46,7 @@ describe('fandry-popover', () => {
     const popover = harness.shadowRoot!.querySelector('fandry-popover')!;
     const trigger = harness.shadowRoot!.querySelector('button')!;
     trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-    await flush();
+    await settle();
 
     expect(popover.shadowRoot!.querySelector('.panel')).toBeNull();
   });
@@ -190,5 +191,109 @@ describe('fandry-popover', () => {
 
     const panel = element.shadowRoot!.querySelector('.panel')!;
     expect(panel.classList.contains('panel--left')).toBe(true);
+  });
+
+  describe('motion', () => {
+    let animations: AnimationMock;
+
+    const panelOf = (element: Element) => element.shadowRoot!.querySelector('.panel');
+
+    const mount = async (open = true) => {
+      const element = createElement('fandry-popover', { is: FdPopover });
+      element.open = open;
+      document.body.appendChild(element);
+      await flush();
+      return element;
+    };
+
+    beforeEach(() => {
+      animations = mockAnimations();
+    });
+
+    afterEach(() => {
+      animations.restore();
+    });
+
+    it('stays mounted, marked closing and inert, while its exit animation plays', async () => {
+      const element = await mount();
+
+      element.open = false;
+      await settle();
+
+      expect(element.open).toBe(false);
+      expect(panelOf(element)).not.toBeNull();
+      expect(panelOf(element)!.classList.contains('panel--closing')).toBe(true);
+      expect(panelOf(element)!.hasAttribute('inert')).toBe(true);
+    });
+
+    it('removes the panel once the exit animation finishes', async () => {
+      const element = await mount();
+
+      element.open = false;
+      await settle();
+      await animations.finish();
+
+      expect(panelOf(element)).toBeNull();
+    });
+
+    it('removes the panel when nothing is animating (reduced motion, or animation overridden to none)', async () => {
+      animations.restore();
+      const element = await mount();
+
+      element.open = false;
+      await settle();
+
+      expect(panelOf(element)).toBeNull();
+    });
+
+    it('reopening during the exit keeps the panel and cancels the pending removal', async () => {
+      const element = await mount();
+
+      element.open = false;
+      await settle();
+      element.open = true;
+      await settle();
+      await animations.finish();
+
+      expect(panelOf(element)).not.toBeNull();
+      expect(panelOf(element)!.classList.contains('panel--closing')).toBe(false);
+      expect(panelOf(element)!.hasAttribute('inert')).toBe(false);
+    });
+
+    it('leaves no stale panel after repeated open/close cycles', async () => {
+      const element = await mount(false);
+
+      for (let i = 0; i < 5; i++) {
+        element.open = true;
+        await settle();
+        element.open = false;
+        await settle();
+        await animations.finish();
+      }
+
+      expect(panelOf(element)).toBeNull();
+      expect(element.shadowRoot!.querySelectorAll('.panel').length).toBe(0);
+    });
+
+    it('returns focus to the trigger immediately on Escape, without waiting for the exit', async () => {
+      const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
+      const harness = createElement('popover-trigger-harness', { is: PopoverTriggerHarness });
+      harness.open = true;
+      document.body.appendChild(harness);
+      await flush();
+
+      const trigger = harness.shadowRoot!.querySelector('button')!;
+      const popover = harness.shadowRoot!.querySelector('fandry-popover')!;
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await flush();
+
+      // Exit is still pending (mocked animation hasn't finished), yet focus
+      // has already moved.
+      expect(popover.shadowRoot!.querySelector('.panel')).not.toBeNull();
+      expect(focusSpy.mock.instances).toContain(trigger);
+
+      focusSpy.mockRestore();
+    });
   });
 });

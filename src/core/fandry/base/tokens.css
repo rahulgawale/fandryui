@@ -129,11 +129,28 @@
   --fd-avatar-size-md: 2.25rem;
   --fd-avatar-size-lg: 3rem;
 
-  /* ---- Motion ---- */
+  /* ---- Motion ----
+     Transition/enter/exit durations -- the three a component reaches for.
+     Exits use --fd-duration-fast (leaving should feel quicker than
+     arriving); see base/motion.css for the shared keyframes and the
+     prefers-reduced-motion override at the bottom of this file. */
   --fd-duration-fast: 120ms;
-  --fd-duration-slow: 0.6s;
+  --fd-duration-normal: 200ms;
+  --fd-duration-slow: 320ms;
+
+  /* Looping indicators (spinner, skeleton, indeterminate progress) -- a
+     separate scale from the transition durations above: they convey "still
+     working" rather than a state change, so prefers-reduced-motion leaves
+     them running. */
+  --fd-duration-spin: 0.6s;
   --fd-duration-slowest: 1.5s;
-  --fd-ease-in-out: ease-in-out;
+
+  /* standard: symmetric UI movement and everything that exits.
+     emphasized: a large surface arriving (e.g. fandry-dialog's panel) --
+     decelerates harder so it settles rather than just stops. */
+  --fd-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --fd-ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --fd-ease-in-out: var(--fd-ease-standard);
 
   /* ---- Font ----
      var(--font-*, ...) first -- those are the page-level source of truth
@@ -162,4 +179,17 @@
   --fd-font-heading: var(--font-heading, "Sora"), var(--fd-font-sans);
   --fd-heading-weight: 600;
   --fd-heading-letter-spacing: -0.01em;
+}
+
+/* ---- Reduced motion ----
+   Zeroing the durations (rather than removing each animation) keeps every
+   component's state changes and enter/exit lifecycle running exactly as
+   before -- animationend/`Animation.finished` still fire -- the change just
+   lands instantly. Nothing for a consumer to opt into. */
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --fd-duration-fast: 0ms;
+    --fd-duration-normal: 0ms;
+    --fd-duration-slow: 0ms;
+  }
 }

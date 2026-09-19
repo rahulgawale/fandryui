@@ -1,21 +1,22 @@
 import { createElement } from 'lwc';
 import FdToast from '../toast';
+import { mockAnimations, settle, AnimationMock } from '../../motion/__tests__/animationMock';
 
 const flush = () => Promise.resolve();
 
-// jsdom doesn't actually run CSS animations, so the exit animation's real
-// `animationend` never fires on its own -- this stands in for the browser
-// finishing it, matching fandry-tooltip's own test harness.
-const endAnimation = (toast: Element) => {
-  toast.dispatchEvent(new Event('animationend'));
-};
+// jsdom doesn't run CSS animations, so the mock stands in for the browser's
+// animation timeline: the exit animation stays pending until
+// `animations.finish()` -- see motion/__tests__/animationMock.ts.
+let animations: AnimationMock;
 
 describe('fandry-toast', () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    animations = mockAnimations();
   });
 
   afterEach(() => {
+    animations.restore();
     jest.useRealTimers();
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
@@ -78,7 +79,7 @@ describe('fandry-toast', () => {
     expect(toast.className).toContain('toast--closing');
     expect(handler).not.toHaveBeenCalled();
 
-    endAnimation(toast);
+    await animations.finish();
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
@@ -109,7 +110,22 @@ describe('fandry-toast', () => {
     const toast = element.shadowRoot!.querySelector('.toast')!;
     expect(toast.className).toContain('toast--closing');
 
-    endAnimation(toast);
+    await animations.finish();
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('dismiss() still notifies when nothing is animating (reduced motion, or animation overridden to none)', async () => {
+    animations.restore();
+    const element = createElement('fandry-toast', { is: FdToast });
+    element.duration = 0;
+    const handler = jest.fn();
+    element.addEventListener('dismiss', handler);
+    document.body.appendChild(element);
+    await flush();
+
+    element.dismiss();
+    await settle();
+
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
@@ -125,8 +141,7 @@ describe('fandry-toast', () => {
     element.dismiss();
     await flush();
 
-    const toast = element.shadowRoot!.querySelector('.toast')!;
-    endAnimation(toast);
+    await animations.finish();
     expect(handler).toHaveBeenCalledTimes(1);
   });
 

@@ -1,10 +1,15 @@
-import { api } from 'lwc';
+import { api, track } from 'lwc';
 import Base from 'fandry/base';
+import { exitFinished } from 'fandry/motion';
 
 export default class Dialog extends Base {
   @api label = '';
 
   private _open = false;
+
+  // Whether the dialog is in the DOM: true while open, and stays true
+  // through the exit animation after `open` goes false (see fandry/motion).
+  @track isMounted = false;
   private previouslyFocused: HTMLElement | null = null;
   private previousBodyOverflow: string | null = null;
   private focusPending = false;
@@ -23,6 +28,10 @@ export default class Dialog extends Base {
   set open(value: boolean) {
     const wasOpen = this._open;
     this._open = value;
+
+    if (value) {
+      this.isMounted = true;
+    }
 
     if (!wasOpen && value) {
       this.previouslyFocused = this.findActiveElement();
@@ -51,11 +60,33 @@ export default class Dialog extends Base {
     }
   }
 
+  get backdropClasses(): string {
+    return this.open ? 'backdrop' : 'backdrop backdrop--closing';
+  }
+
+  // A closing dialog must not take focus or clicks while it fades -- body
+  // scroll and focus are already handed back by the `open` setter. `''`
+  // (attribute present) / `undefined` (removed): `inert` is a boolean
+  // attribute.
+  get backdropInert(): string | undefined {
+    return this.open ? undefined : '';
+  }
+
   renderedCallback() {
     if (this.focusPending && this.open) {
       this.focusPending = false;
       const panel = this.template.querySelector('.panel') as HTMLElement | null;
       panel?.focus();
+    }
+
+    if (!this.open && this.isMounted) {
+      const backdrop = this.template.querySelector('.backdrop');
+      exitFinished(backdrop).then(() => {
+        // Reopened while it was exiting -- the dialog is live again.
+        if (!this.open) {
+          this.isMounted = false;
+        }
+      });
     }
   }
 
