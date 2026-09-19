@@ -19,7 +19,11 @@
 
 .item--active {
   background: hsl(var(--fd-primary) / 0.1);
-  color: hsl(var(--fd-primary));
+  /* Plain --fd-primary text on its own 10% tint is only ~4.0:1 at the default
+     brand color, under WCAG AA's 4.5:1 for this small text. Mixing in some of
+     the body text color reaches ~6.4:1, still reads as the brand color, and
+     follows any retheme because it derives from the token. */
+  color: color-mix(in srgb, hsl(var(--fd-primary)) 70%, hsl(var(--fd-text)));
   font-weight: var(--fd-font-weight-semibold);
 }
 

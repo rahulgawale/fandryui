@@ -89,8 +89,27 @@ Open http://localhost:3000 in your browser. You should see the marketing home pa
 | `npm start` | Serve a build already in `site/` |
 | `npm test` / `npm run test:watch` | Run the Jest suite (`@lwc/jest-preset`) |
 | `npm run typecheck` | `tsc --noEmit` |
+| `npm run build:npm` | Generate the publishable `fandryui` package (both platforms, CLI, registry) into `packages/ui/dist` |
+| `npm run verify:sfdx` | Exercise the `fandry` CLI (init/add) against throwaway Salesforce DX and LWR projects |
+| `npm run example:sfdx` | Install the demo's components into `examples/salesforce` with the CLI |
+| `npm run verify:npm` | Pack it, install the tarball into a separate LWR app, production-build that app, and check the module graph |
 | `npm run clean` | Remove `__lwr_cache__` and `site/` |
 | `npm run deploy` | Build, then publish `site/` to GitHub Pages |
+
+## Distribution: npm and Salesforce
+
+One source, one package (`fandryui`), two platforms. Nothing is hand-maintained twice: `npm run build:npm` derives everything from `src/core/fandry` and `src/salesforce/fandry`, and the only difference is the namespace each platform uses.
+
+| | LWR / LWC OSS | Salesforce platform |
+| --- | --- | --- |
+| Get it | `npm i fandryui`, then `npx fandry init` | `npx fandry init`, then `npx fandry add table lookup` |
+| Why | a bundler resolves the graph and ships only what a page uses | no bundler and no npm: components are copied in as source, with their dependencies |
+| Namespace | custom `fandry` (a package can bring its own) | default `c` (on-platform code has no other) |
+| Tag | `<fandry-button>` | `<c-fandry-button>` |
+| Import | `import Base from 'fandry/base'` | `import Base from 'c/fandryBase'` |
+| In the package | `modules/fandry/button/button.js` | `sfdx/lwc/fandryButton/` (flat), `.js-meta.xml` written by `fandry add` |
+
+`registry.json` (generated from what each bundle really imports and renders) is the dependency graph the CLI uses. `@tanstack/table-core` can't be imported on-platform, so the Salesforce flavor bundles it, unmodified, as `fandryTableCore`. Step-by-step guides live on the docs site under **Get started** (`/getting-started`, `/getting-started/lwr-oss`, `/getting-started/salesforce`); consumer setup and limitations are also in [packages/ui/README.md](packages/ui/README.md). A worked Salesforce DX project: [examples/salesforce](examples/salesforce/README.md). Publishing runs from [.github/workflows/npm-workflow.yml](.github/workflows/npm-workflow.yml) when a GitHub Release is published (npm Trusted Publishing, no token).
 
 ## Layout Patterns
 

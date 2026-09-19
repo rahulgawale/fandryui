@@ -1,0 +1,80 @@
+# Publishes the generated npm package (packages/ui/dist) to npm.
+#
+# The filename matters: npm's Trusted Publisher entry for the package is bound
+# to this exact workflow file name, so renaming it breaks publishing.
+#
+# Versioning stays in release.yml (semantic-release bumps package.json, tags,
+# and creates the GitHub Release). Publishing that Release triggers this
+# workflow, which checks out the tagged commit -- so the version stamped into
+# the package is the one that was just released. Manual runs work only from a
+# tag (see the job condition).
+#
+# No NPM_TOKEN: authentication is OIDC (Trusted Publishing), and provenance is
+# attached automatically.
+
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # required for npm Trusted Publishing (OIDC)
+
+jobs:
+  publish:
+    # A version on npm is permanent. Release events always run on the release's
+    # tag; a manual run (workflow_dispatch) is only allowed from a tag too, so
+    # it can never publish an unreleased branch under a version number.
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Trusted Publishing needs npm >= 11.5.1; Node 22 ships an older npm.
+      - name: Update npm
+        run: npm install -g npm@^11.5.1
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test -- --ci
+
+      # Builds the package, packs it, installs the tarball into a separate LWR
+      # app outside the repo, production-builds that app and checks the module
+      # graph. The publish below is of the same generated directory.
+      - name: Verify package in an isolated consumer
+        run: npm run verify:npm
+
+      # Exercises the `fandry` CLI (init/add) on throwaway Salesforce DX and LWR
+      # projects and checks the installed bundles are self-contained.
+      - name: Verify the CLI
+        run: npm run verify:sfdx
+
+      # The tag is created by semantic-release from the same package.json
+      # version the build stamps into the package; refuse to publish if they
+      # ever disagree.
+      - name: Check the package version matches the tag
+        run: |
+          version="$(node -p "require('./packages/ui/dist/package.json').version")"
+          if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then
+            echo "Package version v${version} does not match tag ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
+
+      - name: Publish
+        working-directory: packages/ui/dist
+        run: npm publish --access public

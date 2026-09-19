@@ -119,6 +119,24 @@ Base must not:
 
 ---
 
+### Distribution (`scripts/build-dist.mjs`, `packages/ui/bin/`)
+
+`fandryui` (npm, `packages/ui/dist`, gitignored) is **generated** from
+`src/core/fandry` and `src/salesforce/fandry`, in two flavors: `modules/fandry/*`
+for LWR / LWC OSS (`<fandry-*>`, kept as authored) and `sfdx/lwc/fandry*` for
+Salesforce (renamed to `c/fandry*` / `<c-fandry-*>`, since on-platform code
+lives in the default `c` namespace). Never edit generated output and never keep
+a hand-maintained copy of a primitive. Author source with the `fandry/*`
+namespace as usual. The `fandry` CLI (`packages/ui/bin/fandry.mjs`, no
+dependencies) is hand-written; its dependency graph, `registry.json`, is
+generated from what the bundles actually import and render, so a new
+primitive needs no registration. On Salesforce nothing may import an npm
+package: `@tanstack/table-core` is vendored as `fandryTableCore`, and the
+build fails if any other package import appears.
+`npm run verify:npm` and `npm run verify:sfdx` prove both platforms work.
+
+---
+
 ### Application (`src/modules/fandryui/`)
 
 The application exists to:

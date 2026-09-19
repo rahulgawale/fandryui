@@ -1,0 +1,5 @@
+# Only metadata belongs in a deploy; keep tooling and specs out of it.
+**/jsconfig.json
+**/.eslintrc.json
+**/__tests__/**
+node_modules/

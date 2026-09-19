@@ -1,0 +1,27 @@
+{
+  "name": "fandry-consumer-example",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Minimal LWR app that consumes fandryui the way an external project would. Not part of the published package.",
+  "type": "module",
+  "scripts": {
+    "build": "lwr build --clean",
+    "dev": "lwr dev",
+    "start": "lwr start"
+  },
+  "dependencies": {
+    "fandryui": "*",
+    "lwc": "8.26.2",
+    "lwr": "0.18.3"
+  },
+  "overrides": {
+    "@lwc/babel-plugin-component": "8.26.2",
+    "@lwc/compiler": "8.26.2",
+    "@lwc/errors": "8.26.2",
+    "@lwc/module-resolver": "8.26.2",
+    "@lwc/shared": "8.26.2",
+    "@lwc/ssr-compiler": "8.26.2",
+    "@lwc/style-compiler": "8.26.2",
+    "@lwc/template-compiler": "8.26.2"
+  }
+}

@@ -1,0 +1,33 @@
+<template>
+  <lightning-card title="Fandry UI on the Salesforce platform">
+    <div class="slds-var-p-around_medium">
+      <!-- On-platform code lives in the default `c` namespace, so Fandry's
+           components are <c-fandry-*>. They come from the separate `fandryui`
+           package directory and need no import. -->
+      <div class="slds-var-m-bottom_large">
+        <c-fandry-button onclick={handleSave}>Save</c-fandry-button>
+        <p data-id="status">{status}</p>
+      </div>
+
+      <div class="slds-var-m-bottom_medium">
+        <c-fandry-input
+          label="Your name"
+          value={name}
+          oninput={handleInput}
+        ></c-fandry-input>
+      </div>
+      <p data-id="greeting" class="slds-var-m-bottom_large">Hello, {greetingName}!</p>
+
+      <!-- c-fandry-table needs table-core, which can't be imported on-platform;
+           `fandry add table` installs it as the vendored bundle fandryTableCore. -->
+      <c-fandry-table
+        columns={columns}
+        data={rows}
+        caption="Team members"
+        enable-pagination
+        page-size="3"
+        enable-global-filter
+      ></c-fandry-table>
+    </div>
+  </lightning-card>
+</template>

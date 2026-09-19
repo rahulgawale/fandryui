@@ -30,6 +30,7 @@
       "fandry/tableState": ["src/core/fandry/tableState/tableState"],
       "fandry/*": ["src/core/fandry/*"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
+      "fandryui/gettingStartedData": ["src/modules/fandryui/gettingStartedData/gettingStartedData"],
       "fandryui/*": ["src/modules/fandryui/*"],
       // fandryuidemos/* -- docs-only illustration components (componentDoc's
       // live "Example" for each primitive), kept in their own namespace so
