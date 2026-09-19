@@ -10,6 +10,8 @@
   >
     <input class="custom-search" slot="search" />
     <input class="custom-select-all" type="checkbox" slot="selection-all" />
-    <button class="custom-next" type="button" slot="pagination-next">Next</button>
+    <fandry-pagination slot="pagination" page-index={customPageIndex} page-count={customPageCount}>
+      <button class="custom-next" type="button" slot="next">Next</button>
+    </fandry-pagination>
   </fandry-table>
 </template>

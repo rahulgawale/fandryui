@@ -1,0 +1,27 @@
+<template>
+  <nav class="pagination" aria-label="Pagination">
+    <!--
+      `onclick` delegated onto each wrapping <span> -- slot="previous" /
+      slot="next" to replace either control (e.g. numbered pages instead
+      of Prev/Next). A disabled native button never fires click, so a
+      consumer's own disabled state is respected for free.
+    -->
+    <span onclick={handlePrevious}>
+      <slot name="previous">
+        <fandry-button variant="secondary" size="sm" disabled={previousDisabled}>
+          Previous
+        </fandry-button>
+      </slot>
+    </span>
+    <slot name="status">
+      <span class="status">{status}</span>
+    </slot>
+    <span onclick={handleNext}>
+      <slot name="next">
+        <fandry-button variant="secondary" size="sm" disabled={nextDisabled}>
+          Next
+        </fandry-button>
+      </slot>
+    </span>
+  </nav>
+</template>

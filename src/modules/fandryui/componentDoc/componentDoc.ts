@@ -6,6 +6,7 @@ import DemoBreadcrumbItem from 'fandryuidemos/demoBreadcrumbItem';
 import DemoCard from 'fandryuidemos/demoCard';
 import DemoDivider from 'fandryuidemos/demoDivider';
 import DemoPagination from 'fandryuidemos/demoPagination';
+import DemoPaginationPages from 'fandryuidemos/demoPaginationPages';
 import DemoSidebar from 'fandryuidemos/demoSidebar';
 import DemoSidebarItem from 'fandryuidemos/demoSidebarItem';
 import DemoHeading from 'fandryuidemos/demoHeading';
@@ -45,6 +46,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   card: DemoCard,
   divider: DemoDivider,
   pagination: DemoPagination,
+  'pagination-pages': DemoPaginationPages,
   sidebar: DemoSidebar,
   'sidebar-item': DemoSidebarItem,
   heading: DemoHeading,
@@ -94,6 +96,15 @@ export default class ComponentDoc extends LightningElement {
 
   get demoComponent(): typeof LightningElement | undefined {
     return DEMO_COMPONENTS[this.slug];
+  }
+
+  // Extra example + code blocks (see ComponentExample) with each `demo` key
+  // already resolved to its constructor, since lwc:is needs the reference.
+  get extraExamples() {
+    return (this.entry?.examples ?? []).map((example) => ({
+      ...example,
+      demoComponent: DEMO_COMPONENTS[example.demo]
+    }));
   }
 
   get hasProps(): boolean {

@@ -65,6 +65,22 @@
           <pre class="code-block"><code>{entry.code}</code></pre>
         </section>
 
+        <template for:each={extraExamples} for:item="example">
+          <div key={example.title}>
+            <section class="section">
+              <fandry-heading level="3">Example: {example.title}</fandry-heading>
+              <fandry-card class="demo-frame">
+                <lwc:component lwc:is={example.demoComponent}></lwc:component>
+              </fandry-card>
+            </section>
+
+            <section class="section">
+              <fandry-heading level="3">Code: {example.title}</fandry-heading>
+              <pre class="code-block"><code>{example.code}</code></pre>
+            </section>
+          </div>
+        </template>
+
         <fandry-pagination
           previous-href={previousHref}
           previous-label={previousLabel}

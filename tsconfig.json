@@ -38,6 +38,7 @@
       "fandryuidemos/demoCard": ["src/modules/fandryuidemos/demoCard/demoCard"],
       "fandryuidemos/demoDivider": ["src/modules/fandryuidemos/demoDivider/demoDivider"],
       "fandryuidemos/demoPagination": ["src/modules/fandryuidemos/demoPagination/demoPagination"],
+      "fandryuidemos/demoPaginationPages": ["src/modules/fandryuidemos/demoPaginationPages/demoPaginationPages"],
       "fandryuidemos/demoSidebar": ["src/modules/fandryuidemos/demoSidebar/demoSidebar"],
       "fandryuidemos/demoSidebarItem": ["src/modules/fandryuidemos/demoSidebarItem/demoSidebarItem"],
       "fandryuidemos/demoHeading": ["src/modules/fandryuidemos/demoHeading/demoHeading"],

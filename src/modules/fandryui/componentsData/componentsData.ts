@@ -5,6 +5,14 @@ export interface ComponentProp {
   description: string;
 }
 
+// An additional example + code block shown after the entry's main one.
+// `demo` is a key in componentDoc's DEMO_COMPONENTS map.
+export interface ComponentExample {
+  title: string;
+  demo: string;
+  code: string;
+}
+
 export interface ComponentEntry {
   slug: string;
   name: string;
@@ -13,6 +21,7 @@ export interface ComponentEntry {
   description: string;
   props: ComponentProp[];
   code: string;
+  examples?: ComponentExample[];
 }
 
 // Sidebar/pagination order follows this list, category by category -- so
@@ -74,19 +83,41 @@ export const COMPONENTS: ComponentEntry[] = [
     name: 'Pagination',
     tag: 'fandry-pagination',
     category: 'Layout',
-    description: 'Previous/next navigation between two adjacent pages.',
+    description: 'Previous/next navigation — as links between two adjacent pages, or as Previous / Page N of M / Next buttons for paging a collection.',
     props: [
       { name: 'previous-href', type: 'string', default: "''", description: 'Omit to hide the previous link (e.g. on the first page).' },
       { name: 'previous-label', type: 'string', default: "''", description: 'Title of the previous page.' },
       { name: 'next-href', type: 'string', default: "''", description: 'Omit to hide the next link (e.g. on the last page).' },
-      { name: 'next-label', type: 'string', default: "''", description: 'Title of the next page.' }
+      { name: 'next-label', type: 'string', default: "''", description: 'Title of the next page.' },
+      { name: 'page-index', type: 'number', default: 'undefined', description: 'Zero-based current page. Setting it switches from links to Previous/Next buttons; listen for `change` (detail.pageIndex) and update it. Replace controls via the previous, status and next slots.' },
+      { name: 'page-count', type: 'number', default: '-1', description: 'Total pages in page mode; -1 means unknown (Next stays enabled).' }
     ],
     code: `<fandry-pagination
   previous-href="/components/pagination"
   previous-label="Pagination"
   next-href="/components/sidebar"
   next-label="Sidebar"
-></fandry-pagination>`
+></fandry-pagination>`,
+    examples: [
+      {
+        title: 'Page mode',
+        demo: 'pagination-pages',
+        code: `<!-- template -->
+<fandry-pagination
+  page-index={pageIndex}
+  page-count={pageCount}
+  onchange={handlePageChange}
+></fandry-pagination>
+
+// component
+pageIndex = 0;
+pageCount = 5;
+
+handlePageChange(event) {
+  this.pageIndex = event.detail.pageIndex;
+}`
+      }
+    ]
   },
   {
     slug: 'sidebar',

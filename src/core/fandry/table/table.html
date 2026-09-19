@@ -123,29 +123,19 @@
       <span class="selection-status">{selectionStatus}</span>
       <template if:true={enablePagination}>
         <!--
-          `onclick` delegated onto each wrapping <span> -- slot="pagination-previous"
-          / slot="pagination-next" to replace either control (e.g. numbered
-          pages instead of Prev/Next). A disabled native button never fires
-          click, so a consumer's own disabled state is respected for free;
-          `previousPageDisabled`/`nextPageDisabled`/`pageStatus` remain
-          available via getTanstackTable() if custom content needs them.
+          `onchange` is delegated onto the wrapper (see the search toolbar
+          comment above for why) -- slot="pagination" to replace the default
+          fandry-pagination entirely, e.g. with your own fandry-pagination
+          using its previous/status/next slots. Anything projected there
+          just needs to dispatch a bubbling "change" event with the target
+          page as `detail.pageIndex`, the same contract fandry-pagination
+          already fulfills; read the current page state via `pagechange` or
+          getTanstackTable().
         -->
-        <div class="pagination">
-          <span class="pagination-previous" onclick={handlePreviousPage}>
-            <slot name="pagination-previous">
-              <fandry-button variant="secondary" size="sm" disabled={previousPageDisabled}>
-                Previous
-              </fandry-button>
-            </slot>
-          </span>
-          <span class="pagination-status">{pageStatus}</span>
-          <span class="pagination-next" onclick={handleNextPage}>
-            <slot name="pagination-next">
-              <fandry-button variant="secondary" size="sm" disabled={nextPageDisabled}>
-                Next
-              </fandry-button>
-            </slot>
-          </span>
+        <div class="pagination" onchange={handlePageChange}>
+          <slot name="pagination">
+            <fandry-pagination page-index={pageIndex} page-count={totalPages}></fandry-pagination>
+          </slot>
         </div>
       </template>
     </div>
