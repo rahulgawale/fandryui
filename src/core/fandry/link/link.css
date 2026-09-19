@@ -47,7 +47,9 @@
   filter: none;
 }
 
-.link:focus-visible {
+/* The ring goes on the wrapper, which holds the tab stop (the <a> itself is
+   tabindex="-1" -- see Base.activateAnchorOnEnter). */
+.tab-stop:focus-visible {
   outline: none;
   border-radius: var(--fd-radius-sm);
   box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));

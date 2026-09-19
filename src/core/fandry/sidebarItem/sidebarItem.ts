@@ -4,7 +4,7 @@ import Base from 'fandry/base';
 // See fandry-link's link.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
 // itself controls.
-const RESERVED_ELEMENT_PROPS = ['href', 'class', 'ariaCurrent'];
+const RESERVED_ELEMENT_PROPS = ['href', 'class', 'ariaCurrent', 'tabIndex'];
 
 export default class SidebarItem extends Base {
   @api href = '';
@@ -23,6 +23,10 @@ export default class SidebarItem extends Base {
   // carries the ARIA semantics for that, not just a visual class.
   get ariaCurrent(): 'page' | undefined {
     return this.active ? 'page' : undefined;
+  }
+
+  handleKeydown(event: KeyboardEvent): void {
+    this.activateAnchorOnEnter(event);
   }
 
   get resolvedElementProps(): Record<string, unknown> {

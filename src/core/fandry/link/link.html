@@ -1,10 +1,13 @@
 <template>
-  <a
-    class={classes}
-    href={computedHref}
-    target={target}
-    rel={computedRel}
-    aria-disabled={ariaDisabled}
-    lwc:spread={resolvedElementProps}
-  ><slot></slot></a>
+  <span class="tab-stop" tabindex={tabStopIndex} onkeydown={handleKeydown}>
+    <a
+      class={classes}
+      href={computedHref}
+      target={target}
+      rel={computedRel}
+      aria-disabled={ariaDisabled}
+      tabindex="-1"
+      lwc:spread={resolvedElementProps}
+    ><slot></slot></a>
+  </span>
 </template>

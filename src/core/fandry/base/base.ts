@@ -11,6 +11,23 @@ export default class Base extends LightningElement {
   private lastWarnedElementProps: Record<string, unknown> | null = null;
 
   /**
+   * Keydown handler for the `.tab-stop` wrapper around a component's real
+   * `<a href>` (fandry-link, fandry-sidebar-item). Safari, without "Press Tab
+   * to highlight each item on a webpage" enabled, never plain-Tabs to an
+   * `<a href>` -- and unlike native form controls, an explicit tabindex
+   * doesn't override that for links. A non-link wrapper with tabindex="0" is
+   * tabbable regardless, so it takes the tab stop (the anchor itself stays
+   * tabindex="-1") and forwards Enter to the anchor, which is what a native
+   * link does when focused.
+   */
+  protected activateAnchorOnEnter(event: KeyboardEvent): void {
+    if (event.key !== "Enter" || event.target !== event.currentTarget) {
+      return;
+    }
+    (this.template.querySelector("a") as HTMLAnchorElement | null)?.click();
+  }
+
+  /**
    * Filters an `elementProps`-style prop (spread onto a native element via
    * `lwc:spread`) so it can't clobber a prop the component itself already
    * controls -- e.g. `elementProps={ checked: false }` desyncing a

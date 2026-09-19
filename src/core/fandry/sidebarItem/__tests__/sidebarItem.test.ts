@@ -42,4 +42,19 @@ describe('fandry-sidebar-item', () => {
     expect(warnSpy).toHaveBeenCalledTimes(1);
     warnSpy.mockRestore();
   });
+
+  it('puts the tab stop on a wrapper (Safari skips <a href> in plain Tab order) and forwards Enter to the anchor', () => {
+    const element = createElement('fandry-sidebar-item', { is: FdSidebarItem });
+    element.href = '/components/button';
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop') as HTMLElement;
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.tabIndex).toBe(0);
+    expect(anchor.tabIndex).toBe(-1);
+
+    const clickSpy = jest.spyOn(anchor, 'click').mockImplementation(() => {});
+    tabStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+  });
 });

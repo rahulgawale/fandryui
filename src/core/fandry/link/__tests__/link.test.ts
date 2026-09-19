@@ -78,24 +78,44 @@ describe('fandry-link', () => {
     expect(anchor.title).toBe('Opens documentation');
   });
 
-  it('does not force a tabIndex by default -- a native <a href> is already focusable, and an explicit one does not fix Safari\'s plain-Tab exclusion of links anyway (confirmed live: unlike fandry-button/fandry-radio/fandry-checkbox/fandry-select, tabIndex has no effect on it)', () => {
+  it('puts the tab stop on a wrapper, since Safari skips <a href> in plain Tab order whatever its tabindex, and takes the anchor itself out of the order', () => {
+    const element = createElement('fandry-link', { is: FdLink });
+    element.href = 'https://example.com';
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop') as HTMLElement;
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.tabIndex).toBe(0);
+    expect(anchor.tabIndex).toBe(-1);
+  });
+
+  it('forwards Enter on the tab stop to the anchor as a click', () => {
     const element = createElement('fandry-link', { is: FdLink });
     element.href = 'https://example.com';
     document.body.appendChild(element);
 
     const anchor = element.shadowRoot!.querySelector('a')!;
-    expect(anchor.hasAttribute('tabindex')).toBe(false);
+    const clickSpy = jest.spyOn(anchor, 'click').mockImplementation(() => {});
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
+    tabStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    expect(clickSpy).not.toHaveBeenCalled();
+    tabStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(clickSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('forces tabIndex to -1 while disabled, even if a consumer sets their own elementProps.tabIndex', () => {
+  it('drops the tab stop while disabled, and ignores a consumer elementProps.tabIndex', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const element = createElement('fandry-link', { is: FdLink });
     element.href = 'https://example.com';
     element.disabled = true;
     element.elementProps = { tabIndex: 3 };
     document.body.appendChild(element);
 
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
     const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.hasAttribute('tabindex')).toBe(false);
     expect(anchor.tabIndex).toBe(-1);
+    warnSpy.mockRestore();
   });
 
   it('does not let elementProps clobber href, and warns once about it', () => {
