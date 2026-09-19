@@ -1,0 +1,42 @@
+{
+  "name": "fandryui",
+  "description": "Fandry UI: source-level Lightning Web Components for LWC OSS / LWR projects. Small, extensible primitives you own and can read.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahulgawale/fandryui.git",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://fandryui.forcetrails.com",
+  "bugs": {
+    "url": "https://github.com/rahulgawale/fandryui/issues"
+  },
+  "keywords": [
+    "lwc",
+    "lightning-web-components",
+    "lwr",
+    "components",
+    "ui",
+    "design-system"
+  ],
+  "bin": {
+    "fandry": "bin/fandry.mjs"
+  },
+  "files": [
+    "modules",
+    "sfdx",
+    "bin",
+    "registry.json",
+    "lwc.config.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "lwc": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

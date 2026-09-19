@@ -3,6 +3,9 @@ import { COMPONENTS, CATEGORY_ORDER } from 'fandryui/componentsData';
 
 const PAGES = [
   { label: 'Home', value: '/' },
+  { label: 'Getting started', value: '/getting-started' },
+  { label: 'Getting started: LWR / LWC OSS', value: '/getting-started/lwr-oss' },
+  { label: 'Getting started: Salesforce DX', value: '/getting-started/salesforce' },
   { label: 'Components', value: '/components' },
   { label: 'Examples', value: '/examples' }
 ];

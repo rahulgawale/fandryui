@@ -1,0 +1,75 @@
+<template>
+  <fandryui-site-header></fandryui-site-header>
+
+  <div class="layout">
+    <fandry-sidebar aria-label="Getting started" class="nav">
+      <div class="group">
+        <fandry-text as="span" size="xs" variant="muted" class="group-label">Getting started</fandry-text>
+        <template for:each={sidebarItems} for:item="item">
+          <fandry-sidebar-item key={item.slug} href={item.href} active={item.active}>{item.name}</fandry-sidebar-item>
+        </template>
+      </div>
+    </fandry-sidebar>
+
+    <main class="content">
+      <fandry-badge>{page.badge}</fandry-badge>
+      <fandry-heading level="1" class="title">{page.title}</fandry-heading>
+      <fandry-text variant="muted" class="lede">{page.description}</fandry-text>
+
+      <template if:true={isOverview}>
+        <div class="grid">
+          <template for:each={platformCards} for:item="card">
+            <a key={card.slug} href={card.href} class="card-link">
+              <fandry-card class="card">
+                <fandry-badge>{card.badge}</fandry-badge>
+                <fandry-heading level="3">{card.name}</fandry-heading>
+                <fandry-text variant="muted" size="sm">{card.description}</fandry-text>
+              </fandry-card>
+            </a>
+          </template>
+        </div>
+      </template>
+
+      <template for:each={sections} for:item="section">
+        <section key={section.id} class="section">
+          <fandry-heading level="2" class="section-title">{section.title}</fandry-heading>
+
+          <template for:each={section.blocks} for:item="block">
+            <div key={block.key} class="block">
+              <template if:true={block.isText}>
+                <fandry-text>{block.text}</fandry-text>
+              </template>
+
+              <template if:true={block.isList}>
+                <ul class="list">
+                  <template for:each={block.items} for:item="item">
+                    <li key={item}><fandry-text>{item}</fandry-text></li>
+                  </template>
+                </ul>
+              </template>
+
+              <template if:true={block.isCode}>
+                <fandry-text as="span" size="xs" variant="muted" class="code-label">{block.label}</fandry-text>
+                <pre class="code-block"><code>{block.code}</code></pre>
+              </template>
+
+              <template if:true={block.isTree}>
+                <fandry-text as="span" size="xs" variant="muted" class="code-label">{block.label}</fandry-text>
+                <pre class="code-block tree"><code>{block.code}</code></pre>
+              </template>
+
+              <template if:true={block.isNote}>
+                <fandry-alert variant={block.variant} title={block.title}>{block.text}</fandry-alert>
+              </template>
+            </div>
+          </template>
+        </section>
+      </template>
+
+      <fandry-divider class="end-divider"></fandry-divider>
+      <fandry-text variant="muted" size="sm">Ready to build? Browse every component, its props and examples under <fandry-link href="/components">Components</fandry-link>.</fandry-text>
+    </main>
+  </div>
+
+  <fandryui-site-footer></fandryui-site-footer>
+</template>

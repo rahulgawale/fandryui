@@ -1,0 +1,17 @@
+<template>
+  <h1>Fandry consumer</h1>
+
+  <fandry-button onclick={handleSave}>Save</fandry-button>
+  <p data-id="status">{status}</p>
+
+  <!-- fandry-select depends on other Fandry components internally; the
+       consumer never installs or imports those. -->
+  <fandry-select
+    label="Fruit"
+    options={options}
+    value={fruit}
+    onchange={handleChange}
+  ></fandry-select>
+
+  <x-custom></x-custom>
+</template>

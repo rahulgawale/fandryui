@@ -1,0 +1,167 @@
+:host {
+  display: block;
+}
+
+.layout {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fd-space-6);
+}
+
+.nav {
+  position: sticky;
+  top: 4rem;
+  height: calc(100vh - 4rem);
+  min-width: 12rem;
+  padding: var(--fd-space-6) var(--fd-space-3) var(--fd-space-6) 0;
+  border-right: 1px solid var(--fd-color-border);
+}
+
+@media (max-width: 56rem) {
+  .layout {
+    flex-direction: column;
+    /* See componentDoc.css: once flex-direction flips to column, the cross
+       axis is horizontal, and flex-start would size .content to its widest
+       child (a code block) instead of the viewport. */
+    align-items: stretch;
+  }
+
+  .nav {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--fd-color-border);
+    padding: var(--fd-space-4) 0;
+  }
+}
+
+.group-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0 var(--fd-space-3);
+  margin-bottom: var(--fd-space-1);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  max-width: 46rem;
+  padding: var(--fd-space-6) 0 calc(var(--fd-space-6) * 2);
+}
+
+.title {
+  margin-top: var(--fd-space-2);
+  display: block;
+}
+
+.lede {
+  display: block;
+  margin-top: var(--fd-space-2);
+  max-width: 36rem;
+}
+
+.section {
+  margin-top: calc(var(--fd-space-6) * 1.5);
+}
+
+.section-title {
+  display: block;
+  margin-bottom: var(--fd-space-3);
+}
+
+.block + .block {
+  margin-top: var(--fd-space-4);
+}
+
+.list {
+  margin: 0;
+  padding-left: var(--fd-space-5);
+}
+
+.list li + li {
+  margin-top: var(--fd-space-2);
+}
+
+.code-label {
+  display: block;
+  margin-bottom: var(--fd-space-1);
+  font-family: var(--font-code, "Geist Mono", monospace);
+}
+
+/* Same treatment as componentDoc's code blocks (the primary -> accent
+   gradient motif, darkened until white text clears WCAG AA) so code reads the
+   same everywhere on the site. There is no code primitive to reuse. */
+.code-block {
+  margin: 0;
+  padding: var(--fd-space-4);
+  background: linear-gradient(
+    135deg,
+    hsl(var(--brand-primary-dark, 330 81% 40%)),
+    hsl(var(--brand-accent-dark, 199 89% 30%))
+  );
+  color: hsl(220 14% 96%);
+  border-radius: var(--fd-radius-md);
+  overflow-x: auto;
+  font-size: var(--fd-font-size-sm);
+  line-height: var(--fd-line-height-normal, 1.5);
+}
+
+.code-block code {
+  font-family: var(--font-code, "Geist Mono", monospace);
+  white-space: pre;
+}
+
+/* Directory trees are reference material, not something to copy, so they get
+   a quieter surface than commands. */
+.code-block.tree {
+  background: var(--fd-color-surface, transparent);
+  color: var(--fd-color-text);
+  border: 1px solid var(--fd-color-border);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--fd-space-4);
+  margin-top: var(--fd-space-6);
+  /* Two cards side by side read best as equal-height; fandry-card fills its
+     grid cell on its own (see card.css). */
+  align-items: stretch;
+}
+
+@media (max-width: 40rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--fd-radius-lg);
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+@media (hover: hover) {
+  .card-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
+  }
+}
+
+.card > * + * {
+  margin-top: var(--fd-space-2);
+  display: block;
+}
+
+.end-divider {
+  display: block;
+  margin: calc(var(--fd-space-6) * 1.5) 0 var(--fd-space-4);
+}

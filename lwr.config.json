@@ -20,6 +20,24 @@
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
+            "id": "getting-started",
+            "path": "/getting-started",
+            "rootComponent": "fandryui/gettingStarted",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "getting-started-lwr-oss",
+            "path": "/getting-started/lwr-oss",
+            "rootComponent": "fandryui/gettingStarted",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "getting-started-salesforce",
+            "path": "/getting-started/salesforce",
+            "rootComponent": "fandryui/gettingStarted",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
             "id": "components",
             "path": "/components",
             "rootComponent": "fandryui/componentsIndex",
