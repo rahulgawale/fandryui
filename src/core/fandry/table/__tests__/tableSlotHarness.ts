@@ -21,4 +21,6 @@ export default class TableSlotHarness extends LightningElement {
   // Not @api -- just avoids relying on string->number coercion for a
   // statically-bound attribute in the template.
   globalFilterDebounceMs = 0;
+  customPageIndex = 0;
+  customPageCount = 2;
 }

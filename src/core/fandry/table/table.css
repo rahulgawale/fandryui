@@ -103,14 +103,3 @@ th {
   font-size: var(--fd-font-size-xs, 0.75rem);
   color: hsl(var(--fd-text-muted));
 }
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: var(--fd-space-3);
-}
-
-.pagination-status {
-  font-size: var(--fd-font-size-xs, 0.75rem);
-  color: hsl(var(--fd-text-muted));
-}

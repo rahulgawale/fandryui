@@ -15,6 +15,14 @@ const DATA = [
 
 const flush = () => Promise.resolve();
 
+// The footer's controls live inside fandry-pagination's own shadow root.
+const getPaginationRoot = (table: HTMLElement): ShadowRoot =>
+  table.shadowRoot!.querySelector('fandry-pagination')!.shadowRoot!;
+const getPaginationStatus = (table: HTMLElement) =>
+  getPaginationRoot(table).querySelector('.status')!;
+const getPaginationButtons = (table: HTMLElement) =>
+  Array.from(getPaginationRoot(table).querySelectorAll('fandry-button')) as HTMLElement[];
+
 describe('fandry-table', () => {
   afterEach(() => {
     while (document.body.firstChild) {
@@ -213,7 +221,7 @@ describe('fandry-table', () => {
     element.pageSize = 2;
     document.body.appendChild(element);
 
-    expect(element.shadowRoot!.querySelector('.pagination')).toBeNull();
+    expect(element.shadowRoot!.querySelector('fandry-pagination')).toBeNull();
     expect(element.shadowRoot!.querySelectorAll('tbody tr').length).toBe(
       DATA.length
     );
@@ -231,12 +239,11 @@ describe('fandry-table', () => {
     expect(rows.length).toBe(2);
     expect(rows[0].querySelectorAll('td')[0].textContent).toBe('Bea');
 
-    const status = element.shadowRoot!.querySelector('.pagination-status')!;
-    expect(status.textContent).toBe('Page 1 of 2');
+    expect(getPaginationStatus(element).textContent).toBe('Page 1 of 2');
 
-    const [previousButton, nextButton] = Array.from(
-      element.shadowRoot!.querySelectorAll('.pagination fandry-button')
-    ) as (HTMLElement & { disabled: boolean })[];
+    const [previousButton, nextButton] = getPaginationButtons(element) as (HTMLElement & {
+      disabled: boolean;
+    })[];
     expect(previousButton.disabled).toBe(true);
     expect(nextButton.disabled).toBe(false);
 
@@ -246,9 +253,7 @@ describe('fandry-table', () => {
     rows = element.shadowRoot!.querySelectorAll('tbody tr');
     expect(rows.length).toBe(1);
     expect(rows[0].querySelectorAll('td')[0].textContent).toBe('Cass');
-    expect(element.shadowRoot!.querySelector('.pagination-status')!.textContent).toBe(
-      'Page 2 of 2'
-    );
+    expect(getPaginationStatus(element).textContent).toBe('Page 2 of 2');
     expect(previousButton.disabled).toBe(false);
     expect(nextButton.disabled).toBe(true);
   });
@@ -271,9 +276,7 @@ describe('fandry-table', () => {
       DATA.length
     );
 
-    const nextButton = element.shadowRoot!.querySelectorAll(
-      '.pagination fandry-button'
-    )[1] as HTMLElement;
+    const nextButton = getPaginationButtons(element)[1];
     nextButton.click();
     await flush();
 
@@ -436,9 +439,7 @@ describe('fandry-table', () => {
     expect(nativeSelectAll.indeterminate).toBe(false);
 
     // ...but Cass, on page 2, was never touched.
-    const nextButton = element.shadowRoot!.querySelectorAll(
-      '.pagination fandry-button'
-    )[1] as HTMLElement;
+    const nextButton = getPaginationButtons(element)[1];
     nextButton.click();
     await flush();
 
@@ -875,7 +876,7 @@ describe('fandry-table', () => {
     expect(rowCheckboxes.every((checkbox) => checkbox.checked)).toBe(true);
   });
 
-  it('lets a consumer replace Prev/Next pagination controls via named slots, still paging', async () => {
+  it('lets a consumer replace the pagination via a named slot, still paging', async () => {
     const harness = createElement('table-slot-harness', { is: TableSlotHarness });
     harness.columns = COLUMNS;
     harness.data = DATA;
@@ -886,9 +887,10 @@ describe('fandry-table', () => {
     const tableEl = harness.shadowRoot!.querySelector('fandry-table')!;
     const customNext = harness.shadowRoot!.querySelector('.custom-next')!;
 
-    // Proof that matters: a plain native button drives real pagination
-    // through the delegated `onclick` listener on its wrapper -- any
-    // clickable element works, since a bubbling click is the whole contract.
+    // Proof that matters: a consumer's own fandry-pagination (with a plain
+    // native button in its `next` slot) drives real paging through the
+    // delegated `onchange` listener on the table's wrapper -- its bubbling
+    // `change` event with `detail.pageIndex` is the whole contract.
     customNext.dispatchEvent(new Event('click', { bubbles: true }));
     await flush();
 

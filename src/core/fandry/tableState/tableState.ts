@@ -469,6 +469,10 @@ export default class FdTableState extends Base {
     return !this.resolveTableInstance().getCanNextPage();
   }
 
+  get totalPages(): number {
+    return this.resolveTableInstance().getPageCount();
+  }
+
   get pageStatus(): string {
     const pageCount = this.resolveTableInstance().getPageCount();
     const currentPage = this.pageIndex + 1;
@@ -601,6 +605,13 @@ export default class FdTableState extends Base {
 
   handleNextPage() {
     this.resolveTableInstance().nextPage();
+  }
+
+  // Handler for fandry-pagination's `change` event (detail.pageIndex is the
+  // page to move to).
+  handlePageChange(event: CustomEvent<{ pageIndex: number }>) {
+    event.stopPropagation();
+    this.resolveTableInstance().setPageIndex(event.detail.pageIndex);
   }
 
   handleSelectionCellClick(event: Event) {
