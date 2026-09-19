@@ -24,6 +24,7 @@
       // single `*` substitution (TS paths only allow one `*` per pattern).
       "fandry/base": ["src/core/fandry/base/base"],
       "fandry/motion": ["src/core/fandry/motion/motion"],
+      "fandry/searchState": ["src/core/fandry/searchState/searchState"],
       "fandry/tableState": ["src/core/fandry/tableState/tableState"],
       "fandry/*": ["src/core/fandry/*"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
@@ -48,6 +49,8 @@
       "fandryuidemos/demoText": ["src/modules/fandryuidemos/demoText/demoText"],
       "fandryuidemos/demoButton": ["src/modules/fandryuidemos/demoButton/demoButton"],
       "fandryuidemos/demoCheckbox": ["src/modules/fandryuidemos/demoCheckbox/demoCheckbox"],
+      "fandryuidemos/demoCombobox": ["src/modules/fandryuidemos/demoCombobox/demoCombobox"],
+      "fandryuidemos/demoCommand": ["src/modules/fandryuidemos/demoCommand/demoCommand"],
       "fandryuidemos/demoInput": ["src/modules/fandryuidemos/demoInput/demoInput"],
       "fandryuidemos/demoLink": ["src/modules/fandryuidemos/demoLink/demoLink"],
       "fandryuidemos/demoRadio": ["src/modules/fandryuidemos/demoRadio/demoRadio"],

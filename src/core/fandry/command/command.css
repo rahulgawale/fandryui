@@ -1,0 +1,116 @@
+:host {
+  display: contents;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--fd-z-overlay);
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--fd-overlay-offset-top) var(--fd-space-4) var(--fd-space-4);
+
+  background: hsl(var(--fd-backdrop) / var(--fd-backdrop-opacity));
+
+  /* Motion is defined in base/motion.css; see command.ts / fandry/motion for
+     how the palette stays mounted through its exit. */
+  animation: fd-fade-in var(--fd-duration-normal) var(--fd-ease-standard);
+}
+
+.backdrop--closing {
+  animation: fd-fade-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: var(--fd-overlay-max-width-md);
+  max-height: calc(100vh - var(--fd-overlay-offset-top) - var(--fd-space-4));
+  overflow: hidden;
+
+  background: hsl(var(--fd-bg));
+  border-radius: var(--fd-radius-lg);
+  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.25);
+
+  animation: fd-fade-scale-in var(--fd-duration-normal) var(--fd-ease-emphasized);
+}
+
+.backdrop--closing .panel {
+  animation: fd-fade-scale-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+}
+
+.search {
+  flex-shrink: 0;
+  border-bottom: var(--fd-border-width) solid hsl(var(--fd-border));
+}
+
+.input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--fd-space-3) var(--fd-space-4);
+
+  font: inherit;
+  font-size: var(--fd-font-size-md);
+  color: hsl(var(--fd-text));
+  background: transparent;
+  border: none;
+}
+
+.input::placeholder {
+  color: hsl(var(--fd-text-muted));
+}
+
+/* The palette is the whole point of the screen, and this is its one tab
+   stop; the focus ring would only outline an already-obvious field. */
+.input:focus {
+  outline: none;
+}
+
+.listbox {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--fd-space-2);
+}
+
+.option {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fd-space-3);
+  padding: var(--fd-space-2) var(--fd-space-3);
+  border-radius: var(--fd-radius-sm);
+  cursor: pointer;
+}
+
+.option--active {
+  background: hsl(var(--fd-bg-muted));
+}
+
+.option--disabled {
+  opacity: var(--fd-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.option-description {
+  margin-left: auto;
+  font-size: var(--fd-font-size-xs);
+  color: hsl(var(--fd-text-muted));
+}
+
+.group-label {
+  padding: var(--fd-space-2) var(--fd-space-3) var(--fd-space-1);
+  font-size: var(--fd-font-size-xs);
+  color: hsl(var(--fd-text-muted));
+}
+
+.empty {
+  padding: var(--fd-space-4);
+  text-align: center;
+  font-size: var(--fd-font-size-sm);
+  color: hsl(var(--fd-text-muted));
+}

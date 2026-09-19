@@ -1,0 +1,63 @@
+<template>
+  <template if:true={isMounted}>
+    <div class={backdropClasses} inert={backdropInert} onclick={handleBackdropClick}>
+      <div class="panel" role="dialog" aria-modal="true" aria-label={label}>
+        <div class="search">
+          <input
+            id="input"
+            class="input"
+            type="text"
+            autocomplete="off"
+            value={query}
+            placeholder={placeholder}
+            role="combobox"
+            aria-label={label}
+            aria-autocomplete="list"
+            aria-expanded="true"
+            aria-controls="listbox"
+            aria-activedescendant={activeDescendant}
+            oninput={handleInput}
+            onkeydown={handleInputKeydown}
+          />
+        </div>
+
+        <div id="listbox" class="listbox" role="listbox" aria-label={label} onmousedown={handleListboxMouseDown}>
+          <template for:each={renderGroups} for:item="group">
+            <div key={group.key} class="group" role="group" aria-label={group.label}>
+              <template if:true={group.hasLabel}>
+                <div class="group-label" aria-hidden="true">{group.label}</div>
+              </template>
+              <template for:each={group.options} for:item="option">
+                <div
+                  key={option.id}
+                  id={option.id}
+                  class={option.classes}
+                  role="option"
+                  data-option-id={option.id}
+                  aria-selected={option.ariaSelected}
+                  aria-disabled={option.ariaDisabled}
+                  onclick={handleOptionClick}
+                  onmouseenter={handleOptionMouseEnter}
+                >
+                  <template if:true={option.component}>
+                    <lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component>
+                  </template>
+                  <template if:false={option.component}>
+                    <span class="option-label">{option.label}</span>
+                    <template if:true={option.hasDescription}>
+                      <span class="option-description">{option.description}</span>
+                    </template>
+                  </template>
+                </div>
+              </template>
+            </div>
+          </template>
+        </div>
+
+        <template if:false={hasResults}>
+          <div class="empty"><slot name="empty">No results found</slot></div>
+        </template>
+      </div>
+    </div>
+  </template>
+</template>

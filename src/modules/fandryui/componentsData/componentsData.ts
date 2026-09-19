@@ -225,6 +225,28 @@ handlePageChange(event) {
     code: `<fandry-checkbox label="Accept terms" onchange={handleChange}></fandry-checkbox>`
   },
   {
+    slug: 'combobox',
+    name: 'Combobox',
+    tag: 'fandry-combobox',
+    category: 'Forms',
+    description: 'A searchable select — type to narrow the options, then pick one.',
+    props: [
+      { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
+      { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected or typed.' },
+      { name: 'options', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The options. Search matches label, description, keywords and group; a prefix in the label ranks first.' },
+      { name: 'value', type: 'string', default: "''", description: 'Selected value. Listen for `change` (detail is the new value).' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
+      { name: 'empty (slot)', type: 'slot', default: "'No results'", description: 'Replaces the message shown when nothing matches.' }
+    ],
+    code: `<fandry-combobox
+  label="Framework"
+  placeholder="Search frameworks"
+  options={frameworkOptions}
+  value={value}
+  onchange={handleChange}
+></fandry-combobox>`
+  },
+  {
     slug: 'input',
     name: 'Input',
     tag: 'fandry-input',
@@ -451,6 +473,33 @@ handlePageChange(event) {
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Avatar size.' }
     ],
     code: `<fandry-avatar initials="JD" size="md"></fandry-avatar>`
+  },
+  {
+    slug: 'command',
+    name: 'Command',
+    tag: 'fandry-command',
+    category: 'Overlays & Data',
+    description: 'A command palette — a modal search box over a list of actions. Generic: it reports the chosen value and leaves what it does (and the Cmd+K shortcut) to you.',
+    props: [
+      { name: 'open', type: 'boolean', default: 'false', description: 'Whether the palette is shown. Listen for `toggle` (detail is the new state) and update it.' },
+      { name: 'label', type: 'string', default: "''", description: 'Accessible name of the palette.' },
+      { name: 'placeholder', type: 'string', default: "''", description: 'Hint shown in the empty search box.' },
+      { name: 'items', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The commands. Ungrouped items list first; grouped items sit under their heading.' },
+      { name: 'select (event)', type: 'CustomEvent<{ value }>', default: '—', description: 'Fired when an item is picked; the palette then closes itself.' },
+      { name: 'empty (slot)', type: 'slot', default: "'No results found'", description: 'Replaces the message shown when nothing matches.' }
+    ],
+    code: `<fandry-command
+  label="Command palette"
+  placeholder="Type a command or search…"
+  items={items}
+  open={isOpen}
+  ontoggle={handleToggle}
+  onselect={handleSelect}
+></fandry-command>
+
+// component
+handleToggle(event) { this.isOpen = event.detail; }
+handleSelect(event) { run(event.detail.value); }`
   },
   {
     slug: 'dialog',

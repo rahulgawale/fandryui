@@ -99,6 +99,11 @@
      paragraph, a row of actions) rather than a short line of prose. ---- */
   --fd-overlay-max-width-md: 32rem;
 
+  /* ---- Distance from the top of the viewport to a top-anchored modal panel
+     (e.g. fandry-command's palette) -- sits in the upper third, where the
+     eye already is, rather than dead-center like fandry-dialog. ---- */
+  --fd-overlay-offset-top: 15vh;
+
   /* ---- Focus ring (explicit, shared) ---- */
   --fd-ring-color: 222 89% 56%;
   --fd-ring-width: 2px;

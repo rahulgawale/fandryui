@@ -1,0 +1,12 @@
+<template>
+  <input class="q" oninput={handleInput} onkeydown={handleInputKeydown} aria-activedescendant={activeDescendant} />
+  <ul onmousedown={handleListboxMouseDown}>
+    <template for:each={renderGroups} for:item="group">
+      <template for:each={group.options} for:item="option">
+        <li key={option.id} id={option.id} class={option.classes} data-option-id={option.id} onclick={handleOptionClick}>
+          {option.label}
+        </li>
+      </template>
+    </template>
+  </ul>
+</template>

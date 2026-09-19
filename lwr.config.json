@@ -227,6 +227,18 @@
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
+            "id": "component-combobox",
+            "path": "/components/combobox",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "component-command",
+            "path": "/components/command",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
             "id": "examples",
             "path": "/examples",
             "rootComponent": "fandryui/examples",

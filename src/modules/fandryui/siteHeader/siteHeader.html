@@ -12,6 +12,9 @@
       </nav>
 
       <div class="actions">
+        <fandry-button variant="secondary" size="sm" onclick={handlePaletteOpen}>
+          Search <span class="shortcut">{shortcutHint}</span>
+        </fandry-button>
         <fandry-link
           href="https://github.com/rahulgawale/fandryui"
           target="_blank"
@@ -28,4 +31,13 @@
       </div>
     </div>
   </header>
+
+  <fandry-command
+    label="Search components and pages"
+    placeholder="Search components and pages…"
+    items={paletteItems}
+    open={paletteOpen}
+    ontoggle={handlePaletteToggle}
+    onselect={handlePaletteSelect}
+  ></fandry-command>
 </template>
