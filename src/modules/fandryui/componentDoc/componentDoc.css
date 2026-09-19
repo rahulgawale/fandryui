@@ -115,7 +115,7 @@
 
 .props-table thead th {
   color: var(--fd-color-muted);
-  font-weight: 600;
+  font-weight: var(--fd-font-weight-semibold);
   font-size: var(--fd-font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -143,7 +143,11 @@
      margin (5.7:1/5.8:1), the same "same hue, darken until AA passes"
      approach tokens.css's own primary/accent/success/warning already
      took. */
-  background: linear-gradient(135deg, hsl(330 81% 40%), hsl(199 89% 30%));
+  background: linear-gradient(
+    135deg,
+    hsl(var(--brand-primary-dark, 330 81% 40%)),
+    hsl(var(--brand-accent-dark, 199 89% 30%))
+  );
   color: hsl(220 14% 96%);
   border-radius: var(--fd-radius-md);
   overflow-x: auto;

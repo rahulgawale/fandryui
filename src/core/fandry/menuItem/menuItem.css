@@ -30,7 +30,7 @@
 .item:focus-visible {
   outline: none;
   background: hsl(var(--fd-bg-muted));
-  box-shadow: inset 0 0 0 var(--fd-ring-width, 2px) hsl(var(--fd-ring-color, 220 90% 56%));
+  box-shadow: inset 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
 }
 
 .item--disabled {

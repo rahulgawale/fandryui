@@ -18,7 +18,7 @@
    fandry-command's full-viewport backdrop is one of them (a sibling of the
    <header>, inside this shadow root). */
 .header {
-  background: rgba(255, 255, 255, 0.85);
+  background: color-mix(in srgb, var(--fd-color-background) 85%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--fd-color-border);
 }
@@ -37,7 +37,7 @@
   display: flex;
   align-items: center;
   gap: var(--fd-space-2);
-  font-weight: 700;
+  font-weight: var(--fd-font-weight-bold);
   font-size: var(--fd-font-size-lg, 1.125rem);
   color: var(--fd-color-text);
   text-decoration: none;
@@ -51,8 +51,8 @@
   width: 1.75rem;
   height: 1.75rem;
   border-radius: var(--fd-radius-md);
-  background: linear-gradient(135deg, hsl(330 81% 48%), hsl(199 89% 36%));
-  color: #fff;
+  background: linear-gradient(135deg, hsl(var(--brand-primary, 330 81% 48%)), hsl(var(--brand-accent, 199 89% 36%)));
+  color: var(--fd-color-on-primary);
   font-size: 0.9rem;
 }
 

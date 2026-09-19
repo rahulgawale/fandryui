@@ -7,10 +7,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--fd-space-2, 8px);
+  gap: var(--fd-space-2);
 
   font-family: inherit;
-  font-weight: 500;
+  font-weight: var(--fd-font-weight-medium);
   line-height: 1;
 
   /* --fd-button-radius is opt-in (default: the standard token, i.e. today's
@@ -19,7 +19,7 @@
      wrapped as a popover trigger, where the token's usual corner radius
      reads as a mismatched rectangle behind a circular avatar) without
      changing every other button sitewide. */
-  border-radius: var(--fd-button-radius, var(--fd-radius-md, 6px));
+  border-radius: var(--fd-button-radius, var(--fd-radius-md));
   /* --fd-button-border-width is opt-in (default: the standard token, same
      unchanged shape everywhere else) -- box-sizing: border-box (this
      project's global reset) folds border width into the fixed `height`
@@ -39,8 +39,8 @@
     border-color var(--fd-duration-fast) ease,
     box-shadow var(--fd-duration-fast) ease, color var(--fd-duration-fast) ease;
 
-  background: hsl(var(--fd-primary, 220 90% 56%));
-  color: hsl(var(--fd-primary-foreground, 0 0% 100%));
+  background: hsl(var(--fd-primary));
+  color: hsl(var(--fd-primary-foreground));
 }
 
 /* Sizes -- --fd-button-padding-x is opt-in (default: each size's own
@@ -52,26 +52,26 @@
    is also set to a full round shape. */
 .button--sm {
   height: var(--fd-control-height-sm);
-  padding: 0 var(--fd-button-padding-x, var(--fd-space-3, 12px));
+  padding: 0 var(--fd-button-padding-x, var(--fd-space-3));
   font-size: var(--fd-font-size-sm);
 }
 
 .button--md {
   height: var(--fd-control-height-md);
-  padding: 0 var(--fd-button-padding-x, var(--fd-space-4, 16px));
+  padding: 0 var(--fd-button-padding-x, var(--fd-space-4));
   font-size: var(--fd-font-size-sm);
 }
 
 .button--lg {
   height: var(--fd-control-height-lg);
   padding: 0 var(--fd-space-5);
-  font-size: var(--fd-font-size-md, 1rem);
+  font-size: var(--fd-font-size-md);
 }
 
 /* Variants */
 .button--default {
-  background: hsl(var(--fd-primary, 220 90% 56%));
-  color: hsl(var(--fd-primary-foreground, 0 0% 100%));
+  background: hsl(var(--fd-primary));
+  color: hsl(var(--fd-primary-foreground));
 }
 
 .button--default:hover:not(:disabled) {
@@ -80,32 +80,32 @@
 }
 
 .button--secondary {
-  background: hsl(var(--fd-bg, 0 0% 100%));
-  color: hsl(var(--fd-text, 220 13% 20%));
-  border-color: hsl(var(--fd-border, 220 13% 80%));
+  background: hsl(var(--fd-bg));
+  color: hsl(var(--fd-text));
+  border-color: hsl(var(--fd-border));
 }
 
 .button--secondary:hover:not(:disabled) {
   background: hsl(var(--fd-bg-muted));
-  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.15);
+  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating));
 }
 
 .button--ghost {
   background: transparent;
-  color: hsl(var(--fd-text, 220 13% 20%));
+  color: hsl(var(--fd-text));
   border-color: transparent;
 }
 
 .button--ghost:hover:not(:disabled) {
   background: hsl(var(--fd-bg-muted));
-  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.1);
+  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-subtle));
 }
 
 /* Focus */
 .button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 var(--fd-ring-width, 2px)
-    hsl(var(--fd-ring-color, 220 90% 56%));
+  box-shadow: 0 0 0 var(--fd-ring-width)
+    hsl(var(--fd-ring-color));
 }
 
 /* Disabled */

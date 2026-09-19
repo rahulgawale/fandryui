@@ -36,7 +36,7 @@
 
   background: hsl(var(--fd-bg));
   border-radius: var(--fd-radius-lg);
-  box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.25);
+  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-modal));
   padding: var(--fd-space-5);
 
   animation: fd-fade-scale-in var(--fd-duration-normal) var(--fd-ease-emphasized);

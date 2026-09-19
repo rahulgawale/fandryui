@@ -12,7 +12,7 @@
   border-radius: 50%;
   background: hsl(var(--fd-bg-muted));
   color: hsl(var(--fd-text-muted));
-  font-weight: 600;
+  font-weight: var(--fd-font-weight-semibold);
   text-transform: uppercase;
 }
 

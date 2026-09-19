@@ -7,7 +7,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-2, 8px);
+  gap: var(--fd-space-2);
   cursor: pointer;
   user-select: none;
 }
@@ -71,7 +71,7 @@
 
 /* Focus */
 .control:focus-within .circle {
-  box-shadow: 0 0 0 var(--fd-ring-width, 2px) hsl(var(--fd-ring-color, 220 90% 56%));
+  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
 }
 
 /* Disabled */
@@ -83,5 +83,5 @@
 
 /* Label */
 .label {
-  font-size: var(--fd-font-size-sm, 0.875rem);
+  font-size: var(--fd-font-size-sm);
 }

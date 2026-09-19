@@ -44,6 +44,11 @@ html {
   --fd-line-height-tight: 1.25;
   --fd-line-height-normal: 1.5;
   --fd-line-height-loose: 1.75;
+
+  /* Font weights */
+  --fd-font-weight-medium: 500;
+  --fd-font-weight-semibold: 600;
+  --fd-font-weight-bold: 700;
 }
 
 body {
@@ -51,8 +56,8 @@ body {
   font-family: var(--fd-font-sans);
   font-size: var(--fd-font-size-md);
   line-height: var(--fd-line-height-normal);
-  color: var(--fd-color-text, #111827);
-  background: var(--fd-color-background, #ffffff);
+  color: var(--fd-color-text);
+  background: var(--fd-color-background);
 }
 
 /* Headings */
@@ -65,7 +70,7 @@ h5,
 h6 {
   margin: 0 0 0.5em;
   font-family: var(--font-heading), var(--fd-font-sans);
-  font-weight: 600;
+  font-weight: var(--fd-font-weight-semibold);
   line-height: var(--fd-line-height-tight);
 }
 
@@ -76,16 +81,16 @@ h2 {
   font-size: 1.5rem;
 }
 h3 {
-  font-size: 1.25rem;
+  font-size: var(--fd-font-size-xl);
 }
 h4 {
-  font-size: 1.125rem;
+  font-size: var(--fd-font-size-lg);
 }
 h5 {
-  font-size: 1rem;
+  font-size: var(--fd-font-size-md);
 }
 h6 {
-  font-size: 0.875rem;
+  font-size: var(--fd-font-size-sm);
 }
 
 /* Text elements */

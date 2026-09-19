@@ -9,6 +9,6 @@
 }
 
 .status {
-  font-size: var(--fd-font-size-xs, 0.75rem);
+  font-size: var(--fd-font-size-xs);
   color: hsl(var(--fd-text-muted));
 }

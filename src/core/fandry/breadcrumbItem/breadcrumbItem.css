@@ -28,6 +28,6 @@
    computedHref for why this stays the same <a> tag either way. */
 .link:not([href]) {
   color: hsl(var(--fd-text));
-  font-weight: 500;
+  font-weight: var(--fd-font-weight-medium);
   cursor: default;
 }
