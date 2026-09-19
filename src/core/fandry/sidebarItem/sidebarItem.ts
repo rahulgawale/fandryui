@@ -25,7 +25,17 @@ export default class SidebarItem extends Base {
     return this.active ? 'page' : undefined;
   }
 
+  get tabStopIndex(): string | undefined {
+    return this.resolveTabStopIndex(this.elementProps, true);
+  }
+
+  handleKeydown(event: KeyboardEvent): void {
+    this.activateAnchorOnEnter(event);
+  }
+
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-sidebar-item');
+    return this.withoutTabIndex(
+      this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-sidebar-item')
+    );
   }
 }

@@ -42,4 +42,47 @@ describe('fandry-sidebar-item', () => {
     expect(warnSpy).toHaveBeenCalledTimes(1);
     warnSpy.mockRestore();
   });
+
+  it('puts the tab stop on a wrapper (Safari skips <a href> in plain Tab order) and forwards Enter to the anchor', () => {
+    const element = createElement('fandry-sidebar-item', { is: FdSidebarItem });
+    element.href = '/components/button';
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop') as HTMLElement;
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.tabIndex).toBe(0);
+    expect(anchor.tabIndex).toBe(-1);
+
+    let clicks = 0;
+    anchor.addEventListener('click', (event) => {
+      event.preventDefault();
+      clicks += 1;
+    });
+    tabStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(clicks).toBe(1);
+  });
+
+  it('carries the link role, name and aria-current on the tab stop and hides the anchor', () => {
+    const element = createElement('fandry-sidebar-item', { is: FdSidebarItem });
+    element.href = '/components/button';
+    element.active = true;
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.getAttribute('role')).toBe('link');
+    expect(tabStop.getAttribute('aria-current')).toBe('page');
+    expect(tabStop.getAttribute('aria-labelledby')).toBe(anchor.getAttribute('id'));
+    expect(anchor.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('applies a consumer elementProps.tabIndex to the tab stop', () => {
+    const element = createElement('fandry-sidebar-item', { is: FdSidebarItem });
+    element.href = '/components/button';
+    element.elementProps = { tabIndex: -1 };
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop') as HTMLElement;
+    expect(tabStop.tabIndex).toBe(-1);
+  });
 });

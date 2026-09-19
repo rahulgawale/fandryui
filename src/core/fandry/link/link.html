@@ -1,10 +1,22 @@
 <template>
-  <a
-    class={classes}
-    href={computedHref}
-    target={target}
-    rel={computedRel}
+  <span
+    class="tab-stop"
+    role="link"
+    tabindex={tabStopIndex}
+    aria-labelledby="anchor"
     aria-disabled={ariaDisabled}
-    lwc:spread={resolvedElementProps}
-  ><slot></slot></a>
+    onkeydown={handleKeydown}
+  >
+    <a
+      id="anchor"
+      class={classes}
+      href={computedHref}
+      target={target}
+      rel={computedRel}
+      aria-disabled={ariaDisabled}
+      aria-hidden="true"
+      tabindex="-1"
+      lwc:spread={resolvedElementProps}
+    ><slot></slot></a>
+  </span>
 </template>

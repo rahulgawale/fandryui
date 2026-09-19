@@ -2,6 +2,12 @@
   display: block;
 }
 
+/* Holds the tab stop; the <a> is tabindex="-1" (see Base.activateAnchorOnEnter). */
+.tab-stop {
+  display: block;
+  border-radius: var(--fd-radius-md);
+}
+
 .item {
   display: block;
   padding: var(--fd-space-2) var(--fd-space-3);

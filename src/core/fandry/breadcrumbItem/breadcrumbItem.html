@@ -3,8 +3,24 @@
     <template if:false={first}>
       <span class="separator" aria-hidden="true">/</span>
     </template>
-    <a class="link" href={computedHref} aria-current={ariaCurrent} lwc:spread={resolvedElementProps}>
-      <slot></slot>
-    </a>
+    <span
+      class="tab-stop"
+      role={linkRole}
+      tabindex={tabStopIndex}
+      aria-labelledby={labelledBy}
+      onkeydown={handleKeydown}
+    >
+      <a
+        id="anchor"
+        class="link"
+        href={computedHref}
+        aria-current={ariaCurrent}
+        aria-hidden={anchorAriaHidden}
+        tabindex="-1"
+        lwc:spread={resolvedElementProps}
+      >
+        <slot></slot>
+      </a>
+    </span>
   </li>
 </template>

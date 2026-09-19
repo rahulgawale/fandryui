@@ -47,4 +47,27 @@ describe('fandry-breadcrumb-item', () => {
     document.body.appendChild(rest);
     expect(rest.shadowRoot!.querySelector('.separator')).not.toBeNull();
   });
+
+  it('makes a linked crumb a tab stop with the link role, and leaves plain-text crumbs alone', () => {
+    const linked = createElement('fandry-breadcrumb-item', { is: FdBreadcrumbItem });
+    linked.href = '/a';
+    document.body.appendChild(linked);
+    const tabStop = linked.shadowRoot!.querySelector('.tab-stop') as HTMLElement;
+    const anchor = linked.shadowRoot!.querySelector('a')!;
+    expect(tabStop.tabIndex).toBe(0);
+    expect(tabStop.getAttribute('role')).toBe('link');
+    expect(anchor.tabIndex).toBe(-1);
+    expect(anchor.getAttribute('aria-hidden')).toBe('true');
+
+    const current = createElement('fandry-breadcrumb-item', { is: FdBreadcrumbItem });
+    current.href = '/b';
+    current.current = true;
+    document.body.appendChild(current);
+    const currentTabStop = current.shadowRoot!.querySelector('.tab-stop')!;
+    const currentAnchor = current.shadowRoot!.querySelector('a')!;
+    expect(currentTabStop.hasAttribute('tabindex')).toBe(false);
+    expect(currentTabStop.hasAttribute('role')).toBe(false);
+    expect(currentAnchor.hasAttribute('aria-hidden')).toBe(false);
+    expect(currentAnchor.getAttribute('aria-current')).toBe('page');
+  });
 });

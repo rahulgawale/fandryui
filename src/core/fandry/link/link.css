@@ -47,6 +47,10 @@
   filter: none;
 }
 
+/* The ring goes on the wrapper, which holds the tab stop (see
+   Base.activateAnchorOnEnter), and on the <a> for the rarer cases where it
+   gets focus itself (Safari's Option-Tab, programmatic focus). */
+.tab-stop:focus-visible,
 .link:focus-visible {
   outline: none;
   border-radius: var(--fd-radius-sm);

@@ -10,4 +10,12 @@
   gap: var(--fd-space-1);
   height: 100%;
   overflow-y: auto;
+  /* overflow-y: auto also clips the x-axis, which cut the items' focus ring
+     at the left/right edges. Padding gives the ring (offset + width) room
+     inside the scrollport. */
+  --sidebar-ring-room: calc(var(--fd-ring-offset) + var(--fd-ring-width));
+  padding: var(--sidebar-ring-room);
+  /* macOS overlay scrollbars (the default) take no layout space and paint
+     over the items' right edge, so leave a gutter for them. */
+  padding-inline-end: calc(var(--sidebar-ring-room) + var(--fd-space-3));
 }

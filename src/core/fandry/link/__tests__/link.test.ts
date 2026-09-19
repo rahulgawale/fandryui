@@ -78,24 +78,73 @@ describe('fandry-link', () => {
     expect(anchor.title).toBe('Opens documentation');
   });
 
-  it('does not force a tabIndex by default -- a native <a href> is already focusable, and an explicit one does not fix Safari\'s plain-Tab exclusion of links anyway (confirmed live: unlike fandry-button/fandry-radio/fandry-checkbox/fandry-select, tabIndex has no effect on it)', () => {
+  it('puts the tab stop on a wrapper, since Safari skips <a href> in plain Tab order whatever its tabindex, and takes the anchor itself out of the order', () => {
+    const element = createElement('fandry-link', { is: FdLink });
+    element.href = 'https://example.com';
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop') as HTMLElement;
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.tabIndex).toBe(0);
+    expect(anchor.tabIndex).toBe(-1);
+  });
+
+  it('forwards Enter on the tab stop to the anchor as a click, keeping modifier keys, and ignores other keys', () => {
     const element = createElement('fandry-link', { is: FdLink });
     element.href = 'https://example.com';
     document.body.appendChild(element);
 
     const anchor = element.shadowRoot!.querySelector('a')!;
-    expect(anchor.hasAttribute('tabindex')).toBe(false);
+    const clicks: MouseEvent[] = [];
+    anchor.addEventListener('click', (event) => {
+      event.preventDefault();
+      clicks.push(event as MouseEvent);
+    });
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
+    tabStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    expect(clicks).toHaveLength(0);
+    tabStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', metaKey: true, bubbles: true }));
+    expect(clicks).toHaveLength(1);
+    expect(clicks[0].metaKey).toBe(true);
+    expect(clicks[0].shiftKey).toBe(false);
   });
 
-  it('forces tabIndex to -1 while disabled, even if a consumer sets their own elementProps.tabIndex', () => {
+  it('exposes the link role and name on the tab stop and hides the anchor from assistive tech', () => {
+    const element = createElement('fandry-link', { is: FdLink });
+    element.href = 'https://example.com';
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.getAttribute('role')).toBe('link');
+    expect(anchor.getAttribute('aria-hidden')).toBe('true');
+    expect(tabStop.getAttribute('aria-labelledby')).toBe(anchor.getAttribute('id'));
+  });
+
+  it('mirrors disabled onto the tab stop and drops its tab stop', () => {
     const element = createElement('fandry-link', { is: FdLink });
     element.href = 'https://example.com';
     element.disabled = true;
-    element.elementProps = { tabIndex: 3 };
     document.body.appendChild(element);
 
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
+    expect(tabStop.getAttribute('aria-disabled')).toBe('true');
+    expect(tabStop.hasAttribute('tabindex')).toBe(false);
+  });
+
+  it('applies a consumer elementProps.tabIndex to the tab stop, not the anchor, without warning', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const element = createElement('fandry-link', { is: FdLink });
+    element.href = 'https://example.com';
+    element.elementProps = { tabIndex: -1 };
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop') as HTMLElement;
     const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.tabIndex).toBe(-1);
     expect(anchor.tabIndex).toBe(-1);
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
   });
 
   it('does not let elementProps clobber href, and warns once about it', () => {
