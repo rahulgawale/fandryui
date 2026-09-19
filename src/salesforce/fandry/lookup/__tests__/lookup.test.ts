@@ -133,12 +133,26 @@ describe('fandry-lookup', () => {
       expect(input(element).getAttribute('aria-expanded')).toBe('false');
     });
 
-    it('shows the empty message for a query with no matches', async () => {
+    it('shows the empty message once a search for the query has come back empty', async () => {
+      jest.useFakeTimers();
+      const element = create({ results: [] });
+
+      await type(element, 'zzz');
+      jest.advanceTimersByTime(300); // `search` has fired; nothing is loading
+      await flush();
+
+      expect(element.shadowRoot!.querySelector('.empty')?.textContent).toContain('No records found');
+    });
+
+    it('does not claim "No records found" (it says Searching) before the search has even fired', async () => {
+      jest.useFakeTimers();
       const element = create({ results: [] });
 
       await type(element, 'zzz');
 
-      expect(element.shadowRoot!.querySelector('.empty')?.textContent).toContain('No records found');
+      expect(element.shadowRoot!.querySelector('.empty')).toBeNull();
+      expect(element.shadowRoot!.querySelector('fandry-spinner')).not.toBeNull();
+      expect(element.shadowRoot!.querySelector('[role="listbox"]')!.getAttribute('aria-busy')).toBe('true');
     });
 
     it('shows a searching indicator, and no empty message, while loading', async () => {
@@ -247,6 +261,25 @@ describe('fandry-lookup', () => {
 
       expect(element.shadowRoot!.querySelector('.selected-label')?.textContent).toBe('Acme Corp');
       expect(element.value).toBe('001A');
+    });
+
+    it('does nothing when the chosen record\'s label is clicked (there is no input to open)', async () => {
+      const element = create({ record: ACME });
+      const onSearch = jest.fn();
+      element.addEventListener('search', onSearch);
+
+      (element.shadowRoot!.querySelector('.selected-label') as HTMLElement).click();
+      (element.shadowRoot!.querySelector('.field') as HTMLElement).click();
+      await flush();
+
+      expect(onSearch).not.toHaveBeenCalled();
+
+      // ...so clearing later opens nothing on its own.
+      (element.shadowRoot!.querySelector('.clear') as HTMLElement).click();
+      await flush();
+      await flush();
+      expect(element.shadowRoot!.querySelector('.panel')).toBeNull();
+      expect(input(element).getAttribute('aria-expanded')).toBe('false');
     });
 
     it('ignores Enter while an IME composition is being confirmed', async () => {
@@ -452,6 +485,21 @@ describe('fandry-lookup', () => {
       expect(outer).toHaveBeenCalledTimes(1);
 
       document.removeEventListener('keydown', outer);
+    });
+
+    it('keeps the input focused when any part of the panel is pressed, not only the listbox', async () => {
+      const element = create({ results: [], loading: true });
+      await type(element, 'ac');
+
+      const pressed = (target: Element) => {
+        const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
+        target.dispatchEvent(event);
+        return event.defaultPrevented;
+      };
+
+      expect(pressed(element.shadowRoot!.querySelector('.status')!)).toBe(true);
+      expect(pressed(element.shadowRoot!.querySelector('.panel')!)).toBe(true);
+      expect(pressed(element.shadowRoot!.querySelector('[role="listbox"]')!)).toBe(true);
     });
 
     it('closes on blur', async () => {

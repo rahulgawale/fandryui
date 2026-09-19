@@ -38,8 +38,8 @@
       <span class="chevron" aria-hidden="true"></span>
 
       <template if:true={isMounted}>
-        <div class={panelClasses} inert={panelInert}>
-          <div id="listbox" class="listbox" role="listbox" onmousedown={handleListboxMouseDown}>
+        <div class={panelClasses} inert={panelInert} onmousedown={handleListboxMouseDown}>
+          <div id="listbox" class="listbox" role="listbox">
             <template for:each={renderGroups} for:item="group">
               <div key={group.key} class="group" role="group" aria-label={group.label}>
                 <template if:true={group.hasLabel}>

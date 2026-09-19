@@ -121,6 +121,11 @@ export default class FdLookup extends FdSearchState {
 
   private searchTimer: ReturnType<typeof setTimeout> | null = null;
 
+  // True from the keystroke until `search` fires: the consumer hasn't been
+  // asked yet, so nothing on screen answers the current text -- "No records
+  // found" would be a claim about a search that hasn't happened.
+  @track searchPending = false;
+
   // Where focus goes after the next render: picking swaps the input for the
   // pill (its clear button is the one control left), clearing swaps it back.
   private focusTarget: 'input' | 'clear' | null = null;
@@ -225,7 +230,13 @@ export default class FdLookup extends FdSearchState {
   // Nothing to show for an empty query with no records to offer: no panel,
   // not an empty box.
   private get hasPanelContent(): boolean {
-    return this.loading || this.hasResults || this.hasQuery;
+    return this.searching || this.hasResults || this.hasQuery;
+  }
+
+  // Waiting on an answer: the debounce hasn't fired, or the consumer's query
+  // is in flight.
+  get searching(): boolean {
+    return this.loading || this.searchPending;
   }
 
   get showPanel(): boolean {
@@ -233,7 +244,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   get showEmpty(): boolean {
-    return !this.loading && !this.hasResults && this.hasQuery;
+    return !this.searching && !this.hasResults && this.hasQuery;
   }
 
   get ariaExpanded(): 'true' | 'false' {
@@ -245,7 +256,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   get ariaBusy(): 'true' | 'false' {
-    return this.loading ? 'true' : 'false';
+    return this.searching ? 'true' : 'false';
   }
 
   get openActiveDescendant(): string | null {
@@ -312,6 +323,7 @@ export default class FdLookup extends FdSearchState {
 
   private scheduleSearch() {
     this.cancelSearch();
+    this.searchPending = true;
     this.searchTimer = setTimeout(() => this.dispatchSearch(), SEARCH_DEBOUNCE_MS);
   }
 
@@ -320,6 +332,7 @@ export default class FdLookup extends FdSearchState {
       clearTimeout(this.searchTimer);
       this.searchTimer = null;
     }
+    this.searchPending = false;
   }
 
   private openList() {
@@ -412,7 +425,9 @@ export default class FdLookup extends FdSearchState {
   // The field is bigger than its input once chips fill it: a click on the
   // empty space (not a chip or button) should still land in the input.
   handleFieldClick(event: MouseEvent) {
-    if (this.disabled || (event.target as HTMLElement).closest('button, input, .pill')) {
+    // Nothing to focus or open when the field is showing a chosen record
+    // instead of the input.
+    if (this.disabled || this.showSelected || (event.target as HTMLElement).closest('button, input, .pill')) {
       return;
     }
 

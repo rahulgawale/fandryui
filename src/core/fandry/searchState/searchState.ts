@@ -95,7 +95,8 @@ export function scoreItem(item: FdSearchItem, terms: string[]): number {
  * via `commit`, and renders `renderGroups` inside its own template. It binds:
  *
  *   input   oninput={handleInput}  onkeydown={handleInputKeydown}
- *   listbox onmousedown={handleListboxMouseDown}
+ *   popup   onmousedown={handleListboxMouseDown}  (the whole panel, not just the
+ *           listbox: a press on its padding or status row must not blur the input)
  *   option  onclick={handleOptionClick}  onmousemove={handleOptionMouseMove}
  *           data-option-id={option.id}
  *

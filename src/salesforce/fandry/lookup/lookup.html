@@ -82,8 +82,8 @@
       </div>
 
       <template if:true={showPanel}>
-        <div class={panelClasses} inert={panelInert}>
-          <template if:true={loading}>
+        <div class={panelClasses} inert={panelInert} onmousedown={handleListboxMouseDown}>
+          <template if:true={searching}>
             <div class="status">
               <fandry-spinner size="sm" label="Searching"></fandry-spinner>
               <span aria-hidden="true">Searching…</span>
@@ -96,7 +96,6 @@
             role="listbox"
             aria-busy={ariaBusy}
             aria-multiselectable={ariaMultiselectable}
-            onmousedown={handleListboxMouseDown}
           >
             <template for:each={renderGroups} for:item="group">
               <div key={group.key} class="group" role="group" aria-label={group.label}>

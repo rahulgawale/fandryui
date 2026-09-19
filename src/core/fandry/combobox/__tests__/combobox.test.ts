@@ -223,6 +223,20 @@ describe('fandry-combobox', () => {
     expect(event.defaultPrevented).toBe(true);
   });
 
+  it('keeps the input focused when the empty message or panel padding is pressed', async () => {
+    const element = create();
+    await type(element, 'zzz');
+
+    const pressed = (target: Element) => {
+      const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
+      target.dispatchEvent(event);
+      return event.defaultPrevented;
+    };
+
+    expect(pressed(element.shadowRoot!.querySelector('.empty')!)).toBe(true);
+    expect(pressed(element.shadowRoot!.querySelector('.panel')!)).toBe(true);
+  });
+
   it('does not open when disabled', async () => {
     const element = create({ disabled: true });
 
