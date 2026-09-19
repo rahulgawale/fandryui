@@ -1,3 +1,10 @@
+# [0.13.0](https://github.com/rahulgawale/fandryui/compare/v0.12.0...v0.13.0) (2026-09-19)
+
+
+### Features
+
+* add fandry-lookup (single and multiple) in a new src/salesforce layer ([#67](https://github.com/rahulgawale/fandryui/issues/67)) ([6c24df3](https://github.com/rahulgawale/fandryui/commit/6c24df3f5d0aa6e10f11f473ddca3b537590dce1))
+
 # [0.12.0](https://github.com/rahulgawale/fandryui/compare/v0.11.0...v0.12.0) (2026-09-19)
 
 
