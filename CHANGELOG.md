@@ -1,3 +1,10 @@
+# [0.12.0](https://github.com/rahulgawale/fandryui/compare/v0.11.0...v0.12.0) (2026-09-19)
+
+
+### Features
+
+* add fandry-combobox and fandry-command on a shared search core ([#66](https://github.com/rahulgawale/fandryui/issues/66)) ([9c4abf8](https://github.com/rahulgawale/fandryui/commit/9c4abf8f7774831f4811df74d98544e35d056403))
+
 # [0.11.0](https://github.com/rahulgawale/fandryui/compare/v0.10.0...v0.11.0) (2026-09-19)
 
 
