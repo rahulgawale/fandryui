@@ -17,10 +17,9 @@
   font-size: var(--fd-font-size-sm);
   color: hsl(var(--fd-text));
 
-  /* Plays on mount the same way fandry-tooltip's entrance animation does --
-     see tooltip.css for why `animation`, not a `transition`, is what
-     actually runs on initial insertion. */
-  animation: fd-toast-in var(--fd-duration-fast) var(--fd-ease-in-out);
+  /* Motion is defined in base/motion.css; see toast.ts / fandry/motion for
+     how the toast stays mounted through its exit. */
+  animation: fd-fade-up-in var(--fd-duration-normal) var(--fd-ease-standard);
 }
 
 .toast--success {
@@ -35,33 +34,6 @@
   border-left-color: hsl(var(--fd-danger));
 }
 
-@keyframes fd-toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(var(--fd-space-2));
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fd-toast-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(var(--fd-space-2));
-  }
-}
-
 .toast--closing {
-  /* A distinct animation-name, not the entrance keyframes reversed --
-     see fandry-tooltip's own `.panel--closing` for why that doesn't reliably
-     restart in real browsers. `forwards` holds the faded-out end state
-     for the gap between the animation finishing and toast.ts's
-     handleAnimationEnd actually removing this element. */
-  animation: fd-toast-out var(--fd-duration-fast) var(--fd-ease-in-out) forwards;
+  animation: fd-fade-up-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
 }

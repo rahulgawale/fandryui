@@ -1,5 +1,6 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
+import { exitFinished } from 'fandry/motion';
 
 export default class FdToast extends Base {
   @api variant: 'info' | 'success' | 'warning' | 'danger' = 'info';
@@ -29,6 +30,7 @@ export default class FdToast extends Base {
   @track isClosing = false;
 
   private dismissTimerId: number | null = null;
+  private dismissNotified = false;
 
   connectedCallback() {
     this.scheduleAutoDismiss();
@@ -77,19 +79,24 @@ export default class FdToast extends Base {
     this.isClosing = true;
   }
 
-  // CSS-driven, not a `setTimeout` guessing the animation's duration --
-  // see fandry-tooltip's own handleAnimationEnd for why. Only a completed exit
-  // animation should notify the consumer; this event fires on the toast's
-  // own mount-in animation too, so isClosing (already true only once
-  // dismiss() has run) is what tells the two apart.
-  handleAnimationEnd = () => {
-    if (this.isClosing) {
+  // Only a finished *exit* should notify the consumer, so this waits for
+  // the closing animation (see fandry/motion) rather than dismiss() itself.
+  // A toast can't be reopened once dismissed, so unlike the other transient
+  // components there's nothing to re-check afterwards -- just don't notify
+  // twice if it re-renders while exiting.
+  renderedCallback() {
+    if (!this.isClosing || this.dismissNotified) {
+      return;
+    }
+
+    this.dismissNotified = true;
+    exitFinished(this.template.querySelector('.toast')).then(() => {
       // bubbles-only: the consumer listens via ondismiss on the host
       // itself (already in their own light DOM) to remove this fandry-toast
       // from whatever list rendered it -- no need to cross further shadow
       // boundaries. See fandry-popover's `toggle` event for the same
       // reasoning.
       this.dispatchEvent(new CustomEvent('dismiss', { bubbles: true }));
-    }
-  };
+    });
+  }
 }

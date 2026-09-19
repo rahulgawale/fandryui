@@ -11,12 +11,7 @@
     <slot name="trigger"></slot>
   </span>
   <template if:true={isVisible}>
-    <div
-      class={panelClasses}
-      role="tooltip"
-      id={tooltipId}
-      onanimationend={handleAnimationEnd}
-    >
+    <div class={panelClasses} role="tooltip" id={tooltipId}>
       <slot></slot>
       <span class="arrow" aria-hidden="true"></span>
     </div>

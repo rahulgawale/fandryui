@@ -22,7 +22,7 @@
   border-radius: var(--fd-radius-lg);
   text-decoration: none;
   color: hsl(var(--fd-text));
-  transition: border-color var(--fd-duration-fast) var(--fd-ease-in-out);
+  transition: border-color var(--fd-duration-fast) var(--fd-ease-standard);
 }
 
 .link:hover {

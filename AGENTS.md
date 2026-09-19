@@ -88,6 +88,18 @@ Hard-coded values:
 
 If a token doesn't exist, add it to `fandry/base/tokens.css` first.
 
+### Motion
+
+Motion is CSS-first and lives inside the component that owns it. Use the
+`--fd-duration-*`/`--fd-ease-*` tokens and the keyframes in
+`fandry/base/motion.css`; animate `opacity` and transforms, not layout. A
+transient primitive (one that mounts/unmounts a panel) stays mounted until
+its exit animation has finished, via `exitFinished()` from `fandry/motion` —
+not `animationend`, and not a `setTimeout` guessing a duration. Reduced motion
+is handled by the tokens themselves (they go to `0ms`), so a component never
+needs its own `prefers-reduced-motion` query. Do not add animation props,
+a generic motion/transition component, or an animation dependency.
+
 ---
 
 ### Base Class (`src/core/fandry/base/`)

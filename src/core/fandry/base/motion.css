@@ -1,0 +1,79 @@
+/* ---- Motion primitives ----
+   Internal keyframes shared by every fandry-* shadow root (base.css imports
+   this). Not a public utility surface -- a component picks one and applies
+   it to its own panel:
+
+     .panel         { animation: fd-fade-scale-in var(--fd-duration-normal) var(--fd-ease-standard); }
+     .panel--closing { animation: fd-fade-scale-out var(--fd-duration-fast) var(--fd-ease-standard) forwards; }
+
+   The entrance plays on its own the moment the panel is mounted (a CSS
+   `transition` can't -- there's no earlier style to interpolate from). The
+   exit needs a distinct animation-name, not the entrance reversed: changing
+   the name is what makes real browsers start a fresh run. `forwards` holds
+   the faded-out end state until the component unmounts the panel (see
+   fandry/motion).
+
+   Only `opacity` and transforms are animated. Transforms use the individual
+   `translate`/`scale` properties rather than `transform`, so they compose
+   with a `transform` the panel already carries (e.g. fandry-tooltip's
+   centering translate) instead of overwriting it. Each entrance keyframe
+   omits `to` -- it animates to whatever the element's resting style is.
+
+   Durations, easing, and the prefers-reduced-motion override live in
+   tokens.css; nothing here needs its own media query. */
+
+@keyframes fd-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fd-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fd-fade-up-in {
+  from {
+    opacity: 0;
+    translate: 0 var(--fd-space-2);
+  }
+}
+
+@keyframes fd-fade-up-out {
+  to {
+    opacity: 0;
+    translate: 0 var(--fd-space-2);
+  }
+}
+
+@keyframes fd-fade-scale-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+@keyframes fd-fade-scale-out {
+  to {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+/* Direction comes from --fd-slide-x / --fd-slide-y, set by the component on
+   the panel (e.g. a popover slides away from its trigger). */
+@keyframes fd-slide-in {
+  from {
+    opacity: 0;
+    translate: var(--fd-slide-x, 0) var(--fd-slide-y, 0);
+  }
+}
+
+@keyframes fd-slide-out {
+  to {
+    opacity: 0;
+    translate: var(--fd-slide-x, 0) var(--fd-slide-y, 0);
+  }
+}

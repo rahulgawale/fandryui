@@ -14,7 +14,7 @@
   height: 100%;
   border-radius: var(--fd-radius-sm);
   background: hsl(var(--fd-primary));
-  transition: width var(--fd-duration-fast) var(--fd-ease-in-out);
+  transition: width var(--fd-duration-fast) var(--fd-ease-standard);
 }
 
 .bar--indeterminate {

@@ -1,15 +1,13 @@
 import { createElement } from 'lwc';
 import TooltipTriggerHarness from './tooltipTriggerHarness';
+import { mockAnimations, settle, AnimationMock } from '../../motion/__tests__/animationMock';
 
 const flush = () => Promise.resolve();
 
-// jsdom doesn't actually run CSS animations, so the exit animation's real
-// `animationend` never fires on its own -- this stands in for the browser
-// finishing it, the same way `jest.advanceTimersByTime` stands in for a
-// real setTimeout elsewhere in this file.
-const endAnimation = (panel: Element) => {
-  panel.dispatchEvent(new Event('animationend'));
-};
+// jsdom doesn't run CSS animations, so the mock stands in for the browser's
+// animation timeline: the exit animation stays pending until
+// `animations.finish()` -- see motion/__tests__/animationMock.ts.
+let animations: AnimationMock;
 
 const mount = (openDelay = 300) => {
   const harness = createElement('tooltip-trigger-harness', { is: TooltipTriggerHarness });
@@ -21,9 +19,11 @@ const mount = (openDelay = 300) => {
 describe('fandry-tooltip', () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    animations = mockAnimations();
   });
 
   afterEach(() => {
+    animations.restore();
     jest.useRealTimers();
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
@@ -112,8 +112,7 @@ describe('fandry-tooltip', () => {
     expect(closingPanel).not.toBeNull();
     expect(closingPanel!.classList.contains('panel--closing')).toBe(true);
 
-    endAnimation(closingPanel!);
-    await flush();
+    await animations.finish();
     expect(tooltip.shadowRoot!.querySelector('[role="tooltip"]')).toBeNull();
   });
 
@@ -133,12 +132,12 @@ describe('fandry-tooltip', () => {
     const closingPanel = tooltip.shadowRoot!.querySelector('[role="tooltip"]')!;
     expect(closingPanel.classList.contains('panel--closing')).toBe(true);
 
-    endAnimation(closingPanel);
-    await flush();
+    await animations.finish();
     expect(tooltip.shadowRoot!.querySelector('[role="tooltip"]')).toBeNull();
   });
 
-  it("does not unmount on the entrance animation's own animationend", async () => {
+  it('unmounts when nothing is animating (reduced motion, or animation overridden to none)', async () => {
+    animations.restore();
     const harness = mount(300);
     await flush();
 
@@ -147,12 +146,49 @@ describe('fandry-tooltip', () => {
 
     trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
     await flush();
+    trigger.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+    await settle();
 
-    const panel = tooltip.shadowRoot!.querySelector('[role="tooltip"]')!;
-    endAnimation(panel);
+    expect(tooltip.shadowRoot!.querySelector('[role="tooltip"]')).toBeNull();
+  });
+
+  it('refocusing during the exit keeps the panel and cancels the pending removal', async () => {
+    const harness = mount(300);
     await flush();
 
-    expect(tooltip.shadowRoot!.querySelector('[role="tooltip"]')).not.toBeNull();
+    const tooltip = harness.shadowRoot!.querySelector('fandry-tooltip')!;
+    const trigger = harness.shadowRoot!.querySelector('button')!;
+
+    trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await flush();
+    trigger.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+    await settle();
+    trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await settle();
+    await animations.finish();
+
+    const panel = tooltip.shadowRoot!.querySelector('[role="tooltip"]');
+    expect(panel).not.toBeNull();
+    expect(panel!.classList.contains('panel--closing')).toBe(false);
+  });
+
+  it('leaves no stale panel or aria-describedby after repeated show/hide cycles', async () => {
+    const harness = mount(300);
+    await flush();
+
+    const tooltip = harness.shadowRoot!.querySelector('fandry-tooltip')!;
+    const trigger = harness.shadowRoot!.querySelector('button')!;
+
+    for (let i = 0; i < 5; i++) {
+      trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      await settle();
+      trigger.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+      await settle();
+      await animations.finish();
+    }
+
+    expect(tooltip.shadowRoot!.querySelectorAll('[role="tooltip"]').length).toBe(0);
+    expect(trigger.hasAttribute('aria-describedby')).toBe(false);
   });
 
   it('sets aria-describedby on the trigger while open and removes it on close', async () => {

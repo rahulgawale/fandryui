@@ -23,6 +23,7 @@
       // can't express the namespace/name/name.ts folder convention with a
       // single `*` substitution (TS paths only allow one `*` per pattern).
       "fandry/base": ["src/core/fandry/base/base"],
+      "fandry/motion": ["src/core/fandry/motion/motion"],
       "fandry/tableState": ["src/core/fandry/tableState/tableState"],
       "fandry/*": ["src/core/fandry/*"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],

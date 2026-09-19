@@ -1,5 +1,6 @@
-import { api } from 'lwc';
+import { api, track } from 'lwc';
 import Base from 'fandry/base';
+import { exitFinished } from 'fandry/motion';
 
 export default class Popover extends Base {
   @api placement: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
@@ -13,6 +14,10 @@ export default class Popover extends Base {
   @api align: 'start' | 'end' = 'start';
 
   private _open = false;
+
+  // Whether the panel is in the DOM: true while open, and stays true through
+  // the exit animation after `open` goes false (see fandry/motion).
+  @track isMounted = false;
 
   // A plain `@api open = false` field can't distinguish "just closed" from
   // "still closed" -- needed below to catch every path that can close this
@@ -32,13 +37,45 @@ export default class Popover extends Base {
     const wasOpen = this._open;
     this._open = value;
 
+    if (value) {
+      this.isMounted = true;
+    }
+
     if (wasOpen && !value) {
       this.restoreFocusIfStillOurs();
     }
   }
 
   get panelClasses(): string {
-    return ['panel', `panel--${this.placement}`, `panel--align-${this.align}`].join(' ');
+    return [
+      'panel',
+      `panel--${this.placement}`,
+      `panel--align-${this.align}`,
+      this.open ? '' : 'panel--closing'
+    ]
+      .filter(Boolean)
+      .join(' ');
+  }
+
+  // A closing panel is on its way out: keep it from taking focus or clicks
+  // for the few ms it takes to fade. `''` (attribute present) / `undefined`
+  // (attribute removed) because `inert` is a boolean attribute.
+  get panelInert(): string | undefined {
+    return this.open ? undefined : '';
+  }
+
+  renderedCallback() {
+    if (this.open || !this.isMounted) {
+      return;
+    }
+
+    const panel = this.template.querySelector('.panel');
+    exitFinished(panel).then(() => {
+      // Reopened while it was exiting -- the panel is live again.
+      if (!this.open) {
+        this.isMounted = false;
+      }
+    });
   }
 
   connectedCallback() {

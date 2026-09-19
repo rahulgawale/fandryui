@@ -18,18 +18,30 @@
   border-radius: var(--fd-radius-md);
   box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.15);
   padding: var(--fd-space-2);
+
+  /* Slides out from the trigger's side (direction set per placement
+     below). Motion is defined in base/motion.css; see popover.ts /
+     fandry/motion for how the panel stays mounted through its exit. */
+  animation: fd-slide-in var(--fd-duration-normal) var(--fd-ease-standard);
+}
+
+.panel--closing {
+  animation: fd-slide-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  pointer-events: none;
 }
 
 .panel--bottom {
   top: 100%;
   left: 0;
   margin-top: var(--fd-space-1);
+  --fd-slide-y: calc(var(--fd-space-2) * -1);
 }
 
 .panel--top {
   bottom: 100%;
   left: 0;
   margin-bottom: var(--fd-space-1);
+  --fd-slide-y: var(--fd-space-2);
 }
 
 /* align="end" -- right-edge-aligned instead of left-edge-aligned, for a
@@ -47,10 +59,12 @@
   right: 100%;
   top: 0;
   margin-right: var(--fd-space-1);
+  --fd-slide-x: var(--fd-space-2);
 }
 
 .panel--right {
   left: 100%;
   top: 0;
   margin-left: var(--fd-space-1);
+  --fd-slide-x: calc(var(--fd-space-2) * -1);
 }

@@ -128,6 +128,50 @@ tokens as every primitive) in `src/assets/styles/global.css`:
 See `src/core/CORE_BOUNDARIES.md` for why these are CSS patterns, not
 components.
 
+## Motion
+
+Fandry's motion is CSS-first, small, and lives inside each component. There
+is no animation library, no `<fandry-motion>`/`<fandry-transition>` wrapper,
+and no `animation`/`duration`/`easing` props: the transient primitives
+(`fandry-popover`, `fandry-menu` inside it, `fandry-dialog`, `fandry-tooltip`,
+`fandry-toast`) already know how to enter and exit, so this is all a
+consumer writes:
+
+```html
+<fandry-dialog open={isOpen} label="Delete item" ontoggle={handleToggle}>...</fandry-dialog>
+```
+
+- **Tokens** (`src/core/fandry/base/tokens.css`): `--fd-duration-fast` (120ms),
+  `--fd-duration-normal` (200ms), `--fd-duration-slow` (320ms),
+  `--fd-ease-standard`, `--fd-ease-emphasized`. Components enter with
+  `normal` and exit with `fast`.
+- **Primitives** (`src/core/fandry/base/motion.css`): internal `@keyframes` for
+  fade, fade-up, fade-scale, and slide (each with an `-in`/`-out` pair). They
+  animate only `opacity` and transforms. A component applies one to its own
+  panel, inside its own shadow tree — there's nothing global to select, and
+  internal markup stays an implementation detail.
+- **Enter/exit**: a panel plays its entrance the moment it mounts. On close it
+  stays in the DOM, non-interactive (`inert`), until its exit animation has
+  finished, then unmounts. That's the whole lifecycle (entering → open →
+  exiting → removed) — CSS does the animating, and `fandry/motion`'s
+  `exitFinished()` (a few lines over the native Web Animations API's
+  `getAnimations()`) is what tells the component when it's safe to remove the
+  panel. It resolves right away when nothing is animating, so a panel can
+  never get stuck in the DOM. Focus and scroll-lock are handed back at the
+  moment of closing, never after the exit.
+- **Reduced motion**: under `prefers-reduced-motion: reduce` the duration
+  tokens become `0ms`. Every state change and lifecycle step still happens,
+  instantly; consumers don't opt in. Looping loading indicators (spinner,
+  skeleton, indeterminate progress) keep running — they signal "still
+  working", not a transition.
+- **Custom motion**: it's ordinary HTML/CSS/LWC around Fandry components.
+  Anything Fandry doesn't animate, or a motion you'd rather own end to end,
+  is plain CSS in your own component; Fandry exposes no animation hooks to
+  configure.
+
+Live examples: the popover, menu, dialog, tooltip, and toast pages under
+`/components`.
+
 ## Design Principles
 
 - Extensibility > completeness

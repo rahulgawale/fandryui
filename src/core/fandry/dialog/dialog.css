@@ -14,7 +14,13 @@
 
   background: hsl(var(--fd-backdrop) / var(--fd-backdrop-opacity));
 
-  animation: fd-dialog-backdrop-in var(--fd-duration-fast) var(--fd-ease-in-out);
+  /* Motion is defined in base/motion.css; see dialog.ts / fandry/motion for
+     how the dialog stays mounted through its exit. */
+  animation: fd-fade-in var(--fd-duration-normal) var(--fd-ease-standard);
+}
+
+.backdrop--closing {
+  animation: fd-fade-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
 }
 
 .panel {
@@ -33,7 +39,11 @@
   box-shadow: var(--fd-shadow-sm) hsla(0 0% 0% / 0.25);
   padding: var(--fd-space-5);
 
-  animation: fd-dialog-panel-in var(--fd-duration-fast) var(--fd-ease-in-out);
+  animation: fd-fade-scale-in var(--fd-duration-normal) var(--fd-ease-emphasized);
+}
+
+.backdrop--closing .panel {
+  animation: fd-fade-scale-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
 }
 
 .panel:focus {
@@ -43,24 +53,4 @@
      keyboard interaction, but Tab never lands here on its own, so this
      would only ever show as an odd flash on open. */
   outline: none;
-}
-
-@keyframes fd-dialog-backdrop-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fd-dialog-panel-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(var(--fd-space-2));
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
 }

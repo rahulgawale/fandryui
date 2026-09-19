@@ -1,5 +1,6 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
+import { exitFinished } from 'fandry/motion';
 
 // Each instance needs a genuinely unique id, not a static literal -- a
 // consumer can have two fandry-tooltips open at once (e.g. one left open by a
@@ -34,9 +35,9 @@ export default class FdTooltip extends Base {
   // Separate from `isOpen`: `if:true={isVisible}` is what actually mounts
   // /unmounts the panel, and stays true a little longer than `isOpen` on
   // the way out so the closing animation has a real element to play on --
-  // see hide() and handleAnimationEnd below. `isOpen` alone is what every
-  // other concern (aria-describedby, Escape, the `toggle` event) keys off,
-  // unchanged from before this animation existed.
+  // see hide() and renderedCallback below (and fandry/motion). `isOpen`
+  // alone is what every other concern (aria-describedby, Escape, the
+  // `toggle` event) keys off.
   @track isVisible = false;
 
   private readonly tooltipId = `fandry-tooltip-${++idCounter}`;
@@ -57,16 +58,24 @@ export default class FdTooltip extends Base {
   // that has to be wired off the real rendered id read back here, not
   // `this.tooltipId` directly, which could silently drift from it.
   renderedCallback() {
+    const panel = this.template.querySelector('.panel');
     const trigger = this.getTriggerElement();
-    if (!trigger) {
-      return;
+
+    if (trigger) {
+      if (this.isOpen && panel) {
+        trigger.setAttribute('aria-describedby', panel.id);
+      } else {
+        trigger.removeAttribute('aria-describedby');
+      }
     }
 
-    const panel = this.template.querySelector('.panel');
-    if (this.isOpen && panel) {
-      trigger.setAttribute('aria-describedby', panel.id);
-    } else {
-      trigger.removeAttribute('aria-describedby');
+    if (!this.isOpen && this.isVisible) {
+      exitFinished(panel).then(() => {
+        // Hovered/focused again while it was exiting -- the panel is live.
+        if (!this.isOpen) {
+          this.isVisible = false;
+        }
+      });
     }
   }
 
@@ -198,23 +207,8 @@ export default class FdTooltip extends Base {
     this.dispatchEvent(new CustomEvent('toggle', { detail: false, bubbles: true }));
     // `isVisible` deliberately stays true here -- unmounting it right away
     // would swap `panelClasses` to include `panel--closing` and then
-    // immediately tear the element down before that class's reversed
-    // animation ever gets a frame to render. handleAnimationEnd unmounts
-    // it once that animation actually finishes.
+    // immediately tear the element down before that class's exit animation
+    // ever gets a frame to render. renderedCallback unmounts it once that
+    // animation has finished.
   }
-
-  // CSS-driven, not a `setTimeout` guessing the animation's duration --
-  // this fires exactly when the animation actually completes, so it can't
-  // drift out of sync if `--fd-duration-fast` ever changes. The panel's
-  // own *entrance* animation also fires this event; only a completed
-  // *exit* run should unmount it, and by the time an exit run finishes,
-  // `isOpen` is already false (hide() set it before the animation even
-  // started) while an entrance run's completion always finds it still
-  // true -- that alone tells the two apart, no need to inspect which
-  // animation actually just ran.
-  handleAnimationEnd = () => {
-    if (!this.isOpen) {
-      this.isVisible = false;
-    }
-  };
 }

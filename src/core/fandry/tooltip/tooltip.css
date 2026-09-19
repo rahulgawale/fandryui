@@ -34,57 +34,13 @@
      too. */
   filter: drop-shadow(var(--fd-shadow-sm) hsla(0 0% 0% / 0.15));
 
-  /* A CSS `transition` doesn't play on initial insertion (there's no
-     prior style to interpolate from -- the element just appears already
-     in its end state), and mounting/unmounting this node outright (rather
-     than toggling a class on an element that's already present) means
-     there's no "later frame" to transition to either way. `animation`
-     sidesteps both: it plays automatically the moment the element is
-     inserted. */
-  animation: fd-tooltip-in var(--fd-duration-fast) var(--fd-ease-in-out);
-}
-
-@keyframes fd-tooltip-in {
-  from {
-    opacity: 0;
-    /* `var(--fd-tooltip-translate)`, not a bare `scale(...)` -- each
-       placement below already centers the panel via its own translate;
-       overwriting `transform` here instead of composing with it would
-       snap the panel off-center for the animation's duration. */
-    transform: var(--fd-tooltip-translate) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: var(--fd-tooltip-translate) scale(1);
-  }
-}
-
-@keyframes fd-tooltip-out {
-  from {
-    opacity: 1;
-    transform: var(--fd-tooltip-translate) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: var(--fd-tooltip-translate) scale(0.95);
-  }
+  /* Motion is defined in base/motion.css; see tooltip.ts / fandry/motion
+     for how the panel stays mounted through its exit. */
+  animation: fd-fade-scale-in var(--fd-duration-fast) var(--fd-ease-standard);
 }
 
 .panel--closing {
-  /* A genuinely different `animation-name`, not the entrance keyframes
-     played backwards via `animation-direction: reverse` -- confirmed live
-     that toggling just the direction/fill-mode of an *already-finished*
-     animation doesn't reliably restart its timeline in real browsers (it
-     was observed jumping straight to the reversed end state with no
-     visible transition at all, in both Chrome and Safari). Changing
-     `animation-name` itself is what actually forces a fresh run.
-     `forwards` holds the faded-out end state instead of snapping back to
-     the resting (opacity: 1) styles the instant the animation completes
-     -- tooltip.ts's handleAnimationEnd unmounts the element right after
-     that same event fires, but fill-mode covers the gap between "the
-     animation finished" and "the resulting re-render actually happened"
-     so there's no one-frame flash back to visible. */
-  animation: fd-tooltip-out var(--fd-duration-fast) var(--fd-ease-in-out) forwards;
+  animation: fd-fade-scale-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
 }
 
 .arrow {
@@ -98,8 +54,7 @@
 .panel--top {
   bottom: 100%;
   left: 50%;
-  --fd-tooltip-translate: translateX(-50%);
-  transform: var(--fd-tooltip-translate);
+  transform: translateX(-50%);
   margin-bottom: var(--fd-space-1);
 }
 
@@ -112,8 +67,7 @@
 .panel--bottom {
   top: 100%;
   left: 50%;
-  --fd-tooltip-translate: translateX(-50%);
-  transform: var(--fd-tooltip-translate);
+  transform: translateX(-50%);
   margin-top: var(--fd-space-1);
 }
 
@@ -126,8 +80,7 @@
 .panel--left {
   right: 100%;
   top: 50%;
-  --fd-tooltip-translate: translateY(-50%);
-  transform: var(--fd-tooltip-translate);
+  transform: translateY(-50%);
   margin-right: var(--fd-space-1);
 }
 
@@ -140,8 +93,7 @@
 .panel--right {
   left: 100%;
   top: 50%;
-  --fd-tooltip-translate: translateY(-50%);
-  transform: var(--fd-tooltip-translate);
+  transform: translateY(-50%);
   margin-left: var(--fd-space-1);
 }
 
