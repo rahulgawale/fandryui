@@ -61,7 +61,8 @@ Blocks are larger, ready-made patterns built from the components above. On LWR /
 npx fandry add data-table          # the block plus everything it is built from
 ```
 
-`data-table` gives you search, column filters, pagination, selection, row actions, inline editing and `saveRow` / `deleteRow` hooks with success and error toasts, with skeleton loading and a saving state. It is controlled: it never edits your `data`, it reports `rowsave` / `rowdelete` and you put the result back. Because it uses `select`, it needs dynamic components on Salesforce (see below). `--all` does not include blocks; ask for one by name. A live version with the full API is at [/blocks/data-table](https://fandryui.forcetrails.com/blocks/data-table).
+`data-table` gives you search, column filters, pagination, selection, row actions, inline editing and `saveRow` / `deleteRow` hooks with success and error toasts, with skeleton loading and a saving state. It is controlled: it never edits your `data`, it reports `rowsave` / `rowdelete` and you put the result back. `--all` does not include blocks; ask for one by name. A live version with the full API is at [/blocks/data-table](https://fandryui.forcetrails.com/blocks/data-table).
+
 
 ## Usage
 
@@ -114,7 +115,7 @@ Anything listed in the package's `lwc.config.json` `expose` array is public API.
 
 - **No TypeScript declarations and no source maps.** The library is written in TypeScript, but the published files are the readable JavaScript with types stripped. `.ts` and `.map` files inside an LWC component folder would confuse module resolution, so they are not shipped.
 - **LWR and `lwc@8`.** Fresh installs of `lwr@0.18.3` can currently resolve `@lwc/compiler@9`, which rejects LWR's own loader. If your build fails with `LWC1121` inside `@lwrjs/loader`, pin the `@lwc/*` packages (see `examples/consumer/package.json` in the repository for a working set of `overrides`).
-- **Salesforce: `select`, `combobox`, `command` and `lookup` need dynamic components.** They use `lwc:is` (so a consumer can swap in a custom component per item), which a Salesforce org rejects with LWC1188 unless dynamic components are enabled. `fandry add` warns when you install one, and `fandry list` marks them. The other components, including `table` with its vendored `fandryTableCore`, have been deployed to a real org and run on a Lightning page.
+- **Salesforce: `select`, `combobox`, `command` and `lookup` use dynamic components.** They use `lwc:is` (so a consumer can swap in a custom component per item). Salesforce accepts that only when the bundle's own `.js-meta.xml` declares `<capabilities><capability>lightning__dynamicComponent</capability></capabilities>` (and the API version is 55 or later, with Lightning Web Security on); otherwise the deploy fails with `LWC1188`. It is per bundle: a `jsconfig.json` setting does nothing on the platform. `fandry add` writes the capability into the meta files it creates, and tells you if one that already existed lacks it (those files are yours and are never rewritten). Your own components that merely *use* `<c-fandry-select>` need nothing extra. `fandry list` marks the bundles involved. The other components, including `table` with its vendored `fandryTableCore`, have been deployed to a real org and run on a Lightning page.
 
 ## Versioning
 

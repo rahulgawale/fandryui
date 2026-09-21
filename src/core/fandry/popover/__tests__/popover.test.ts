@@ -124,6 +124,24 @@ describe('fandry-popover', () => {
     });
   });
 
+  // Whether a click was inside is decided by the host having seen it, not by
+  // composedPath() (which Salesforce filters -- see handleDocumentClick), so a
+  // click anywhere inside, including the panel's own content, must not close it.
+  it('stays open when a click lands inside the panel', async () => {
+    const harness = createElement('popover-trigger-harness', { is: PopoverTriggerHarness });
+    harness.open = true;
+    document.body.appendChild(harness);
+    await flush();
+
+    const popover = harness.shadowRoot!.querySelector('fandry-popover')!;
+    const content = Array.from(harness.shadowRoot!.querySelectorAll('div')).find((d) => d.textContent === 'Panel content')!;
+    content.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+    await settle();
+
+    expect(popover.shadowRoot!.querySelector('.panel')).not.toBeNull();
+    expect(popover.shadowRoot!.querySelector('.panel--closing')).toBeNull();
+  });
+
   it('closes when a click lands outside the popover', () => {
     const element = createElement('fandry-popover', { is: FdPopover });
     element.open = true;

@@ -237,18 +237,31 @@ function bundleHash(dir) {
   return hash.digest('hex');
 }
 
-const bundleMeta = (apiVersion) => `<?xml version="1.0" encoding="UTF-8"?>
+// A bundle whose template uses `lwc:is` (dynamic components) must declare this
+// capability in its own .js-meta.xml, or the platform rejects it with LWC1188.
+// It is per bundle: nothing project- or org-wide (a jsconfig.json setting does
+// nothing on the platform). Also needs API 55+ and Lightning Web Security.
+const DYNAMIC_CAPABILITY = 'lightning__dynamicComponent';
+
+const bundleMeta = (apiVersion, dynamic) => `<?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>${apiVersion}</apiVersion>
-    <isExposed>false</isExposed>
+    <isExposed>false</isExposed>${
+      dynamic
+        ? `
+    <capabilities>
+        <capability>${DYNAMIC_CAPABILITY}</capability>
+    </capabilities>`
+        : ''
+    }
 </LightningComponentBundle>
 `;
 
 // Replaces the bundle wholesale, so files the new version dropped don't linger,
 // but carries the user's existing .js-meta.xml across.
-function installBundle(from, to, bundle, apiVersion) {
+function installBundle(from, to, bundle, apiVersion, dynamic) {
   const metaPath = join(to, `${bundle}${META_SUFFIX}`);
-  const meta = existsSync(metaPath) ? readFileSync(metaPath, 'utf8') : bundleMeta(apiVersion);
+  const meta = existsSync(metaPath) ? readFileSync(metaPath, 'utf8') : bundleMeta(apiVersion, dynamic);
   rmSync(to, { recursive: true, force: true });
   cpSync(from, to, { recursive: true });
   writeFileSync(metaPath, meta);
@@ -315,7 +328,7 @@ function add(cwd, names, flags) {
       unchanged.push(bundle);
     } else {
       ({ add: added, update: updated, replace: replaced })[action].push(bundle);
-      if (!dryRun) installBundle(from, to, bundle, apiVersion);
+      if (!dryRun) installBundle(from, to, bundle, apiVersion, registry.components[key].requires?.includes('dynamicComponents'));
     }
     baseline[bundle] = fresh;
   }
@@ -325,7 +338,7 @@ function add(cwd, names, flags) {
     writeJson(join(cwd, CONFIG_FILE), { ...config, version: registry.version, installed: sorted }, '  ');
   }
 
-  // Bundles using `lwc:is` fail to deploy to an org without dynamic components.
+  // Bundles using `lwc:is` need the dynamic-component capability in their meta.
   const dynamic = all.filter((k) => registry.components[k].requires?.includes('dynamicComponents'));
   const deps = all.length - requested.length;
   console.log(
@@ -337,8 +350,22 @@ function add(cwd, names, flags) {
   if (replaced.length) console.log(`${dryRun ? 'Would replace' : 'Replaced'} (--overwrite): ${replaced.join(', ')}`);
   if (unchanged.length) console.log(`Already up to date: ${unchanged.join(', ')}`);
   if (dynamic.length) {
-    console.log(`\nNote: ${dynamic.map((k) => registry.components[k].bundle).join(', ')} use lwc:is, which Salesforce only`);
-    console.log('accepts in orgs with dynamic components enabled (otherwise deploy fails with LWC1188).');
+    const names = dynamic.map((k) => registry.components[k].bundle);
+    console.log(`\nNote: ${names.join(', ')} ${names.length === 1 ? 'uses' : 'use'} lwc:is (dynamic components). Salesforce needs API 55+, Lightning`);
+    console.log(`Web Security, and the ${DYNAMIC_CAPABILITY} capability in each such bundle's .js-meta.xml,`);
+    console.log('which `fandry add` writes into the meta files it creates.');
+
+    // A meta file that already existed is yours and was left alone, so it may lack the capability.
+    const lacking = dryRun
+      ? []
+      : names.filter((bundle) => {
+          const meta = join(lwcDir, bundle, `${bundle}${META_SUFFIX}`);
+          return existsSync(meta) && !readFileSync(meta, 'utf8').includes(DYNAMIC_CAPABILITY);
+        });
+    if (lacking.length) {
+      console.log(`\n${lacking.join(', ')} already had a .js-meta.xml (not rewritten) without it. Add, inside <LightningComponentBundle>:`);
+      console.log(`  <capabilities><capability>${DYNAMIC_CAPABILITY}</capability></capabilities>`);
+    }
   }
   if (skipped.length) {
     // Two reasons look identical from here: the user edited the bundle, or it

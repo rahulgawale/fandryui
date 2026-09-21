@@ -173,7 +173,15 @@ export default class Popover extends Base {
     document.removeEventListener('keydown', this.handleDocumentKeydown);
   }
 
+  // The click the host has already seen, by timestamp. See handleDocumentClick.
+  private insideClickStamp = -1;
+
   handleHostClick = (event: MouseEvent) => {
+    // Every click that passes through this host is inside the popover: the
+    // trigger, and anything in the panel (slotted content is the host's own
+    // child). Remembered so the document listener below can tell.
+    this.insideClickStamp = event.timeStamp;
+
     const target = event.target as Element;
     if (target.closest('[slot="trigger"]')) {
       this.setOpen(!this.open);
@@ -181,11 +189,17 @@ export default class Popover extends Base {
   };
 
   handleDocumentClick = (event: MouseEvent) => {
-    // `event.target` is retargeted per-listener -- read from a document-level
-    // listener it resolves to the outermost light-DOM ancestor (e.g. the app
-    // root), not the real click origin, so `host.contains(event.target)` is
-    // always false here. `composedPath()` gives the untargeted real path.
-    if (this.open && !event.composedPath().includes(this.template.host)) {
+    // Whether a click landed inside can't be worked out from the event here.
+    // `event.target` is retargeted per-listener (a document-level listener
+    // sees the outermost light-DOM ancestor, so `host.contains(target)` is
+    // always false), and `composedPath()` is not the untargeted path on
+    // Salesforce either: there, inside a component, a document listener gets
+    // a path filtered down to the outer host, which never includes this
+    // popover -- so the opening click itself looked "outside" and closed the
+    // panel in the same click. Instead, a click the host listener has already
+    // seen (same timestamp -- it bubbles host first, document last) is inside;
+    // any other is outside.
+    if (this.open && event.timeStamp !== this.insideClickStamp) {
       this.setOpen(false);
     }
   };
