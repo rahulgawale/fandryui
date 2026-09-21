@@ -1,5 +1,5 @@
 import { LightningElement } from 'lwc';
-import { createMockApi, ROLE_OPTIONS, STATUS_OPTIONS } from './mockApi';
+import { benchmarkOptionsFromUrl, createMockApi, ROLE_OPTIONS, STATUS_OPTIONS } from './mockApi';
 import type { Person } from './mockApi';
 
 const USAGE = `<fandry-data-table
@@ -128,7 +128,12 @@ export default class BlockDataTable extends LightningElement {
   selectedRows: Person[] = [];
   simulateErrors = false;
 
-  private api = createMockApi({ shouldFail: () => this.simulateErrors });
+  private benchmark = benchmarkOptionsFromUrl();
+  private api = createMockApi({ ...this.benchmark, shouldFail: () => this.simulateErrors });
+
+  get pageSize(): number {
+    return this.benchmark.pageSize ?? 8;
+  }
 
   connectedCallback() {
     void this.load();
