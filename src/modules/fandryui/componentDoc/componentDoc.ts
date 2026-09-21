@@ -17,6 +17,7 @@ import DemoButton from 'fandryuidemos/demoButton';
 import DemoCheckbox from 'fandryuidemos/demoCheckbox';
 import DemoCombobox from 'fandryuidemos/demoCombobox';
 import DemoComboboxCustom from 'fandryuidemos/demoComboboxCustom';
+import DemoSelectCustom from 'fandryuidemos/demoSelectCustom';
 import DemoCommandCustom from 'fandryuidemos/demoCommandCustom';
 import CustomSearch from 'fandryuidemos/customSearch';
 import DemoCommand from 'fandryuidemos/demoCommand';
@@ -65,6 +66,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   checkbox: DemoCheckbox,
   combobox: DemoCombobox,
   'combobox-custom': DemoComboboxCustom,
+  'select-custom': DemoSelectCustom,
   'command-custom': DemoCommandCustom,
   'search-custom': CustomSearch,
   command: DemoCommand,

@@ -397,7 +397,7 @@ export default class PeopleSearch extends FdSearchState {
     props: [
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected.' },
-      { name: 'options', type: '{ label, value }[]', default: '[]', description: 'Flat option list.' },
+      { name: 'options', type: '{ label, value, disabled?, component?, componentProps? }[]', default: '[]', description: 'Flat option list. An option\'s `component` (with `componentProps`) draws its own row instead of the label -- see the custom options example.' },
       { name: 'groups', type: '{ label, options }[]', default: '[]', description: 'Grouped option list (used instead of options).' },
       { name: 'value', type: 'string', default: "''", description: 'Selected value.' }
     ],
@@ -406,7 +406,39 @@ export default class PeopleSearch extends FdSearchState {
   placeholder="Choose a plan"
   options={planOptions}
   value="pro"
-></fandry-select>`
+></fandry-select>`,
+    examples: [
+      {
+        title: 'Custom options',
+        demo: 'select-custom',
+        code: `<!-- template -->
+<fandry-select label="Plan" options={planOptions}
+  value={value} onchange={handleChange}></fandry-select>
+
+// component
+import PlanRow from 'my/planRow'; // your LWC: @api icon, label, hint
+
+planOptions = [
+  {
+    label: 'Free', value: 'free', component: PlanRow,
+    componentProps: { icon: '🌱', label: 'Free' }
+  },
+  {
+    label: 'Pro', value: 'pro', component: PlanRow,
+    componentProps: { icon: '💎', label: 'Pro', hint: 'Popular' }
+  },
+  { label: 'Enterprise', value: 'enterprise', disabled: true } // plain option
+];
+
+// The component draws only the inside of the row; the row keeps its
+// highlight, hover, keyboard and click, and \`label\` stays the accessible
+// name and what typeahead matches, so give every option a real one.
+// The chosen option's component is also shown in the closed control.
+//
+// On Salesforce this uses lwc:is: fandry-select's .js-meta.xml needs the
+// lightning__dynamicComponent capability (API 55+), which \`fandry add\` writes.`
+      }
+    ]
   },
   {
     slug: 'switch',
