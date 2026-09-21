@@ -44,8 +44,10 @@ const NAMES = [
   'Guido van Rossum'
 ];
 
-// The first NAMES.length people are always the same; past that the names are
-// numbered, so a benchmark can ask for thousands of rows.
+/*
+ * The first NAMES.length people are always the same; past that the names are
+ * numbered, so a benchmark can ask for thousands of rows.
+ */
 function seed(count = NAMES.length): Person[] {
   return Array.from({ length: count }, (_, index) => {
     const base = NAMES[index % NAMES.length];
@@ -60,8 +62,10 @@ function seed(count = NAMES.length): Person[] {
   });
 }
 
-/* The demo uses the default row count; the benchmark
-   (scripts/bench-data-table.mjs) asks for thousands. */
+/*
+ * How many people to start with. The demo uses the default; the benchmark
+ * (scripts/bench-data-table.mjs) asks for thousands.
+ */
 interface DataTableMockApiOptions extends MockApiOptions {
   rowCount?: number;
 }
@@ -136,8 +140,10 @@ export const STATUS_OPTIONS = [
   { label: 'Suspended', value: 'suspended' }
 ];
 
-// `?rows=10000&latency=0&pageSize=50` on the demo page, for the benchmark. All
-// optional; without them the page is exactly the demo.
+/*
+ * `?rows=10000&latency=0&pageSize=50` on the demo page, for the benchmark. All
+ * optional; without them the page is exactly the demo.
+ */
 export function benchmarkOptionsFromUrl(): { rowCount?: number; latencyMs?: number; pageSize?: number } {
   if (typeof window === 'undefined') return {};
   const params = new URLSearchParams(window.location.search);
