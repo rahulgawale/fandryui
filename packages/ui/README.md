@@ -63,7 +63,6 @@ npx fandry add data-table          # the block plus everything it is built from
 
 `data-table` gives you search, column filters, pagination, selection, row actions, inline editing and `saveRow` / `deleteRow` hooks with success and error toasts, with skeleton loading and a saving state. It is controlled: it never edits your `data`, it reports `rowsave` / `rowdelete` and you put the result back. `--all` does not include blocks; ask for one by name. A live version with the full API is at [/blocks/data-table](https://fandryui.forcetrails.com/blocks/data-table).
 
-
 ## Usage
 
 The package brings its own `fandry` namespace (LWR and LWC OSS allow custom namespaces), so `fandry/button` is `<fandry-button>`:

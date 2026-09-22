@@ -355,13 +355,13 @@ function add(cwd, names, flags) {
     console.log(`Web Security, and the ${DYNAMIC_CAPABILITY} capability in each such bundle's .js-meta.xml,`);
     console.log('which `fandry add` writes into the meta files it creates.');
 
-    // A meta file that already existed is yours and was left alone, so it may lack the capability.
-    const lacking = dryRun
-      ? []
-      : names.filter((bundle) => {
-          const meta = join(lwcDir, bundle, `${bundle}${META_SUFFIX}`);
-          return existsSync(meta) && !readFileSync(meta, 'utf8').includes(DYNAMIC_CAPABILITY);
-        });
+    // A meta file that already existed is yours and was left alone, so it may
+    // lack the capability -- true regardless of --dry-run, since this only
+    // reads what is already on disk rather than anything the run itself wrote.
+    const lacking = names.filter((bundle) => {
+      const meta = join(lwcDir, bundle, `${bundle}${META_SUFFIX}`);
+      return existsSync(meta) && !readFileSync(meta, 'utf8').includes(DYNAMIC_CAPABILITY);
+    });
     if (lacking.length) {
       console.log(`\n${lacking.join(', ')} already had a .js-meta.xml (not rewritten) without it. Add, inside <LightningComponentBundle>:`);
       console.log(`  <capabilities><capability>${DYNAMIC_CAPABILITY}</capability></capabilities>`);

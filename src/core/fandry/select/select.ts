@@ -312,7 +312,6 @@ export default class Select extends Base {
     }, TYPEAHEAD_RESET_MS);
   }
 
-
   handleToggle = (event: CustomEvent<boolean>) => {
     this.open = event.detail;
     this.activeOptionId = this.open ? this.activeIdForCurrentValue() : null;
