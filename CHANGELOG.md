@@ -1,3 +1,10 @@
+## [0.15.1](https://github.com/rahulgawale/fandryui/compare/v0.15.0...v0.15.1) (2026-09-22)
+
+
+### Bug Fixes
+
+* make popovers work on Salesforce and declare the dynamic-component capability ([#73](https://github.com/rahulgawale/fandryui/issues/73)) ([89f8d91](https://github.com/rahulgawale/fandryui/commit/89f8d91414365dc4893b6f1851e57b9262395773))
+
 # [0.15.0](https://github.com/rahulgawale/fandryui/compare/v0.14.1...v0.15.0) (2026-09-22)
 
 
