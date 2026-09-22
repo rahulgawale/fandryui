@@ -19,6 +19,10 @@ export default class Popover extends Base {
   // the exit animation after `open` goes false (see fandry/motion).
   @track isMounted = false;
 
+  // Where the panel sits, in viewport coordinates (see `updatePosition`).
+  @track panelStyle = '';
+  private positionFrame = 0;
+
   // A plain `@api open = false` field can't distinguish "just closed" from
   // "still closed" -- needed below to catch every path that can close this
   // popover, not only the ones (like Escape) that already call `setOpen`
@@ -39,12 +43,79 @@ export default class Popover extends Base {
 
     if (value) {
       this.isMounted = true;
+      this.updatePosition();
+      this.trackTrigger();
     }
 
     if (wasOpen && !value) {
+      this.untrackTrigger();
       this.restoreFocusIfStillOurs();
     }
   }
+
+  // The panel is `position: fixed` and placed from the trigger's bounding
+  // box, not `position: absolute` inside the popover. An absolutely
+  // positioned panel is clipped by any scrolling ancestor (a table's
+  // horizontal scroll container, a scrollable card), so a menu opening from
+  // the last row of a scrolling table was cut off. A fixed panel is not
+  // clipped by an ancestor's overflow. The cost is that it no longer moves
+  // with the trigger on its own, hence `trackTrigger`.
+  private updatePosition() {
+    const trigger = this.template.querySelector('.trigger');
+    if (!trigger) {
+      return;
+    }
+
+    const rect = trigger.getBoundingClientRect();
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = document.documentElement.clientHeight;
+    const edges = { top: 'auto', right: 'auto', bottom: 'auto', left: 'auto' };
+
+    switch (this.placement) {
+      case 'top':
+        edges.bottom = `${viewportHeight - rect.top}px`;
+        break;
+      case 'left':
+        edges.right = `${viewportWidth - rect.left}px`;
+        edges.top = `${rect.top}px`;
+        break;
+      case 'right':
+        edges.left = `${rect.right}px`;
+        edges.top = `${rect.top}px`;
+        break;
+      default:
+        edges.top = `${rect.bottom}px`;
+    }
+
+    if (this.placement === 'top' || this.placement === 'bottom') {
+      if (this.align === 'end') {
+        edges.right = `${viewportWidth - rect.right}px`;
+      } else {
+        edges.left = `${rect.left}px`;
+      }
+    }
+
+    this.panelStyle = `top: ${edges.top}; right: ${edges.right}; bottom: ${edges.bottom}; left: ${edges.left};`;
+  }
+
+  // While open, keep the panel on its trigger as the page or any scrolling
+  // ancestor moves (scroll doesn't bubble, hence capture) or the window
+  // resizes.
+  private trackTrigger() {
+    window.addEventListener('scroll', this.handleViewportChange, true);
+    window.addEventListener('resize', this.handleViewportChange);
+  }
+
+  private untrackTrigger() {
+    window.removeEventListener('scroll', this.handleViewportChange, true);
+    window.removeEventListener('resize', this.handleViewportChange);
+    cancelAnimationFrame(this.positionFrame);
+  }
+
+  private handleViewportChange = () => {
+    cancelAnimationFrame(this.positionFrame);
+    this.positionFrame = requestAnimationFrame(() => this.updatePosition());
+  };
 
   get panelClasses(): string {
     return [
@@ -65,6 +136,12 @@ export default class Popover extends Base {
   }
 
   renderedCallback() {
+    // Opened before the trigger had rendered (e.g. `open` set from the
+    // start), so there was nothing to measure yet.
+    if (this.open && !this.panelStyle) {
+      this.updatePosition();
+    }
+
     if (this.open || !this.isMounted) {
       return;
     }
@@ -90,6 +167,7 @@ export default class Popover extends Base {
   }
 
   disconnectedCallback() {
+    this.untrackTrigger();
     this.removeEventListener('click', this.handleHostClick);
     document.removeEventListener('click', this.handleDocumentClick);
     document.removeEventListener('keydown', this.handleDocumentKeydown);

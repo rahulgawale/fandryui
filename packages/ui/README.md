@@ -51,7 +51,17 @@ sf project deploy start --source-dir fandryui
 - The copied files are yours: commit and edit them. Your `.js-meta.xml` files (API version, exposure, targets) are never rewritten.
 - **Upgrading:** after updating `fandryui`, run `npx fandry add <name>` again. Bundles you have not edited are updated to the new version; bundles you have edited are skipped. `--overwrite` replaces only the components you name, never their dependencies. Fandry records what it installed in `fandry.json` to tell an upgrade from an edit, so commit that file too.
 - `table` needs `@tanstack/table-core`, which cannot be imported on-platform. `fandry add table` installs it as the bundle `fandryTableCore`, the library bundled unmodified into one ES module.
-- `fandry add --all` installs everything; `--dir <path>` (on `init`) uses a different package directory.
+- `fandry add --all` installs every component; `--dir <path>` (on `init`) uses a different package directory.
+
+### Blocks
+
+Blocks are larger, ready-made patterns built from the components above. On LWR / LWC OSS they ship in the same package (`<fandry-data-table>`); on Salesforce they install like any component:
+
+```bash
+npx fandry add data-table          # the block plus everything it is built from
+```
+
+`data-table` gives you search, column filters, pagination, selection, row actions, inline editing and `saveRow` / `deleteRow` hooks with success and error toasts, with skeleton loading and a saving state. It is controlled: it never edits your `data`, it reports `rowsave` / `rowdelete` and you put the result back. Because it uses `select`, it needs dynamic components on Salesforce (see below). `--all` does not include blocks; ask for one by name. A live version with the full API is at [/blocks/data-table](https://fandryui.forcetrails.com/blocks/data-table).
 
 ## Usage
 

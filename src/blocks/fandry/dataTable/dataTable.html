@@ -1,0 +1,298 @@
+<template>
+  <div class="toolbar">
+    <!--
+      Delegated onto the wrapper, like fandry-table's own search: anything
+      projected into slot="search" just has to dispatch a bubbling "input"
+      event whose target carries `.value`.
+    -->
+    <div class="search" oninput={handleGlobalFilterInput}>
+      <slot name="search">
+        <fandry-input
+          placeholder={globalFilterPlaceholder}
+          value={globalFilter}
+          size="sm"
+          element-props={searchProps}
+        ></fandry-input>
+      </slot>
+    </div>
+    <template for:each={filters} for:item="filter">
+      <div key={filter.columnId} class="filter">
+        <fandry-select
+          value={filter.value}
+          options={filter.options}
+          data-column-id={filter.columnId}
+          element-props={filter.selectProps}
+          onchange={handleFilterChange}
+        ></fandry-select>
+      </div>
+    </template>
+    <template if:true={hasActiveFilters}>
+      <fandry-button variant="ghost" size="sm" onclick={handleClearFilters}>Clear</fandry-button>
+    </template>
+    <div class="toolbar-end">
+      <template if:true={canBulkEdit}>
+        <fandry-button variant="secondary" size="sm" onclick={handleBulkOpen}>{bulkEditLabel}</fandry-button>
+      </template>
+      <slot name="toolbar"></slot>
+      <template if:true={hasColumnToggles}>
+        <fandry-popover placement="bottom" align="end" open={columnsOpen} ontoggle={handleColumnsToggle}>
+          <fandry-button slot="trigger" variant="secondary" size="sm" element-props={columnsTriggerProps}>
+            Columns
+          </fandry-button>
+          <div class="columns" role="group" aria-label="Visible columns">
+            <template for:each={columnToggles} for:item="toggle">
+              <fandry-checkbox
+                key={toggle.columnId}
+                label={toggle.label}
+                checked={toggle.visible}
+                disabled={toggle.disabled}
+                data-column-id={toggle.columnId}
+                onchange={handleColumnToggle}
+              ></fandry-checkbox>
+            </template>
+          </div>
+        </fandry-popover>
+      </template>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="table" aria-busy={loading}>
+      <template if:true={hasCaption}>
+        <caption class="caption">{caption}</caption>
+      </template>
+      <thead>
+        <tr>
+          <th class="selection-cell" scope="col" onchange={handleToggleAllRowsSelected}>
+            <template if:true={enableMultiRowSelection}>
+              <slot name="selection-all">
+                <fandry-checkbox
+                  checked={allRowsSelected}
+                  indeterminate={someRowsSelected}
+                  aria-label="Select all rows on this page"
+                ></fandry-checkbox>
+              </slot>
+            </template>
+          </th>
+          <template for:each={headerGroup.headers} for:item="header">
+            <th key={header.id} scope="col" aria-sort={header.ariaSort}>
+              <template if:true={header.canSort}>
+                <button
+                  type="button"
+                  class="sort-button"
+                  data-column-id={header.columnId}
+                  onclick={handleHeaderClick}
+                  lwc:spread={resolvedSortButtonProps}
+                >
+                  <span class="header-label">{header.label}</span>
+                  <span class="sort-indicator" aria-hidden="true">{header.sortIndicator}</span>
+                </button>
+              </template>
+              <template if:false={header.canSort}>
+                <span class="header-label">{header.label}</span>
+              </template>
+            </th>
+          </template>
+          <template if:true={hasRowActions}>
+            <th class="actions-cell" scope="col"><span class="sr-only">Actions</span></th>
+          </template>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Skeleton rows: same column count as the real ones, so nothing shifts when data arrives. -->
+        <template if:true={loading}>
+          <template for:each={loadingRows} for:item="loadingRow">
+            <tr key={loadingRow} class="loading-row" aria-hidden="true">
+              <td class="selection-cell"><fandry-skeleton variant="circle"></fandry-skeleton></td>
+              <template for:each={loadingCells} for:item="loadingCell">
+                <td key={loadingCell}><fandry-skeleton variant="text"></fandry-skeleton></td>
+              </template>
+              <template if:true={hasRowActions}>
+                <td class="actions-cell"><fandry-skeleton variant="rect"></fandry-skeleton></td>
+              </template>
+            </tr>
+          </template>
+        </template>
+
+        <template if:false={loading}>
+          <template if:true={hasRows}>
+            <template for:each={dataRows} for:item="row">
+              <tr key={row.id} class={row.classes} onkeydown={handleEditorKeydown}>
+                <td class="selection-cell" onclick={handleSelectionCellClick}>
+                  <fandry-checkbox
+                    checked={row.selected}
+                    data-row-id={row.id}
+                    aria-label={row.selectionAriaLabel}
+                    onchange={handleToggleRowSelected}
+                  ></fandry-checkbox>
+                </td>
+                <template for:each={row.cells} for:item="cell">
+                  <td key={cell.id} data-row-id={row.id} ondblclick={handleCellDoubleClick}>
+                    <template if:true={cell.isPlain}>{cell.value}</template>
+                    <template if:true={cell.isBadge}>
+                      <fandry-badge variant={cell.badgeVariant}>{cell.value}</fandry-badge>
+                    </template>
+                    <template if:true={cell.isInputEditor}>
+                      <fandry-input
+                        class="editor"
+                        size="sm"
+                        type={cell.inputType}
+                        value={cell.draftValue}
+                        disabled={row.saving}
+                        data-column-id={cell.columnId}
+                        element-props={cell.editorProps}
+                        oninput={handleDraftChange}
+                      ></fandry-input>
+                    </template>
+                    <template if:true={cell.isSelectEditor}>
+                      <fandry-select
+                        value={cell.draftValue}
+                        options={cell.options}
+                        disabled={row.saving}
+                        data-column-id={cell.columnId}
+                        element-props={cell.editorProps}
+                        onchange={handleDraftChange}
+                      ></fandry-select>
+                    </template>
+                  </td>
+                </template>
+                <template if:true={hasRowActions}>
+                  <td class="actions-cell">
+                    <template if:true={row.editing}>
+                      <div class="edit-actions">
+                        <fandry-button size="sm" disabled={row.saving} onclick={handleSave}>
+                          <template if:true={row.saving}>
+                            <fandry-spinner size="sm" label="Saving"></fandry-spinner>
+                          </template>
+                          Save
+                        </fandry-button>
+                        <fandry-button variant="secondary" size="sm" disabled={row.saving} onclick={handleCancel}>
+                          Cancel
+                        </fandry-button>
+                      </div>
+                    </template>
+                    <template if:false={row.editing}>
+                      <fandry-popover
+                        placement="bottom"
+                        align="end"
+                        open={row.menuOpen}
+                        data-row-id={row.id}
+                        ontoggle={handleMenuToggle}
+                      >
+                        <fandry-button slot="trigger" variant="ghost" size="sm" element-props={row.menuTriggerProps}>
+                          <span aria-hidden="true">&#8943;</span>
+                        </fandry-button>
+                        <fandry-menu data-row-id={row.id} onselect={handleMenuSelect}>
+                          <template for:each={rowActions} for:item="action">
+                            <fandry-menu-item key={action.value} value={action.value} label={action.label}></fandry-menu-item>
+                          </template>
+                        </fandry-menu>
+                      </fandry-popover>
+                    </template>
+                  </td>
+                </template>
+              </tr>
+            </template>
+          </template>
+          <template if:false={hasRows}>
+            <tr class="empty-row">
+              <td class="empty-cell" colspan={actionsColumnCount}>
+                <slot name="empty">No results</slot>
+              </td>
+            </tr>
+          </template>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-footer">
+    <div class="selection">
+      <span class="selection-status">{selectionStatus}</span>
+      <template if:true={hasSelection}>
+        <fandry-button variant="ghost" size="sm" onclick={handleClearSelection}>Clear selection</fandry-button>
+      </template>
+    </div>
+    <div class="pagination" onchange={handlePageChange}>
+      <slot name="pagination">
+        <fandry-pagination page-index={pageIndex} page-count={totalPages}></fandry-pagination>
+      </slot>
+    </div>
+  </div>
+
+  <fandry-dialog open={bulkOpen} label={bulkDialogHeading} ontoggle={handleBulkDialogToggle}>
+    <div class="bulk" onkeydown={handleBulkKeydown}>
+      <fandry-heading level="3">{bulkDialogHeading}</fandry-heading>
+      <fandry-text variant="muted" size="sm">
+        Fill in only what should change. Fields left as No change (or blank) keep each record's own value.
+      </fandry-text>
+      <template for:each={bulkFields} for:item="field">
+        <div key={field.columnId} class="bulk-field">
+          <template if:true={field.isInputEditor}>
+            <fandry-input
+              label={field.label}
+              type={field.inputType}
+              placeholder="No change"
+              value={field.value}
+              disabled={bulkSaving}
+              data-column-id={field.columnId}
+              oninput={handleBulkFieldChange}
+            ></fandry-input>
+          </template>
+          <template if:true={field.isSelectEditor}>
+            <fandry-select
+              label={field.label}
+              value={field.value}
+              options={field.options}
+              disabled={bulkSaving}
+              data-column-id={field.columnId}
+              onchange={handleBulkFieldChange}
+            ></fandry-select>
+          </template>
+        </div>
+      </template>
+      <template if:true={bulkAlert}>
+        <fandry-alert variant={bulkAlert.variant}>{bulkAlert.message}</fandry-alert>
+      </template>
+      <div class="confirm-actions">
+        <fandry-button variant="secondary" disabled={bulkSaving} onclick={handleBulkCancel}>Cancel</fandry-button>
+        <fandry-button disabled={bulkSaving} onclick={handleBulkSave}>
+          <template if:true={bulkSaving}>
+            <fandry-spinner size="sm" label="Saving"></fandry-spinner>
+          </template>
+          Save
+        </fandry-button>
+      </div>
+    </div>
+  </fandry-dialog>
+
+  <fandry-dialog open={deleteDialogOpen} label={deleteDialogLabel} ontoggle={handleDeleteDialogToggle}>
+    <div class="confirm">
+      <fandry-heading level="3">{deleteDialogQuestion}</fandry-heading>
+      <fandry-text variant="muted">This can't be undone.</fandry-text>
+      <div class="confirm-actions">
+        <fandry-button variant="secondary" disabled={deleting} onclick={handleDeleteCancel}>Cancel</fandry-button>
+        <fandry-button disabled={deleting} onclick={handleDeleteConfirm}>
+          <template if:true={deleting}>
+            <fandry-spinner size="sm" label="Deleting"></fandry-spinner>
+          </template>
+          Delete
+        </fandry-button>
+      </div>
+    </div>
+  </fandry-dialog>
+
+  <fandry-toast-viewport placement="bottom-right" label="Notifications">
+    <template for:each={toasts} for:item="toast">
+      <fandry-toast
+        key={toast.id}
+        data-id={toast.id}
+        variant={toast.variant}
+        duration={toastDuration}
+        ondismiss={handleToastDismiss}
+      >
+        {toast.message}
+      </fandry-toast>
+    </template>
+  </fandry-toast-viewport>
+</template>

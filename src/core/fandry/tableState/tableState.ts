@@ -132,7 +132,22 @@ export default class FdTableState extends Base {
    * rows render per page.
    */
   @api enablePagination = false;
-  @api pageSize = 10;
+
+  private _pageSize = 10;
+
+  // A getter/setter pair because a static template attribute
+  // (`page-size="8"`) arrives as a string, and tanstack adds `pageSize` to
+  // the page's start offset -- "8" turns that into string concatenation
+  // and page 2 onwards renders far too many rows. See fandry-toast's
+  // `duration` for the same coercion.
+  @api
+  get pageSize(): number {
+    return this._pageSize;
+  }
+
+  set pageSize(value: number) {
+    this._pageSize = Number(value);
+  }
 
   /**
    * When true, `data` is assumed to already be one page's worth of rows
@@ -430,7 +445,7 @@ export default class FdTableState extends Base {
   }
 
   get columnCount(): number {
-    const leafColumnCount = this.resolveTableInstance().getAllLeafColumns().length;
+    const leafColumnCount = this.resolveTableInstance().getVisibleLeafColumns().length;
     return Math.max(leafColumnCount + (this.enableRowSelection ? 1 : 0), 1);
   }
 
@@ -457,7 +472,7 @@ export default class FdTableState extends Base {
   }
 
   get loadingCells(): number[] {
-    const leafColumnCount = this.resolveTableInstance().getAllLeafColumns().length;
+    const leafColumnCount = this.resolveTableInstance().getVisibleLeafColumns().length;
     return Array.from({ length: leafColumnCount }, (_, index) => index);
   }
 

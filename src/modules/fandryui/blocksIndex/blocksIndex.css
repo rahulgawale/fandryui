@@ -1,0 +1,50 @@
+:host {
+  display: block;
+}
+
+.page {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: var(--fd-space-6) var(--fd-space-6) calc(var(--fd-space-6) * 2);
+}
+
+.lede {
+  display: block;
+  margin-top: var(--fd-space-2);
+  margin-bottom: var(--fd-space-6);
+  max-width: 36rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: var(--fd-space-4);
+  align-items: start;
+}
+
+.card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--fd-radius-lg);
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+@media (hover: hover) {
+  .card-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
+  }
+}
+
+.card > * + * {
+  margin-top: var(--fd-space-2);
+  display: block;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fd-space-1);
+}

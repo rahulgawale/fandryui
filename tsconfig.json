@@ -28,6 +28,9 @@
       // Record-aware components live in src/salesforce (same `fandry` namespace).
       "fandry/lookup": ["src/salesforce/fandry/lookup/lookup"],
       "fandry/tableState": ["src/core/fandry/tableState/tableState"],
+      // Blocks (installable patterns) live in src/blocks (same `fandry` namespace).
+      "fandry/dataTableState": ["src/blocks/fandry/dataTableState/dataTableState"],
+      "fandry/dataTable": ["src/blocks/fandry/dataTable/dataTable"],
       "fandry/*": ["src/core/fandry/*"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
       "fandryui/gettingStartedData": ["src/modules/fandryui/gettingStartedData/gettingStartedData"],

@@ -51,6 +51,79 @@ describe('fandry-popover', () => {
     expect(popover.shadowRoot!.querySelector('.panel')).toBeNull();
   });
 
+  describe('panel position', () => {
+    // jsdom does no layout, so the trigger's box is supplied.
+    function mount(props: Record<string, unknown>) {
+      const element = createElement('fandry-popover', { is: FdPopover });
+      Object.assign(element, props);
+      document.body.appendChild(element);
+      const trigger = element.shadowRoot!.querySelector('.trigger') as HTMLElement;
+      trigger.getBoundingClientRect = () =>
+        ({ top: 100, bottom: 130, left: 200, right: 260, width: 60, height: 30 }) as DOMRect;
+      return element;
+    }
+
+    const viewport = () => ({
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.clientHeight
+    });
+
+    const panelStyle = async (element: HTMLElement & { open: boolean }) => {
+      element.open = true;
+      await flush();
+      return (element.shadowRoot!.querySelector('.panel') as HTMLElement).style;
+    };
+
+    it('hangs below the trigger, left edges aligned, in viewport coordinates', async () => {
+      const style = await panelStyle(mount({}));
+      expect(style.top).toBe('130px');
+      expect(style.left).toBe('200px');
+      expect(style.right).toMatch(/^(auto)?$/); // jsdom reports `auto` as ''
+      expect(style.bottom).toMatch(/^(auto)?$/); // jsdom reports `auto` as ''
+    });
+
+    it('aligns to the trigger\'s right edge with align="end"', async () => {
+      const style = await panelStyle(mount({ align: 'end' }));
+      expect(style.right).toBe(`${viewport().width - 260}px`);
+      expect(style.left).toMatch(/^(auto)?$/); // jsdom reports `auto` as ''
+    });
+
+    it('sits above, left of and right of the trigger for the other placements', async () => {
+      let style = await panelStyle(mount({ placement: 'top' }));
+      expect(style.bottom).toBe(`${viewport().height - 100}px`);
+      expect(style.top).toMatch(/^(auto)?$/); // jsdom reports `auto` as ''
+
+      style = await panelStyle(mount({ placement: 'left' }));
+      expect(style.right).toBe(`${viewport().width - 200}px`);
+      expect(style.top).toBe('100px');
+
+      style = await panelStyle(mount({ placement: 'right' }));
+      expect(style.left).toBe('260px');
+      expect(style.top).toBe('100px');
+    });
+
+    it('follows the trigger when an ancestor scrolls while open', async () => {
+      const element = mount({});
+      const style = await panelStyle(element);
+      expect(style.top).toBe('130px');
+
+      const trigger = element.shadowRoot!.querySelector('.trigger') as HTMLElement;
+      trigger.getBoundingClientRect = () =>
+        ({ top: 40, bottom: 70, left: 200, right: 260, width: 60, height: 30 }) as DOMRect;
+
+      const frames: FrameRequestCallback[] = [];
+      const raf = jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => frames.push(cb));
+      document.dispatchEvent(new Event('scroll'));
+      // Scroll does not bubble: it is heard because the listener is on the capture path.
+      window.dispatchEvent(new Event('scroll'));
+      frames.forEach((cb) => cb(0));
+      raf.mockRestore();
+      await flush();
+
+      expect((element.shadowRoot!.querySelector('.panel') as HTMLElement).style.top).toBe('70px');
+    });
+  });
+
   it('closes when a click lands outside the popover', () => {
     const element = createElement('fandry-popover', { is: FdPopover });
     element.open = true;

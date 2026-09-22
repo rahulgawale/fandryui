@@ -227,6 +227,24 @@ describe('fandry-table', () => {
     );
   });
 
+  it('treats a static page-size attribute (a string) as a number', async () => {
+    const element = createElement('fandry-table', { is: FdTable });
+    element.columns = COLUMNS;
+    element.data = [...DATA, { name: 'Dee', age: 19 }, { name: 'Eli', age: 52 }];
+    element.enablePagination = true;
+    // What `<fandry-table page-size="2">` sets.
+    element.pageSize = '2' as unknown as number;
+    document.body.appendChild(element);
+
+    element.shadowRoot!.querySelector('fandry-pagination')!.dispatchEvent(
+      new CustomEvent('change', { detail: { pageIndex: 1 }, bubbles: true })
+    );
+    await flush();
+
+    // With a string pageSize the page's end offset became "2" + 2 = "22".
+    expect(element.shadowRoot!.querySelectorAll('tbody tr').length).toBe(2);
+  });
+
   it('paginates rows and toggles Prev/Next state when enablePagination is set', async () => {
     const element = createElement('fandry-table', { is: FdTable });
     element.columns = COLUMNS;

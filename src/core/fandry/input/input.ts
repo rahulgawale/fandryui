@@ -63,6 +63,15 @@ export default class Input extends Base {
     return ['control', `control--${this.size}`].join(' ');
   }
 
+  // Without this, `someFdInput.focus()` is a no-op -- the host isn't itself
+  // focusable, only the native <input> in its shadow tree is. Same fix as
+  // fandry-button's/fandry-radio's own focus().
+  @api
+  focus() {
+    const input = this.template.querySelector('input') as HTMLElement | null;
+    input?.focus();
+  }
+
   handleInput(event: Event) {
     // The native `input` event is `composed: true`, so without this it
     // would ALSO reach any `oninput` listener a consumer attaches to this

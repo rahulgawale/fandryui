@@ -46,7 +46,11 @@ const OUT = join(PKG_DIR, 'dist');
 
 // All under the `fandry` namespace. Same-named folders would collide in the
 // output, which `assertNoCollision` turns into a hard error.
-const SOURCE_ROOTS = ['src/core/fandry', 'src/salesforce/fandry'];
+// `src/blocks` holds blocks: installable patterns built from the primitives
+// (a data table with search, filters and inline edit, ...). They build exactly
+// like components -- same namespace, same two flavors -- and the registry
+// marks them `kind: 'block'` so the CLI can tell them apart.
+const SOURCE_ROOTS = ['src/core/fandry', 'src/salesforce/fandry', 'src/blocks/fandry'];
 
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const uncapitalize = (s) => s.charAt(0).toLowerCase() + s.slice(1);
@@ -143,7 +147,7 @@ function buildComponent(t, seen, srcRoot, dir) {
     }
     // Anything else (stray notes, fixtures) is intentionally left behind.
   }
-  return { dir, name, specifier: t.specifier(dir), hasTemplate };
+  return { dir, name, specifier: t.specifier(dir), hasTemplate, isBlock: srcRoot.startsWith('src/blocks/') };
 }
 
 function buildTarget(t) {
@@ -214,7 +218,7 @@ function buildRegistry(sfdxComponents, version) {
     components[c.dir] = {
       bundle: c.name,
       // Helpers such as base or searchState have no template of their own.
-      kind: c.hasTemplate ? 'component' : 'module',
+      kind: !c.hasTemplate ? 'module' : c.isBlock ? 'block' : 'component',
       dependencies: [...deps].sort(),
       ...(requires.length && { requires: [...new Set(requires)] })
     };

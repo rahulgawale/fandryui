@@ -7,6 +7,8 @@ const PAGES = [
   { label: 'Getting started: LWR / LWC OSS', value: '/getting-started/lwr-oss' },
   { label: 'Getting started: Salesforce DX', value: '/getting-started/salesforce' },
   { label: 'Components', value: '/components' },
+  { label: 'Blocks', value: '/blocks' },
+  { label: 'Blocks: Data table', value: '/blocks/data-table' },
   { label: 'Examples', value: '/examples' }
 ];
 
