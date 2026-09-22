@@ -372,13 +372,28 @@ describe('fandry-data-table', () => {
       expect(bodyRows(el)[2].classList.contains('row--editing')).toBe(false);
     });
 
-    it('lets only one row be edited at a time', async () => {
+    it('lets only one row be edited at a time, and does not discard the first row\'s draft', async () => {
       const el = mount();
       await edit(el, 0);
+      await typeInto(el, 'name', 'Changed');
       await edit(el, 1);
 
       expect(el.shadowRoot!.querySelectorAll('tr.row--editing').length).toBe(1);
-      expect(bodyRows(el)[1].classList.contains('row--editing')).toBe(true);
+      expect(bodyRows(el)[0].classList.contains('row--editing')).toBe(true);
+      expect((bodyRows(el)[0].querySelector('fandry-input[data-column-id="name"]') as any).value).toBe('Changed');
+      expect(toastTexts(el)).toEqual([
+        { text: 'Save or cancel the current edit before editing another row.', variant: 'info' }
+      ]);
+    });
+
+    it('also refuses to switch rows on double-click while another row is mid-edit', async () => {
+      const el = mount();
+      await edit(el, 0);
+      bodyRows(el)[1].querySelectorAll('td')[1].dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
+      await settle();
+
+      expect(bodyRows(el)[0].classList.contains('row--editing')).toBe(true);
+      expect(bodyRows(el)[1].classList.contains('row--editing')).toBe(false);
     });
   });
 

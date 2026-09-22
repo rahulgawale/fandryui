@@ -541,6 +541,14 @@ export default class FdDataTableState extends FdTableState {
     // rows then would leave the save's outcome with nowhere to land.
     if (this.anySaving || rowId === this.editingRowId) return;
 
+    // A different row is already mid-edit: switching to this one would
+    // silently drop that row's unsaved draft. Tell the user instead of
+    // discarding it for them.
+    if (this.editingRowId !== null) {
+      this.showToast('info', this.editInProgressMessage());
+      return;
+    }
+
     const row = this.resolveTableInstance().getRow(rowId, true);
     const draft: Record<string, string> = {};
     for (const cell of row.getVisibleCells()) {
@@ -796,6 +804,10 @@ export default class FdDataTableState extends FdTableState {
 
   protected noChangesMessage(label: string): string {
     return `No changes to save for ${label}.`;
+  }
+
+  protected editInProgressMessage(): string {
+    return 'Save or cancel the current edit before editing another row.';
   }
 
   protected bulkNoChangesMessage(): string {
