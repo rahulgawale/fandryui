@@ -68,7 +68,7 @@ check(readJson(join(sf, 'sfdx-project.json')).packageDirectories.length === 2, '
 
 r = fandry(sf, 'add', 'table', 'lookup', 'c-fandry-radio-group', 'fandryDialog');
 check(r.code === 0, `add exited ${r.code}: ${r.out}`);
-check(/fandryLookup.*use lwc:is/s.test(r.out) && /LWC1188/.test(r.out), `add of a lwc:is component did not warn: ${r.out}`);
+check(/fandryLookup.*uses? lwc:is/s.test(r.out) && /lightning__dynamicComponent/.test(r.out), `add of a lwc:is component did not explain the capability: ${r.out}`);
 const lwc = join(sf, 'fandryui/main/default/lwc');
 const installed = new Set(readdirSync(lwc));
 for (const b of ['fandryTable', 'fandryTableState', 'fandryTableCore', 'fandryBase', 'fandryLookup', 'fandrySearchState', 'fandryRadioGroup', 'fandryRadio', 'fandryDialog']) {
@@ -95,6 +95,18 @@ function assertSelfContained(installed) {
       check(!/from\s+['"]@/.test(text), `${bundle}/${file} imports an npm package`);
     }
     check(existsSync(join(lwc, bundle, `${bundle}.js-meta.xml`)), `${bundle} has no .js-meta.xml`);
+
+    // A bundle using lwc:is needs the dynamic-component capability in its own
+    // meta (else the platform rejects it with LWC1188), and one that does not
+    // use it must not carry it.
+    const usesDynamic = readdirSync(join(lwc, bundle)).some(
+      (f) => f.endsWith('.html') && /lwc:(is|component)\b/.test(readFileSync(join(lwc, bundle, f), 'utf8'))
+    );
+    const meta = readFileSync(join(lwc, bundle, `${bundle}.js-meta.xml`), 'utf8');
+    check(
+      usesDynamic === meta.includes('<capability>lightning__dynamicComponent</capability>'),
+      `${bundle}: ${usesDynamic ? 'uses lwc:is but its .js-meta.xml lacks' : 'does not use lwc:is but its .js-meta.xml declares'} the lightning__dynamicComponent capability`
+    );
   }
 }
 assertSelfContained(installed);
@@ -106,11 +118,24 @@ check(/Added 0 bundle/.test(r.out), `re-running add was not a no-op: ${r.out}`);
 // marked as blocks by `fandry list`.
 r = fandry(sf, 'add', 'data-table');
 check(r.code === 0, `add data-table exited ${r.code}: ${r.out}`);
+// data-table uses select, whose template uses lwc:is: the capability is written for it.
+check(/fandrySelect uses lwc:is/.test(r.out), `add data-table did not mention select's lwc:is: ${r.out}`);
 const withBlock = new Set(readdirSync(lwc));
 for (const b of ['fandryDataTable', 'fandryDataTableState', 'fandryTableState', 'fandryMenu', 'fandryPopover', 'fandryToast', 'fandryToastViewport', 'fandryDialog', 'fandrySelect', 'fandryMotion']) {
   check(withBlock.has(b), `expected bundle ${b} to be installed by data-table`);
 }
 assertSelfContained(withBlock);
+// A .js-meta.xml that already exists is the user's: not rewritten, but they are
+// told what is missing.
+const selectMeta = join(lwc, 'fandrySelect/fandrySelect.js-meta.xml');
+const withoutCapability = readFileSync(selectMeta, 'utf8').replace(/\s*<capabilities>[\s\S]*?<\/capabilities>/, '');
+writeFileSync(selectMeta, withoutCapability);
+r = fandry(sf, 'add', 'select');
+check(
+  /fandrySelect already had a \.js-meta\.xml/.test(r.out) && readFileSync(selectMeta, 'utf8') === withoutCapability,
+  `an existing .js-meta.xml missing the capability was rewritten, or the user was not told: ${r.out}`
+);
+
 r = fandry(sf, 'list');
 check(/dataTable\s+\(block\)/.test(r.out), `fandry list did not mark data-table as a block: ${r.out}`);
 

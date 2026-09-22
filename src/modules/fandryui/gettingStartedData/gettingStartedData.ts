@@ -408,8 +408,8 @@ sf project deploy start --source-dir fandryui --source-dir force-app --target-or
         {
           type: 'note',
           variant: 'warning',
-          title: 'select, combobox, command and lookup need dynamic components',
-          text: 'They use lwc:is, which Salesforce only accepts in orgs with dynamic components enabled; otherwise the deploy fails with LWC1188. fandry add warns when you install one, and fandry list marks them.'
+          title: 'select, combobox, command and lookup use dynamic components',
+          text: 'They use lwc:is, which Salesforce only accepts when the bundle\'s own .js-meta.xml declares the lightning__dynamicComponent capability (with API 55 or later and Lightning Web Security on); otherwise the deploy fails with LWC1188. fandry add writes the capability into the meta files it creates and tells you if an existing one lacks it. Nothing in jsconfig.json or your project settings does this.'
         },
         {
           type: 'list',

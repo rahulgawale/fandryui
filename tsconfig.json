@@ -44,6 +44,7 @@
       "fandryuidemos/customSearch": ["src/modules/fandryuidemos/customSearch/customSearch"],
       "fandryuidemos/demoOptionRow": ["src/modules/fandryuidemos/demoOptionRow/demoOptionRow"],
       "fandryuidemos/demoComboboxCustom": ["src/modules/fandryuidemos/demoComboboxCustom/demoComboboxCustom"],
+      "fandryuidemos/demoSelectCustom": ["src/modules/fandryuidemos/demoSelectCustom/demoSelectCustom"],
       "fandryuidemos/demoCommandCustom": ["src/modules/fandryuidemos/demoCommandCustom/demoCommandCustom"],
       "fandryuidemos/demoBreadcrumb": ["src/modules/fandryuidemos/demoBreadcrumb/demoBreadcrumb"],
       "fandryuidemos/demoBreadcrumbItem": ["src/modules/fandryuidemos/demoBreadcrumbItem/demoBreadcrumbItem"],

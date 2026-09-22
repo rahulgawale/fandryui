@@ -9,6 +9,10 @@ export interface FdSelectOption {
   // (when this is the selected option) the trigger -- via `lwc:is`, since
   // LWC requires `<slot>` names to be static strings, which rules out a
   // per-option named slot for an arbitrary, data-driven option list.
+  //
+  // On Salesforce, a bundle whose template uses `lwc:is` needs the
+  // `lightning__dynamicComponent` capability in its .js-meta.xml (and API 55+);
+  // `fandry add` writes it.
   component?: typeof LightningElement;
   componentProps?: Record<string, unknown>;
 }
