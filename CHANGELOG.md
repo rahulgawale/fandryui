@@ -1,3 +1,10 @@
+# [0.15.0](https://github.com/rahulgawale/fandryui/compare/v0.14.1...v0.15.0) (2026-09-22)
+
+
+### Features
+
+* add a blocks layer with an installable data-table block ([#72](https://github.com/rahulgawale/fandryui/issues/72)) ([268726a](https://github.com/rahulgawale/fandryui/commit/268726a229416afe8925cd48a2bc7f55dc88b1f2))
+
 ## [0.14.1](https://github.com/rahulgawale/fandryui/compare/v0.14.0...v0.14.1) (2026-09-19)
 
 
