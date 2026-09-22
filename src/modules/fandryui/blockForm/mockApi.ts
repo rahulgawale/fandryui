@@ -3,6 +3,9 @@
 // server validation and failure states without a server. Nothing here is
 // part of the block; a real app replaces these calls with its own requests.
 
+import { delay } from 'fandryui/mockApi';
+import type { MockApiOptions } from 'fandryui/mockApi';
+
 export interface Profile {
   name: string;
   email: string;
@@ -20,14 +23,6 @@ export const PLAN_OPTIONS = [
 ];
 
 const TAKEN_USERNAMES = ['admin', 'root', 'ada'];
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-export interface MockApiOptions {
-  latencyMs?: number;
-  // Read on every call, so the page can flip it from a switch.
-  shouldFail?: () => boolean;
-}
 
 export function createMockApi({ latencyMs = 800, shouldFail = () => false }: MockApiOptions = {}) {
   let profile: Profile = {

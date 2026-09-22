@@ -51,6 +51,16 @@ const INPUT_TYPES: FdFormFieldType[] = ['text', 'email', 'number', 'tel', 'url',
 
 const EMPTY_TEXT = '—';
 
+// A checkbox/switch value that came from serialized data (e.g. Salesforce,
+// which sends booleans as the strings "true"/"false") would read as checked
+// under plain `!!value`, since any non-empty string is truthy -- so those two
+// strings are parsed explicitly and everything else falls back to JS
+// truthiness.
+export function toBoolean(value: unknown): boolean {
+  if (typeof value === 'string') return value.toLowerCase() === 'true';
+  return !!value;
+}
+
 /**
  * One field: its label, its control, its help text and its error -- or, in
  * `read` mode, the label and the value as text. It owns no state: the value
@@ -118,7 +128,7 @@ export default class FormField extends Base {
   }
 
   get checked(): boolean {
-    return !!this.value;
+    return toBoolean(this.value);
   }
 
   // fandry-radio-group takes `value` only for its Tab stop: which radio is

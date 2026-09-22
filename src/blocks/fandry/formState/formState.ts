@@ -1,6 +1,7 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
 import type { FdFormField } from 'fandry/formField';
+import { toBoolean } from 'fandry/formField';
 
 export type FdFormValues = Record<string, unknown>;
 export type FdFormMode = 'read' | 'edit';
@@ -16,6 +17,14 @@ export interface FdFormRenderField {
 export interface FdFormStatus {
   variant: 'info' | 'success' | 'danger';
   message: string;
+}
+
+// `CSS.escape` isn't universally available (missing in this project's jsdom
+// test environment, and not something to trust on Salesforce either), and a
+// double-quoted CSS attribute selector only needs its own quote and
+// backslash escaped -- so that's done by hand instead of depending on it.
+function escapeAttrValue(value: string): string {
+  return value.replace(/[\\"]/g, (char) => `\\${char}`);
 }
 
 /**
@@ -109,11 +118,15 @@ export default class FdFormState extends Base {
   }
 
   get renderFields(): FdFormRenderField[] {
+    // Computed once per render rather than inside visibleError/fieldError:
+    // every field with its own `validate` would otherwise rebuild this same
+    // merged object from scratch, on every field, on every render.
+    const values = this.isEditing ? this.currentValues() : null;
     return this.fields.map((field) => ({
       name: field.name,
       field,
       value: this.rawValue(field.name),
-      error: this.isEditing ? this.visibleError(field) : ''
+      error: values ? this.visibleError(field, values) : ''
     }));
   }
 
@@ -133,9 +146,15 @@ export default class FdFormState extends Base {
     switch (field.type ?? 'text') {
       case 'checkbox':
       case 'switch':
-        return !!value;
-      case 'number':
-        return value === '' || value == null ? null : Number(value);
+        return toBoolean(value);
+      case 'number': {
+        if (value === '' || value == null) return null;
+        // A value that doesn't parse (e.g. dirty data like "N/A") is no more
+        // a number than "nothing typed" is -- treated the same way so it
+        // trips `required` instead of silently saving as NaN.
+        const num = Number(value);
+        return Number.isNaN(num) ? null : num;
+      }
       default:
         return value == null ? '' : String(value);
     }
@@ -170,20 +189,22 @@ export default class FdFormState extends Base {
   // ---- validation
 
   // Skipped for an empty field that is not required: a blank optional email
-  // is not an invalid one.
-  private fieldError(field: FdFormField): string {
+  // is not an invalid one. `values` is the already-merged currentValues(),
+  // passed in so callers that need it for several fields build it once.
+  private fieldError(field: FdFormField, values: FdFormValues): string {
     const value = this.toSavedShape(field, this.rawValue(field.name));
     if (this.isEmpty(field, value)) return field.required ? this.requiredMessage(field) : '';
-    return field.validate?.(value, this.currentValues()) || '';
+    return field.validate?.(value, values) || '';
   }
 
-  private visibleError(field: FdFormField): string {
+  private visibleError(field: FdFormField, values: FdFormValues): string {
     if (field.readonly || !(this.touched[field.name] || this.submitAttempted)) return '';
-    return this.fieldError(field) || this.serverErrors[field.name] || '';
+    return this.fieldError(field, values) || this.serverErrors[field.name] || '';
   }
 
   private firstInvalid(): FdFormField | undefined {
-    return this.editableFields.find((field) => this.fieldError(field) || this.serverErrors[field.name]);
+    const values = this.currentValues();
+    return this.editableFields.find((field) => this.fieldError(field, values) || this.serverErrors[field.name]);
   }
 
   private async runValidateHook(): Promise<Record<string, string>> {
@@ -356,7 +377,7 @@ export default class FdFormState extends Base {
 
     const wanted = this.focusPending === 'invalid' ? this.firstInvalid() : this.editableFields[0];
     this.focusPending = null;
-    const host = wanted && this.template.querySelector(`fandry-form-field[data-name="${wanted.name}"]`);
+    const host = wanted && this.template.querySelector(`fandry-form-field[data-name="${escapeAttrValue(wanted.name)}"]`);
     (host as HTMLElement | null)?.focus();
   }
 }

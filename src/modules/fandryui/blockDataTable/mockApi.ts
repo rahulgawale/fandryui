@@ -3,6 +3,9 @@
 // loading, saving and failure states without a server. Nothing here is part
 // of the block; a real app replaces these calls with its own requests.
 
+import { delay } from 'fandryui/mockApi';
+import type { MockApiOptions } from 'fandryui/mockApi';
+
 export interface Person {
   id: number;
   name: string;
@@ -49,14 +52,6 @@ function seed(): Person[] {
     role: ROLES[index % ROLES.length],
     status: STATUSES[(index * 7) % STATUSES.length]
   }));
-}
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-export interface MockApiOptions {
-  latencyMs?: number;
-  // Read on every call, so the page can flip it from a switch.
-  shouldFail?: () => boolean;
 }
 
 function validate(changes: Partial<Person>) {

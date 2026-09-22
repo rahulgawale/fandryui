@@ -39,6 +39,17 @@ export default class RadioGroup extends Base {
     this.removeEventListener('keydown', this.handleKeydown);
   }
 
+  // The host isn't itself focusable; the group's one Tab stop is whichever
+  // radio updateRovingTabIndex left at tabIndex 0 -- the checked radio, or
+  // the first one if none is checked yet.
+  @api
+  focus() {
+    const radios = this.getGroupRadios();
+    if (!radios.length) return;
+    const checkedIndex = radios.findIndex((radio) => radio.value === this.value);
+    radios[checkedIndex >= 0 ? checkedIndex : 0].focus();
+  }
+
   // The <fandry-radio> children are the *consumer's* light-DOM content, not
   // rendered by this component's own template -- they belong to a
   // different component's render pass, so they aren't guaranteed to be
