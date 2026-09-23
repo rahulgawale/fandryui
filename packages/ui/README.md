@@ -59,9 +59,12 @@ Blocks are larger, ready-made patterns built from the components above. On LWR /
 
 ```bash
 npx fandry add data-table          # the block plus everything it is built from
+npx fandry add form
 ```
 
 `data-table` gives you search, column filters, pagination, selection, row actions, inline editing and `saveRow` / `deleteRow` hooks with success and error toasts, with skeleton loading and a saving state. It is controlled: it never edits your `data`, it reports `rowsave` / `rowdelete` and you put the result back. `--all` does not include blocks; ask for one by name. A live version with the full API is at [/blocks/data-table](https://fandryui.forcetrails.com/blocks/data-table).
+
+`form` is a form that can read first and edit on demand (`mode="read"`). Fields are plain data (`{ name, label, type, required, validate }`), errors show once a field has been left or a save was attempted, a form-level `validate` hook covers rules that span fields or need the server, and a `saveValues` hook is where the request goes. Like `data-table` it is controlled: it reports `save` and you put the result back into `values`. Live at [/blocks/form](https://fandryui.forcetrails.com/blocks/form).
 
 ## Usage
 

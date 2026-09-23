@@ -1,0 +1,164 @@
+<template>
+  <fandryui-site-header></fandryui-site-header>
+
+  <main class="page">
+    <fandry-breadcrumb>
+      <fandry-breadcrumb-item href="/">Home</fandry-breadcrumb-item>
+      <fandry-breadcrumb-item href="/blocks">Blocks</fandry-breadcrumb-item>
+      <fandry-breadcrumb-item current>Form</fandry-breadcrumb-item>
+    </fandry-breadcrumb>
+
+    <fandry-badge class="kind">Block</fandry-badge>
+    <fandry-heading level="1" class="title">Form</fandry-heading>
+    <fandry-text variant="muted" class="lede">
+      Fields, validation that speaks up at the right moment, and a save with feedback, all built from fandry-*
+      primitives. A form can read first and edit on demand. It is a working screen, not a screenshot: what is below
+      runs against a fake backend with real latency and real rules.
+    </fandry-text>
+
+    <section class="section">
+      <div class="demo-controls">
+        <fandry-switch
+          label="Simulate server errors"
+          checked={simulateErrors}
+          onchange={handleSimulateErrorsChange}
+        ></fandry-switch>
+        <fandry-text size="sm" variant="muted">
+          Try it: choose <strong>Edit</strong>, clear the name or break the email and leave the field, then Save.
+          Then use the username <strong>admin</strong>, a rule only the server can check.
+        </fandry-text>
+      </div>
+
+      <fandry-card class="demo-frame">
+        <fandry-form
+          fields={fields}
+          values={profile}
+          mode="read"
+          save-values={saveValues}
+          validate={validate}
+          onsave={handleSave}
+        ></fandry-form>
+      </fandry-card>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Install</fandry-heading>
+      <div class="two-up">
+        <div>
+          <fandry-text size="sm" variant="muted" class="label">LWR / LWC OSS</fandry-text>
+          <pre class="code-block"><code>{installNpm}</code></pre>
+        </div>
+        <div>
+          <fandry-text size="sm" variant="muted" class="label">Salesforce DX</fandry-text>
+          <pre class="code-block"><code>{installSfdx}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Usage</fandry-heading>
+      <pre class="code-block"><code>{usageCode}</code></pre>
+      <fandry-text size="sm" variant="muted" class="note">
+        A field is plain data. Its type picks the control, and its rules are functions:
+      </fandry-text>
+      <pre class="code-block"><code>{fieldsCode}</code></pre>
+      <fandry-text size="sm" variant="muted" class="note">
+        The block owns the workflow (when errors show, the saving state, read and edit); you own the request and the
+        data:
+      </fandry-text>
+      <pre class="code-block"><code>{hooksCode}</code></pre>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Props</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={props} for:item="prop">
+              <tr key={prop.name}>
+                <td><code>{prop.name}</code></td>
+                <td><code>{prop.type}</code></td>
+                <td><code>{prop.default}</code></td>
+                <td>{prop.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Field</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Key</th><th>Type</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={fieldProps} for:item="prop">
+              <tr key={prop.name}>
+                <td><code>{prop.name}</code></td>
+                <td><code>{prop.type}</code></td>
+                <td>{prop.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Events</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Event</th><th>detail</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={events} for:item="event">
+              <tr key={event.name}>
+                <td><code>{event.name}</code></td>
+                <td><code>{event.detail}</code></td>
+                <td>{event.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Slots</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Slot</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={slots} for:item="slot">
+              <tr key={slot.name}>
+                <td><code>{slot.name}</code></td>
+                <td>{slot.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Make it yours</fandry-heading>
+      <fandry-text variant="muted">
+        The block is three pieces on purpose. <code>fandry/formState</code> has all the behavior and no template; <code>fandry/form</code> is that class plus the layout and actions you see here; <code>fandry/formField</code> is one field, which you can also use on its own. To change the markup, extend the state class and write your own template, or, on Salesforce, just edit the copy <code>fandry add</code> put in your project. Built from:
+        <template for:each={builtFrom} for:item="name">
+          <fandry-badge key={name} class="chip">{name}</fandry-badge>
+        </template>
+      </fandry-text>
+    </section>
+  </main>
+
+  <fandryui-site-footer></fandryui-site-footer>
+</template>

@@ -337,4 +337,16 @@ describe('fandry-select', () => {
     expect(triggerCustom).not.toBeNull();
     expect(triggerCustom.getAttribute('data-icon')).toBe('💎');
   });
+
+  it('focuses its native control when the host is focused', () => {
+    // The host isn't itself focusable; without focus() this is a no-op.
+    const element = createElement('fandry-select', { is: FdSelect });
+    element.options = OPTIONS;
+    document.body.appendChild(element);
+
+    (element as any).focus();
+
+    const control = element.shadowRoot!.querySelector('.trigger')!;
+    expect(element.shadowRoot!.activeElement).toBe(control);
+  });
 });

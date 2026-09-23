@@ -312,6 +312,13 @@ export default class Select extends Base {
     }, TYPEAHEAD_RESET_MS);
   }
 
+  // The host isn't itself focusable, only the trigger button in its shadow
+  // tree is -- same fix as fandry-input's focus().
+  @api
+  focus() {
+    (this.template.querySelector('.trigger') as HTMLElement | null)?.focus();
+  }
+
   handleToggle = (event: CustomEvent<boolean>) => {
     this.open = event.detail;
     this.activeOptionId = this.open ? this.activeIdForCurrentValue() : null;

@@ -78,4 +78,15 @@ describe('fandry-textarea', () => {
     expect(warnSpy).toHaveBeenCalledTimes(1);
     warnSpy.mockRestore();
   });
+
+  it('focuses its native control when the host is focused', () => {
+    // The host isn't itself focusable; without focus() this is a no-op.
+    const element = createElement('fandry-textarea', { is: FdTextarea });
+    document.body.appendChild(element);
+
+    (element as any).focus();
+
+    const control = element.shadowRoot!.querySelector('textarea')!;
+    expect(element.shadowRoot!.activeElement).toBe(control);
+  });
 });
