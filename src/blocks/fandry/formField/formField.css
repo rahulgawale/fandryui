@@ -5,13 +5,13 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
 }
 
 .read {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
 }
 
 .read-value {
@@ -23,13 +23,13 @@
 .help,
 .error {
   margin: 0;
-  font-size: var(--fd-font-size-xs);
+  font-size: var(--_fd-font-size-xs);
 }
 
 .help {
-  color: hsl(var(--fd-text-muted));
+  color: hsl(var(--_fd-text-muted));
 }
 
 .error {
-  color: hsl(var(--fd-danger));
+  color: hsl(var(--_fd-danger));
 }

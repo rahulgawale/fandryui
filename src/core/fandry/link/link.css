@@ -3,17 +3,17 @@
 }
 
 .link {
-  color: hsl(var(--fd-primary));
+  color: hsl(var(--_fd-primary));
   font-family: inherit;
   font-size: inherit;
   text-decoration: underline;
   text-underline-offset: 2px;
   cursor: pointer;
-  transition: color var(--fd-duration-fast) ease;
+  transition: color var(--_fd-duration-fast) ease;
 }
 
 .link:hover {
-  filter: brightness(var(--fd-hover-brightness));
+  filter: brightness(var(--_fd-hover-brightness));
 }
 
 /* Browsers only allow a handful of color-related properties to be styled
@@ -35,15 +35,15 @@
    render wherever a browser's own heuristics decide to allow it, but
    don't expect it to reliably demo in a quick manual test. */
 .link:visited {
-  color: hsl(var(--fd-link-visited));
+  color: hsl(var(--_fd-link-visited));
 }
 
 .link--muted {
-  color: hsl(var(--fd-text-muted));
+  color: hsl(var(--_fd-text-muted));
 }
 
 .link--muted:hover {
-  color: hsl(var(--fd-text));
+  color: hsl(var(--_fd-text));
   filter: none;
 }
 
@@ -53,13 +53,13 @@
 .tab-stop:focus-visible,
 .link:focus-visible {
   outline: none;
-  border-radius: var(--fd-radius-sm);
-  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+  border-radius: var(--_fd-radius-sm);
+  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
 }
 
 .link--disabled {
-  color: hsl(var(--fd-text-muted));
-  opacity: var(--fd-disabled-opacity);
+  color: hsl(var(--_fd-text-muted));
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
   text-decoration: none;
   pointer-events: none;

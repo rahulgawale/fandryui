@@ -5,17 +5,17 @@
 .form-control {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
 }
 
 .label {
-  font-size: var(--fd-font-size-sm);
-  font-weight: var(--fd-font-weight-medium);
-  color: hsl(var(--fd-text));
+  font-size: var(--_fd-font-size-sm);
+  font-weight: var(--_fd-font-weight-medium);
+  color: hsl(var(--_fd-text));
 }
 
 .radio-group {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
 }

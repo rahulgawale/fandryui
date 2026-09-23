@@ -8,8 +8,8 @@
 }
 
 .text {
-  font-family: var(--fd-font-sans);
-  line-height: var(--fd-line-height-normal);
+  font-family: var(--_fd-font-sans);
+  line-height: var(--_fd-line-height-normal);
 }
 
 .text--p {
@@ -30,21 +30,21 @@
 }
 
 .text--xs {
-  font-size: var(--fd-font-size-xs);
+  font-size: var(--_fd-font-size-xs);
 }
 
 .text--sm {
-  font-size: var(--fd-font-size-sm);
+  font-size: var(--_fd-font-size-sm);
 }
 
 .text--md {
-  font-size: var(--fd-font-size-md);
+  font-size: var(--_fd-font-size-md);
 }
 
 .text--default {
-  color: hsl(var(--fd-text));
+  color: hsl(var(--_fd-text));
 }
 
 .text--muted {
-  color: hsl(var(--fd-text-muted));
+  color: hsl(var(--_fd-text-muted));
 }

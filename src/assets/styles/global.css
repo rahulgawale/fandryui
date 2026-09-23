@@ -28,8 +28,8 @@ html {
   --font-code: 'Geist Mono', monospace;
 
   /* Fonts */
-  --fd-font-sans: var(--font-body), system-ui, -apple-system,
-    BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --fd-font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --fd-font-mono: var(--font-code), ui-monospace, SFMono-Regular, Menlo,
     monospace;
 
@@ -38,7 +38,10 @@ html {
   --fd-font-size-sm: 0.875rem;
   --fd-font-size-md: 1rem;
   --fd-font-size-lg: 1.125rem;
-  --fd-font-size-xl: 1.25rem;
+  /* The same as fandry's own default. These --fd-* values also theme every
+     fandry-* component on the page (see tokens.css), so a value here that
+     differs from fandry's changes the components too. */
+  --fd-font-size-xl: 1.5rem;
 
   /* Line heights */
   --fd-line-height-tight: 1.25;
@@ -81,7 +84,7 @@ h2 {
   font-size: 1.5rem;
 }
 h3 {
-  font-size: var(--fd-font-size-xl);
+  font-size: 1.25rem;
 }
 h4 {
   font-size: var(--fd-font-size-lg);

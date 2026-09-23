@@ -10,28 +10,28 @@
   flex-shrink: 0;
 
   border-radius: 50%;
-  background: hsl(var(--fd-bg-muted));
-  color: hsl(var(--fd-text-muted));
-  font-weight: var(--fd-font-weight-semibold);
+  background: hsl(var(--_fd-bg-muted));
+  color: hsl(var(--_fd-text-muted));
+  font-weight: var(--_fd-font-weight-semibold);
   text-transform: uppercase;
 }
 
 .avatar--sm {
-  width: var(--fd-avatar-size-sm);
-  height: var(--fd-avatar-size-sm);
-  font-size: calc(var(--fd-avatar-size-sm) * 0.4);
+  width: var(--_fd-avatar-size-sm);
+  height: var(--_fd-avatar-size-sm);
+  font-size: calc(var(--_fd-avatar-size-sm) * 0.4);
 }
 
 .avatar--md {
-  width: var(--fd-avatar-size-md);
-  height: var(--fd-avatar-size-md);
-  font-size: calc(var(--fd-avatar-size-md) * 0.4);
+  width: var(--_fd-avatar-size-md);
+  height: var(--_fd-avatar-size-md);
+  font-size: calc(var(--_fd-avatar-size-md) * 0.4);
 }
 
 .avatar--lg {
-  width: var(--fd-avatar-size-lg);
-  height: var(--fd-avatar-size-lg);
-  font-size: calc(var(--fd-avatar-size-lg) * 0.4);
+  width: var(--_fd-avatar-size-lg);
+  height: var(--_fd-avatar-size-lg);
+  font-size: calc(var(--_fd-avatar-size-lg) * 0.4);
 }
 
 .image {

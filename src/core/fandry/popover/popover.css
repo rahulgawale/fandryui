@@ -12,42 +12,42 @@
   /* Placed from the trigger's bounding box (see popover.ts), so no scrolling
      ancestor can clip it. */
   position: fixed;
-  z-index: var(--fd-z-overlay);
+  z-index: var(--_fd-z-overlay);
   min-width: max-content;
 
-  background: hsl(var(--fd-bg));
-  border: var(--fd-border-width) solid hsl(var(--fd-border));
-  border-radius: var(--fd-radius-md);
-  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating));
-  padding: var(--fd-space-2);
+  background: hsl(var(--_fd-bg));
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-md);
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
+  padding: var(--_fd-space-2);
 
   /* Slides out from the trigger's side (direction set per placement
      below). Motion is defined in base/motion.css; see popover.ts /
      fandry/motion for how the panel stays mounted through its exit. */
-  animation: fd-slide-in var(--fd-duration-normal) var(--fd-ease-standard);
+  animation: fd-slide-in var(--_fd-duration-normal) var(--_fd-ease-standard);
 }
 
 .panel--closing {
-  animation: fd-slide-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  animation: fd-slide-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
   pointer-events: none;
 }
 
 .panel--bottom {
-  margin-top: var(--fd-space-1);
-  --fd-slide-y: calc(var(--fd-space-2) * -1);
+  margin-top: var(--_fd-space-1);
+  --fd-slide-y: calc(var(--_fd-space-2) * -1);
 }
 
 .panel--top {
-  margin-bottom: var(--fd-space-1);
-  --fd-slide-y: var(--fd-space-2);
+  margin-bottom: var(--_fd-space-1);
+  --fd-slide-y: var(--_fd-space-2);
 }
 
 .panel--left {
-  margin-right: var(--fd-space-1);
-  --fd-slide-x: var(--fd-space-2);
+  margin-right: var(--_fd-space-1);
+  --fd-slide-x: var(--_fd-space-2);
 }
 
 .panel--right {
-  margin-left: var(--fd-space-1);
-  --fd-slide-x: calc(var(--fd-space-2) * -1);
+  margin-left: var(--_fd-space-1);
+  --fd-slide-x: calc(var(--_fd-space-2) * -1);
 }

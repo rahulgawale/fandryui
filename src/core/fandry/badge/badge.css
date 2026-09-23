@@ -5,36 +5,36 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
 
   font-family: inherit;
-  font-size: var(--fd-font-size-xs);
-  font-weight: var(--fd-font-weight-medium);
+  font-size: var(--_fd-font-size-xs);
+  font-weight: var(--_fd-font-weight-medium);
   line-height: 1;
 
-  padding: var(--fd-space-1) var(--fd-space-2);
-  border-radius: var(--fd-radius-lg);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  border-radius: var(--_fd-radius-lg);
 
-  background: hsl(var(--fd-bg-muted));
-  color: hsl(var(--fd-text));
+  background: hsl(var(--_fd-bg-muted));
+  color: hsl(var(--_fd-text));
 }
 
 .badge--primary {
-  background: hsl(var(--fd-primary));
-  color: hsl(var(--fd-primary-foreground));
+  background: hsl(var(--_fd-primary));
+  color: hsl(var(--_fd-primary-foreground));
 }
 
 .badge--success {
-  background: hsl(var(--fd-success));
-  color: hsl(var(--fd-success-foreground));
+  background: hsl(var(--_fd-success));
+  color: hsl(var(--_fd-success-foreground));
 }
 
 .badge--warning {
-  background: hsl(var(--fd-warning));
-  color: hsl(var(--fd-warning-foreground));
+  background: hsl(var(--_fd-warning));
+  color: hsl(var(--_fd-warning-foreground));
 }
 
 .badge--danger {
-  background: hsl(var(--fd-danger));
-  color: hsl(var(--fd-danger-foreground));
+  background: hsl(var(--_fd-danger));
+  color: hsl(var(--_fd-danger-foreground));
 }
