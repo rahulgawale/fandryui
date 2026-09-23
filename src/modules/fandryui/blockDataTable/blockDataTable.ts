@@ -129,7 +129,19 @@ export default class BlockDataTable extends LightningElement {
   simulateErrors = false;
 
   private benchmark = benchmarkOptionsFromUrl();
-  private api = createMockApi({ ...this.benchmark, shouldFail: () => this.simulateErrors });
+
+  /*
+   * The benchmark's `?latency=0` only sets where the switch starts; turning it
+   * back on uses the normal latency, so the skeleton and Refresh stay visible.
+   */
+  simulateLatency = this.benchmark.latencyMs !== 0;
+
+  private api = createMockApi({
+    rowCount: this.benchmark.rowCount,
+    latencyMs: this.benchmark.latencyMs || undefined,
+    shouldFail: () => this.simulateErrors,
+    shouldDelay: () => this.simulateLatency
+  });
 
   get pageSize(): number {
     return this.benchmark.pageSize ?? 8;
@@ -211,5 +223,9 @@ export default class BlockDataTable extends LightningElement {
 
   handleSimulateErrorsChange(event: CustomEvent<boolean>) {
     this.simulateErrors = !!event.detail;
+  }
+
+  handleSimulateLatencyChange(event: CustomEvent<boolean>) {
+    this.simulateLatency = !!event.detail;
   }
 }

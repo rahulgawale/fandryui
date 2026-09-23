@@ -23,6 +23,11 @@
           checked={simulateErrors}
           onchange={handleSimulateErrorsChange}
         ></fandry-switch>
+        <fandry-switch
+          label="Simulate latency"
+          checked={simulateLatency}
+          onchange={handleSimulateLatencyChange}
+        ></fandry-switch>
         <fandry-text size="sm" variant="muted">
           Try it: choose <strong>Edit</strong> from a row's menu (or double-click a cell), clear the name or enter
           an email without an @, then Save. Select two or more rows for <strong>Edit selected</strong>.

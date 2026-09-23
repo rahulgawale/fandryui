@@ -68,6 +68,8 @@ function seed(count = NAMES.length): Person[] {
  */
 interface DataTableMockApiOptions extends MockApiOptions {
   rowCount?: number;
+  // Read on every call, like shouldFail: off means answer with no latency.
+  shouldDelay?: () => boolean;
 }
 
 function validate(changes: Partial<Person>) {
@@ -79,15 +81,22 @@ function validate(changes: Partial<Person>) {
   }
 }
 
-export function createMockApi({ latencyMs = 900, rowCount, shouldFail = () => false }: DataTableMockApiOptions = {}) {
+export function createMockApi({
+  latencyMs = 900,
+  rowCount,
+  shouldFail = () => false,
+  shouldDelay = () => true
+}: DataTableMockApiOptions = {}) {
   let store = seed(rowCount);
 
-  // Every call goes through here, so the switch treats them all alike. It is
-  // read when the request is *sent*, not when it lands: flipping it while a
-  // request is in flight must not change that request's outcome.
+  /*
+   * Every call goes through here, so the switches treat them all alike. They
+   * are read when the request is *sent*, not when it lands: flipping one while
+   * a request is in flight must not change that request's outcome.
+   */
   async function request() {
     const fail = shouldFail();
-    await delay(latencyMs);
+    await delay(shouldDelay() ? latencyMs : 0);
     if (fail) throw new Error('The server is unavailable. Try again.');
   }
 
