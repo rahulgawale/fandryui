@@ -1,3 +1,10 @@
+# [0.16.0](https://github.com/rahulgawale/fandryui/compare/v0.15.1...v0.16.0) (2026-09-23)
+
+
+### Features
+
+* add a form block with fields, validation, actions and read/edit mode ([#74](https://github.com/rahulgawale/fandryui/issues/74)) ([c0414eb](https://github.com/rahulgawale/fandryui/commit/c0414eb6593aeb6f946c60130ec29d97fcb652a1))
+
 ## [0.15.1](https://github.com/rahulgawale/fandryui/compare/v0.15.0...v0.15.1) (2026-09-22)
 
 
