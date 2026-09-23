@@ -15,6 +15,10 @@
 
 .input {
   flex: 1;
+  /* A flex item won't shrink below its content's width unless told to, and a
+     native input's is about 20 characters -- so without this an input
+     overflowed any container narrower than that. */
+  min-width: 0;
   border: none;
   outline: none;
   font: inherit;
