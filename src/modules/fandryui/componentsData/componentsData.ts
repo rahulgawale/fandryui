@@ -24,7 +24,7 @@ export interface ComponentEntry {
   parts?: string[];
   code: string;
   examples?: ComponentExample[];
-  /** A live example of theming this component with tokens and parts, shown last. */
+  /** A live example of theming this component with tokens and parts, shown under the default example. */
   customize?: ComponentExample;
 }
 

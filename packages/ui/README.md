@@ -113,7 +113,7 @@ fandry-input::part(control) { border-radius: 999px; }
 fandry-select::part(panel) { box-shadow: none; }
 ```
 
-`::part()` needs native shadow DOM, which LWR uses. Under synthetic shadow (the default in Lightning Experience) parts have no effect, while tokens work in both.
+`::part()` needs native shadow DOM: LWR sites use it, and so do Salesforce orgs with native shadow on. In an org still on synthetic shadow, parts have no effect; tokens work in both.
 
 ## Extending
 

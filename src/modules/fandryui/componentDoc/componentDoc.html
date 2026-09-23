@@ -27,6 +27,19 @@
           </fandry-card>
         </section>
 
+        <template if:true={customizeDemo}>
+          <section class="section">
+            <fandry-heading level="3">Example: Custom colors and parts</fandry-heading>
+            <fandry-text variant="muted" size="sm" class="section-note">
+              The same component with a few <code>--fd-*</code> tokens set around it and its parts restyled. The code is
+              under Parts below.
+            </fandry-text>
+            <fandry-card class="demo-frame">
+              <lwc:component lwc:is={customizeDemo}></lwc:component>
+            </fandry-card>
+          </section>
+        </template>
+
         <section class="section">
           <fandry-heading level="3">Props</fandry-heading>
           <template if:true={hasProps}>
@@ -64,9 +77,10 @@
           <section class="section">
             <fandry-heading level="3">Parts</fandry-heading>
             <fandry-text variant="muted" size="sm" class="section-note">
-              Style the elements inside the component from your own CSS with <code>::part()</code>. Parts work where
-              components use native shadow DOM (LWR sites); for colors, spacing, radius and type, set the
-              <code>--fd-*</code> tokens instead, which work everywhere.
+              Style the elements inside the component from your own CSS with <code>::part()</code>. Parts need native
+              shadow DOM: LWR sites, and Salesforce orgs with native shadow on. For colors, spacing, radius and type,
+              set the <code>--fd-*</code> tokens instead, which work in synthetic shadow too. The code for the
+              "Custom colors and parts" example above:
             </fandry-text>
             <div class="props-table-wrap">
               <table class="props-table">
@@ -86,7 +100,9 @@
                 </tbody>
               </table>
             </div>
-            <pre class="code-block parts-code"><code>{partsCode}</code></pre>
+            <template if:true={customizeCode}>
+              <pre class="code-block parts-code"><code>{customizeCode}</code></pre>
+            </template>
           </section>
         </template>
 

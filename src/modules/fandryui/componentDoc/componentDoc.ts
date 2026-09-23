@@ -183,8 +183,7 @@ export default class ComponentDoc extends LightningElement {
   // Extra example + code blocks (see ComponentExample) with each `demo` key
   // already resolved to its constructor, since lwc:is needs the reference.
   get extraExamples() {
-    const examples = [...(this.entry?.examples ?? []), ...(this.entry?.customize ? [this.entry.customize] : [])];
-    return examples.map((example) => ({
+    return (this.entry?.examples ?? []).map((example) => ({
       ...example,
       demoComponent: DEMO_COMPONENTS[example.demo]
     }));
@@ -202,19 +201,16 @@ export default class ComponentDoc extends LightningElement {
     return this.parts.length > 0;
   }
 
-  // A starting point using this component's own tag and its most specific
-  // part (the first one that isn't `base`, if there is one).
-  get partsCode(): string {
-    const tag = this.entry?.tag ?? '';
-    const names = this.entry?.parts ?? [];
-    const part = names.find((name) => name !== 'base') ?? names[0];
-    return `/* your stylesheet */
-${tag}::part(${part}) {
-  /* any CSS */
-}
+  /* The themed demo sits right under the default one, so the two can be
+     compared; its code goes in the Parts section, where the parts it uses
+     are listed. */
+  get customizeDemo(): typeof LightningElement | undefined {
+    const demo = this.entry?.customize?.demo;
+    return demo ? DEMO_COMPONENTS[demo] : undefined;
+  }
 
-/* Tokens theme every component at once, or one section of a page */
-:root { --fd-radius-md: 0; --fd-primary: 222 47% 11%; }`;
+  get customizeCode(): string {
+    return this.entry?.customize?.code ?? '';
   }
 
   get sidebarGroups() {
