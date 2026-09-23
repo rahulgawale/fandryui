@@ -46,6 +46,11 @@ th {
   background: transparent;
   font: inherit;
   font-weight: inherit;
+  /* A native button resets these instead of inheriting them, so the
+     header cell's own (a site's ::part(header-cell), say) would stop at a
+     sortable header. */
+  letter-spacing: inherit;
+  text-transform: inherit;
   color: inherit;
   padding: 0;
   cursor: pointer;
