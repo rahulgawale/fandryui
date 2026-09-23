@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.narrow {
+  max-width: 20rem;
+}
+
+.panel {
+  position: relative;
+  min-height: 8rem;
+}
+
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-success: 160 84% 26%;
+  --fd-radius-md: 0.75rem;
+}
+
+fandry-toast::part(base) {
+  font-weight: 600;
+  border-left-width: 6px;
+  background: hsl(160 40% 97%);
+}
+
+fandry-toast-viewport::part(base) {
+  gap: 0.75rem;
+}

@@ -2,6 +2,38 @@ import { LightningElement } from 'lwc';
 import { COMPONENTS, CATEGORY_ORDER, PART_DESCRIPTIONS, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
 
 import DemoBreadcrumb from 'fandryuidemos/demoBreadcrumb';
+import DemoAlertTheme from 'fandryuidemos/demoAlertTheme';
+import DemoAvatarTheme from 'fandryuidemos/demoAvatarTheme';
+import DemoBadgeTheme from 'fandryuidemos/demoBadgeTheme';
+import DemoBreadcrumbTheme from 'fandryuidemos/demoBreadcrumbTheme';
+import DemoButtonTheme from 'fandryuidemos/demoButtonTheme';
+import DemoCardTheme from 'fandryuidemos/demoCardTheme';
+import DemoCheckboxTheme from 'fandryuidemos/demoCheckboxTheme';
+import DemoComboboxTheme from 'fandryuidemos/demoComboboxTheme';
+import DemoCommandTheme from 'fandryuidemos/demoCommandTheme';
+import DemoDialogTheme from 'fandryuidemos/demoDialogTheme';
+import DemoDividerTheme from 'fandryuidemos/demoDividerTheme';
+import DemoHeadingTheme from 'fandryuidemos/demoHeadingTheme';
+import DemoIconTheme from 'fandryuidemos/demoIconTheme';
+import DemoInputTheme from 'fandryuidemos/demoInputTheme';
+import DemoLabelTheme from 'fandryuidemos/demoLabelTheme';
+import DemoLinkTheme from 'fandryuidemos/demoLinkTheme';
+import DemoLookupTheme from 'fandryuidemos/demoLookupTheme';
+import DemoMenuTheme from 'fandryuidemos/demoMenuTheme';
+import DemoPaginationTheme from 'fandryuidemos/demoPaginationTheme';
+import DemoPopoverTheme from 'fandryuidemos/demoPopoverTheme';
+import DemoProgressTheme from 'fandryuidemos/demoProgressTheme';
+import DemoRadioTheme from 'fandryuidemos/demoRadioTheme';
+import DemoSelectTheme from 'fandryuidemos/demoSelectTheme';
+import DemoSidebarTheme from 'fandryuidemos/demoSidebarTheme';
+import DemoSkeletonTheme from 'fandryuidemos/demoSkeletonTheme';
+import DemoSpinnerTheme from 'fandryuidemos/demoSpinnerTheme';
+import DemoSwitchTheme from 'fandryuidemos/demoSwitchTheme';
+import DemoTableTheme from 'fandryuidemos/demoTableTheme';
+import DemoTextTheme from 'fandryuidemos/demoTextTheme';
+import DemoTextareaTheme from 'fandryuidemos/demoTextareaTheme';
+import DemoToastTheme from 'fandryuidemos/demoToastTheme';
+import DemoTooltipTheme from 'fandryuidemos/demoTooltipTheme';
 import DemoBreadcrumbItem from 'fandryuidemos/demoBreadcrumbItem';
 import DemoCard from 'fandryuidemos/demoCard';
 import DemoDivider from 'fandryuidemos/demoDivider';
@@ -93,7 +125,39 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   menu: DemoMenu,
   'menu-item': DemoMenuItem,
   popover: DemoPopover,
-  table: DemoTable
+  table: DemoTable,
+  'alert-theme': DemoAlertTheme,
+  'avatar-theme': DemoAvatarTheme,
+  'badge-theme': DemoBadgeTheme,
+  'breadcrumb-theme': DemoBreadcrumbTheme,
+  'button-theme': DemoButtonTheme,
+  'card-theme': DemoCardTheme,
+  'checkbox-theme': DemoCheckboxTheme,
+  'combobox-theme': DemoComboboxTheme,
+  'command-theme': DemoCommandTheme,
+  'dialog-theme': DemoDialogTheme,
+  'divider-theme': DemoDividerTheme,
+  'heading-theme': DemoHeadingTheme,
+  'icon-theme': DemoIconTheme,
+  'input-theme': DemoInputTheme,
+  'label-theme': DemoLabelTheme,
+  'link-theme': DemoLinkTheme,
+  'lookup-theme': DemoLookupTheme,
+  'menu-theme': DemoMenuTheme,
+  'pagination-theme': DemoPaginationTheme,
+  'popover-theme': DemoPopoverTheme,
+  'progress-theme': DemoProgressTheme,
+  'radio-theme': DemoRadioTheme,
+  'select-theme': DemoSelectTheme,
+  'sidebar-theme': DemoSidebarTheme,
+  'skeleton-theme': DemoSkeletonTheme,
+  'spinner-theme': DemoSpinnerTheme,
+  'switch-theme': DemoSwitchTheme,
+  'table-theme': DemoTableTheme,
+  'text-theme': DemoTextTheme,
+  'textarea-theme': DemoTextareaTheme,
+  'toast-theme': DemoToastTheme,
+  'tooltip-theme': DemoTooltipTheme
 };
 
 export default class ComponentDoc extends LightningElement {
@@ -119,7 +183,8 @@ export default class ComponentDoc extends LightningElement {
   // Extra example + code blocks (see ComponentExample) with each `demo` key
   // already resolved to its constructor, since lwc:is needs the reference.
   get extraExamples() {
-    return (this.entry?.examples ?? []).map((example) => ({
+    const examples = [...(this.entry?.examples ?? []), ...(this.entry?.customize ? [this.entry.customize] : [])];
+    return examples.map((example) => ({
       ...example,
       demoComponent: DEMO_COMPONENTS[example.demo]
     }));

@@ -1,0 +1,12 @@
+<template>
+  <div class="brand row">
+    <fandry-button variant="secondary" onclick={handleOpen}>Search the shop</fandry-button>
+    <fandry-command
+      label="Search the shop"
+      placeholder="Search products and pages…"
+      items={items}
+      open={isOpen}
+      ontoggle={handleToggle}
+    ></fandry-command>
+  </div>
+</template>

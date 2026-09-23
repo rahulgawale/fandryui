@@ -1,0 +1,31 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.narrow {
+  max-width: 20rem;
+}
+
+fandry-link::part(link) {
+  color: hsl(160 84% 26%);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid hsl(160 84% 26% / 0.3);
+}
+
+fandry-link::part(link):hover {
+  border-bottom-color: currentColor;
+}

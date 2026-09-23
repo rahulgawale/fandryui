@@ -24,6 +24,8 @@ export interface ComponentEntry {
   parts?: string[];
   code: string;
   examples?: ComponentExample[];
+  /** A live example of theming this component with tokens and parts, shown last. */
+  customize?: ComponentExample;
 }
 
 // Sidebar/pagination order follows this list, category by category -- so
@@ -108,6 +110,41 @@ export const COMPONENTS: ComponentEntry[] = [
     name: 'Breadcrumb',
     tag: 'fandry-breadcrumb',
     parts: ['base', 'list'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'breadcrumb-theme',
+      code: `<!-- template -->
+<div class="brand" onclick={handleNoopClick}>
+  <fandry-breadcrumb>
+    <fandry-breadcrumb-item href="#">Home</fandry-breadcrumb-item>
+    <fandry-breadcrumb-item href="#">Shoes</fandry-breadcrumb-item>
+    <fandry-breadcrumb-item current>Stride Runner</fandry-breadcrumb-item>
+  </fandry-breadcrumb>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-text-muted: 160 15% 38%;
+}
+
+fandry-breadcrumb::part(list) {
+  padding: 0.5rem 1rem;
+  background: hsl(160 40% 96%);
+  border-radius: 999px;
+}
+
+fandry-breadcrumb-item::part(separator) {
+  color: hsl(160 84% 26%);
+}
+
+fandry-breadcrumb-item::part(link) {
+  font-weight: 600;
+  text-decoration: none;
+}`
+    },
     category: 'Layout',
     description: 'A navigation trail of ancestor pages — pair with fandry-breadcrumb-item for each crumb.',
     props: [{ name: 'aria-label', type: 'string', default: "'Breadcrumb'", description: 'Accessible name for the nav landmark.' }],
@@ -122,6 +159,41 @@ export const COMPONENTS: ComponentEntry[] = [
     name: 'Breadcrumb Item',
     tag: 'fandry-breadcrumb-item',
     parts: ['base', 'separator', 'link'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'breadcrumb-theme',
+      code: `<!-- template -->
+<div class="brand" onclick={handleNoopClick}>
+  <fandry-breadcrumb>
+    <fandry-breadcrumb-item href="#">Home</fandry-breadcrumb-item>
+    <fandry-breadcrumb-item href="#">Shoes</fandry-breadcrumb-item>
+    <fandry-breadcrumb-item current>Stride Runner</fandry-breadcrumb-item>
+  </fandry-breadcrumb>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-text-muted: 160 15% 38%;
+}
+
+fandry-breadcrumb::part(list) {
+  padding: 0.5rem 1rem;
+  background: hsl(160 40% 96%);
+  border-radius: 999px;
+}
+
+fandry-breadcrumb-item::part(separator) {
+  color: hsl(160 84% 26%);
+}
+
+fandry-breadcrumb-item::part(link) {
+  font-weight: 600;
+  text-decoration: none;
+}`
+    },
     category: 'Layout',
     description: 'A single crumb inside fandry-breadcrumb, with a current-page state.',
     props: [
@@ -135,6 +207,36 @@ export const COMPONENTS: ComponentEntry[] = [
     name: 'Card',
     tag: 'fandry-card',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'card-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-card class="promo">
+    <fandry-heading level="4">Summer sale</fandry-heading>
+    <fandry-text variant="muted">Up to 40% off trail gear, this week only.</fandry-text>
+  </fandry-card>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-lg: 1.25rem;
+  --fd-border: 160 30% 85%;
+  --fd-text-muted: 160 15% 38%;
+}
+
+/* A per-component hook: the card's background, gradient included. */
+.promo {
+  --fd-card-bg: linear-gradient(135deg, hsl(160 60% 95%), hsl(45 90% 93%));
+}
+
+fandry-card::part(base) {
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px hsl(160 40% 20% / 0.12);
+}`
+    },
     category: 'Layout',
     description: 'A bordered, padded surface for grouping related content.',
     props: [],
@@ -148,6 +250,29 @@ export const COMPONENTS: ComponentEntry[] = [
     name: 'Divider',
     tag: 'fandry-divider',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'divider-theme',
+      code: `<!-- template -->
+<div class="brand stack narrow">
+  <fandry-text>Free shipping over $50</fandry-text>
+  <fandry-divider></fandry-divider>
+  <fandry-text>30-day returns</fandry-text>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-border: 160 84% 26%;
+  --fd-border-width: 3px;
+}
+
+fandry-divider::part(base) {
+  border-radius: 999px;
+  opacity: 0.35;
+}`
+    },
     category: 'Layout',
     description: 'A horizontal or vertical rule for separating content.',
     props: [{ name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: 'Rule direction.' }],
@@ -159,6 +284,49 @@ export const COMPONENTS: ComponentEntry[] = [
     name: 'Pagination',
     tag: 'fandry-pagination',
     parts: ['base', 'link', 'previous', 'eyebrow', 'title', 'next', 'status', 'button'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'pagination-theme',
+      code: `<!-- template -->
+<div class="brand stack">
+  <fandry-pagination
+    previous-href="#"
+    previous-label="Sizing guide"
+    next-href="#"
+    next-label="Care instructions"
+    onclick={handleNoopClick}
+  ></fandry-pagination>
+  <fandry-pagination page-index={pageIndex} page-count="5" onchange={handlePageChange}></fandry-pagination>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-radius-lg: 1rem;
+  --fd-radius-md: 999px;
+  --fd-border: 160 30% 85%;
+}
+
+fandry-pagination::part(link) {
+  background: hsl(160 40% 97%);
+}
+
+fandry-pagination::part(eyebrow) {
+  color: hsl(160 84% 26%);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+fandry-pagination::part(title) {
+  font-weight: 700;
+}
+
+fandry-pagination::part(status) {
+  font-weight: 600;
+}`
+    },
     category: 'Layout',
     description: 'Previous/next navigation — as links between two adjacent pages, or as Previous / Page N of M / Next buttons for paging a collection.',
     props: [
@@ -201,6 +369,36 @@ handlePageChange(event) {
     name: 'Sidebar',
     tag: 'fandry-sidebar',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'sidebar-theme',
+      code: `<!-- template -->
+<div class="brand narrow" onclick={handleNoopClick}>
+  <fandry-sidebar aria-label="Shop">
+    <fandry-sidebar-item href="#" active>Shoes</fandry-sidebar-item>
+    <fandry-sidebar-item href="#">Bags</fandry-sidebar-item>
+    <fandry-sidebar-item href="#">Home</fandry-sidebar-item>
+  </fandry-sidebar>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-radius-md: 999px;
+}
+
+fandry-sidebar::part(base) {
+  padding: 0.5rem;
+  background: hsl(160 40% 97%);
+  border-radius: 1rem;
+}
+
+fandry-sidebar-item::part(link) {
+  font-weight: 600;
+}`
+    },
     category: 'Layout',
     description: 'A vertical navigation rail — pair with fandry-sidebar-item for links.',
     props: [{ name: 'aria-label', type: 'string', default: "'Sidebar'", description: 'Accessible name for the nav landmark.' }],
@@ -214,6 +412,36 @@ handlePageChange(event) {
     name: 'Sidebar Item',
     tag: 'fandry-sidebar-item',
     parts: ['base', 'link'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'sidebar-theme',
+      code: `<!-- template -->
+<div class="brand narrow" onclick={handleNoopClick}>
+  <fandry-sidebar aria-label="Shop">
+    <fandry-sidebar-item href="#" active>Shoes</fandry-sidebar-item>
+    <fandry-sidebar-item href="#">Bags</fandry-sidebar-item>
+    <fandry-sidebar-item href="#">Home</fandry-sidebar-item>
+  </fandry-sidebar>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-radius-md: 999px;
+}
+
+fandry-sidebar::part(base) {
+  padding: 0.5rem;
+  background: hsl(160 40% 97%);
+  border-radius: 1rem;
+}
+
+fandry-sidebar-item::part(link) {
+  font-weight: 600;
+}`
+    },
     category: 'Layout',
     description: 'A single navigation row for fandry-sidebar, with an active/current-page state.',
     props: [
@@ -229,6 +457,32 @@ handlePageChange(event) {
     name: 'Heading',
     tag: 'fandry-heading',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'heading-theme',
+      code: `<!-- template -->
+<div class="brand stack">
+  <fandry-heading level="4" class="eyebrow">New arrivals</fandry-heading>
+  <fandry-heading level="2">The summer collection</fandry-heading>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-font-heading: Georgia, "Times New Roman", serif;
+  --fd-text: 160 40% 14%;
+  --fd-heading-letter-spacing: -0.02em;
+}
+
+fandry-heading.eyebrow::part(base) {
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsl(160 84% 26%);
+}`
+    },
     category: 'Typography',
     description: 'A semantically-leveled heading, sized off the shared type scale.',
     props: [{ name: 'level', type: '1 | 2 | 3 | 4 | 5 | 6', default: '2', description: 'Heading level (role="heading" aria-level, not a real h1-h6).' }],
@@ -239,6 +493,37 @@ handlePageChange(event) {
     name: 'Icon',
     tag: 'fandry-icon',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'icon-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-icon size="md">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"></path>
+    </svg>
+  </fandry-icon>
+  <fandry-icon size="md" class="large">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"></path>
+    </svg>
+  </fandry-icon>
+</div>
+
+/* css */
+fandry-icon::part(base) {
+  box-sizing: content-box;
+  padding: 0.5rem;
+  color: hsl(45 90% 45%);
+  background: hsl(45 90% 94%);
+  border-radius: 999px;
+}
+
+/* A per-component hook: the icon's size. */
+.large {
+  --fd-icon-size: 2.5rem;
+}`
+    },
     category: 'Typography',
     description: 'A sizing/color frame around a slotted glyph — brings no icon set of its own.',
     props: [
@@ -254,6 +539,33 @@ handlePageChange(event) {
     name: 'Label',
     tag: 'fandry-label',
     parts: ['base', 'required'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'label-theme',
+      code: `<!-- template -->
+<div class="brand stack narrow">
+  <fandry-label html-for="theme-email" required>Email</fandry-label>
+  <input id="theme-email" type="email" class="native-input" placeholder="you@brand.com" />
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-text: 160 40% 14%;
+}
+
+fandry-label::part(base) {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+fandry-label::part(required) {
+  color: hsl(160 84% 26%);
+}`
+    },
     category: 'Typography',
     description: 'A form label, with an optional required indicator.',
     props: [
@@ -268,6 +580,28 @@ handlePageChange(event) {
     name: 'Text',
     tag: 'fandry-text',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'text-theme',
+      code: `<!-- template -->
+<div class="brand stack narrow">
+  <fandry-text>Every pair is made to order in our Porto workshop.</fandry-text>
+  <fandry-text variant="muted" size="sm">Ships in 5 to 7 days.</fandry-text>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-font-sans: Georgia, "Times New Roman", serif;
+  --fd-text: 160 40% 14%;
+  --fd-text-muted: 160 15% 38%;
+}
+
+fandry-text::part(base) {
+  line-height: 1.7;
+}`
+    },
     category: 'Typography',
     description: 'Body text — pick the rendered tag and size independently.',
     props: [
@@ -284,6 +618,35 @@ handlePageChange(event) {
     name: 'Button',
     tag: 'fandry-button',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'button-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-button class="cta">Add to cart</fandry-button>
+  <fandry-button variant="secondary">Save for later</fandry-button>
+  <fandry-button variant="ghost">Share</fandry-button>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-radius-md: 999px;
+}
+
+fandry-button::part(base) {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+fandry-button.cta::part(base) {
+  padding-inline: 1.5rem;
+  box-shadow: 0 6px 16px hsl(160 84% 26% / 0.35);
+}`
+    },
     category: 'Forms',
     description: 'A native button with default/secondary/ghost variants and three sizes.',
     props: [
@@ -299,6 +662,32 @@ handlePageChange(event) {
     name: 'Checkbox',
     tag: 'fandry-checkbox',
     parts: ['base', 'control', 'indicator', 'label'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'checkbox-theme',
+      code: `<!-- template -->
+<div class="brand stack">
+  <fandry-checkbox label="Gift wrap this order" checked></fandry-checkbox>
+  <fandry-checkbox label="Email me about new arrivals"></fandry-checkbox>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-radius-sm: 0.375rem;
+}
+
+fandry-checkbox::part(control) {
+  border-color: hsl(160 84% 26%);
+}
+
+fandry-checkbox::part(label) {
+  font-weight: 600;
+}`
+    },
     category: 'Forms',
     description: 'A checkbox with a built-in label and indeterminate support.',
     props: [
@@ -314,6 +703,45 @@ handlePageChange(event) {
     name: 'Combobox',
     tag: 'fandry-combobox',
     parts: ['base', 'label', 'required', 'control', 'input', 'chevron', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty', 'help-text'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'combobox-theme',
+      code: `<!-- template -->
+<div class="brand narrow">
+  <fandry-combobox
+    label="Category"
+    placeholder="Search categories"
+    options={options}
+    value={value}
+    onchange={handleChange}
+  ></fandry-combobox>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 0.75rem;
+  --fd-border-focus: 160 84% 36%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-bg-muted: 160 40% 94%;
+}
+
+fandry-combobox::part(control) {
+  background: hsl(160 40% 98%);
+  font-weight: 600;
+}
+
+fandry-combobox::part(group-label) {
+  color: hsl(160 84% 26%);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+fandry-combobox::part(option-description) {
+  font-style: italic;
+}`
+    },
     category: 'Forms',
     description: 'A searchable select — type to narrow the options, then pick one.',
     props: [
@@ -416,6 +844,47 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Input',
     tag: 'fandry-input',
     parts: ['base', 'label', 'control', 'prefix', 'input', 'suffix', 'help-text', 'required'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'input-theme',
+      code: `<!-- template -->
+<div class="brand narrow">
+  <fandry-input
+    label="Email"
+    type="email"
+    placeholder="you@brand.com"
+    help-text="We'll send your receipt here."
+    required
+  ></fandry-input>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 999px;
+  --fd-border: 160 30% 80%;
+  --fd-border-focus: 160 84% 36%;
+  --fd-ring-color: 160 84% 36%;
+}
+
+fandry-input::part(control) {
+  padding-inline: 1rem;
+  background: hsl(160 40% 98%);
+}
+
+fandry-input::part(label) {
+  font-weight: 700;
+}
+
+fandry-input::part(required) {
+  color: hsl(160 84% 26%);
+}
+
+fandry-input::part(help-text) {
+  font-style: italic;
+}`
+    },
     category: 'Forms',
     description: 'A text input with a label, help text, and prefix/suffix slots.',
     props: [
@@ -432,6 +901,28 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Link',
     tag: 'fandry-link',
     parts: ['base', 'link'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'link-theme',
+      code: `<!-- template -->
+<div class="brand" onclick={handleNoopClick}>
+  <fandry-text>
+    Not the right size? See <fandry-link href="#">shipping and returns</fandry-link>.
+  </fandry-text>
+</div>
+
+/* css */
+fandry-link::part(link) {
+  color: hsl(160 84% 26%);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid hsl(160 84% 26% / 0.3);
+}
+
+fandry-link::part(link):hover {
+  border-bottom-color: currentColor;
+}`
+    },
     category: 'Forms',
     description: 'Anchor styling with default/muted variants and a disabled state.',
     props: [
@@ -447,6 +938,46 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Radio',
     tag: 'fandry-radio',
     parts: ['base', 'control', 'indicator', 'label'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'radio-theme',
+      code: `<!-- template -->
+<div class="brand">
+  <fandry-radio-group name="theme-shipping" value="standard" label="Shipping">
+    <fandry-radio name="theme-shipping" value="standard" label="Standard" checked></fandry-radio>
+    <fandry-radio name="theme-shipping" value="express" label="Express"></fandry-radio>
+    <fandry-radio name="theme-shipping" value="pickup" label="Pick up in store"></fandry-radio>
+  </fandry-radio-group>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-ring-color: 160 84% 36%;
+}
+
+fandry-radio-group::part(label) {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+fandry-radio-group::part(list) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+fandry-radio::part(control) {
+  border-color: hsl(160 84% 26%);
+}
+
+fandry-radio::part(label) {
+  font-weight: 600;
+}`
+    },
     category: 'Forms',
     description: 'A single radio input — pair with fandry-radio-group for the roving-tabindex group.',
     props: [
@@ -465,6 +996,46 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Radio Group',
     tag: 'fandry-radio-group',
     parts: ['base', 'label', 'list'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'radio-theme',
+      code: `<!-- template -->
+<div class="brand">
+  <fandry-radio-group name="theme-shipping" value="standard" label="Shipping">
+    <fandry-radio name="theme-shipping" value="standard" label="Standard" checked></fandry-radio>
+    <fandry-radio name="theme-shipping" value="express" label="Express"></fandry-radio>
+    <fandry-radio name="theme-shipping" value="pickup" label="Pick up in store"></fandry-radio>
+  </fandry-radio-group>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-ring-color: 160 84% 36%;
+}
+
+fandry-radio-group::part(label) {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+fandry-radio-group::part(list) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+fandry-radio::part(control) {
+  border-color: hsl(160 84% 26%);
+}
+
+fandry-radio::part(label) {
+  font-weight: 600;
+}`
+    },
     category: 'Forms',
     description: 'A roving-tabindex container for a set of fandry-radio buttons.',
     props: [
@@ -483,6 +1054,37 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Select',
     tag: 'fandry-select',
     parts: ['base', 'label', 'required', 'control', 'value', 'chevron', 'listbox', 'option', 'group', 'group-label', 'help-text', 'panel'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'select-theme',
+      code: `<!-- template -->
+<div class="brand narrow">
+  <fandry-select label="Size" placeholder="Choose a size" options={options} value="m"></fandry-select>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 0.75rem;
+  --fd-border-focus: 160 84% 36%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-bg-muted: 160 40% 94%;
+}
+
+fandry-select::part(control) {
+  background: hsl(160 40% 98%);
+  font-weight: 600;
+}
+
+fandry-select::part(panel) {
+  box-shadow: 0 12px 32px hsl(160 40% 20% / 0.18);
+}
+
+fandry-select::part(option) {
+  padding-block: 0.5rem;
+}`
+    },
     category: 'Forms',
     description: 'A custom listbox-style select, with optional grouped options.',
     props: [
@@ -536,6 +1138,32 @@ planOptions = [
     name: 'Switch',
     tag: 'fandry-switch',
     parts: ['base', 'control', 'indicator', 'label'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'switch-theme',
+      code: `<!-- template -->
+<div class="brand stack">
+  <fandry-switch label="Email me when it's back in stock" checked></fandry-switch>
+  <fandry-switch label="Text me delivery updates"></fandry-switch>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-border: 160 20% 80%;
+  --fd-ring-color: 160 84% 36%;
+}
+
+fandry-switch::part(indicator) {
+  box-shadow: 0 1px 3px hsl(0 0% 0% / 0.3);
+}
+
+fandry-switch::part(label) {
+  font-weight: 600;
+}`
+    },
     category: 'Forms',
     description: 'A toggle switch with a built-in label.',
     props: [
@@ -550,6 +1178,33 @@ planOptions = [
     name: 'Textarea',
     tag: 'fandry-textarea',
     parts: ['base', 'label', 'control', 'textarea', 'help-text', 'required'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'textarea-theme',
+      code: `<!-- template -->
+<div class="brand narrow">
+  <fandry-textarea label="Gift message" placeholder="Add a note for the recipient" rows="3"></fandry-textarea>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 1rem;
+  --fd-border-focus: 160 84% 36%;
+  --fd-ring-color: 160 84% 36%;
+}
+
+fandry-textarea::part(control) {
+  padding: 0.75rem 1rem;
+  font-family: Georgia, "Times New Roman", serif;
+  background: hsl(45 90% 97%);
+}
+
+fandry-textarea::part(label) {
+  font-weight: 700;
+}`
+    },
     category: 'Forms',
     description: 'A multi-line text input with a label and help text.',
     props: [
@@ -567,6 +1222,35 @@ planOptions = [
     name: 'Alert',
     tag: 'fandry-alert',
     parts: ['base', 'title', 'body'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'alert-theme',
+      code: `<!-- template -->
+<div class="brand stack">
+  <fandry-alert title="Free shipping">Orders over $50 ship free, anywhere in the EU.</fandry-alert>
+  <fandry-alert variant="success" title="Order placed">We'll email you when it ships.</fandry-alert>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-accent: 45 90% 40%;
+  --fd-success: 160 84% 26%;
+  --fd-radius-md: 0.75rem;
+  --fd-surface-tint: 10%;
+}
+
+fandry-alert::part(base) {
+  border-left-width: 6px;
+}
+
+fandry-alert::part(title) {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}`
+    },
     category: 'Feedback',
     description: 'An inline banner for a status message, with an optional title.',
     props: [
@@ -580,6 +1264,34 @@ planOptions = [
     name: 'Badge',
     tag: 'fandry-badge',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'badge-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-badge variant="danger">Sale</fandry-badge>
+  <fandry-badge variant="success">New</fandry-badge>
+  <fandry-badge variant="primary">Buy 2, get 1 free</fandry-badge>
+  <fandry-badge>Bestseller</fandry-badge>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-success: 160 84% 26%;
+  --fd-danger: 350 80% 42%;
+  --fd-bg-muted: 45 90% 90%;
+}
+
+fandry-badge::part(base) {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+}`
+    },
     category: 'Feedback',
     description: 'A small status/label pill.',
     props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant.' }],
@@ -590,6 +1302,33 @@ planOptions = [
     name: 'Progress',
     tag: 'fandry-progress',
     parts: ['base', 'indicator'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'progress-theme',
+      code: `<!-- template -->
+<div class="brand stack narrow">
+  <fandry-progress value="35" label="Free shipping progress"></fandry-progress>
+  <fandry-progress value="80" label="Order progress"></fandry-progress>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-bg-muted: 160 30% 90%;
+}
+
+fandry-progress::part(base) {
+  height: 0.75rem;
+  border-radius: 999px;
+}
+
+fandry-progress::part(indicator) {
+  border-radius: 999px;
+  background: linear-gradient(90deg, hsl(160 84% 26%), hsl(45 90% 50%));
+}`
+    },
     category: 'Feedback',
     description: 'A determinate or indeterminate progress bar.',
     props: [
@@ -605,6 +1344,31 @@ planOptions = [
     name: 'Skeleton',
     tag: 'fandry-skeleton',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'skeleton-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-skeleton variant="circle"></fandry-skeleton>
+  <div class="stack grow">
+    <fandry-skeleton variant="text"></fandry-skeleton>
+    <fandry-skeleton variant="rect"></fandry-skeleton>
+  </div>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-bg-muted: 160 40% 90%;
+  --fd-radius-md: 1rem;
+  --fd-radius-sm: 999px;
+}
+
+fandry-skeleton::part(base) {
+  background: linear-gradient(90deg, hsl(160 40% 90%), hsl(45 80% 92%));
+}`
+    },
     category: 'Feedback',
     description: 'A loading placeholder shaped like the content it stands in for.',
     props: [{ name: 'variant', type: "'text' | 'circle' | 'rect'", default: "'text'", description: 'Placeholder shape.' }],
@@ -616,6 +1380,29 @@ planOptions = [
     name: 'Spinner',
     tag: 'fandry-spinner',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'spinner-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-spinner size="sm" label="Loading"></fandry-spinner>
+  <fandry-spinner size="md" label="Loading"></fandry-spinner>
+  <fandry-spinner size="lg" label="Loading"></fandry-spinner>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-border: 160 30% 90%;
+  --fd-border-width-lg: 4px;
+}
+
+fandry-spinner::part(base) {
+  border-right-color: hsl(45 90% 50%);
+}`
+    },
     category: 'Feedback',
     description: 'A loading spinner in three sizes.',
     props: [
@@ -629,6 +1416,39 @@ planOptions = [
     name: 'Toast',
     tag: 'fandry-toast',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'toast-theme',
+      code: `<!-- template -->
+<div class="brand panel">
+  <fandry-button variant="secondary" onclick={handleAdd}>Add to cart</fandry-button>
+  <fandry-toast-viewport placement="bottom-right" contained label="Notifications">
+    <template for:each={toasts} for:item="toast">
+      <fandry-toast key={toast.id} data-id={toast.id} variant="success" duration="3000" ondismiss={handleDismiss}>
+        {toast.message}
+      </fandry-toast>
+    </template>
+  </fandry-toast-viewport>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-success: 160 84% 26%;
+  --fd-radius-md: 0.75rem;
+}
+
+fandry-toast::part(base) {
+  font-weight: 600;
+  border-left-width: 6px;
+  background: hsl(160 40% 97%);
+}
+
+fandry-toast-viewport::part(base) {
+  gap: 0.75rem;
+}`
+    },
     category: 'Feedback',
     description: 'An auto-dismissing notification — pair with fandry-toast-viewport for placement.',
     props: [
@@ -644,6 +1464,39 @@ planOptions = [
     name: 'Toast Viewport',
     tag: 'fandry-toast-viewport',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'toast-theme',
+      code: `<!-- template -->
+<div class="brand panel">
+  <fandry-button variant="secondary" onclick={handleAdd}>Add to cart</fandry-button>
+  <fandry-toast-viewport placement="bottom-right" contained label="Notifications">
+    <template for:each={toasts} for:item="toast">
+      <fandry-toast key={toast.id} data-id={toast.id} variant="success" duration="3000" ondismiss={handleDismiss}>
+        {toast.message}
+      </fandry-toast>
+    </template>
+  </fandry-toast-viewport>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-success: 160 84% 26%;
+  --fd-radius-md: 0.75rem;
+}
+
+fandry-toast::part(base) {
+  font-weight: 600;
+  border-left-width: 6px;
+  background: hsl(160 40% 97%);
+}
+
+fandry-toast-viewport::part(base) {
+  gap: 0.75rem;
+}`
+    },
     category: 'Feedback',
     description: 'A fixed or contained stacking region that positions fandry-toast.',
     props: [
@@ -660,6 +1513,29 @@ planOptions = [
     name: 'Tooltip',
     tag: 'fandry-tooltip',
     parts: ['trigger', 'panel', 'arrow'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'tooltip-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-tooltip placement="top" open-delay="0">
+    <fandry-button slot="trigger" variant="secondary">Hover me</fandry-button>
+    Free returns within 30 days
+  </fandry-tooltip>
+</div>
+
+/* css */
+fandry-tooltip::part(panel) {
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  background: hsl(160 84% 26%);
+  border-radius: 0.5rem;
+}
+
+fandry-tooltip::part(arrow) {
+  background: hsl(160 84% 26%);
+}`
+    },
     category: 'Feedback',
     description: 'A hover/focus description bubble for a slotted trigger.',
     props: [
@@ -678,6 +1554,33 @@ planOptions = [
     name: 'Avatar',
     tag: 'fandry-avatar',
     parts: ['base', 'image', 'initials'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'avatar-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-avatar initials="AL" size="sm"></fandry-avatar>
+  <fandry-avatar initials="GH" size="md"></fandry-avatar>
+  <fandry-avatar initials="KJ" size="lg"></fandry-avatar>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-bg-muted: 160 40% 90%;
+  --fd-text-muted: 160 84% 22%;
+}
+
+fandry-avatar::part(base) {
+  border-radius: 0.75rem;
+  font-weight: 700;
+}
+
+fandry-avatar::part(initials) {
+  letter-spacing: 0.04em;
+}`
+    },
     category: 'Overlays & Data',
     description: 'A circular avatar with an image and initials fallback.',
     props: [
@@ -692,6 +1595,45 @@ planOptions = [
     name: 'Command',
     tag: 'fandry-command',
     parts: ['backdrop', 'panel', 'search', 'input', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'command-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-button variant="secondary" onclick={handleOpen}>Search the shop</fandry-button>
+  <fandry-command
+    label="Search the shop"
+    placeholder="Search products and pages…"
+    items={items}
+    open={isOpen}
+    ontoggle={handleToggle}
+  ></fandry-command>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-lg: 1.25rem;
+  --fd-backdrop: 160 40% 10%;
+  --fd-backdrop-opacity: 0.45;
+  --fd-bg-muted: 160 40% 94%;
+}
+
+fandry-command::part(search) {
+  border-bottom: 2px solid hsl(160 84% 26%);
+}
+
+fandry-command::part(group-label) {
+  color: hsl(160 84% 26%);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+fandry-command::part(option-description) {
+  font-style: italic;
+}`
+    },
     category: 'Overlays & Data',
     description: 'A command palette — a modal search box over a list of actions. Generic: it reports the chosen value and leaves what it does (and the Cmd+K shortcut) to you.',
     props: [
@@ -797,6 +1739,40 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Dialog',
     tag: 'fandry-dialog',
     parts: ['backdrop', 'panel'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'dialog-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-button onclick={handleOpen}>Remove from cart</fandry-button>
+  <fandry-dialog open={isOpen} label="Remove from cart" ontoggle={handleToggle}>
+    <fandry-heading level="3">Remove Stride Runner?</fandry-heading>
+    <fandry-text variant="muted">You can add it back any time.</fandry-text>
+    <div class="row actions">
+      <fandry-button variant="secondary" onclick={handleClose}>Keep it</fandry-button>
+      <fandry-button onclick={handleClose}>Remove</fandry-button>
+    </div>
+  </fandry-dialog>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-radius-lg: 1.25rem;
+  --fd-backdrop: 160 40% 10%;
+}
+
+fandry-dialog::part(panel) {
+  padding: 2rem;
+  border-top: 6px solid hsl(160 84% 26%);
+}
+
+fandry-dialog::part(backdrop) {
+  backdrop-filter: blur(4px);
+}`
+    },
     category: 'Overlays & Data',
     description: 'A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger.',
     props: [
@@ -813,6 +1789,40 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Menu',
     tag: 'fandry-menu',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'menu-theme',
+      code: `<!-- template -->
+<div class="brand narrow">
+  <fandry-menu>
+    <fandry-menu-item value="edit" label="Edit order"></fandry-menu-item>
+    <fandry-menu-item value="track" label="Track package"></fandry-menu-item>
+    <fandry-menu-item value="cancel" label="Cancel order" class="danger"></fandry-menu-item>
+  </fandry-menu>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-bg-muted: 160 40% 94%;
+  --fd-radius-sm: 0.5rem;
+}
+
+fandry-menu::part(base) {
+  padding: 0.375rem;
+  border: 1px solid hsl(160 30% 85%);
+  border-radius: 0.75rem;
+}
+
+fandry-menu-item::part(base) {
+  font-weight: 600;
+}
+
+fandry-menu-item.danger::part(base) {
+  color: hsl(0 72% 42%);
+}`
+    },
     category: 'Overlays & Data',
     description: 'A listbox-style menu — composes with fandry-popover for its own trigger and positioning.',
     props: [],
@@ -826,6 +1836,40 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Menu Item',
     tag: 'fandry-menu-item',
     parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'menu-theme',
+      code: `<!-- template -->
+<div class="brand narrow">
+  <fandry-menu>
+    <fandry-menu-item value="edit" label="Edit order"></fandry-menu-item>
+    <fandry-menu-item value="track" label="Track package"></fandry-menu-item>
+    <fandry-menu-item value="cancel" label="Cancel order" class="danger"></fandry-menu-item>
+  </fandry-menu>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-bg-muted: 160 40% 94%;
+  --fd-radius-sm: 0.5rem;
+}
+
+fandry-menu::part(base) {
+  padding: 0.375rem;
+  border: 1px solid hsl(160 30% 85%);
+  border-radius: 0.75rem;
+}
+
+fandry-menu-item::part(base) {
+  font-weight: 600;
+}
+
+fandry-menu-item.danger::part(base) {
+  color: hsl(0 72% 42%);
+}`
+    },
     category: 'Overlays & Data',
     description: 'A single selectable row inside fandry-menu.',
     props: [
@@ -840,6 +1884,30 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Popover',
     tag: 'fandry-popover',
     parts: ['trigger', 'panel'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'popover-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-popover placement="bottom">
+    <fandry-button slot="trigger" variant="secondary">Delivery options</fandry-button>
+    <fandry-text size="sm">Standard: 3 to 5 days. Express: next day.</fandry-text>
+  </fandry-popover>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 1rem;
+}
+
+fandry-popover::part(panel) {
+  padding: 1rem;
+  border-top: 4px solid hsl(160 84% 26%);
+  box-shadow: 0 12px 32px hsl(160 40% 20% / 0.18);
+}`
+    },
     category: 'Overlays & Data',
     description: 'An anchored floating panel — owns positioning, not the trigger or content.',
     props: [
@@ -857,6 +1925,43 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Table',
     tag: 'fandry-table',
     parts: ['toolbar', 'container', 'table', 'caption', 'header-row', 'header-cell', 'selection-cell', 'sort-button', 'header-label', 'sort-indicator', 'row', 'loading-row', 'cell', 'empty-row', 'empty', 'footer', 'selection-status', 'pagination'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'table-theme',
+      code: `<!-- template -->
+<div class="brand">
+  <fandry-table columns={columns} data={data} caption="Recent orders"></fandry-table>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-bg-muted: 160 40% 96%;
+  --fd-border: 160 30% 88%;
+}
+
+fandry-table::part(container) {
+  border: 1px solid hsl(160 30% 88%);
+  border-radius: 1rem;
+}
+
+fandry-table::part(caption) {
+  padding: 0.75rem 1rem 0;
+}
+
+fandry-table::part(header-cell) {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: hsl(160 84% 22%);
+}
+
+fandry-table::part(row):hover {
+  background: hsl(160 40% 97%);
+}`
+    },
     category: 'Overlays & Data',
     description: 'A data table with sorting, pagination, selection, and filtering — wraps @tanstack/table-core.',
     props: [
@@ -879,6 +1984,46 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Lookup',
     tag: 'fandry-lookup',
     parts: ['base', 'label', 'required', 'control', 'selected', 'selected-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'lookup-theme',
+      code: `<!-- template -->
+<div class="brand narrow">
+  <fandry-lookup
+    label="Account"
+    placeholder="Search accounts"
+    results={results}
+    loading={loading}
+    record={account}
+    onsearch={handleSearch}
+    onchange={handleChange}
+  ></fandry-lookup>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 999px;
+  --fd-border-focus: 160 84% 36%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-bg-muted: 160 40% 94%;
+}
+
+fandry-lookup::part(control) {
+  padding-inline: 0.75rem;
+  background: hsl(160 40% 98%);
+}
+
+fandry-lookup::part(panel) {
+  border-radius: 1rem;
+  box-shadow: 0 12px 32px hsl(160 40% 20% / 0.18);
+}
+
+fandry-lookup::part(option-description) {
+  font-style: italic;
+}`
+    },
     category: 'Salesforce',
     description: 'Find and pick a record — one by default, or several with `multiple`. It fetches nothing itself: it reports what was typed, you run the query and hand the records back.',
     props: [

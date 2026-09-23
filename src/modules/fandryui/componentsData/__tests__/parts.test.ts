@@ -59,3 +59,28 @@ describe('component parts', () => {
     document.body.removeChild(element);
   });
 });
+
+/* The "Custom colors and parts" example on each page shows the demo's own
+   template and theming CSS, so what a reader copies is what runs. */
+describe('customize examples', () => {
+  const DEMOS = join(ROOT, 'src/modules/fandryuidemos');
+  // 'radio-theme' -> demoRadioTheme
+  const componentOf = (demo: string) => 'demo' + demo.split('-').map((word) => word[0].toUpperCase() + word.slice(1)).join('');
+
+  it.each(COMPONENTS.map((entry) => [entry.tag, entry]))('%s has one, and shows its real template and CSS', (_tag, entry) => {
+    expect(entry.customize).toBeDefined();
+    const { demo, code } = entry.customize!;
+    const name = componentOf(demo);
+    const [markup, css] = code.replace('<!-- template -->\n', '').split('\n\n/* css */\n');
+
+    const html = readFileSync(join(DEMOS, name, `${name}.html`), 'utf8');
+    const body = html
+      .replace(/^<template>\n/, '')
+      .replace(/\n<\/template>\n$/, '')
+      .split('\n')
+      .map((line) => line.replace(/^ {2}/, ''))
+      .join('\n');
+    expect(body).toBe(markup);
+    expect(readFileSync(join(DEMOS, name, `${name}.css`), 'utf8')).toContain(css);
+  });
+});
