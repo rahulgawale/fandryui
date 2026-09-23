@@ -143,6 +143,19 @@ export default class BlockDataTable extends LightningElement {
     shouldDelay: () => this.simulateLatency
   });
 
+  // The same URL the benchmark (scripts/bench-data-table.mjs) drives.
+  get isBenchmark(): boolean {
+    return this.benchmark.rowCount !== undefined;
+  }
+
+  get scaleLinkHref(): string {
+    return this.isBenchmark ? '/blocks/data-table' : '/blocks/data-table?rows=10000&latency=0&pageSize=50';
+  }
+
+  get scaleLinkLabel(): string {
+    return this.isBenchmark ? 'Back to the 24-row demo.' : 'Try it with 10,000 rows (the benchmark view).';
+  }
+
   get pageSize(): number {
     return this.benchmark.pageSize ?? 8;
   }
