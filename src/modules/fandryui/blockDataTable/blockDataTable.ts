@@ -1,5 +1,5 @@
 import { LightningElement } from 'lwc';
-import { createMockApi, ROLE_OPTIONS, STATUS_OPTIONS } from './mockApi';
+import { benchmarkOptionsFromUrl, createMockApi, ROLE_OPTIONS, STATUS_OPTIONS } from './mockApi';
 import type { Person } from './mockApi';
 
 const USAGE = `<fandry-data-table
@@ -128,7 +128,37 @@ export default class BlockDataTable extends LightningElement {
   selectedRows: Person[] = [];
   simulateErrors = false;
 
-  private api = createMockApi({ shouldFail: () => this.simulateErrors });
+  private benchmark = benchmarkOptionsFromUrl();
+
+  /*
+   * The benchmark's `?latency=0` only sets where the switch starts; turning it
+   * back on uses the normal latency, so the skeleton and Refresh stay visible.
+   */
+  simulateLatency = this.benchmark.latencyMs !== 0;
+
+  private api = createMockApi({
+    rowCount: this.benchmark.rowCount,
+    latencyMs: this.benchmark.latencyMs || undefined,
+    shouldFail: () => this.simulateErrors,
+    shouldDelay: () => this.simulateLatency
+  });
+
+  // The same URL the benchmark (scripts/bench-data-table.mjs) drives.
+  get isBenchmark(): boolean {
+    return this.benchmark.rowCount !== undefined;
+  }
+
+  get scaleLinkHref(): string {
+    return this.isBenchmark ? '/blocks/data-table' : '/blocks/data-table?rows=10000&latency=0&pageSize=50';
+  }
+
+  get scaleLinkLabel(): string {
+    return this.isBenchmark ? 'Back to the 24-row demo.' : 'Try it with 10,000 rows (the benchmark view).';
+  }
+
+  get pageSize(): number {
+    return this.benchmark.pageSize ?? 8;
+  }
 
   connectedCallback() {
     void this.load();
@@ -206,5 +236,9 @@ export default class BlockDataTable extends LightningElement {
 
   handleSimulateErrorsChange(event: CustomEvent<boolean>) {
     this.simulateErrors = !!event.detail;
+  }
+
+  handleSimulateLatencyChange(event: CustomEvent<boolean>) {
+    this.simulateLatency = !!event.detail;
   }
 }

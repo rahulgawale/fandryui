@@ -44,14 +44,32 @@ const NAMES = [
   'Guido van Rossum'
 ];
 
-function seed(): Person[] {
-  return NAMES.map((name, index) => ({
-    id: index + 1,
-    name,
-    email: `${name.toLowerCase().replace(/[^a-z]+/g, '.')}@example.com`,
-    role: ROLES[index % ROLES.length],
-    status: STATUSES[(index * 7) % STATUSES.length]
-  }));
+/*
+ * The first NAMES.length people are always the same; past that the names are
+ * numbered, so a benchmark can ask for thousands of rows.
+ */
+function seed(count = NAMES.length): Person[] {
+  return Array.from({ length: count }, (_, index) => {
+    const base = NAMES[index % NAMES.length];
+    const name = index < NAMES.length ? base : `${base} ${Math.floor(index / NAMES.length) + 1}`;
+    return {
+      id: index + 1,
+      name,
+      email: `${name.toLowerCase().replace(/[^a-z]+/g, '.')}@example.com`,
+      role: ROLES[index % ROLES.length],
+      status: STATUSES[(index * 7) % STATUSES.length]
+    };
+  });
+}
+
+/*
+ * How many people to start with. The demo uses the default; the benchmark
+ * (scripts/bench-data-table.mjs) asks for thousands.
+ */
+interface DataTableMockApiOptions extends MockApiOptions {
+  rowCount?: number;
+  // Read on every call, like shouldFail: off means answer with no latency.
+  shouldDelay?: () => boolean;
 }
 
 function validate(changes: Partial<Person>) {
@@ -63,15 +81,22 @@ function validate(changes: Partial<Person>) {
   }
 }
 
-export function createMockApi({ latencyMs = 900, shouldFail = () => false }: MockApiOptions = {}) {
-  let store = seed();
+export function createMockApi({
+  latencyMs = 900,
+  rowCount,
+  shouldFail = () => false,
+  shouldDelay = () => true
+}: DataTableMockApiOptions = {}) {
+  let store = seed(rowCount);
 
-  // Every call goes through here, so the switch treats them all alike. It is
-  // read when the request is *sent*, not when it lands: flipping it while a
-  // request is in flight must not change that request's outcome.
+  /*
+   * Every call goes through here, so the switches treat them all alike. They
+   * are read when the request is *sent*, not when it lands: flipping one while
+   * a request is in flight must not change that request's outcome.
+   */
   async function request() {
     const fail = shouldFail();
-    await delay(latencyMs);
+    await delay(shouldDelay() ? latencyMs : 0);
     if (fail) throw new Error('The server is unavailable. Try again.');
   }
 
@@ -112,7 +137,7 @@ export function createMockApi({ latencyMs = 900, shouldFail = () => false }: Moc
     },
 
     reset() {
-      store = seed();
+      store = seed(rowCount);
     }
   };
 }
@@ -123,3 +148,14 @@ export const STATUS_OPTIONS = [
   { label: 'Pending', value: 'pending' },
   { label: 'Suspended', value: 'suspended' }
 ];
+
+/*
+ * `?rows=10000&latency=0&pageSize=50` on the demo page, for the benchmark. All
+ * optional; without them the page is exactly the demo.
+ */
+export function benchmarkOptionsFromUrl(): { rowCount?: number; latencyMs?: number; pageSize?: number } {
+  if (typeof window === 'undefined') return {};
+  const params = new URLSearchParams(window.location.search);
+  const number = (key: string) => (params.has(key) && Number.isFinite(Number(params.get(key))) ? Number(params.get(key)) : undefined);
+  return { rowCount: number('rows'), latencyMs: number('latency'), pageSize: number('pageSize') };
+}
