@@ -11,11 +11,11 @@
     pattern (role="combobox", aria-haspopup="listbox", aria-expanded, all
     set directly on the button itself).
   -->
-  <span class="trigger">
+  <span class="trigger" part="trigger">
     <slot name="trigger"></slot>
   </span>
   <template if:true={isMounted}>
-    <div class={panelClasses} style={panelStyle} inert={panelInert}>
+    <div class={panelClasses} part="panel" style={panelStyle} inert={panelInert}>
       <slot></slot>
     </div>
   </template>

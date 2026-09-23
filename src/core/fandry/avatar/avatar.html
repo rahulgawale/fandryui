@@ -1,8 +1,9 @@
 <template>
-  <span class={classes}>
+  <span class={classes} part="base">
     <template if:true={showImage}>
       <img
         class="image"
+        part="image"
         src={src}
         alt={alt}
         onerror={handleImageError}
@@ -10,7 +11,7 @@
       />
     </template>
     <template if:true={showInitials}>
-      <span class="initials">{initials}</span>
+      <span class="initials" part="initials">{initials}</span>
     </template>
   </span>
 </template>

@@ -20,6 +20,8 @@ export interface ComponentEntry {
   category: string;
   description: string;
   props: ComponentProp[];
+  /** Elements a page can style with `tag::part(name)`; described in PART_DESCRIPTIONS. */
+  parts?: string[];
   code: string;
   examples?: ComponentExample[];
 }
@@ -29,12 +31,83 @@ export interface ComponentEntry {
 // order.
 export const CATEGORY_ORDER = ['Layout', 'Typography', 'Forms', 'Feedback', 'Overlays & Data', 'Salesforce'];
 
+/*
+  One vocabulary for every component's parts, so a name means the same thing
+  wherever it appears: `control` is always the box a field draws, `indicator`
+  always the mark that shows a state. A component's page lists the names it
+  has; parts.test.ts keeps those lists equal to the templates.
+*/
+export const PART_DESCRIPTIONS: Record<string, string> = {
+  base: 'The outermost element.',
+  label: 'The label.',
+  required: 'The required-field asterisk.',
+  control: 'The box the field draws: a text field\'s border, a select\'s button, a checkbox\'s box, a radio\'s circle, a switch\'s track.',
+  indicator: 'The mark that shows the state or value: a checkbox\'s check, a radio\'s dot, a switch\'s thumb, a progress bar\'s fill.',
+  input: 'The native <input>.',
+  textarea: 'The native <textarea>.',
+  prefix: 'The wrapper of the prefix slot.',
+  suffix: 'The wrapper of the suffix slot.',
+  'help-text': 'The help text under the field.',
+  value: 'The selected value, as shown in the closed field.',
+  chevron: 'The dropdown arrow.',
+  trigger: 'The wrapper of the trigger slot.',
+  panel: 'The surface that opens: a dropdown\'s list, a popover, a tooltip, a dialog.',
+  backdrop: 'The dimmed layer behind a modal panel.',
+  arrow: 'The arrow that points at the trigger.',
+  search: 'The wrapper of the search input.',
+  listbox: 'The list of options.',
+  group: 'A group of options.',
+  'group-label': 'A group\'s heading.',
+  option: 'One option.',
+  'option-label': 'An option\'s label.',
+  'option-description': 'An option\'s second line.',
+  empty: 'What shows when there is nothing to list.',
+  status: 'A status line (a page count, "Searching…").',
+  link: 'The native <a>.',
+  list: 'The element holding the items.',
+  separator: 'The separator before the item.',
+  title: 'The title line.',
+  body: 'The content below the title.',
+  image: 'The <img>.',
+  initials: 'The initials shown when there is no image.',
+  previous: 'The link to the previous page (also a `link`).',
+  next: 'The link to the next page (also a `link`).',
+  eyebrow: 'The small "Previous" / "Next" line.',
+  button: 'The Previous and Next buttons (a fandry-button\'s `base`).',
+  toolbar: 'The bar above the table that holds the search box.',
+  container: 'The scrolling box around the table.',
+  table: 'The native <table>.',
+  caption: 'The <caption>.',
+  'header-row': 'The header row.',
+  'header-cell': 'A header cell.',
+  'sort-button': 'The button in a sortable header cell.',
+  'header-label': 'A header\'s text.',
+  'sort-indicator': 'The sort arrow.',
+  row: 'A body row.',
+  cell: 'A body cell.',
+  'selection-cell': 'The checkbox cell of a row or of the header (also a `cell` or `header-cell`).',
+  'loading-row': 'A placeholder row while loading (also a `row`).',
+  'empty-row': 'The row shown when there are no rows (also a `row`).',
+  footer: 'The bar under the table.',
+  'selection-status': 'The "n of m selected" text.',
+  pagination: 'The wrapper of the pagination slot.',
+  selected: 'The chosen record, in single-select mode.',
+  'selected-label': 'The chosen record\'s name.',
+  'clear-button': 'The button that clears the chosen record.',
+  chips: 'The row of chosen records and the input, in multi-select mode.',
+  chip: 'One chosen record.',
+  'chip-label': 'A chosen record\'s name.',
+  'chip-remove': 'The button that removes one chosen record.',
+  'clear-all': 'The Clear all button.'
+};
+
 export const COMPONENTS: ComponentEntry[] = [
   // ---- Layout ----
   {
     slug: 'breadcrumb',
     name: 'Breadcrumb',
     tag: 'fandry-breadcrumb',
+    parts: ['base', 'list'],
     category: 'Layout',
     description: 'A navigation trail of ancestor pages — pair with fandry-breadcrumb-item for each crumb.',
     props: [{ name: 'aria-label', type: 'string', default: "'Breadcrumb'", description: 'Accessible name for the nav landmark.' }],
@@ -48,6 +121,7 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: 'breadcrumb-item',
     name: 'Breadcrumb Item',
     tag: 'fandry-breadcrumb-item',
+    parts: ['base', 'separator', 'link'],
     category: 'Layout',
     description: 'A single crumb inside fandry-breadcrumb, with a current-page state.',
     props: [
@@ -60,6 +134,7 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: 'card',
     name: 'Card',
     tag: 'fandry-card',
+    parts: ['base'],
     category: 'Layout',
     description: 'A bordered, padded surface for grouping related content.',
     props: [],
@@ -72,6 +147,7 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: 'divider',
     name: 'Divider',
     tag: 'fandry-divider',
+    parts: ['base'],
     category: 'Layout',
     description: 'A horizontal or vertical rule for separating content.',
     props: [{ name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: 'Rule direction.' }],
@@ -82,6 +158,7 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: 'pagination',
     name: 'Pagination',
     tag: 'fandry-pagination',
+    parts: ['base', 'link', 'previous', 'eyebrow', 'title', 'next', 'status', 'button'],
     category: 'Layout',
     description: 'Previous/next navigation — as links between two adjacent pages, or as Previous / Page N of M / Next buttons for paging a collection.',
     props: [
@@ -123,6 +200,7 @@ handlePageChange(event) {
     slug: 'sidebar',
     name: 'Sidebar',
     tag: 'fandry-sidebar',
+    parts: ['base'],
     category: 'Layout',
     description: 'A vertical navigation rail — pair with fandry-sidebar-item for links.',
     props: [{ name: 'aria-label', type: 'string', default: "'Sidebar'", description: 'Accessible name for the nav landmark.' }],
@@ -135,6 +213,7 @@ handlePageChange(event) {
     slug: 'sidebar-item',
     name: 'Sidebar Item',
     tag: 'fandry-sidebar-item',
+    parts: ['base', 'link'],
     category: 'Layout',
     description: 'A single navigation row for fandry-sidebar, with an active/current-page state.',
     props: [
@@ -149,6 +228,7 @@ handlePageChange(event) {
     slug: 'heading',
     name: 'Heading',
     tag: 'fandry-heading',
+    parts: ['base'],
     category: 'Typography',
     description: 'A semantically-leveled heading, sized off the shared type scale.',
     props: [{ name: 'level', type: '1 | 2 | 3 | 4 | 5 | 6', default: '2', description: 'Heading level (role="heading" aria-level, not a real h1-h6).' }],
@@ -158,6 +238,7 @@ handlePageChange(event) {
     slug: 'icon',
     name: 'Icon',
     tag: 'fandry-icon',
+    parts: ['base'],
     category: 'Typography',
     description: 'A sizing/color frame around a slotted glyph — brings no icon set of its own.',
     props: [
@@ -172,6 +253,7 @@ handlePageChange(event) {
     slug: 'label',
     name: 'Label',
     tag: 'fandry-label',
+    parts: ['base', 'required'],
     category: 'Typography',
     description: 'A form label, with an optional required indicator.',
     props: [
@@ -185,6 +267,7 @@ handlePageChange(event) {
     slug: 'text',
     name: 'Text',
     tag: 'fandry-text',
+    parts: ['base'],
     category: 'Typography',
     description: 'Body text — pick the rendered tag and size independently.',
     props: [
@@ -200,6 +283,7 @@ handlePageChange(event) {
     slug: 'button',
     name: 'Button',
     tag: 'fandry-button',
+    parts: ['base'],
     category: 'Forms',
     description: 'A native button with default/secondary/ghost variants and three sizes.',
     props: [
@@ -214,6 +298,7 @@ handlePageChange(event) {
     slug: 'checkbox',
     name: 'Checkbox',
     tag: 'fandry-checkbox',
+    parts: ['base', 'control', 'indicator', 'label'],
     category: 'Forms',
     description: 'A checkbox with a built-in label and indeterminate support.',
     props: [
@@ -228,6 +313,7 @@ handlePageChange(event) {
     slug: 'combobox',
     name: 'Combobox',
     tag: 'fandry-combobox',
+    parts: ['base', 'label', 'required', 'control', 'input', 'chevron', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty', 'help-text'],
     category: 'Forms',
     description: 'A searchable select — type to narrow the options, then pick one.',
     props: [
@@ -329,6 +415,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'input',
     name: 'Input',
     tag: 'fandry-input',
+    parts: ['base', 'label', 'control', 'prefix', 'input', 'suffix', 'help-text', 'required'],
     category: 'Forms',
     description: 'A text input with a label, help text, and prefix/suffix slots.',
     props: [
@@ -344,6 +431,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'link',
     name: 'Link',
     tag: 'fandry-link',
+    parts: ['base', 'link'],
     category: 'Forms',
     description: 'Anchor styling with default/muted variants and a disabled state.',
     props: [
@@ -358,6 +446,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'radio',
     name: 'Radio',
     tag: 'fandry-radio',
+    parts: ['base', 'control', 'indicator', 'label'],
     category: 'Forms',
     description: 'A single radio input — pair with fandry-radio-group for the roving-tabindex group.',
     props: [
@@ -375,6 +464,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'radio-group',
     name: 'Radio Group',
     tag: 'fandry-radio-group',
+    parts: ['base', 'label', 'list'],
     category: 'Forms',
     description: 'A roving-tabindex container for a set of fandry-radio buttons.',
     props: [
@@ -392,6 +482,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'select',
     name: 'Select',
     tag: 'fandry-select',
+    parts: ['base', 'label', 'required', 'control', 'value', 'chevron', 'listbox', 'option', 'group', 'group-label', 'help-text', 'panel'],
     category: 'Forms',
     description: 'A custom listbox-style select, with optional grouped options.',
     props: [
@@ -444,6 +535,7 @@ planOptions = [
     slug: 'switch',
     name: 'Switch',
     tag: 'fandry-switch',
+    parts: ['base', 'control', 'indicator', 'label'],
     category: 'Forms',
     description: 'A toggle switch with a built-in label.',
     props: [
@@ -457,6 +549,7 @@ planOptions = [
     slug: 'textarea',
     name: 'Textarea',
     tag: 'fandry-textarea',
+    parts: ['base', 'label', 'control', 'textarea', 'help-text', 'required'],
     category: 'Forms',
     description: 'A multi-line text input with a label and help text.',
     props: [
@@ -473,6 +566,7 @@ planOptions = [
     slug: 'alert',
     name: 'Alert',
     tag: 'fandry-alert',
+    parts: ['base', 'title', 'body'],
     category: 'Feedback',
     description: 'An inline banner for a status message, with an optional title.',
     props: [
@@ -485,6 +579,7 @@ planOptions = [
     slug: 'badge',
     name: 'Badge',
     tag: 'fandry-badge',
+    parts: ['base'],
     category: 'Feedback',
     description: 'A small status/label pill.',
     props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant.' }],
@@ -494,6 +589,7 @@ planOptions = [
     slug: 'progress',
     name: 'Progress',
     tag: 'fandry-progress',
+    parts: ['base', 'indicator'],
     category: 'Feedback',
     description: 'A determinate or indeterminate progress bar.',
     props: [
@@ -508,6 +604,7 @@ planOptions = [
     slug: 'skeleton',
     name: 'Skeleton',
     tag: 'fandry-skeleton',
+    parts: ['base'],
     category: 'Feedback',
     description: 'A loading placeholder shaped like the content it stands in for.',
     props: [{ name: 'variant', type: "'text' | 'circle' | 'rect'", default: "'text'", description: 'Placeholder shape.' }],
@@ -518,6 +615,7 @@ planOptions = [
     slug: 'spinner',
     name: 'Spinner',
     tag: 'fandry-spinner',
+    parts: ['base'],
     category: 'Feedback',
     description: 'A loading spinner in three sizes.',
     props: [
@@ -530,6 +628,7 @@ planOptions = [
     slug: 'toast',
     name: 'Toast',
     tag: 'fandry-toast',
+    parts: ['base'],
     category: 'Feedback',
     description: 'An auto-dismissing notification — pair with fandry-toast-viewport for placement.',
     props: [
@@ -544,6 +643,7 @@ planOptions = [
     slug: 'toast-viewport',
     name: 'Toast Viewport',
     tag: 'fandry-toast-viewport',
+    parts: ['base'],
     category: 'Feedback',
     description: 'A fixed or contained stacking region that positions fandry-toast.',
     props: [
@@ -559,6 +659,7 @@ planOptions = [
     slug: 'tooltip',
     name: 'Tooltip',
     tag: 'fandry-tooltip',
+    parts: ['trigger', 'panel', 'arrow'],
     category: 'Feedback',
     description: 'A hover/focus description bubble for a slotted trigger.',
     props: [
@@ -576,6 +677,7 @@ planOptions = [
     slug: 'avatar',
     name: 'Avatar',
     tag: 'fandry-avatar',
+    parts: ['base', 'image', 'initials'],
     category: 'Overlays & Data',
     description: 'A circular avatar with an image and initials fallback.',
     props: [
@@ -589,6 +691,7 @@ planOptions = [
     slug: 'command',
     name: 'Command',
     tag: 'fandry-command',
+    parts: ['backdrop', 'panel', 'search', 'input', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty'],
     category: 'Overlays & Data',
     description: 'A command palette — a modal search box over a list of actions. Generic: it reports the chosen value and leaves what it does (and the Cmd+K shortcut) to you.',
     props: [
@@ -693,6 +796,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'dialog',
     name: 'Dialog',
     tag: 'fandry-dialog',
+    parts: ['backdrop', 'panel'],
     category: 'Overlays & Data',
     description: 'A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger.',
     props: [
@@ -708,6 +812,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'menu',
     name: 'Menu',
     tag: 'fandry-menu',
+    parts: ['base'],
     category: 'Overlays & Data',
     description: 'A listbox-style menu — composes with fandry-popover for its own trigger and positioning.',
     props: [],
@@ -720,6 +825,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'menu-item',
     name: 'Menu Item',
     tag: 'fandry-menu-item',
+    parts: ['base'],
     category: 'Overlays & Data',
     description: 'A single selectable row inside fandry-menu.',
     props: [
@@ -733,6 +839,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'popover',
     name: 'Popover',
     tag: 'fandry-popover',
+    parts: ['trigger', 'panel'],
     category: 'Overlays & Data',
     description: 'An anchored floating panel — owns positioning, not the trigger or content.',
     props: [
@@ -749,6 +856,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'table',
     name: 'Table',
     tag: 'fandry-table',
+    parts: ['toolbar', 'container', 'table', 'caption', 'header-row', 'header-cell', 'selection-cell', 'sort-button', 'header-label', 'sort-indicator', 'row', 'loading-row', 'cell', 'empty-row', 'empty', 'footer', 'selection-status', 'pagination'],
     category: 'Overlays & Data',
     description: 'A data table with sorting, pagination, selection, and filtering — wraps @tanstack/table-core.',
     props: [
@@ -770,6 +878,7 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'lookup',
     name: 'Lookup',
     tag: 'fandry-lookup',
+    parts: ['base', 'label', 'required', 'control', 'selected', 'selected-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text'],
     category: 'Salesforce',
     description: 'Find and pick a record — one by default, or several with `multiple`. It fetches nothing itself: it reports what was typed, you run the query and hand the records back.',
     props: [

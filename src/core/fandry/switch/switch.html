@@ -1,5 +1,5 @@
 <template>
-  <label class="control" aria-disabled={disabled}>
+  <label class="control" part="base" aria-disabled={disabled}>
     <input
       class="input"
       type="checkbox"
@@ -13,12 +13,12 @@
       lwc:spread={resolvedElementProps}
     />
 
-    <span class="track" aria-hidden="true">
-      <span class="thumb"></span>
+    <span class="track" part="control" aria-hidden="true">
+      <span class="thumb" part="indicator"></span>
     </span>
 
     <template if:true={label}>
-      <span class="label">{label}</span>
+      <span class="label" part="label">{label}</span>
     </template>
   </label>
 </template>

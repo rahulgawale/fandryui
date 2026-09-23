@@ -1,5 +1,5 @@
 <template>
-  <label class="control" aria-disabled={disabled}>
+  <label class="control" part="base" aria-disabled={disabled}>
     <!-- elementProps defaults tabIndex to 0 (see radio.ts) because Safari
          excludes radios from the Tab order by default otherwise. Safe to
          make overridable/spreadable here because each fandry-radio's input
@@ -19,12 +19,12 @@
       lwc:spread={resolvedElementProps}
     />
 
-    <span class="circle" aria-hidden="true">
-      <span class="dot"></span>
+    <span class="circle" part="control" aria-hidden="true">
+      <span class="dot" part="indicator"></span>
     </span>
 
     <template if:true={label}>
-      <span class="label"><slot>{label}</slot></span>
+      <span class="label" part="label"><slot>{label}</slot></span>
     </template>
   </label>
 </template>

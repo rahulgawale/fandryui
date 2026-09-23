@@ -1,11 +1,12 @@
 <template>
-  <div class="form-control">
+  <div class="form-control" part="base">
     <template if:true={hasLabel}>
-      <fandry-label html-for="textarea" required={required}> {label} </fandry-label>
+      <fandry-label exportparts="base: label, required" html-for="textarea" required={required}> {label} </fandry-label>
     </template>
 
     <textarea
       class="textarea"
+      part="control textarea"
       id="textarea"
       name={name}
       placeholder={placeholder}
@@ -21,7 +22,7 @@
     ></textarea>
 
     <template if:true={hasHelpText}>
-      <div id="help-text" class="help-text">{helpText}</div>
+      <div id="help-text" class="help-text" part="help-text">{helpText}</div>
     </template>
   </div>
 </template>

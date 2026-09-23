@@ -1,16 +1,17 @@
 <template>
-  <div class="form-control">
+  <div class="form-control" part="base">
     <template if:true={hasLabel}>
-      <fandry-label html-for="input" required={required}> {label} </fandry-label>
+      <fandry-label exportparts="base: label, required" html-for="input" required={required}> {label} </fandry-label>
     </template>
 
-    <div class={controlClasses}>
-      <span class="prefix">
+    <div class={controlClasses} part="control">
+      <span class="prefix" part="prefix">
         <slot name="prefix"></slot>
       </span>
 
       <input
         class="input"
+        part="input"
         id="input"
         type={type}
         name={name}
@@ -27,13 +28,13 @@
         lwc:spread={resolvedElementProps}
       />
 
-      <span class="suffix">
+      <span class="suffix" part="suffix">
         <slot name="suffix"></slot>
       </span>
     </div>
 
     <template if:true={hasHelpText}>
-      <div id="help-text" class="help-text">{helpText}</div>
+      <div id="help-text" class="help-text" part="help-text">{helpText}</div>
     </template>
   </div>
 </template>

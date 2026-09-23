@@ -1,5 +1,5 @@
 import { LightningElement } from 'lwc';
-import { COMPONENTS, CATEGORY_ORDER, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
+import { COMPONENTS, CATEGORY_ORDER, PART_DESCRIPTIONS, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
 
 import DemoBreadcrumb from 'fandryuidemos/demoBreadcrumb';
 import DemoBreadcrumbItem from 'fandryuidemos/demoBreadcrumbItem';
@@ -127,6 +127,29 @@ export default class ComponentDoc extends LightningElement {
 
   get hasProps(): boolean {
     return !!this.entry?.props?.length;
+  }
+
+  get parts(): Array<{ name: string; description: string }> {
+    return (this.entry?.parts ?? []).map((name) => ({ name, description: PART_DESCRIPTIONS[name] ?? '' }));
+  }
+
+  get hasParts(): boolean {
+    return this.parts.length > 0;
+  }
+
+  // A starting point using this component's own tag and its most specific
+  // part (the first one that isn't `base`, if there is one).
+  get partsCode(): string {
+    const tag = this.entry?.tag ?? '';
+    const names = this.entry?.parts ?? [];
+    const part = names.find((name) => name !== 'base') ?? names[0];
+    return `/* your stylesheet */
+${tag}::part(${part}) {
+  /* any CSS */
+}
+
+/* Tokens theme every component at once, or one section of a page */
+:root { --fd-radius-md: 0; --fd-primary: 222 47% 11%; }`;
   }
 
   get sidebarGroups() {

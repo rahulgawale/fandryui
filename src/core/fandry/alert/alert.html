@@ -1,9 +1,9 @@
 <template>
-  <div class={classes} role={role}>
+  <div class={classes} part="base" role={role}>
     <template if:true={hasTitle}>
-      <p class="title">{title}</p>
+      <p class="title" part="title">{title}</p>
     </template>
-    <div class="body">
+    <div class="body" part="body">
       <slot></slot>
     </div>
   </div>

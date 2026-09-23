@@ -1,5 +1,5 @@
 <template>
-  <nav class="pagination" aria-label="Pagination">
+  <nav class="pagination" part="base" aria-label="Pagination">
     <!--
       `onclick` delegated onto each wrapping <span> -- slot="previous" /
       slot="next" to replace either control (e.g. numbered pages instead
@@ -8,17 +8,17 @@
     -->
     <span onclick={handlePrevious}>
       <slot name="previous">
-        <fandry-button variant="secondary" size="sm" disabled={previousDisabled}>
+        <fandry-button exportparts="base: button" variant="secondary" size="sm" disabled={previousDisabled}>
           Previous
         </fandry-button>
       </slot>
     </span>
     <slot name="status">
-      <span class="status">{status}</span>
+      <span class="status" part="status">{status}</span>
     </slot>
     <span onclick={handleNext}>
       <slot name="next">
-        <fandry-button variant="secondary" size="sm" disabled={nextDisabled}>
+        <fandry-button exportparts="base: button" variant="secondary" size="sm" disabled={nextDisabled}>
           Next
         </fandry-button>
       </slot>
