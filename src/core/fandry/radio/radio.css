@@ -7,7 +7,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
   cursor: pointer;
   user-select: none;
 }
@@ -28,23 +28,23 @@
 
 /* Outer circle */
 .circle {
-  width: var(--fd-size-sm);
-  height: var(--fd-size-sm);
-  flex: 0 0 var(--fd-size-sm);
+  width: var(--_fd-size-sm);
+  height: var(--_fd-size-sm);
+  flex: 0 0 var(--_fd-size-sm);
   border-radius: 50%;
-  border: var(--fd-border-width-md) solid hsl(var(--fd-border));
+  border: var(--_fd-border-width-md) solid hsl(var(--_fd-border));
   background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: border-color var(--fd-duration-fast) ease,
-    background-color var(--fd-duration-fast) ease,
-    box-shadow var(--fd-duration-fast) ease;
+  transition: border-color var(--_fd-duration-fast) ease,
+    background-color var(--_fd-duration-fast) ease,
+    box-shadow var(--_fd-duration-fast) ease;
 }
 
 /* Hover */
 .control:hover:not(:has(.input:disabled)) .circle {
-  border-color: hsl(var(--fd-primary));
+  border-color: hsl(var(--_fd-primary));
 }
 
 /* Inner dot */
@@ -52,16 +52,16 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: hsl(var(--fd-primary));
+  background: hsl(var(--_fd-primary));
   opacity: 0;
   transform: scale(0.5);
-  transition: opacity var(--fd-duration-fast) ease,
-    transform var(--fd-duration-fast) ease;
+  transition: opacity var(--_fd-duration-fast) ease,
+    transform var(--_fd-duration-fast) ease;
 }
 
 /* Checked */
 .input:checked + .circle {
-  border-color: hsl(var(--fd-primary));
+  border-color: hsl(var(--_fd-primary));
 }
 
 .input:checked + .circle .dot {
@@ -71,17 +71,17 @@
 
 /* Focus */
 .control:focus-within .circle {
-  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
 }
 
 /* Disabled */
 .input:disabled + .circle,
 .input:disabled ~ .label {
-  opacity: var(--fd-disabled-opacity);
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
 /* Label */
 .label {
-  font-size: var(--fd-font-size-sm);
+  font-size: var(--_fd-font-size-sm);
 }

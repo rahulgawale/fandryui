@@ -60,9 +60,9 @@ This is a **component library**, not a production application.
 
 Never use hard-coded values like:
 
-- `4px` → use `var(--fd-radius-sm)`
-- `8px` → use `var(--fd-space-2)`
-- `#333` → use `hsl(var(--fd-text))`
+- `4px` → use `var(--_fd-radius-sm)`
+- `8px` → use `var(--_fd-space-2)`
+- `#333` → use `hsl(var(--_fd-text))`
 - `rgba(0,0,0,0.1)` → use token-based values
 
 Why:
@@ -72,7 +72,9 @@ Why:
 - Makes maintenance predictable
 - Preserves architectural intent
 
-If you need a value that doesn't have a token, add it to `fandry/base/tokens.css` first.
+Components read the private `--_fd-*` names; sites set the public `--fd-*` ones to theme (see the header of `tokens.css`). If you need a value that doesn't have a token, add it to `fandry/base/tokens.css` first, as `--_fd-name: var(--fd-name, default);`.
+
+Anything a site might restyle gets a `part` from the shared vocabulary (see AGENTS.md, "Parts"), listed in that component's `parts` in `componentsData`.
 
 All fandry-\* components should:
 

@@ -4,26 +4,26 @@
 
 .skeleton {
   display: block;
-  background: hsl(var(--fd-bg-muted));
-  animation: fd-skeleton-pulse var(--fd-duration-slowest) ease-in-out infinite;
+  background: hsl(var(--_fd-bg-muted));
+  animation: fd-skeleton-pulse var(--_fd-duration-slowest) ease-in-out infinite;
 }
 
 .skeleton--text {
   width: 100%;
   height: 1em;
-  border-radius: var(--fd-radius-sm);
+  border-radius: var(--_fd-radius-sm);
 }
 
 .skeleton--circle {
-  width: var(--fd-size-md);
-  height: var(--fd-size-md);
+  width: var(--_fd-size-md);
+  height: var(--_fd-size-md);
   border-radius: 50%;
 }
 
 .skeleton--rect {
   width: 100%;
-  height: var(--fd-size-lg);
-  border-radius: var(--fd-radius-md);
+  height: var(--_fd-size-lg);
+  border-radius: var(--_fd-radius-md);
 }
 
 @keyframes fd-skeleton-pulse {
@@ -32,6 +32,6 @@
     opacity: 1;
   }
   50% {
-    opacity: var(--fd-pulse-opacity);
+    opacity: var(--_fd-pulse-opacity);
   }
 }

@@ -1,6 +1,6 @@
 <template>
-  <nav aria-label={ariaLabel}>
-    <ol class="list">
+  <nav part="base" aria-label={ariaLabel}>
+    <ol class="list" part="list">
       <slot onslotchange={handleSlotChange}></slot>
     </ol>
   </nav>

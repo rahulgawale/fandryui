@@ -9,9 +9,9 @@
 
 .panel {
   position: absolute;
-  z-index: var(--fd-z-overlay);
+  z-index: var(--_fd-z-overlay);
   width: max-content;
-  max-width: var(--fd-overlay-max-width-sm);
+  max-width: var(--_fd-overlay-max-width-sm);
 
   /* Non-interactive by design (a tooltip's content is plain descriptive
      text, never something to click into) -- this also means the pointer
@@ -19,12 +19,12 @@
      handling meant for the trigger. */
   pointer-events: none;
 
-  background: hsl(var(--fd-text));
-  color: hsl(var(--fd-bg));
-  font-size: var(--fd-font-size-xs);
-  line-height: var(--fd-line-height-normal);
-  border-radius: var(--fd-radius-sm);
-  padding: var(--fd-space-1) var(--fd-space-2);
+  background: hsl(var(--_fd-text));
+  color: hsl(var(--_fd-bg));
+  font-size: var(--_fd-font-size-xs);
+  line-height: var(--_fd-line-height-normal);
+  border-radius: var(--_fd-radius-sm);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
 
   /* `filter: drop-shadow`, not `box-shadow` -- box-shadow follows the
      element's own rectangle, so it would clip off at the panel's edge and
@@ -32,22 +32,22 @@
      drop-shadow follows the actual painted (alpha) silhouette, including
      a child that pokes outside the box, so the shadow wraps the arrow
      too. */
-  filter: drop-shadow(var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating)));
+  filter: drop-shadow(var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating)));
 
   /* Motion is defined in base/motion.css; see tooltip.ts / fandry/motion
      for how the panel stays mounted through its exit. */
-  animation: fd-fade-scale-in var(--fd-duration-fast) var(--fd-ease-standard);
+  animation: fd-fade-scale-in var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
 .panel--closing {
-  animation: fd-fade-scale-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  animation: fd-fade-scale-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
 }
 
 .arrow {
   position: absolute;
   width: 0.625rem;
   height: 0.625rem;
-  background: hsl(var(--fd-text));
+  background: hsl(var(--_fd-text));
   transform: rotate(45deg);
 }
 
@@ -55,7 +55,7 @@
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-bottom: var(--fd-space-1);
+  margin-bottom: var(--_fd-space-1);
 }
 
 .panel--top .arrow {
@@ -68,7 +68,7 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: var(--fd-space-1);
+  margin-top: var(--_fd-space-1);
 }
 
 .panel--bottom .arrow {
@@ -81,7 +81,7 @@
   right: 100%;
   top: 50%;
   transform: translateY(-50%);
-  margin-right: var(--fd-space-1);
+  margin-right: var(--_fd-space-1);
 }
 
 .panel--left .arrow {
@@ -94,7 +94,7 @@
   left: 100%;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: var(--fd-space-1);
+  margin-left: var(--_fd-space-1);
 }
 
 .panel--right .arrow {

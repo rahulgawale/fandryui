@@ -7,13 +7,13 @@
     non-focusable wrapper span like this one; fandry-tooltip's description
     relationship is the one exception it owns for itself (see tooltip.ts).
   -->
-  <span class="trigger">
+  <span class="trigger" part="trigger">
     <slot name="trigger"></slot>
   </span>
   <template if:true={isVisible}>
-    <div class={panelClasses} role="tooltip" id={tooltipId}>
+    <div class={panelClasses} part="panel" role="tooltip" id={tooltipId}>
       <slot></slot>
-      <span class="arrow" aria-hidden="true"></span>
+      <span class="arrow" part="arrow" aria-hidden="true"></span>
     </div>
   </template>
 </template>

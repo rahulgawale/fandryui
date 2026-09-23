@@ -75,7 +75,7 @@
 }
 
 .amount {
-  font-size: var(--fd-font-size-2xl, 1.5rem);
+  font-size: var(--fd-font-size-2xl, 1.875rem);
   font-weight: var(--fd-font-weight-bold);
 }
 

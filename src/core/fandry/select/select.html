@@ -1,22 +1,23 @@
 <template>
-  <div class="form-control">
+  <div class="form-control" part="base">
     <template if:true={hasLabel}>
-      <label class="label" for="trigger">
+      <label class="label" part="label" for="trigger">
         <slot name="label">
           {label}
           <template if:true={required}>
-            <span class="required" aria-hidden="true">*</span>
+            <span class="required" part="required" aria-hidden="true">*</span>
           </template>
         </slot>
       </label>
     </template>
 
-    <fandry-popover class="control" open={open} ontoggle={handleToggle}>
+    <fandry-popover class="control" exportparts="panel" open={open} ontoggle={handleToggle}>
       <button
         slot="trigger"
         id="trigger"
         type="button"
         class="trigger"
+        part="control"
         disabled={disabled}
         data-name={name}
         role="combobox"
@@ -29,20 +30,21 @@
         onkeydown={handleTriggerKeydown}
         lwc:spread={resolvedElementProps}
       >
-        <span class={valueClasses}>
+        <span class={valueClasses} part="value">
           <template if:true={selectedComponent}>
             <lwc:component lwc:is={selectedComponent} lwc:spread={selectedComponentProps}></lwc:component>
           </template>
           <template if:false={selectedComponent}>{selectedLabel}</template>
         </span>
-        <span class="chevron" aria-hidden="true"></span>
+        <span class="chevron" part="chevron" aria-hidden="true"></span>
       </button>
 
-      <div id="listbox" class="listbox" role="listbox" onmousedown={handleListboxMouseDown}>
+      <div id="listbox" class="listbox" part="listbox" role="listbox" onmousedown={handleListboxMouseDown}>
         <template if:true={renderPlaceholder}>
           <div
             id={renderPlaceholder.id}
             class={renderPlaceholder.classes}
+            part="option"
             role="option"
             data-value={renderPlaceholder.value}
             data-option-id={renderPlaceholder.id}
@@ -56,6 +58,7 @@
             key={option.id}
             id={option.id}
             class={option.classes}
+            part="option"
             role="option"
             data-value={option.value}
             data-option-id={option.id}
@@ -67,13 +70,14 @@
         </template>
 
         <template for:each={renderGroups} for:item="group">
-          <div key={group.label} class="group" role="group" aria-label={group.label}>
-            <div class="group-label" aria-hidden="true">{group.label}</div>
+          <div key={group.label} class="group" part="group" role="group" aria-label={group.label}>
+            <div class="group-label" part="group-label" aria-hidden="true">{group.label}</div>
             <template for:each={group.options} for:item="option">
               <div
                 key={option.id}
                 id={option.id}
                 class={option.classes}
+                part="option"
                 role="option"
                 data-value={option.value}
                 data-option-id={option.id}
@@ -89,7 +93,7 @@
     </fandry-popover>
 
     <template if:true={hasHelpText}>
-      <div id="help-text" class="help-text">{helpText}</div>
+      <div id="help-text" class="help-text" part="help-text">{helpText}</div>
     </template>
   </div>
 </template>

@@ -159,3 +159,12 @@
   font-family: var(--font-code, "Geist Mono", monospace);
   white-space: pre;
 }
+
+.section-note {
+  display: block;
+  margin-bottom: var(--fd-space-3);
+}
+
+.parts-code {
+  margin-top: var(--fd-space-3);
+}

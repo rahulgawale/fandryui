@@ -5,16 +5,20 @@
 .form-control {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
 }
 
 .label {
-  font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text));
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text));
 }
 
 .input {
   flex: 1;
+  /* A flex item won't shrink below its content's width unless told to, and a
+     native input's is about 20 characters -- so without this an input
+     overflowed any container narrower than that. */
+  min-width: 0;
   border: none;
   outline: none;
   font: inherit;
@@ -22,26 +26,26 @@
 }
 
 .help-text {
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }
 
 .control {
   display: flex;
   align-items: center;
-  border: var(--fd-border-width) solid hsl(var(--fd-border));
-  border-radius: var(--fd-radius-md);
-  padding: var(--fd-space-1) var(--fd-space-2);
-  background: hsl(var(--fd-bg));
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-md);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  background: hsl(var(--_fd-bg));
 
-  transition: border-color var(--fd-duration-fast) ease,
-    box-shadow var(--fd-duration-fast) ease;
+  transition: border-color var(--_fd-duration-fast) ease,
+    box-shadow var(--_fd-duration-fast) ease;
 }
 
 /* Focus ring */
 .control:focus-within {
-  border-color: hsl(var(--fd-border-focus));
-  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+  border-color: hsl(var(--_fd-border-focus));
+  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
 }
 
 .input:focus {
@@ -50,16 +54,16 @@
 
 /* Sizes */
 .control--sm {
-  padding: var(--fd-space-1) var(--fd-space-2);
-  font-size: var(--fd-font-size-xs);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  font-size: var(--_fd-font-size-xs);
 }
 
 .control--md {
-  padding: var(--fd-space-1) var(--fd-space-2);
-  font-size: var(--fd-font-size-md);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  font-size: var(--_fd-font-size-md);
 }
 
 .control--lg {
-  padding: var(--fd-space-2) var(--fd-space-3);
-  font-size: var(--fd-font-size-md);
+  padding: var(--_fd-space-2) var(--_fd-space-3);
+  font-size: var(--_fd-font-size-md);
 }

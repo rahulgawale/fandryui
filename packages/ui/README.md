@@ -89,13 +89,31 @@ There is no registry and nothing is registered globally. Your bundler follows th
 
 ## Theming
 
-Design tokens (`--fd-*` custom properties) are declared on each component's `:host`, so components work with no global stylesheet. To retheme, set the documented page-level variables on any ancestor, e.g.:
+Components work with no global stylesheet: every design token has a default inside the component. To theme, set any token on an ancestor. On `:root` it changes every component on the page; on a section or a single element it changes only what is inside:
 
 ```css
 :root {
-  --brand-primary: 210 90% 40%; /* H S% L%, no commas */
+  --fd-primary: 210 90% 40%;   /* colors are H S% L%, no commas */
+  --fd-radius-md: 0;
+  --fd-font-sans: "Brand Sans", system-ui, sans-serif;
+}
+
+.promo {
+  --fd-bg: 38 92% 95%;
 }
 ```
+
+The full list, with defaults, is in `modules/fandry/base/tokens.css` (the `--fd-*` names; the `--_fd-*` ones are what components read internally, so don't set those). `--brand-primary` / `--brand-accent` still work as the older names for `--fd-primary` / `--fd-accent`.
+
+To restyle one element inside a component, use its parts. Each component's page lists them:
+
+```css
+fandry-link::part(link) { color: inherit; text-decoration: none; }
+fandry-input::part(control) { border-radius: 999px; }
+fandry-select::part(panel) { box-shadow: none; }
+```
+
+`::part()` needs native shadow DOM: LWR sites use it, and so do Salesforce orgs with native shadow on. In an org still on synthetic shadow, parts have no effect; tokens work in both.
 
 ## Extending
 
@@ -106,6 +124,8 @@ import Base from 'fandry/base';
 
 export default class MyThing extends Base {}
 ```
+
+A component that extends `Base` reads tokens by their `--_fd-*` names (`padding: var(--_fd-space-2)`), which follow the site's theme.
 
 Anything listed in the package's `lwc.config.json` `expose` array is public API. Files inside the package are not.
 

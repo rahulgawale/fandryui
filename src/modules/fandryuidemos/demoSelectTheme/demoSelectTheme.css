@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.narrow {
+  max-width: 20rem;
+}
+
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 0.75rem;
+  --fd-border-focus: 160 84% 36%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-bg-muted: 160 40% 94%;
+}
+
+fandry-select::part(control) {
+  background: hsl(160 40% 98%);
+  font-weight: 600;
+}
+
+fandry-select::part(panel) {
+  box-shadow: 0 12px 32px hsl(160 40% 20% / 0.18);
+}
+
+fandry-select::part(option) {
+  padding-block: 0.5rem;
+}

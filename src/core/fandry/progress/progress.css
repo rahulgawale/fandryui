@@ -4,22 +4,22 @@
 
 .track {
   width: 100%;
-  height: var(--fd-space-2);
-  border-radius: var(--fd-radius-sm);
-  background: hsl(var(--fd-bg-muted));
+  height: var(--_fd-space-2);
+  border-radius: var(--_fd-radius-sm);
+  background: hsl(var(--_fd-bg-muted));
   overflow: hidden;
 }
 
 .bar {
   height: 100%;
-  border-radius: var(--fd-radius-sm);
-  background: hsl(var(--fd-primary));
-  transition: width var(--fd-duration-fast) var(--fd-ease-standard);
+  border-radius: var(--_fd-radius-sm);
+  background: hsl(var(--_fd-primary));
+  transition: width var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
 .bar--indeterminate {
   width: 40%;
-  animation: fd-progress-indeterminate var(--fd-duration-slowest) ease-in-out infinite;
+  animation: fd-progress-indeterminate var(--_fd-duration-slowest) ease-in-out infinite;
 }
 
 @keyframes fd-progress-indeterminate {

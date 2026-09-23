@@ -1,6 +1,7 @@
 <template>
   <span
     class="tab-stop"
+    part="base"
     role="link"
     tabindex={tabStopIndex}
     aria-labelledby="anchor"
@@ -10,6 +11,7 @@
     <a
       id="anchor"
       class={classes}
+      part="link"
       href={href}
       aria-current={ariaCurrent}
       aria-hidden="true"

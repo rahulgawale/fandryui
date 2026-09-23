@@ -12,9 +12,9 @@
 }
 
 .card {
-  border: var(--fd-border-width) solid hsl(var(--fd-border));
-  border-radius: var(--fd-radius-lg);
-  padding: var(--fd-space-3);
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-lg);
+  padding: var(--_fd-space-3);
   /* --fd-card-bg lets a consumer give one specific card a different
      background (e.g. a themed gradient) from outside, without touching
      --fd-bg itself -- that token is redeclared :host-scoped by fandry/base's
@@ -23,7 +23,7 @@
      :host declaration always wins over an inherited value). --fd-card-bg
      has no such redeclaration here, so it inherits normally and this falls
      back to the plain surface color when nothing overrides it. */
-  background: var(--fd-card-bg, hsl(var(--fd-bg)));
+  background: var(--fd-card-bg, hsl(var(--_fd-bg)));
   box-sizing: border-box;
   height: var(--fd-card-height, auto);
 }
