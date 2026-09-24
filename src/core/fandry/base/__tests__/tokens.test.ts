@@ -80,4 +80,29 @@ describe('design tokens', () => {
     }
     expect(problems).toEqual([]);
   });
+
+  /* A per-component custom property (a "hook") looks like a token but isn't
+     one, and duplicates what scoped tokens and parts already do. These six
+     are deprecated and still read for existing sites; a new one fails. */
+  it('reads no public --fd-* name except the deprecated hooks', () => {
+    const DEPRECATED_HOOKS = [
+      '--fd-button-radius',
+      '--fd-button-border-width',
+      '--fd-button-padding-x',
+      '--fd-card-bg',
+      '--fd-card-height',
+      '--fd-icon-size'
+    ];
+    const problems: string[] = [];
+    for (const dir of COMPONENT_DIRS) {
+      for (const file of cssFiles(join(ROOT, dir))) {
+        if (file === TOKENS) continue;
+        const css = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+        for (const [, name] of css.matchAll(/var\((--fd-[\w-]+)/g)) {
+          if (!DEPRECATED_HOOKS.includes(name)) problems.push(`${relative(ROOT, file)} reads ${name}`);
+        }
+      }
+    }
+    expect(problems).toEqual([]);
+  });
 });

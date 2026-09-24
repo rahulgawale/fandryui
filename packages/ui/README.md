@@ -122,6 +122,8 @@ fandry-button::part(base secondary)    { border-color: currentColor; }
 fandry-table::part(row selected)       { background: hsl(160 40% 96%); }
 ```
 
+**Deprecated:** `--fd-button-radius`, `--fd-button-padding-x`, `--fd-button-border-width`, `--fd-card-bg`, `--fd-card-height` and `--fd-icon-size` still work but will be removed. Use the part instead: `.round::part(base) { border-radius: 999px; padding-inline: 0 }`, `.promo::part(base) { background: ... }`, `fandry-card, fandry-card::part(base) { height: 100% }`, `.big::part(base) { width: 3rem; height: 3rem }`.
+
 `::part()` needs native shadow DOM: LWR sites use it, and so do Salesforce orgs with native shadow on. In an org still on synthetic shadow, parts have no effect; tokens work in both.
 
 ## Translating

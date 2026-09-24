@@ -257,14 +257,14 @@ fandry-breadcrumb-item::part(link) {
   --fd-text-muted: 160 15% 38%;
 }
 
-/* A per-component hook: the card's background, gradient included. */
-.promo {
-  --fd-card-bg: linear-gradient(135deg, hsl(160 60% 95%), hsl(45 90% 93%));
-}
-
 fandry-card::part(base) {
   padding: 1.5rem;
   box-shadow: 0 8px 24px hsl(160 40% 20% / 0.12);
+}
+
+/* One card only, gradient and all. */
+.promo::part(base) {
+  background: linear-gradient(135deg, hsl(160 60% 95%), hsl(45 90% 93%));
 }`
     },
     category: 'Layout',
@@ -551,9 +551,10 @@ fandry-icon::part(base) {
   border-radius: 999px;
 }
 
-/* A per-component hook: the icon's size. */
-.large {
-  --fd-icon-size: 2.5rem;
+/* One icon only, at any size. */
+.large::part(base) {
+  width: 2.5rem;
+  height: 2.5rem;
 }`
     },
     category: 'Typography',

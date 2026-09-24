@@ -57,12 +57,6 @@
 
 .card-wrap {
   border-radius: var(--fd-radius-lg);
-  /* Opts this section's cards into card.css's height: 100% behavior (see
-     its :host comment) -- .grid's align-items: stretch above already
-     stretches this wrapper to match its row's tallest sibling; this is
-     what makes the fandry-card inside actually fill that stretched box
-     instead of leaving empty space below its own auto-height content. */
-  --fd-card-height: 100%;
   /* Explicit clip on this wrapper itself, matching its own border-radius
      -- transition: transform below can promote this element to its own
      GPU compositing layer, whose backing-store bounds are rectangular
@@ -72,6 +66,14 @@
      element has no visible border/background of its own. */
   overflow: hidden;
   transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+/* .grid's align-items: stretch makes each wrapper as tall as its row; the
+   card (its host and its base part) fills that instead of leaving empty
+   space below its own auto-height content. */
+.card-wrap fandry-card,
+.card-wrap fandry-card::part(base) {
+  height: 100%;
 }
 
 /* hover: hover excludes touch devices -- see componentsIndex.css's
