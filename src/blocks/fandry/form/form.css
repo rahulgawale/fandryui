@@ -10,7 +10,7 @@
 
 .fields {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--_fd-form-column-min-width), 1fr));
   gap: var(--_fd-space-4);
 }
 
