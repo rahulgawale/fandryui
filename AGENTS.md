@@ -103,6 +103,18 @@ literal in component CSS; only `1px` (screen-reader-only boxes, optical
 nudges), `1em` (one line of the text), zero, and the layout units `%` and
 `vw`/`vh` are allowed.
 
+### No per-component hooks
+
+Don't add a component-named alias for something a shared token already
+controls (`--fd-card-bg` for `--fd-bg`, `--fd-button-radius` for
+`--fd-radius-md`, ...). It looks like a token but isn't, and it duplicates
+what already exists: a token set on one element is already scoped to it,
+and a part styles one component's internals. A size no shared token
+covers (the switch's width) is a real token in `tokens.css`, not a hook. The
+six such hooks that exist are deprecated and kept only for existing sites;
+`tokens.test.ts` fails on a new one. A variable a component sets for its
+own use (like the motion `--_fd-slide-*` direction) is private: `--_fd-`.
+
 ### Text
 
 A primitive or block never ships words a site can't replace; public sites

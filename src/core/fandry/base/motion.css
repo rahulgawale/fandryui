@@ -62,18 +62,18 @@
   }
 }
 
-/* Direction comes from --fd-slide-x / --fd-slide-y, set by the component on
+/* Direction comes from --_fd-slide-x / --_fd-slide-y, set by the component on
    the panel (e.g. a popover slides away from its trigger). */
 @keyframes fd-slide-in {
   from {
     opacity: 0;
-    translate: var(--fd-slide-x, 0) var(--fd-slide-y, 0);
+    translate: var(--_fd-slide-x, 0) var(--_fd-slide-y, 0);
   }
 }
 
 @keyframes fd-slide-out {
   to {
     opacity: 0;
-    translate: var(--fd-slide-x, 0) var(--fd-slide-y, 0);
+    translate: var(--_fd-slide-x, 0) var(--_fd-slide-y, 0);
   }
 }
