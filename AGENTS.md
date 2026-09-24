@@ -206,6 +206,13 @@ Base must not:
 - contain component-specific logic
 - grow beyond shared styling needs
 
+Base opts every component into native shadow DOM (`static
+shadowSupportMode = 'native'`, inherited by subclasses), so parts and
+exportparts work on Salesforce too, even in orgs that load the
+synthetic-shadow polyfill. Write tests for native semantics: a closed
+panel's slotted content is in the DOM but unassigned, and children reach
+a parent through `slotchange` a microtask after render.
+
 Behavior a few components share lives in its own template-less module
 (`fandry/motion`, `fandry/parts`, `fandry/elementProps`,
 `fandry/anchorTabStop`), imported by the components that need it -- not

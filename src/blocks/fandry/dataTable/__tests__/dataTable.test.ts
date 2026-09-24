@@ -425,7 +425,12 @@ describe('fandry-data-table', () => {
       const el = mount({ deleteRow });
 
       await chooseMenuAction(el, 0, 'delete');
-      buttonByText(el, 'Cancel').click();
+      /* This dialog's own Cancel: in native shadow a closed dialog's content
+         is still in the DOM (just not shown), so the block has several. */
+      const cancel = Array.from(dialog(el).querySelectorAll('fandry-button')).find(
+        (button) => (button as HTMLElement).textContent!.trim() === 'Cancel'
+      ) as HTMLElement;
+      cancel.click();
       await settle();
 
       expect(deleteRow).not.toHaveBeenCalled();
