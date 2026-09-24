@@ -13,6 +13,15 @@ import { activateAnchorOnEnter, resolveTabStopIndex, withoutTabIndex } from "fan
 export default class Base extends LightningElement {
   static stylesheets = [baseStyles];
 
+  /*
+    Native shadow DOM wherever a component runs, including Salesforce orgs
+    that still load the synthetic-shadow polyfill: LWC honours this per
+    component and every subclass inherits it. It is what lets a page style a
+    component's internals with ::part() (parts and exportparts need a real
+    shadow root), and it makes LWR and Salesforce behave the same.
+  */
+  static shadowSupportMode = "native";
+
   /** @deprecated Import `activateAnchorOnEnter` from fandry/anchorTabStop and pass `this.template`. */
   protected activateAnchorOnEnter(event: KeyboardEvent): void {
     activateAnchorOnEnter(event, this.template);
