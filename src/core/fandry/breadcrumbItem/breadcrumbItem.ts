@@ -13,11 +13,6 @@ export default class BreadcrumbItem extends Base {
   @api href = '';
   @api current = false;
 
-  // Set imperatively by the parent fandry-breadcrumb (see breadcrumb.ts) --
-  // hides this item's own leading separator when it's the first crumb in
-  // the trail.
-  @api first = false;
-
   // Spread onto the native <a> via `lwc:spread` -- see fandry-checkbox's
   // checkbox.ts for why this can't reach `data-*` attributes.
   @api elementProps: Record<string, unknown> = {};

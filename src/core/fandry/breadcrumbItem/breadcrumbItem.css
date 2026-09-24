@@ -12,6 +12,12 @@
   color: hsl(var(--_fd-text-muted));
 }
 
+/* The first crumb has nothing before it to separate from. Decided here, from
+   the item's own position, so the parent never has to reach in and tell it. */
+:host(:first-child) .separator {
+  display: none;
+}
+
 .link {
   color: hsl(var(--_fd-text-muted));
   font-size: var(--_fd-font-size-sm);
