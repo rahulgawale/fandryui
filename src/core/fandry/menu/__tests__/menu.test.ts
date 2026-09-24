@@ -189,3 +189,32 @@ describe('fandry-menu', () => {
     expect(handler.mock.calls[0][0].detail).toEqual({ value: 'edit' });
   });
 });
+
+/* fandry-menu-item tells fandry-menu when its disabled state changes with
+   an `itemchange` event; the menu stops it, so it never reaches the markup
+   around the menu. */
+describe('fandry-menu itemchange', () => {
+  afterEach(() => {
+    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
+  });
+
+  it('still updates the roving tabindex, but stops the event at the menu', async () => {
+    const harness = createElement('menu-standalone-harness', { is: MenuStandaloneHarness });
+    document.body.appendChild(harness);
+    await Promise.resolve();
+
+    const heard = jest.fn();
+    harness.shadowRoot!.addEventListener('itemchange', heard);
+    const items = Array.from(harness.shadowRoot!.querySelectorAll('fandry-menu-item')) as Array<
+      HTMLElement & { disabled: boolean }
+    >;
+    const tabStops = () => items.map((item) => item.shadowRoot!.querySelector('[role="menuitem"]') as HTMLElement).map((el) => el.tabIndex);
+
+    items[0].disabled = true;
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(tabStops()).toEqual([-1, 0, -1]);
+    expect(heard).not.toHaveBeenCalled();
+  });
+});
