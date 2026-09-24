@@ -122,6 +122,12 @@ from one `messages` prop per component, typed `Fd<Name>Messages`, with its
 English in an exported `DEFAULT_<NAME>_MESSAGES` that the prop is merged
 over. One `messages` prop, not a prop per string.
 
+Text a field shows is overridable the same way on every field: `label`
+and `help-text` slots (toggles take their label in the default slot, an
+alert its `title` slot), with the prop as fallback. A slot must work
+without its prop: keep the wrapper rendered and `hidden` while empty,
+not behind `if:true={prop}`, or a slotted label never appears.
+
 ### Parts
 
 Every element a site might reasonably restyle carries a `part`, named from

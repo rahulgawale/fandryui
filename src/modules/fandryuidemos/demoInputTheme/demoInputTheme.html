@@ -1,11 +1,7 @@
 <template>
   <div class="brand narrow">
-    <fandry-input
-      label="Email"
-      type="email"
-      placeholder="you@brand.com"
-      help-text="We'll send your receipt here."
-      required
-    ></fandry-input>
+    <fandry-input label="Email" type="email" placeholder="you@brand.com" required>
+      <span slot="help-text">We'll send your receipt here. <a href="#privacy">How we use it</a></span>
+    </fandry-input>
   </div>
 </template>

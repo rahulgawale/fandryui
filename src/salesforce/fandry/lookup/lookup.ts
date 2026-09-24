@@ -337,11 +337,11 @@ export default class FdLookup extends FdSearchState {
   }
 
   get hasLabel(): boolean {
-    return !!this.label;
+    return !!this.label || !!this.textSlots['label'];
   }
 
   get hasHelpText(): boolean {
-    return !!this.helpText;
+    return !!this.helpText || !!this.textSlots['help-text'];
   }
 
   // Single mode with a record chosen: the field shows it as its value and
@@ -643,5 +643,24 @@ export default class FdLookup extends FdSearchState {
 
   get controlPart(): string {
     return partList('control', { disabled: this.disabled });
+  }
+
+  /* Which text slots have content, so a label or help text a page slots in
+     shows even without the matching prop. The wrapper stays in the DOM
+     (hidden while empty), so its slot is always there to be filled. */
+  @track textSlots: Record<string, boolean> = {};
+
+  handleTextSlotChange(event: Event) {
+    const slot = event.target as HTMLSlotElement;
+    const filled = slot.assignedNodes().some((node) => node.nodeType === 1 || !!node.textContent?.trim());
+    this.textSlots = { ...this.textSlots, [slot.name || 'default']: filled };
+  }
+
+  get labelHidden(): boolean {
+    return !this.hasLabel;
+  }
+
+  get helpTextHidden(): boolean {
+    return !this.hasHelpText;
   }
 }

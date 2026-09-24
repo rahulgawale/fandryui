@@ -35,7 +35,7 @@ describe('fandry-radio-group', () => {
     const element = createElement('fandry-radio-group', { is: FdRadioGroup });
     document.body.appendChild(element);
 
-    expect(element.shadowRoot!.querySelector('.label')).toBeNull();
+    expect(element.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(true);
     const group = element.shadowRoot!.querySelector('[role="radiogroup"]')!;
     expect(group.hasAttribute('aria-labelledby')).toBe(false);
   });

@@ -741,7 +741,8 @@ fandry-checkbox::part(control checked) {
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'checked', type: 'boolean', default: 'false', description: 'Checked state.' },
       { name: 'indeterminate', type: 'boolean', default: 'false', description: 'Visual mixed state (synced onto the native input imperatively).' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the checkbox.' }
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the checkbox.' },
+      { name: 'default slot', type: 'slot', default: 'the label prop', description: 'Markup in place of the label. Shown even without the label prop.' }
     ],
     code: `<fandry-checkbox label="Accept terms" onchange={handleChange}></fandry-checkbox>`
   },
@@ -802,7 +803,8 @@ fandry-combobox::part(option-description) {
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
       { name: 'required', type: 'boolean', default: 'false', description: 'Marks the field required (asterisk + aria-required).' },
       { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native input (e.g. `{ tabIndex: 2 }`); keys the component controls are ignored with a warning.' },
-      { name: 'empty (slot)', type: 'slot', default: "'No results'", description: 'Replaces the message shown when nothing matches.' }
+      { name: 'empty (slot)', type: 'slot', default: "'No results'", description: 'Replaces the message shown when nothing matches.' },
+      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
     ],
     code: `<fandry-combobox
   label="Framework"
@@ -898,13 +900,9 @@ export default class PeopleSearch extends FdSearchState {
       demo: 'input-theme',
       code: `<!-- template -->
 <div class="brand narrow">
-  <fandry-input
-    label="Email"
-    type="email"
-    placeholder="you@brand.com"
-    help-text="We'll send your receipt here."
-    required
-  ></fandry-input>
+  <fandry-input label="Email" type="email" placeholder="you@brand.com" required>
+    <span slot="help-text">We'll send your receipt here. <a href="#privacy">How we use it</a></span>
+  </fandry-input>
 </div>
 
 /* css */
@@ -941,7 +939,8 @@ fandry-input::part(help-text) {
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
       { name: 'type', type: 'string', default: "'text'", description: 'Native input type (email, password, ...).' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Field size.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' }
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
+      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text (a link, an icon). Shown even without the matching prop.' }
     ],
     code: `<fandry-input label="Email" type="email" placeholder="you@company.com"></fandry-input>`
   },
@@ -1035,7 +1034,8 @@ fandry-radio::part(label) {
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'name', type: 'string', default: "''", description: 'Radio group name (must match the group).' },
       { name: 'value', type: 'string', default: "''", description: "This option's value." },
-      { name: 'checked', type: 'boolean', default: 'false', description: 'Checked state.' }
+      { name: 'checked', type: 'boolean', default: 'false', description: 'Checked state.' },
+      { name: 'default slot', type: 'slot', default: 'the label prop', description: 'Markup in place of the label. Shown even without the label prop.' }
     ],
     code: `<fandry-radio-group name="plan" value="pro" label="Choose a plan">
   <fandry-radio name="plan" value="free" label="Free"></fandry-radio>
@@ -1092,7 +1092,8 @@ fandry-radio::part(label) {
     props: [
       { name: 'name', type: 'string', default: "''", description: 'Shared name for every radio in the group.' },
       { name: 'value', type: 'string', default: "''", description: 'Selected value.' },
-      { name: 'label', type: 'string', default: "''", description: 'Group label (rendered as the fieldset legend equivalent).' }
+      { name: 'label', type: 'string', default: "''", description: 'Group label (rendered as the fieldset legend equivalent).' },
+      { name: 'label (slot)', type: 'slot', default: 'the label prop', description: 'Markup in place of the group label. Shown even without the label prop.' }
     ],
     code: `<fandry-radio-group name="plan" value="pro" label="Choose a plan">
   <fandry-radio name="plan" value="free" label="Free"></fandry-radio>
@@ -1150,7 +1151,8 @@ fandry-select::part(option selected) {
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected.' },
       { name: 'options', type: '{ label, value, disabled?, component?, componentProps? }[]', default: '[]', description: 'Flat option list. An option\'s `component` (with `componentProps`) draws its own row instead of the label -- see the custom options example.' },
       { name: 'groups', type: '{ label, options }[]', default: '[]', description: 'Grouped option list (used instead of options).' },
-      { name: 'value', type: 'string', default: "''", description: 'Selected value.' }
+      { name: 'value', type: 'string', default: "''", description: 'Selected value.' },
+      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
     ],
     code: `<fandry-select
   label="Plan"
@@ -1228,7 +1230,8 @@ fandry-switch::part(label) {
     props: [
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'checked', type: 'boolean', default: 'false', description: 'On/off state.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the switch.' }
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the switch.' },
+      { name: 'default slot', type: 'slot', default: 'the label prop', description: 'Markup in place of the label. Shown even without the label prop.' }
     ],
     code: `<fandry-switch label="Enable notifications" checked></fandry-switch>`
   },
@@ -1271,7 +1274,8 @@ fandry-textarea::part(label) {
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
       { name: 'rows', type: 'number', default: '3', description: 'Visible row count.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' }
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
+      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
     ],
     code: `<fandry-textarea label="Notes" rows="4"></fandry-textarea>`
   },
@@ -1316,7 +1320,8 @@ fandry-alert::part(title) {
     description: 'An inline banner for a status message, with an optional title.',
     props: [
       { name: 'variant', type: "'info' | 'success' | 'warning' | 'danger'", default: "'info'", description: 'Status color and icon.' },
-      { name: 'title', type: 'string', default: "''", description: 'Optional bold title above the message.' }
+      { name: 'title', type: 'string', default: "''", description: 'Optional bold title above the message.' },
+      { name: 'title (slot)', type: 'slot', default: 'the title prop', description: 'Markup in place of the title. Shown even without the title prop.' }
     ],
     code: `<fandry-alert variant="success" title="Saved">Your changes have been saved.</fandry-alert>`
   },
@@ -2114,7 +2119,8 @@ fandry-lookup::part(option-description) {
       { name: 'change (event)', type: 'CustomEvent<{ value, record }> | CustomEvent<{ values, records }>', default: '—', description: 'Single mode: `{ value, record }` on pick, and `{ value: \'\', record: null }` on clear. Multiple mode: `{ values, records }` on every pick, removal and Clear all.' },
       { name: 'empty (slot)', type: 'slot', default: "'No records found'", description: 'Replaces the message shown when a search has no matches.' },
       { name: 'clear-all · searching (slots)', type: 'slot', default: "'Clear all' · 'Searching…'", description: 'Replace the Clear all button\'s text and the searching line.' },
-      { name: 'messages', type: '{ searching, clear(name), remove(name) }', default: '{}', description: 'Replaces the accessible names of the spinner and the clear and remove buttons, e.g. to translate them.' }
+      { name: 'messages', type: '{ searching, clear(name), remove(name) }', default: '{}', description: 'Replaces the accessible names of the spinner and the clear and remove buttons, e.g. to translate them.' },
+      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
     ],
     code: `<!-- template -->
 <fandry-lookup

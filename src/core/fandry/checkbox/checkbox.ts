@@ -1,4 +1,4 @@
-import { api } from 'lwc';
+import { api, track } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
 
@@ -84,5 +84,24 @@ export default class Checkbox extends Base {
 
   get controlPart(): string {
     return partList('control', { checked: this.checked, indeterminate: this.indeterminate, disabled: this.disabled });
+  }
+
+  /* Which text slots have content, so a label or help text a page slots in
+     shows even without the matching prop. The wrapper stays in the DOM
+     (hidden while empty), so its slot is always there to be filled. */
+  @track textSlots: Record<string, boolean> = {};
+
+  handleTextSlotChange(event: Event) {
+    const slot = event.target as HTMLSlotElement;
+    const filled = slot.assignedNodes().some((node) => node.nodeType === 1 || !!node.textContent?.trim());
+    this.textSlots = { ...this.textSlots, [slot.name || 'default']: filled };
+  }
+
+  get hasLabel(): boolean {
+    return !!this.label || !!this.textSlots['default'];
+  }
+
+  get labelHidden(): boolean {
+    return !this.hasLabel;
   }
 }

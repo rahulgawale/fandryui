@@ -122,12 +122,13 @@ describe('fandry-select', () => {
     expect(element.shadowRoot!.querySelector('.trigger')!.getAttribute('aria-required')).toBe('true');
   });
 
-  it('omits the label element entirely when no label is provided', () => {
+  // It stays in the DOM, hidden, so a slotted label can still fill it.
+  it('hides the label element when no label is provided', () => {
     const element = createElement('fandry-select', { is: FdSelect });
     element.options = OPTIONS;
     document.body.appendChild(element);
 
-    expect(element.shadowRoot!.querySelector('.label')).toBeNull();
+    expect(element.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(true);
   });
 
   it('renders grouped options under a role="group" container', async () => {
