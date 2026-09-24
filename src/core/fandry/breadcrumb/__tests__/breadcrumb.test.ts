@@ -26,23 +26,17 @@ describe('fandry-breadcrumb', () => {
     expect(element.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Trail');
   });
 
-  it('marks only the first slotted crumb as first', async () => {
-    // Real slotted markup, not a plain `document.createElement` +
-    // `appendChild` from test code -- confirmed live that this component's
-    // own `this.querySelectorAll('fandry-breadcrumb-item')` doesn't see
-    // children appended that way in this project's test environment, the
-    // same gap fandry-popover's own popoverTriggerHarness documents for
-    // slot distribution.
+  /* Each crumb hides its own leading separator from its own position
+     (:host(:first-child)), so the breadcrumb sets nothing on its items. */
+  it('leaves its slotted crumbs alone', async () => {
     const harness = createElement('breadcrumb-harness', { is: BreadcrumbHarness });
     document.body.appendChild(harness);
     await flush();
 
-    const one = harness.shadowRoot!.querySelector('.one') as HTMLElement & { first?: boolean };
-    const two = harness.shadowRoot!.querySelector('.two') as HTMLElement & { first?: boolean };
-    const three = harness.shadowRoot!.querySelector('.three') as HTMLElement & { first?: boolean };
-
-    expect(one.first).toBe(true);
-    expect(two.first).toBe(false);
-    expect(three.first).toBe(false);
+    for (const name of ['.one', '.two', '.three']) {
+      const crumb = harness.shadowRoot!.querySelector(name)!;
+      expect('first' in crumb).toBe(false);
+      expect(crumb.shadowRoot!.querySelector('.separator')).not.toBeNull();
+    }
   });
 });
