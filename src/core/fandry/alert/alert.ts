@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 export default class Alert extends Base {
   @api variant: 'info' | 'success' | 'warning' | 'danger' = 'info';
@@ -20,5 +21,9 @@ export default class Alert extends Base {
   // guidance on live-region urgency.
   get role(): 'alert' | 'status' {
     return this.variant === 'warning' || this.variant === 'danger' ? 'alert' : 'status';
+  }
+
+  get basePart(): string {
+    return partList('base', { [this.variant]: true });
   }
 }

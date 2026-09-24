@@ -50,7 +50,7 @@
             </th>
           </template>
           <template for:each={headerGroup.headers} for:item="header">
-            <th key={header.id} part="header-cell" scope="col" aria-sort={header.ariaSort}>
+            <th key={header.id} part={header.part} scope="col" aria-sort={header.ariaSort}>
               <template if:true={header.canSort}>
                 <button
                   type="button"
@@ -91,7 +91,7 @@
         <template if:false={loading}>
           <template if:true={hasRows}>
             <template for:each={rows} for:item="row">
-              <tr key={row.id} part="row" data-row-id={row.id} onclick={handleRowClick}>
+              <tr key={row.id} part={row.part} data-row-id={row.id} onclick={handleRowClick}>
                 <template if:true={enableRowSelection}>
                   <td class="selection-cell" part="cell selection-cell" onclick={handleSelectionCellClick}>
                     <fandry-checkbox
