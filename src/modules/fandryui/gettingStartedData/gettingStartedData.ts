@@ -215,6 +215,12 @@ const SALESFORCE: GettingStartedPage = {
             'The Salesforce CLI (sf) and an authorized org',
             'Node.js 18 or newer, to run the fandry CLI'
           ]
+        },
+        {
+          type: 'note',
+          variant: 'info',
+          title: 'Native shadow DOM, whatever your org uses',
+          text: "Fandry components render in native shadow DOM (they set static shadowSupportMode = 'native'), even in orgs that run other components on the synthetic-shadow polyfill. That is what lets you restyle their internals with ::part() and keeps their behavior identical to LWR. Your own components don't need to change: they can stay synthetic and still use and style fandry components. SLDS and other global CSS don't reach inside them; theme them with --fd-* tokens and parts."
         }
       ]
     },
