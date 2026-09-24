@@ -16,15 +16,9 @@
   color: inherit;
 }
 
-/* Each variant's own `var(--fd-icon-size, <fallback>)` -- rather than the
-   variant classes assigning `--fd-icon-size` themselves -- keeps that
-   custom property free for a consumer to set once on the host (e.g.
-   `style="--fd-icon-size: 3rem"`) as an escape hatch for arbitrary sizing
-   beyond the sm/md/lg scale, the same "controlled default + clean
-   override point" role `elementProps` plays on components that wrap a
-   single native element. Reassigning it here directly on `.icon` would
-   instead always win over that inherited override, since a same-element
-   declaration beats inheritance regardless of specificity. */
+/* Deprecated: --fd-icon-size still works, but size one icon with its part
+   instead (`.big::part(base) { width: 3rem; height: 3rem }`), or every
+   size step with the --fd-size-* tokens. */
 .icon--sm {
   width: var(--fd-icon-size, var(--_fd-size-sm));
   height: var(--fd-icon-size, var(--_fd-size-sm));

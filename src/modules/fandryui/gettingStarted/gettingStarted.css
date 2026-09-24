@@ -140,8 +140,7 @@
   gap: var(--fd-space-4);
   margin-top: var(--fd-space-6);
   /* Two cards side by side read best at equal height. Grid stretches each
-     link to the row height; the card inside only fills it when opted in via
-     --fd-card-height (see .card below). */
+     link to the row height, and the card fills it (see .card below). */
   align-items: stretch;
 }
 
@@ -167,10 +166,11 @@
   }
 }
 
-.card {
-  /* fandry-card is height: auto by default (card.css). Fill the stretched
-     link so its hover lift and shadow hug the card, not a taller box. */
-  --fd-card-height: 100%;
+.card,
+.card::part(base) {
+  /* fandry-card is height: auto by default. Fill the stretched link so its
+     hover lift and shadow hug the card, not a taller box. */
+  height: 100%;
 }
 
 .card > * + * {

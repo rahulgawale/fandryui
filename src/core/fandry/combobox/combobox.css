@@ -87,7 +87,7 @@
   /* Slides down from the field. Motion is defined in base/motion.css; see
      combobox.ts / fandry/motion for how the panel stays mounted through its
      exit. */
-  --fd-slide-y: calc(var(--_fd-space-2) * -1);
+  --_fd-slide-y: calc(var(--_fd-space-2) * -1);
   animation: fd-slide-in var(--_fd-duration-normal) var(--_fd-ease-standard);
 }
 

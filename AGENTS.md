@@ -102,6 +102,16 @@ be derived from them is `calc()`ed rather than written down.
 literal in component CSS; only `1px` (screen-reader-only boxes, optical
 nudges) and zero are allowed.
 
+### No per-component hooks
+
+Don't add a custom property that only one component reads
+(`--fd-card-bg`, `--fd-button-radius`, ...). It looks like a token but
+isn't, and it duplicates what already exists: a token set on one element
+is already scoped to it, and a part styles one component's internals. The
+six such hooks that exist are deprecated and kept only for existing sites;
+`tokens.test.ts` fails on a new one. A variable a component sets for its
+own use (like the motion `--_fd-slide-*` direction) is private: `--_fd-`.
+
 ### Text
 
 A primitive or block never ships words a site can't replace; public sites

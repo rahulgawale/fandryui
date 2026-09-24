@@ -13,23 +13,12 @@
   font-weight: var(--_fd-font-weight-medium);
   line-height: 1;
 
-  /* --fd-button-radius is opt-in (default: the standard token, i.e. today's
-     shape unchanged) -- same pattern as card.css's --fd-card-bg/--fd-card-height.
-     Lets one specific button ask for a fully-round shape (e.g. an avatar
-     wrapped as a popover trigger, where the token's usual corner radius
-     reads as a mismatched rectangle behind a circular avatar) without
-     changing every other button sitewide. */
+  /* Deprecated: --fd-button-radius, --fd-button-border-width and
+     --fd-button-padding-x (below) still work, but style one button with
+     its part instead -- `.round::part(base) { border-radius: 999px;
+     padding-inline: 0; border-width: 0 }` -- or all of them with the
+     --fd-radius-md / --fd-border-width / --fd-space-* tokens. */
   border-radius: var(--fd-button-radius, var(--_fd-radius-md));
-  /* --fd-button-border-width is opt-in (default: the standard token, same
-     unchanged shape everywhere else) -- box-sizing: border-box (this
-     project's global reset) folds border width into the fixed `height`
-     above but NOT into width (which isn't fixed, so it just grows to fit
-     content + border instead). Combined with --fd-button-padding-x: 0 that
-     asymmetry alone was enough to make an otherwise-square icon-only
-     button (e.g. the avatar trigger) come out a couple pixels wider than
-     tall -- an oval once --fd-button-radius makes it fully round, not a
-     circle. Zeroing this out alongside padding is what actually makes
-     width and height match. */
   border: var(--fd-button-border-width, var(--_fd-border-width)) solid transparent;
   cursor: pointer;
   -webkit-user-select: none;
@@ -43,13 +32,7 @@
   color: hsl(var(--_fd-primary-foreground));
 }
 
-/* Sizes -- --fd-button-padding-x is opt-in (default: each size's own
-   token, i.e. today's padding unchanged), same pattern as
-   --fd-button-radius above. Lets a consumer zero out just the horizontal
-   padding for an icon/avatar-only trigger, so its box comes out exactly
-   height x height (matching the fixed `height` above) instead of wider --
-   the difference between a true circle and an oval once --fd-button-radius
-   is also set to a full round shape. */
+/* Sizes. --fd-button-padding-x is deprecated; see the note above. */
 .button--sm {
   height: var(--_fd-control-height-sm);
   padding: 0 var(--fd-button-padding-x, var(--_fd-space-3));
