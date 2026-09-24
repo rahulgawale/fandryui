@@ -45,8 +45,8 @@
 
 .arrow {
   position: absolute;
-  width: 0.625rem;
-  height: 0.625rem;
+  width: var(--_fd-tooltip-arrow-size);
+  height: var(--_fd-tooltip-arrow-size);
   background: hsl(var(--_fd-text));
   transform: rotate(45deg);
 }
@@ -59,9 +59,9 @@
 }
 
 .panel--top .arrow {
-  bottom: -0.3125rem;
+  bottom: calc(var(--_fd-tooltip-arrow-size) / -2);
   left: 50%;
-  margin-left: -0.3125rem;
+  margin-left: calc(var(--_fd-tooltip-arrow-size) / -2);
 }
 
 .panel--bottom {
@@ -72,9 +72,9 @@
 }
 
 .panel--bottom .arrow {
-  top: -0.3125rem;
+  top: calc(var(--_fd-tooltip-arrow-size) / -2);
   left: 50%;
-  margin-left: -0.3125rem;
+  margin-left: calc(var(--_fd-tooltip-arrow-size) / -2);
 }
 
 .panel--left {
@@ -85,9 +85,9 @@
 }
 
 .panel--left .arrow {
-  right: -0.3125rem;
+  right: calc(var(--_fd-tooltip-arrow-size) / -2);
   top: 50%;
-  margin-top: -0.3125rem;
+  margin-top: calc(var(--_fd-tooltip-arrow-size) / -2);
 }
 
 .panel--right {
@@ -98,7 +98,7 @@
 }
 
 .panel--right .arrow {
-  left: -0.3125rem;
+  left: calc(var(--_fd-tooltip-arrow-size) / -2);
   top: 50%;
-  margin-top: -0.3125rem;
+  margin-top: calc(var(--_fd-tooltip-arrow-size) / -2);
 }

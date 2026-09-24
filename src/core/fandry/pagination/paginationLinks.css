@@ -16,7 +16,7 @@
 .link {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: calc(var(--_fd-space-1) / 2);
   padding: var(--_fd-space-3) var(--_fd-space-4);
   border: var(--_fd-border-width) solid hsl(var(--_fd-border));
   border-radius: var(--_fd-radius-lg);

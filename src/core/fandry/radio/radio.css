@@ -49,8 +49,9 @@
 
 /* Inner dot */
 .dot {
-  width: 6px;
-  height: 6px;
+  /* Proportional to the circle, so the dot follows --fd-size-sm. */
+  width: calc(var(--_fd-size-sm) * 0.375);
+  height: calc(var(--_fd-size-sm) * 0.375);
   border-radius: 50%;
   background: hsl(var(--_fd-primary));
   opacity: 0;
