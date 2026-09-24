@@ -1,6 +1,7 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { resolveElementProps } from 'fandry/elementProps';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -70,7 +71,7 @@ export default class Textarea extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-textarea');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-textarea');
   }
 
   // The host isn't itself focusable, only the native control in its shadow

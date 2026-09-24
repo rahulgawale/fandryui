@@ -1,6 +1,8 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { resolveElementProps } from 'fandry/elementProps';
+import { activateAnchorOnEnter, resolveTabStopIndex, withoutTabIndex } from 'fandry/anchorTabStop';
 
 // See fandry-sidebar-item's sidebarItem.ts for why this list exists: it
 // keeps a consumer's `elementProps` from clobbering a property the
@@ -59,16 +61,16 @@ export default class BreadcrumbItem extends Base {
   }
 
   get tabStopIndex(): string | undefined {
-    return this.resolveTabStopIndex(this.elementProps, this.isLink);
+    return resolveTabStopIndex(this.elementProps, this.isLink);
   }
 
   handleKeydown(event: KeyboardEvent): void {
-    this.activateAnchorOnEnter(event);
+    activateAnchorOnEnter(event, this.template);
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.withoutTabIndex(
-      this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-breadcrumb-item')
+    return withoutTabIndex(
+      resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-breadcrumb-item')
     );
   }
 

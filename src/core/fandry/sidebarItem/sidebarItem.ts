@@ -1,6 +1,8 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { resolveElementProps } from 'fandry/elementProps';
+import { activateAnchorOnEnter, resolveTabStopIndex, withoutTabIndex } from 'fandry/anchorTabStop';
 
 // See fandry-link's link.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -27,16 +29,16 @@ export default class SidebarItem extends Base {
   }
 
   get tabStopIndex(): string | undefined {
-    return this.resolveTabStopIndex(this.elementProps, true);
+    return resolveTabStopIndex(this.elementProps, true);
   }
 
   handleKeydown(event: KeyboardEvent): void {
-    this.activateAnchorOnEnter(event);
+    activateAnchorOnEnter(event, this.template);
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.withoutTabIndex(
-      this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-sidebar-item')
+    return withoutTabIndex(
+      resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-sidebar-item')
     );
   }
 

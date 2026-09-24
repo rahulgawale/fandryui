@@ -1,6 +1,8 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { resolveElementProps } from 'fandry/elementProps';
+import { activateAnchorOnEnter, resolveTabStopIndex, withoutTabIndex } from 'fandry/anchorTabStop';
 
 // See fandry-button's button.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -51,15 +53,15 @@ export default class FdLink extends Base {
   }
 
   get tabStopIndex(): string | undefined {
-    return this.resolveTabStopIndex(this.elementProps, !this.disabled);
+    return resolveTabStopIndex(this.elementProps, !this.disabled);
   }
 
   handleKeydown(event: KeyboardEvent): void {
-    this.activateAnchorOnEnter(event);
+    activateAnchorOnEnter(event, this.template);
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.withoutTabIndex(this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-link'));
+    return withoutTabIndex(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-link'));
   }
 
   get linkPart(): string {

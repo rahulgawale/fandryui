@@ -1,6 +1,7 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { resolveElementProps } from 'fandry/elementProps';
 
 // See checkbox.ts for why this list exists: it keeps a consumer's
 // `elementProps` from clobbering a property the component itself controls.
@@ -19,7 +20,7 @@ export default class Radio extends Base {
   @api elementProps: Record<string, unknown> = { tabIndex: 0 };
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-radio');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-radio');
   }
 
   // Lets fandry-radio-group move real focus to a specific radio's native input

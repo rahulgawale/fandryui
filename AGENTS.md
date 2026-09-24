@@ -206,6 +206,12 @@ Base must not:
 - contain component-specific logic
 - grow beyond shared styling needs
 
+Behavior a few components share lives in its own template-less module
+(`fandry/motion`, `fandry/parts`, `fandry/elementProps`,
+`fandry/anchorTabStop`), imported by the components that need it -- not
+on Base, where every subclass (a consumer's too) would inherit it. Base's
+old helper methods remain only as deprecated delegates to those modules.
+
 ---
 
 ### Distribution (`scripts/build-dist.mjs`, `packages/ui/bin/`)
