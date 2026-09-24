@@ -143,6 +143,8 @@
   --_fd-radius-sm: var(--fd-radius-sm, 0.25rem);
   --_fd-radius-md: var(--fd-radius-md, 0.375rem);
   --_fd-radius-lg: var(--fd-radius-lg, 0.5rem);
+  /* A pill: rounds the ends of anything, whatever its height. */
+  --_fd-radius-full: var(--fd-radius-full, 999px);
 
   /* ---- Spacing ---- */
   --_fd-space-1: var(--fd-space-1, 0.25rem);
@@ -160,6 +162,20 @@
   /* ---- Border-drawn dropdown caret (fandry-combobox), sized relative to
      the surrounding text. ---- */
   --_fd-chevron-size: var(--fd-chevron-size, 0.4em);
+
+  /* ---- Component sizes ----
+     Shapes that belong to one component, as tokens so a site can still
+     change them. Everything else in that component is derived from these
+     and the scales above: the switch's height and thumb travel come from
+     its width, padding and --fd-size-sm; the tooltip arrow's offset is half
+     its size. */
+  --_fd-switch-width: var(--fd-switch-width, 2.25rem);
+  --_fd-switch-padding: var(--fd-switch-padding, 0.125rem);
+  --_fd-tooltip-arrow-size: var(--fd-tooltip-arrow-size, 0.625rem);
+  --_fd-sidebar-width: var(--fd-sidebar-width, 16rem);
+  --_fd-toast-width: var(--fd-toast-width, 20rem);
+  /* The narrowest a fandry-form column gets before the fields wrap. */
+  --_fd-form-column-min-width: var(--fd-form-column-min-width, 16rem);
 
   /* ---- Avatar size scale -- kept independent of --fd-size-* above.
      Icons/spinners are decorative glyphs that read fine small; an avatar

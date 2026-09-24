@@ -14,7 +14,7 @@
   flex-direction: column;
   gap: var(--_fd-space-2);
 
-  width: 20rem;
+  width: var(--_fd-toast-width);
   max-width: calc(100vw - var(--_fd-space-4) * 2);
 
   /* Lets clicks pass through the empty space around stacked toasts

@@ -62,4 +62,22 @@ describe('design tokens', () => {
     }
     expect(problems).toEqual([]);
   });
+
+  /* A length or color written into a component can't be themed. The only
+     literals allowed are 1px (screen-reader-only boxes, a one-pixel optical
+     nudge) and zero; everything else is a token, or derived from one. */
+  it('has no hard-coded lengths or colors in component CSS', () => {
+    const literal = /(?<![\w-])(?!-?1px\b)(-?\d*\.?\d+(px|rem)\b|#[0-9a-fA-F]{3,8}\b|rgba?\()/;
+    const problems: string[] = [];
+    for (const dir of COMPONENT_DIRS) {
+      for (const file of cssFiles(join(ROOT, dir))) {
+        if (file === TOKENS || file.endsWith('motion.css')) continue;
+        const lines = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').split(/\r?\n/);
+        lines.forEach((line, index) => {
+          if (literal.test(line)) problems.push(`${relative(ROOT, file)}:${index + 1}: ${line.trim()}`);
+        });
+      }
+    }
+    expect(problems).toEqual([]);
+  });
 });
