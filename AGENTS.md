@@ -314,14 +314,17 @@ it needs:
 1. **Tokens** -- set `--fd-*` on `:root` or one section to theme colors,
    type, spacing, radius, motion.
 2. **Parts and states** -- `::part(control checked)` restyles one element
-   inside a component. The quick win for most visual changes.
+   inside a component, pseudo-elements and animations included (the button
+   page's rainbow border is parts only). The quick win for most visual
+   changes.
 3. **Slots and `messages`** -- replace content and text.
 4. **Extend the state class** -- new markup, same behavior.
-5. **Copy the component** -- its source is short, plain LWC that extends
-   `fandry/base`, so a site can copy one (a button with a rainbow border)
-   into its own namespace and change anything, keeping the tokens and
-   native shadow DOM. On Salesforce, `fandry add` has already put the
-   source in the project.
+5. **Copy the component** -- for what CSS can't reach: markup and
+   behavior (a button that shows a spinner and ignores clicks until its
+   async action settles). Its source is short, plain LWC that extends
+   `fandry/base`, so a site copies it into its own namespace and changes
+   anything, keeping the tokens and native shadow DOM. On Salesforce,
+   `fandry add` has already put the source in the project.
 
 `lightning-*` offers styling hooks and some slots, but its internals can't
 be restyled, extended or copied: a look it doesn't support means

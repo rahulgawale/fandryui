@@ -653,39 +653,42 @@ fandry-text::part(base) {
     tag: 'fandry-button',
     examples: [
       {
-        title: 'Your own copy: a rainbow button',
+        title: 'Your own copy: a button that waits for its action',
         demo: 'button-copy',
         code: `<!-- 1. Copy the source into your own namespace and rename it -->
-LWR:        node_modules/fandryui/modules/fandry/button/ -> src/modules/my/rainbowButton/
-Salesforce: force-app/.../lwc/fandryButton/          -> force-app/.../lwc/rainbowButton/
+LWR:        node_modules/fandryui/modules/fandry/button/ -> src/modules/my/asyncButton/
+Salesforce: force-app/.../lwc/fandryButton/          -> force-app/.../lwc/asyncButton/
 
-<!-- 2. Keep extends Base: your copy still gets the site's tokens and native shadow DOM -->
-export default class RainbowButton extends Base { ... }
+<!-- 2. Change what parts can't: here, markup and behavior -->
+<button class={classes} part={basePart} type={type} disabled={isDisabled}
+  aria-busy={ariaBusy} onclick={handleClick} lwc:spread={resolvedElementProps}>
+  <template if:true={running}>
+    <c-fandry-spinner size="sm" label={busyLabel}></c-fandry-spinner>
+  </template>
+  <slot></slot>
+</button>
 
-/* 3. Change what you like. This copy adds, to the end of button.css: */
-.button {
-  position: relative;
-  isolation: isolate;
-  border-color: transparent;
-  background: transparent;
-  color: hsl(var(--_fd-text));
+// asyncButton.js: fandry-button's code, plus
+@api action;            // () => Promise, run on click
+@api busyLabel = 'Working';
+@track running = false;
+
+get isDisabled() {
+  return this.disabled || this.running;
 }
 
-.button::before {
-  inset: calc(var(--_fd-border-width) * -1);
-  z-index: -2;
-  background: conic-gradient(#ff4d4d, #ffb84d, #f5f54d, #4dff88, #4dd2ff, #7a4dff, #ff4de1, #ff4d4d);
-  animation: rainbow-turn 4s linear infinite;
+async handleClick() {
+  if (!this.action || this.running) return; // a second click while saving does nothing
+  this.running = true;
+  try {
+    await this.action();
+  } finally {
+    this.running = false;
+  }
 }
 
-.button::after {
-  inset: calc(var(--_fd-border-width-lg) - var(--_fd-border-width));
-  z-index: -1;
-  background: hsl(var(--_fd-bg));
-}
-
-<!-- 4. Use it next to the original -->
-<my-rainbow-button>Launch sale</my-rainbow-button>`
+<!-- 3. It still extends Base, so your tokens and native shadow DOM still apply -->
+<my-async-button action={save}>Save</my-async-button>`
       }
     ],
     parts: ['base'],
@@ -698,6 +701,7 @@ export default class RainbowButton extends Base { ... }
   <fandry-button class="cta">Add to cart</fandry-button>
   <fandry-button variant="secondary">Save for later</fandry-button>
   <fandry-button variant="ghost">Share</fandry-button>
+  <fandry-button class="rainbow">Launch sale</fandry-button>
 </div>
 
 /* css */
@@ -723,6 +727,48 @@ fandry-button.cta::part(base) {
 fandry-button::part(base secondary) {
   color: hsl(160 84% 26%);
   border-color: hsl(160 84% 26%);
+}
+
+/* Even a rainbow border is only CSS: two layers under the label, on the
+   part's own ::before and ::after. No copy of the component needed. */
+fandry-button.rainbow::part(base) {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  background: transparent;
+  color: hsl(160 40% 14%);
+}
+
+fandry-button.rainbow::part(base)::before,
+fandry-button.rainbow::part(base)::after {
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+}
+
+fandry-button.rainbow::part(base)::before {
+  inset: -1px;
+  z-index: -2;
+  background: conic-gradient(#ff4d4d, #ffb84d, #f5f54d, #4dff88, #4dd2ff, #7a4dff, #ff4de1, #ff4d4d);
+  animation: rainbow-turn 4s linear infinite;
+}
+
+fandry-button.rainbow::part(base)::after {
+  inset: 2px;
+  z-index: -1;
+  background: hsl(0 0% 100%);
+}
+
+@keyframes rainbow-turn {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  fandry-button.rainbow::part(base)::before {
+    animation: none;
+  }
 }`
     },
     category: 'Forms',

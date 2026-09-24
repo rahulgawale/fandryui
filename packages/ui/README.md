@@ -141,12 +141,12 @@ Parts need a real shadow root, so every fandry component opts into native shadow
 Each step goes further than the one before; go only as far as you need:
 
 1. **Tokens**: `:root { --fd-primary: ...; --fd-radius-md: 0 }` themes everything, or one section.
-2. **Parts and states**: `fandry-button::part(base secondary) { ... }` restyles one element inside a component. The quick win for most visual changes.
+2. **Parts and states**: `fandry-button::part(base secondary) { ... }` restyles one element inside a component, including its `::before` / `::after` and animations: a rainbow border is parts only. The quick win for most visual changes.
 3. **Slots and `messages`**: replace content and text (see Translating).
 4. **Extend the state class** (`fandry/tableState`, `fandry/searchState`, `fandry/formState`, ...): your own markup on the same behavior.
-5. **Copy the component.** When you want something parts can't express, say a button with an animated rainbow border, copy its source into your own namespace and change anything. Components are short, plain LWC. Keep `extends Base` and your copy still follows the site's tokens and renders in native shadow DOM:
-   - LWR / LWC OSS: copy `node_modules/fandryui/modules/fandry/button/` to e.g. `src/modules/my/rainbowButton/`, then rename the files and the class.
-   - Salesforce: `fandry add button` already put `fandryButton` in your project; copy that folder to `rainbowButton` and rename it. `fandry add` never overwrites files you changed.
+5. **Copy the component.** When you need what CSS can't reach, markup or behavior (say a button that shows a spinner and ignores clicks until its async action settles), copy its source into your own namespace and change anything. Components are short, plain LWC. Keep `extends Base` and your copy still follows the site's tokens and renders in native shadow DOM:
+   - LWR / LWC OSS: copy `node_modules/fandryui/modules/fandry/button/` to e.g. `src/modules/my/asyncButton/`, then rename the files and the class.
+   - Salesforce: `fandry add button` already put `fandryButton` in your project; copy that folder to `asyncButton` and rename it. `fandry add` never overwrites files you changed.
 
    A copy doesn't get the library's future fixes; that's the trade for owning it. The button page on the docs site has a working example.
 

@@ -1,10 +1,12 @@
 /*
-  A copy of fandry-button (src/core/fandry/button), made into this site's
-  own component: same behavior, its own look. Nothing about fandry-button
-  itself changed. Because it still extends fandry/base, it keeps the site's
-  --fd-* tokens and native shadow DOM.
+  A copy of fandry-button (src/core/fandry/button) that this site made its
+  own: it takes an `action` promise, and while that runs it shows a spinner
+  and ignores clicks, so a double click saves once. That is a change of
+  markup and behavior, which parts and tokens can't make. Everything else
+  is fandry-button's code, unchanged; it still extends fandry/base, so it
+  keeps the site's --fd-* tokens and native shadow DOM.
 */
-import { api } from 'lwc';
+import { api, track } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
 import { resolveElementProps } from 'fandry/elementProps';
@@ -13,7 +15,15 @@ import { resolveElementProps } from 'fandry/elementProps';
 // `elementProps` from clobbering a property the component itself controls.
 const RESERVED_ELEMENT_PROPS = ['type', 'class', 'disabled'];
 
-export default class RainbowButton extends Base {
+export default class AsyncButton extends Base {
+  /** `() => Promise` -- run on click. While it runs, a spinner shows and clicks are ignored. */
+  @api action?: () => Promise<unknown>;
+
+  /** The spinner's accessible name while the action runs. */
+  @api busyLabel = 'Working';
+
+  @track running = false;
+
   @api variant: 'default' | 'secondary' | 'ghost' = 'default';
   @api size: 'sm' | 'md' | 'lg' = 'md';
   @api disabled = false;
@@ -31,7 +41,7 @@ export default class RainbowButton extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'rainbow-button');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'async-button');
   }
 
   // Without this, `someFdButton.focus()` is a no-op: a custom element isn't
@@ -48,6 +58,24 @@ export default class RainbowButton extends Base {
   }
 
   get basePart(): string {
-    return partList('base', { [this.variant]: true, disabled: this.disabled });
+    return partList('base', { [this.variant]: true, disabled: this.isDisabled });
+  }
+
+  get isDisabled(): boolean {
+    return this.disabled || this.running;
+  }
+
+  get ariaBusy(): string {
+    return this.running ? 'true' : 'false';
+  }
+
+  async handleClick() {
+    if (!this.action || this.running) return;
+    this.running = true;
+    try {
+      await this.action();
+    } finally {
+      this.running = false;
+    }
   }
 }

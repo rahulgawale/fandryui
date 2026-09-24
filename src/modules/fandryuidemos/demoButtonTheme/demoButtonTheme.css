@@ -42,3 +42,45 @@ fandry-button::part(base secondary) {
   color: hsl(160 84% 26%);
   border-color: hsl(160 84% 26%);
 }
+
+/* Even a rainbow border is only CSS: two layers under the label, on the
+   part's own ::before and ::after. No copy of the component needed. */
+fandry-button.rainbow::part(base) {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  background: transparent;
+  color: hsl(160 40% 14%);
+}
+
+fandry-button.rainbow::part(base)::before,
+fandry-button.rainbow::part(base)::after {
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+}
+
+fandry-button.rainbow::part(base)::before {
+  inset: -1px;
+  z-index: -2;
+  background: conic-gradient(#ff4d4d, #ffb84d, #f5f54d, #4dff88, #4dd2ff, #7a4dff, #ff4de1, #ff4d4d);
+  animation: rainbow-turn 4s linear infinite;
+}
+
+fandry-button.rainbow::part(base)::after {
+  inset: 2px;
+  z-index: -1;
+  background: hsl(0 0% 100%);
+}
+
+@keyframes rainbow-turn {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  fandry-button.rainbow::part(base)::before {
+    animation: none;
+  }
+}
