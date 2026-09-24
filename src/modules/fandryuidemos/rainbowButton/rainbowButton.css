@@ -1,0 +1,148 @@
+:host {
+  display: inline-block;
+}
+
+/* Base */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_fd-space-2);
+
+  font-family: inherit;
+  font-weight: var(--_fd-font-weight-medium);
+  line-height: 1;
+
+  /* Deprecated: --fd-button-radius, --fd-button-border-width and
+     --fd-button-padding-x (below) still work, but style one button with
+     its part instead -- `.round::part(base) { border-radius: 999px;
+     padding-inline: 0; border-width: 0 }` -- or all of them with the
+     --fd-radius-md / --fd-border-width / --fd-space-* tokens. */
+  border-radius: var(--fd-button-radius, var(--_fd-radius-md));
+  border: var(--fd-button-border-width, var(--_fd-border-width)) solid transparent;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+
+  transition: background-color var(--_fd-duration-fast) ease,
+    border-color var(--_fd-duration-fast) ease,
+    box-shadow var(--_fd-duration-fast) ease, color var(--_fd-duration-fast) ease;
+
+  background: hsl(var(--_fd-primary));
+  color: hsl(var(--_fd-primary-foreground));
+}
+
+/* Sizes. --fd-button-padding-x is deprecated; see the note above. */
+.button--sm {
+  height: var(--_fd-control-height-sm);
+  padding: 0 var(--fd-button-padding-x, var(--_fd-space-3));
+  font-size: var(--_fd-font-size-sm);
+}
+
+.button--md {
+  height: var(--_fd-control-height-md);
+  padding: 0 var(--fd-button-padding-x, var(--_fd-space-4));
+  font-size: var(--_fd-font-size-sm);
+}
+
+.button--lg {
+  height: var(--_fd-control-height-lg);
+  padding: 0 var(--_fd-space-5);
+  font-size: var(--_fd-font-size-md);
+}
+
+/* Variants */
+.button--default {
+  background: hsl(var(--_fd-primary));
+  color: hsl(var(--_fd-primary-foreground));
+}
+
+.button--default:hover:not(:disabled) {
+  filter: brightness(var(--_fd-hover-brightness));
+  box-shadow: var(--_fd-shadow-sm) hsla(var(--_fd-primary) / 0.3);
+}
+
+.button--secondary {
+  background: hsl(var(--_fd-bg));
+  color: hsl(var(--_fd-text));
+  border-color: hsl(var(--_fd-border));
+}
+
+.button--secondary:hover:not(:disabled) {
+  background: hsl(var(--_fd-bg-muted));
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
+}
+
+.button--ghost {
+  background: transparent;
+  color: hsl(var(--_fd-text));
+  border-color: transparent;
+}
+
+.button--ghost:hover:not(:disabled) {
+  background: hsl(var(--_fd-bg-muted));
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-subtle));
+}
+
+/* Focus */
+.button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--_fd-ring-width)
+    hsl(var(--_fd-ring-color));
+}
+
+/* Disabled */
+.button:disabled {
+  opacity: var(--_fd-disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* Active (pressed) */
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* ---- What this copy adds: a rainbow border that slowly turns ----
+   Two layers under the label: the rainbow, and a plain inset panel over it
+   that leaves only a border's width of the rainbow showing. */
+.button {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  background: transparent;
+  color: hsl(var(--_fd-text));
+}
+
+.button::before,
+.button::after {
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+}
+
+.button::before {
+  inset: 0;
+  z-index: -2;
+  background: conic-gradient(#ff4d4d, #ffb84d, #f5f54d, #4dff88, #4dd2ff, #7a4dff, #ff4de1, #ff4d4d);
+  animation: rainbow-turn 4s linear infinite;
+}
+
+.button::after {
+  inset: var(--_fd-border-width-lg);
+  z-index: -1;
+  border-radius: calc(var(--_fd-radius-md) - var(--_fd-border-width-lg));
+  background: hsl(var(--_fd-bg));
+}
+
+@keyframes rainbow-turn {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button::before {
+    animation: none;
+  }
+}

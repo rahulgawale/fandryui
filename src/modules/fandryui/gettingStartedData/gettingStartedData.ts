@@ -182,6 +182,7 @@ export default class App extends LightningElement {
             'Extend the shared base class: import Base from "fandry/base" gives your own component Fandry\'s stylesheet and design tokens.',
             'Theme by setting any --fd-* token on :root (e.g. --fd-primary: 210 90% 40%; --fd-radius-md: 0), or on one section to theme just that part of the page.',
             'Restyle one element inside a component with ::part(), e.g. fandry-link::part(link). Each component page lists its parts.',
+            'Need a look parts can\'t give you? Copy the component into your own namespace and make it yours. Its source is short, plain LWC; keep extends Base and it still follows your tokens. The button page shows a copy with a rainbow border.',
             'Browse every component, its props and examples under Components.'
           ]
         },
@@ -334,6 +335,12 @@ npx fandry add table --overwrite # replace table even if you edited it`
         {
           type: 'text',
           text: 'The copied files are yours: commit them, edit them, deploy them. They are ordinary LWC source, not a managed package.'
+        },
+        {
+          type: 'note',
+          variant: 'info',
+          title: 'Want a look parts can\'t give you? Copy the component.',
+          text: 'Style most things from your own CSS with --fd-* tokens and ::part(). For something they can\'t express, like a button with a rainbow border, copy fandryButton to rainbowButton, rename it, and change anything: it still extends fandryBase, so it keeps your tokens and native shadow DOM. fandry add never overwrites files you changed. With lightning-* components the only equivalent is rebuilding from SLDS blueprints.'
         }
       ]
     },
