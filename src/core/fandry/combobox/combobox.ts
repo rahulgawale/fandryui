@@ -3,6 +3,7 @@ import FdSearchState from 'fandry/searchState';
 import { partList } from 'fandry/parts';
 import type { FdSearchItem } from 'fandry/searchState';
 import { exitFinished } from 'fandry/motion';
+import { resolveElementProps } from 'fandry/elementProps';
 
 export type FdComboboxOption = FdSearchItem;
 
@@ -141,7 +142,7 @@ export default class FdCombobox extends FdSearchState {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-combobox');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-combobox');
   }
 
   renderedCallback() {

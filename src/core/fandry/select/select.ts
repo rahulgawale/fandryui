@@ -1,6 +1,7 @@
 import { api, track, LightningElement } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { resolveElementProps } from 'fandry/elementProps';
 
 export interface FdSelectOption {
   label: string;
@@ -118,7 +119,7 @@ export default class Select extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-select');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-select');
   }
 
   // Flattened in render order (placeholder, then flat options, then group
