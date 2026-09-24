@@ -147,6 +147,24 @@ tableMessages = {
 
 Each component exports its defaults (`DEFAULT_TABLE_MESSAGES` from `fandry/tableState`, `DEFAULT_FORM_MESSAGES` from `fandry/formState`, ...) as the full list of what can be changed.
 
+## Values
+
+Form controls work like native ones: `<fandry-input value={email} onchange={handleChange}>` shows what the user types and reports it with `change`, whether or not you write it back. Write it back when you keep the value in your own state, as usual.
+
+One case needs care. LWC only pushes a prop when the value you bind changes, so if you *reject* an edit by keeping the same value, the control keeps showing what the user typed. To put a control back, set the property on the element itself, which always applies:
+
+```js
+handleChange(event) {
+  if (!isAllowed(event.detail)) {
+    event.target.value = this.email; // the control shows this.email again
+    return;
+  }
+  this.email = event.detail;
+}
+```
+
+Blocks (`data-table`, `form`) are controlled instead: they never change the data you pass in and report outcomes through events.
+
 ## Extending
 
 `fandry/base` is the shared base class all components extend. It is exported so you can build your own components that share Fandry's stylesheet and tokens:
