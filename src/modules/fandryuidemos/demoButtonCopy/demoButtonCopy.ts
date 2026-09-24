@@ -19,8 +19,9 @@ export default class DemoButtonCopy extends LightningElement {
       }, LATENCY_MS);
     });
 
-  // The stock button fires on every click, so a double click saves twice.
+  // The stock button just fires on every click: no request to wait for, so
+  // it counts at once, and a double click counts twice.
   handlePlainSave() {
-    this.save();
+    this.savedCount += 1;
   }
 }
