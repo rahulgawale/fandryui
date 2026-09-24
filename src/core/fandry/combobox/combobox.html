@@ -15,7 +15,7 @@
       <input
         id="input"
         class="input"
-        part="control input"
+        part={controlPart}
         type="text"
         autocomplete="off"
         data-name={name}
@@ -51,7 +51,7 @@
                     key={option.id}
                     id={option.id}
                     class={option.classes}
-                    part="option"
+                    part={option.part}
                     role="option"
                     data-option-id={option.id}
                     aria-selected={option.ariaSelected}

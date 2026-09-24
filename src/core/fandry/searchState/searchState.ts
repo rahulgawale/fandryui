@@ -1,5 +1,6 @@
 import { track, LightningElement } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 export interface FdSearchItem {
   value: string;
@@ -27,6 +28,8 @@ export interface FdSearchRenderOption {
   hasDescription: boolean;
   disabled: boolean;
   classes: string;
+  /** The option's `part`: `option` plus `selected` / `active` / `disabled`. */
+  part: string;
   ariaSelected: 'true' | 'false';
   ariaDisabled: 'true' | 'false';
   component?: typeof LightningElement;
@@ -261,7 +264,8 @@ export default class FdSearchState extends Base {
         disabled ? 'option--disabled' : ''
       ]
         .filter(Boolean)
-        .join(' ')
+        .join(' '),
+      part: partList('option', { selected, active: id === activeId, disabled })
     };
   }
 

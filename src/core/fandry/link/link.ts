@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 // See fandry-button's button.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -59,5 +60,9 @@ export default class FdLink extends Base {
 
   get resolvedElementProps(): Record<string, unknown> {
     return this.withoutTabIndex(this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-link'));
+  }
+
+  get linkPart(): string {
+    return partList('link', { [this.variant]: true, disabled: this.disabled });
   }
 }

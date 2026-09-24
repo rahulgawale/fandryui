@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property (or the click/keydown
@@ -92,4 +93,8 @@ export default class FdMenuItem extends Base {
       this.activate();
     }
   };
+
+  get basePart(): string {
+    return partList('base', { disabled: this.disabled });
+  }
 }

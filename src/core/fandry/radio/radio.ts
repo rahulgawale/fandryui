@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 // See checkbox.ts for why this list exists: it keeps a consumer's
 // `elementProps` from clobbering a property the component itself controls.
@@ -44,5 +45,9 @@ export default class Radio extends Base {
         })
       );
     }
+  }
+
+  get controlPart(): string {
+    return partList('control', { checked: this.checked, disabled: this.disabled });
   }
 }

@@ -1,5 +1,6 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 import {
   createTable,
   getCoreRowModel,
@@ -28,6 +29,8 @@ export interface FdTableHeaderCell {
   canSort: boolean;
   ariaSort: 'ascending' | 'descending' | 'none';
   sortIndicator: string;
+  /** The cell's `part`: `header-cell`, plus `sorted` and `ascending` / `descending`. */
+  part: string;
 }
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
@@ -75,6 +78,8 @@ export interface FdTableRow {
   id: string;
   cells: FdTableCell[];
   selected: boolean;
+  /** The row's `part`: `row`, plus `selected`. */
+  part: string;
   selectionAriaLabel: string;
 }
 
@@ -468,6 +473,7 @@ export default class FdTableState extends Base {
           value: this.toCellValue(cell)
         })),
         selected: row.getIsSelected(),
+        part: partList('row', { selected: row.getIsSelected() }),
         selectionAriaLabel: this.resolveRowSelectionAriaLabel(row, index)
       }));
   }
@@ -570,7 +576,8 @@ export default class FdTableState extends Base {
           : isSorted === 'desc'
             ? 'descending'
             : 'none',
-      sortIndicator: isSorted === 'asc' ? '▲' : isSorted === 'desc' ? '▼' : ''
+      sortIndicator: isSorted === 'asc' ? '▲' : isSorted === 'desc' ? '▼' : '',
+      part: partList('header-cell', { sorted: !!isSorted, ascending: isSorted === 'asc', descending: isSorted === 'desc' })
     };
   }
 

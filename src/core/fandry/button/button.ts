@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 // See checkbox.ts for why this list exists: it keeps a consumer's
 // `elementProps` from clobbering a property the component itself controls.
@@ -37,5 +38,9 @@ export default class FdButton extends Base {
   focus() {
     const button = this.template.querySelector('.button') as HTMLElement | null;
     button?.focus();
+  }
+
+  get basePart(): string {
+    return partList('base', { [this.variant]: true, disabled: this.disabled });
   }
 }

@@ -24,6 +24,7 @@
       // single `*` substitution (TS paths only allow one `*` per pattern).
       "fandry/base": ["src/core/fandry/base/base"],
       "fandry/motion": ["src/core/fandry/motion/motion"],
+      "fandry/parts": ["src/core/fandry/parts/parts"],
       "fandry/searchState": ["src/core/fandry/searchState/searchState"],
       // Record-aware components live in src/salesforce (same `fandry` namespace).
       "fandry/lookup": ["src/salesforce/fandry/lookup/lookup"],

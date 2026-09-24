@@ -1,5 +1,6 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 import { exitFinished } from 'fandry/motion';
 
 export default class FdToast extends Base {
@@ -98,5 +99,9 @@ export default class FdToast extends Base {
       // reasoning.
       this.dispatchEvent(new CustomEvent('dismiss', { bubbles: true }));
     });
+  }
+
+  get basePart(): string {
+    return partList('base', { [this.variant]: true });
   }
 }

@@ -36,3 +36,9 @@ fandry-button.cta::part(base) {
   padding-inline: 1.5rem;
   box-shadow: 0 6px 16px hsl(160 84% 26% / 0.35);
 }
+
+/* A variant is a state too: only secondary buttons. */
+fandry-button::part(base secondary) {
+  color: hsl(160 84% 26%);
+  border-color: hsl(160 84% 26%);
+}

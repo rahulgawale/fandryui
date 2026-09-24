@@ -1,5 +1,6 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -120,5 +121,9 @@ export default class Input extends Base {
 
   handleBlur() {
     this.hasFocus = false;
+  }
+
+  get controlPart(): string {
+    return partList('control', { disabled: this.disabled });
   }
 }

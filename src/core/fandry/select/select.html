@@ -17,7 +17,7 @@
         id="trigger"
         type="button"
         class="trigger"
-        part="control"
+        part={controlPart}
         disabled={disabled}
         data-name={name}
         role="combobox"
@@ -44,7 +44,7 @@
           <div
             id={renderPlaceholder.id}
             class={renderPlaceholder.classes}
-            part="option"
+            part={renderPlaceholder.part}
             role="option"
             data-value={renderPlaceholder.value}
             data-option-id={renderPlaceholder.id}
@@ -58,7 +58,7 @@
             key={option.id}
             id={option.id}
             class={option.classes}
-            part="option"
+            part={option.part}
             role="option"
             data-value={option.value}
             data-option-id={option.id}
@@ -77,7 +77,7 @@
                 key={option.id}
                 id={option.id}
                 class={option.classes}
-                part="option"
+                part={option.part}
                 role="option"
                 data-value={option.value}
                 data-option-id={option.id}

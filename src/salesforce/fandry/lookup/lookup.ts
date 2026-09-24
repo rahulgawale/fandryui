@@ -1,5 +1,6 @@
 import { api, track, LightningElement } from 'lwc';
 import FdSearchState from 'fandry/searchState';
+import { partList } from 'fandry/parts';
 import type { FdSearchItem } from 'fandry/searchState';
 import { exitFinished } from 'fandry/motion';
 
@@ -638,5 +639,9 @@ export default class FdLookup extends FdSearchState {
 
     (this.template.querySelector('.input') as HTMLElement | null)?.focus();
     this.handleInputClick();
+  }
+
+  get controlPart(): string {
+    return partList('control', { disabled: this.disabled });
   }
 }

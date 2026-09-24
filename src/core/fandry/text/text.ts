@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 export default class FdText extends Base {
   @api as: 'p' | 'span' | 'div' = 'p';
@@ -22,5 +23,9 @@ export default class FdText extends Base {
   // `text--{as}` class is the only difference between them.
   get role(): 'paragraph' | undefined {
     return this.as === 'p' ? 'paragraph' : undefined;
+  }
+
+  get basePart(): string {
+    return partList('base', { [this.variant]: true });
   }
 }

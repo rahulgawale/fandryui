@@ -40,3 +40,9 @@ fandry-select::part(panel) {
 fandry-select::part(option) {
   padding-block: 0.5rem;
 }
+
+/* A state: only the chosen option. */
+fandry-select::part(option selected) {
+  font-weight: 700;
+  color: hsl(160 84% 26%);
+}
