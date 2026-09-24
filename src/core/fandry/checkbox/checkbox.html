@@ -17,8 +17,6 @@
       <span class="check" part="indicator"></span>
     </span>
 
-    <template if:true={label}>
-      <span class="label" part="label"><slot>{label}</slot></span>
-    </template>
+    <span class="label" part="label" hidden={labelHidden}><slot onslotchange={handleTextSlotChange}>{label}</slot></span>
   </label>
 </template>

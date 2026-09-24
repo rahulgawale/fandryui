@@ -61,12 +61,13 @@ describe('fandry-alert', () => {
     expect(title!.textContent).toBe('Something went wrong');
   });
 
-  it('omits the title element when none is provided', () => {
+  // It stays in the DOM, hidden, so a slotted title can still fill it.
+  it('hides the title element when none is provided', () => {
     const element = createElement('fandry-alert', { is: FdAlert });
     document.body.appendChild(element);
 
-    const title = element.shadowRoot!.querySelector('.title');
-    expect(title).toBeNull();
+    const title = element.shadowRoot!.querySelector('.title')!;
+    expect(title.hasAttribute('hidden')).toBe(true);
   });
 
   it('exposes a default slot for body content', () => {
