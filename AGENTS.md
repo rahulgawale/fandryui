@@ -275,6 +275,13 @@ piece of the component. A boolean is acceptable when it toggles a
 genuinely binary behavior (`disabled`, `loading`); it is not acceptable
 as a substitute for letting the consumer supply their own markup.
 
+*The one deliberate exception is fandry-table's feature flags*
+(`enablePagination`, `enableRowSelection`, `singleRowSelection`,
+`manualSorting`, ...). Each maps one-to-one to a tanstack feature and
+toggles a genuinely binary behavior; the data-table block is where the
+richer, composed layer lives. Don't copy the pattern to another primitive:
+a new flag there, or anywhere else, has to meet the rule above.
+
 **Do not build a black box.** `lightning-*` base components cannot be
 extended, forked, or partially replaced by a consumer — that opacity is
 exactly what this library exists to avoid. Every primitive should ship a
@@ -312,6 +319,15 @@ If a change feels exciting:
 Core should feel uneventful.
 
 ---
+
+## Value props: native-like, not controlled
+
+Primitives behave like native form controls (and `lightning-input`): a
+control updates its own `value` / `checked` / `open` as the user acts, and
+reports it with `change`. Blocks are controlled instead (they never change
+the data they're given). This is deliberate -- making every primitive
+controlled would break every consumer that doesn't write the value back.
+The cost is documented for consumers in packages/ui/README.md ("Values").
 
 ## Event Model
 
