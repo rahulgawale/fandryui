@@ -1,15 +1,13 @@
 <template>
   <div class="form-control" part="base">
-    <template if:true={hasLabel}>
-      <label class="label" part="label" for="input">
-        <slot name="label">
+    <label class="label" part="label" for="input" hidden={labelHidden}>
+        <slot name="label" onslotchange={handleTextSlotChange}>
           {label}
           <template if:true={required}>
             <span class="required" part="required" aria-hidden="true">*</span>
           </template>
         </slot>
       </label>
-    </template>
 
     <div class="control">
       <input
@@ -80,8 +78,8 @@
       </template>
     </div>
 
-    <template if:true={hasHelpText}>
-      <div id="help-text" class="help-text" part="help-text">{helpText}</div>
-    </template>
+    <div id="help-text" class="help-text" part="help-text" hidden={helpTextHidden}>
+      <slot name="help-text" onslotchange={handleTextSlotChange}>{helpText}</slot>
+    </div>
   </div>
 </template>

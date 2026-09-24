@@ -28,6 +28,15 @@ p {
   outline-offset: var(--_fd-ring-offset);
 }
 
+/* ---- Hidden ----
+   A wrapper a component keeps in the DOM but hides while empty (so its
+   slot can still be filled) must stay hidden whatever display its own
+   class gives it. */
+
+[hidden] {
+  display: none !important;
+}
+
 /* ---- Disabled ---- */
 
 button:disabled,
