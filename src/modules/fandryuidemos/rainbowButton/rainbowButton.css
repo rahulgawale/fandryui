@@ -105,7 +105,9 @@
 
 /* ---- What this copy adds: a rainbow border that slowly turns ----
    Two layers under the label: the rainbow, and a plain inset panel over it
-   that leaves only a border's width of the rainbow showing. */
+   that leaves only a border's width of the rainbow showing. The rainbow
+   covers the button's own (transparent) border too, so nothing shows
+   through between it and the hover shadow. */
 .button {
   position: relative;
   isolation: isolate;
@@ -122,14 +124,14 @@
 }
 
 .button::before {
-  inset: 0;
+  inset: calc(var(--_fd-border-width) * -1);
   z-index: -2;
   background: conic-gradient(#ff4d4d, #ffb84d, #f5f54d, #4dff88, #4dd2ff, #7a4dff, #ff4de1, #ff4d4d);
   animation: rainbow-turn 4s linear infinite;
 }
 
 .button::after {
-  inset: var(--_fd-border-width-lg);
+  inset: calc(var(--_fd-border-width-lg) - var(--_fd-border-width));
   z-index: -1;
   border-radius: calc(var(--_fd-radius-md) - var(--_fd-border-width-lg));
   background: hsl(var(--_fd-bg));

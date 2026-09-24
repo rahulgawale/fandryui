@@ -672,14 +672,14 @@ export default class RainbowButton extends Base { ... }
 }
 
 .button::before {
-  inset: 0;
+  inset: calc(var(--_fd-border-width) * -1);
   z-index: -2;
   background: conic-gradient(#ff4d4d, #ffb84d, #f5f54d, #4dff88, #4dd2ff, #7a4dff, #ff4de1, #ff4d4d);
   animation: rainbow-turn 4s linear infinite;
 }
 
 .button::after {
-  inset: var(--_fd-border-width-lg);
+  inset: calc(var(--_fd-border-width-lg) - var(--_fd-border-width));
   z-index: -1;
   background: hsl(var(--_fd-bg));
 }
