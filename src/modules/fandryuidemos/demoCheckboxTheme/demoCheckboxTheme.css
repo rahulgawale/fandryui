@@ -34,3 +34,8 @@ fandry-checkbox::part(control) {
 fandry-checkbox::part(label) {
   font-weight: 600;
 }
+
+/* A state: only the checked box. */
+fandry-checkbox::part(control checked) {
+  box-shadow: 0 0 0 3px hsl(160 84% 26% / 0.2);
+}

@@ -1,5 +1,6 @@
 import { api, track } from 'lwc';
 import FdSearchState from 'fandry/searchState';
+import { partList } from 'fandry/parts';
 import type { FdSearchItem } from 'fandry/searchState';
 import { exitFinished } from 'fandry/motion';
 
@@ -225,5 +226,9 @@ export default class FdCombobox extends FdSearchState {
     }
 
     super.handleInputKeydown(event);
+  }
+
+  get controlPart(): string {
+    return partList('control input', { disabled: this.disabled });
   }
 }

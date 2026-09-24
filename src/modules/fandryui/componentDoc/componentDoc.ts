@@ -1,5 +1,5 @@
 import { LightningElement } from 'lwc';
-import { COMPONENTS, CATEGORY_ORDER, PART_DESCRIPTIONS, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
+import { COMPONENTS, CATEGORY_ORDER, PART_DESCRIPTIONS, STATE_DESCRIPTIONS, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
 
 import DemoBreadcrumb from 'fandryuidemos/demoBreadcrumb';
 import DemoAlertTheme from 'fandryuidemos/demoAlertTheme';
@@ -199,6 +199,14 @@ export default class ComponentDoc extends LightningElement {
 
   get hasParts(): boolean {
     return this.parts.length > 0;
+  }
+
+  get states(): Array<{ name: string; description: string }> {
+    return (this.entry?.states ?? []).map((name) => ({ name, description: STATE_DESCRIPTIONS[name] ?? '' }));
+  }
+
+  get hasStates(): boolean {
+    return this.states.length > 0;
   }
 
   /* The themed demo sits right under the default one, so the two can be

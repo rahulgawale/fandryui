@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 // See fandry-sidebar-item's sidebarItem.ts for why this list exists: it
 // keeps a consumer's `elementProps` from clobbering a property the
@@ -69,5 +70,9 @@ export default class BreadcrumbItem extends Base {
     return this.withoutTabIndex(
       this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-breadcrumb-item')
     );
+  }
+
+  get linkPart(): string {
+    return partList('link', { current: this.current });
   }
 }

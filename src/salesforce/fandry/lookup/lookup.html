@@ -15,7 +15,7 @@
     </template>
 
     <div class="control">
-      <div class="field" part="control" onmousedown={handleFieldMouseDown} onclick={handleFieldClick}>
+      <div class="field" part={controlPart} onmousedown={handleFieldMouseDown} onclick={handleFieldClick}>
         <template if:true={showSelected}>
           <div class="selected" part="selected" role="group" aria-labelledby="label">
             <span class={selectedLabelClasses} part="selected-label">{selectedLabel}</span>
@@ -109,7 +109,7 @@
                     key={option.id}
                     id={option.id}
                     class={option.classes}
-                    part="option"
+                    part={option.part}
                     role="option"
                     data-option-id={option.id}
                     aria-selected={option.ariaSelected}

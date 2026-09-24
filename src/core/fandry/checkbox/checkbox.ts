@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 // Properties the component itself already binds onto the native <input> --
 // stripped from a consumer's `elementProps` before spreading so a
@@ -79,5 +80,9 @@ export default class Checkbox extends Base {
         bubbles: true
       })
     );
+  }
+
+  get controlPart(): string {
+    return partList('control', { checked: this.checked, indeterminate: this.indeterminate, disabled: this.disabled });
   }
 }

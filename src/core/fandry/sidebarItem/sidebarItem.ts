@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 // See fandry-link's link.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -37,5 +38,9 @@ export default class SidebarItem extends Base {
     return this.withoutTabIndex(
       this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-sidebar-item')
     );
+  }
+
+  get linkPart(): string {
+    return partList('link', { current: this.active });
   }
 }

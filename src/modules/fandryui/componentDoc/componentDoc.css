@@ -168,3 +168,7 @@
 .parts-code {
   margin-top: var(--fd-space-3);
 }
+
+.states-note {
+  margin-top: var(--fd-space-4);
+}
