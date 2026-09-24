@@ -97,6 +97,16 @@ Hard-coded values:
 If a token doesn't exist, add it to `fandry/base/tokens.css` first, as
 `--_fd-name: var(--fd-name, default);`.
 
+### Text
+
+A primitive or block never ships words a site can't replace; public sites
+are translated. Visible text is a slot with the English as its fallback
+(`<slot name="clear-all">Clear all</slot>`). Text that can't be markup --
+an `aria-label`, a string built from numbers ("2 of 5 selected") -- comes
+from one `messages` prop per component, typed `Fd<Name>Messages`, with its
+English in an exported `DEFAULT_<NAME>_MESSAGES` that the prop is merged
+over. One `messages` prop, not a prop per string.
+
 ### Parts
 
 Every element a site might reasonably restyle carries a `part`, named from

@@ -40,6 +40,22 @@ function toIds(value: string | string[] | null | undefined): string[] {
 // consumer that wants something different can debounce on their side.
 const SEARCH_DEBOUNCE_MS = 250;
 
+/** Text the lookup announces that isn't markup; see `messages`. */
+export interface FdLookupMessages {
+  /** The spinner's accessible name while a search runs. */
+  searching: string;
+  /** The clear button's accessible name in single-select mode. */
+  clear: (name: string) => string;
+  /** A chosen record's remove button, in multi-select mode. */
+  remove: (name: string) => string;
+}
+
+export const DEFAULT_LOOKUP_MESSAGES: FdLookupMessages = {
+  searching: 'Searching',
+  clear: (name) => `Clear ${name}`,
+  remove: (name) => `Remove ${name}`
+};
+
 // See fandry-checkbox's checkbox.ts for why this list exists, and
 // fandry-combobox's combobox.ts for the ARIA property-name notes.
 const RESERVED_ELEMENT_PROPS = [
@@ -108,6 +124,21 @@ export default class FdLookup extends FdSearchState {
   @api helpText = '';
   @api name = '';
   @api placeholder = '';
+
+  /**
+   * Replaces any of DEFAULT_LOOKUP_MESSAGES, e.g. to translate them. The
+   * visible "Clear all" and "Searching…" are the `clear-all` and `searching`
+   * slots.
+   */
+  @api messages: Partial<FdLookupMessages> = {};
+
+  private get text(): FdLookupMessages {
+    return { ...DEFAULT_LOOKUP_MESSAGES, ...this.messages };
+  }
+
+  get searchingLabel(): string {
+    return this.text.searching;
+  }
   @api disabled = false;
   @api required = false;
 
@@ -337,7 +368,7 @@ export default class FdLookup extends FdSearchState {
       id: entry.id,
       label: this.labelOf(entry),
       labelClasses: entry.record ? 'pill-label' : 'pill-label pill-label--unresolved',
-      removeLabel: `Remove ${this.labelOf(entry)}`
+      removeLabel: this.text.remove(this.labelOf(entry))
     }));
   }
 
@@ -351,7 +382,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   get clearLabel(): string {
-    return this.showSelected ? `Clear ${this.selectedLabel}` : '';
+    return this.showSelected ? this.text.clear(this.selectedLabel) : '';
   }
 
   get ariaMultiselectable(): 'true' | 'false' {

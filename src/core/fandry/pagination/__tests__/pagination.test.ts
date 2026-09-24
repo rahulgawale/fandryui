@@ -132,3 +132,43 @@ describe('fandry-pagination', () => {
     });
   });
 });
+
+describe('fandry-pagination text', () => {
+  afterEach(() => {
+    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
+  });
+
+  it('takes its landmark name and status line from messages', () => {
+    const element = createElement('fandry-pagination', { is: FdPagination });
+    Object.assign(element, {
+      pageIndex: 1,
+      pageCount: 5,
+      messages: { label: 'Seiten', status: (page: number, count?: number) => `Seite ${page} von ${count}` }
+    });
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Seiten');
+    expect(element.shadowRoot!.querySelector('.status')!.textContent).toBe('Seite 2 von 5');
+  });
+
+  it('keeps the default for any message it is not given, and passes an unknown total as undefined', () => {
+    const element = createElement('fandry-pagination', { is: FdPagination });
+    const status = jest.fn(() => 'custom');
+    Object.assign(element, { pageIndex: 0, messages: { status } });
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Pagination');
+    expect(status).toHaveBeenCalledWith(1, undefined);
+  });
+
+  it('makes the link-mode eyebrows slots, with the English text as fallback', () => {
+    const element = createElement('fandry-pagination', { is: FdPagination });
+    Object.assign(element, { previousHref: '#a', nextHref: '#b' });
+    document.body.appendChild(element);
+
+    const previous = element.shadowRoot!.querySelector('slot[name="previous-eyebrow"]')!;
+    const next = element.shadowRoot!.querySelector('slot[name="next-eyebrow"]')!;
+    expect(previous.textContent).toBe('← Previous');
+    expect(next.textContent).toBe('Next →');
+  });
+});

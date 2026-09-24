@@ -601,3 +601,36 @@ describe('fandry-form', () => {
     });
   });
 });
+
+describe('fandry-form text', () => {
+  it('takes its buttons, statuses and yes/no from messages', async () => {
+    const el = mount({
+      mode: 'read',
+      messages: { edit: 'Bearbeiten', save: 'Speichern', cancel: 'Abbrechen', noChanges: 'Keine Änderungen.', no: 'Nein' }
+    });
+    await settle();
+
+    expect(button(el, 'Bearbeiten')).toBeDefined();
+    expect(inner(el, 'newsletter').textContent).toContain('Nein');
+
+    button(el, 'Bearbeiten')!.click();
+    await settle();
+    expect(button(el, 'Speichern')).toBeDefined();
+    expect(button(el, 'Abbrechen')).toBeDefined();
+
+    button(el, 'Speichern')!.click();
+    await settle();
+    expect(status(el)!.textContent).toBe('Keine Änderungen.');
+  });
+
+  it('builds the required message from the field label', async () => {
+    const el = mount({ messages: { required: (label: string) => `${label} fehlt.` } });
+    await settle();
+
+    edit(el, 'name', '');
+    leave(el, 'name');
+    await settle();
+
+    expect(errorText(el, 'name')).toBe('Name fehlt.');
+  });
+});

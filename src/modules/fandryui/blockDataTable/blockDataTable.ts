@@ -51,6 +51,7 @@ const PROPS = [
   { name: 'data', type: 'object[]', default: '[]', description: 'The rows. Controlled: the block never changes it.' },
   { name: 'get-row-id', type: 'function', default: 'row => String(row.id)', description: 'Stable row identity, used by selection and editing.' },
   { name: 'get-row-label', type: 'function', default: '—', description: 'A readable name for a row (row => row.name), used in toasts, the delete prompt and aria-labels.' },
+  { name: 'messages', type: 'object', default: '{}', description: 'Everything the block says, from button labels to toasts, e.g. to translate it: any key of DEFAULT_DATA_TABLE_MESSAGES (fandry/dataTableState), fandry-table\'s own included. Keys you leave out keep their English default.' },
   { name: 'loading', type: 'boolean', default: 'false', description: 'Renders skeleton rows in place of the data.' },
   { name: 'save-row', type: '(row, changes) => Promise', default: '—', description: 'Persists an inline edit. `changes` holds only the changed columns. Reject to keep the row editing and toast the error.' },
   { name: 'save-rows', type: '(rows, changes) => Promise', default: '—', description: 'Persists a multi-record edit as one batch (select two or more rows, then Edit selected). `changes` holds only the fields the user filled in. Resolve with the saved rows or nothing; reject to keep the dialog open and toast the error.' },
