@@ -1,6 +1,7 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { resolveElementProps } from 'fandry/elementProps';
 
 // Properties the component itself already binds onto the native <input> --
 // stripped from a consumer's `elementProps` before spreading so a
@@ -34,7 +35,7 @@ export default class Checkbox extends Base {
   @api elementProps: Record<string, unknown> = { tabIndex: 0 };
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-checkbox');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-checkbox');
   }
 
   /**

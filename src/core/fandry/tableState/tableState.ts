@@ -21,6 +21,7 @@ import type {
   TableOptions,
   Updater
 } from '@tanstack/table-core';
+import { resolveElementProps } from 'fandry/elementProps';
 
 export interface FdTableHeaderCell {
   id: string;
@@ -535,7 +536,7 @@ export default class FdTableState extends Base {
   }
 
   get resolvedSortButtonProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.sortButtonProps, RESERVED_SORT_BUTTON_PROPS, 'fandry-table', 'sortButtonProps');
+    return resolveElementProps(this, this.sortButtonProps, RESERVED_SORT_BUTTON_PROPS, 'fandry-table', 'sortButtonProps');
   }
 
   get hasFooter(): boolean {

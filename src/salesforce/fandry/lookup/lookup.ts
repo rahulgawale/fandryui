@@ -3,6 +3,7 @@ import FdSearchState from 'fandry/searchState';
 import { partList } from 'fandry/parts';
 import type { FdSearchItem } from 'fandry/searchState';
 import { exitFinished } from 'fandry/motion';
+import { resolveElementProps } from 'fandry/elementProps';
 
 export interface FdLookupRecord {
   id: string;
@@ -441,7 +442,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-lookup');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-lookup');
   }
 
   disconnectedCallback() {
