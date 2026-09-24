@@ -4,6 +4,16 @@ Small, extensible [Lightning Web Components](https://lwc.dev) you own and can re
 
 Docs and live examples: <https://fandryui.forcetrails.com>
 
+## Native shadow DOM, on Salesforce too
+
+Every fandry component renders in **native shadow DOM**, not Salesforce's synthetic-shadow polyfill: `fandry/base` sets `static shadowSupportMode = 'native'`, which LWC honours per component even in orgs that load the polyfill. Lightning base components were built on synthetic shadow and Salesforce is moving them to native over time; fandry is native already. What that gives you:
+
+- **Restyling from outside.** `::part()` and `exportparts` need a real shadow root. Under synthetic shadow a component's internals can't be styled from your CSS at all.
+- **Standard behavior.** Encapsulation, slots, focus and `event.composedPath()` work as the web platform specifies, not as a polyfill approximates them, so browser docs and devtools tell the truth.
+- **One behavior everywhere.** The same component behaves identically on an LWR site and in a Salesforce org, whatever shadow mode the org uses for everything else.
+
+Your own components can stay in whatever mode they use today: a synthetic-shadow component can use fandry components and style them with parts and tokens (checked in a Salesforce org). Global stylesheets such as SLDS don't reach inside a fandry component, by design; theme it with `--fd-*` tokens and parts instead.
+
 ## Installation
 
 ```bash
@@ -124,7 +134,7 @@ fandry-table::part(row selected)       { background: hsl(160 40% 96%); }
 
 **Deprecated:** `--fd-button-radius`, `--fd-button-padding-x`, `--fd-button-border-width`, `--fd-card-bg`, `--fd-card-height` and `--fd-icon-size` still work but will be removed. Use the part instead: `.round::part(base) { border-radius: 999px; padding-inline: 0 }`, `.promo::part(base) { background: ... }`, `fandry-card, fandry-card::part(base) { height: 100% }`, `.big::part(base) { width: 3rem; height: 3rem }`.
 
-`::part()` needs native shadow DOM: LWR sites use it, and so do Salesforce orgs with native shadow on. In an org still on synthetic shadow, parts have no effect; tokens work in both.
+Parts need a real shadow root, so every fandry component opts into native shadow DOM (`static shadowSupportMode = 'native'` on `fandry/base`). They work the same on LWR and on Salesforce, including orgs that still load the synthetic-shadow polyfill for other components. A component of yours that extends `fandry/base` inherits that too.
 
 ## Translating
 

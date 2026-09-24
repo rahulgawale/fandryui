@@ -19,6 +19,7 @@ This is infrastructure, not a component zoo — the docs site around it exists t
 - A **design-system foundation** for LWC — 30 primitives (`fandry-*`) across Layout, Typography, Forms, Feedback, and Overlays & Data
 - Focused on **extensibility over feature count**
 - Built for **Salesforce, LWR, and the real world**
+- **Native shadow DOM everywhere, Salesforce included.** Every component opts in (`static shadowSupportMode = 'native'`), so it follows the web standard, behaves the same on LWR and in an org, and can be restyled from outside with `::part()`. Lightning base components were built on Salesforce's synthetic-shadow polyfill and are only gradually moving to native shadow; fandry starts there.
 - TypeScript-first, single LWR project, boring by design
 
 ## What This Is Not

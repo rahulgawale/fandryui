@@ -37,12 +37,21 @@ describe('fandry-select', () => {
     expect(trigger.getAttribute('aria-haspopup')).toBe('listbox');
   });
 
-  it('does not render the listbox until the trigger is opened', () => {
+  /* In native shadow the listbox is always in the DOM, handed to
+     fandry-popover's slot; the popover only renders that slot while open,
+     so until then the listbox is assigned nowhere and not shown. */
+  it('does not show the listbox until the trigger is opened', async () => {
     const element = createElement('fandry-select', { is: FdSelect });
     element.options = OPTIONS;
     document.body.appendChild(element);
+    await flush();
 
-    expect(element.shadowRoot!.querySelector('.listbox')).toBeNull();
+    const listbox = element.shadowRoot!.querySelector('.listbox')!;
+    expect(listbox.assignedSlot).toBeNull();
+
+    await openListbox(element);
+    await flush();
+    expect(listbox.assignedSlot).not.toBeNull();
   });
 
   it('opens the listbox when the trigger is clicked, rendering an option per entry', async () => {
