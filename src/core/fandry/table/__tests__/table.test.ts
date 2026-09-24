@@ -935,3 +935,46 @@ describe('fandry-table', () => {
     expect(withoutCaption.shadowRoot!.querySelector('caption')).toBeNull();
   });
 });
+
+describe('fandry-table text', () => {
+  afterEach(() => {
+    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
+  });
+
+  it('takes its selection, checkbox and page text from messages', async () => {
+    const element = createElement('fandry-table', { is: FdTable });
+    Object.assign(element, {
+      columns: COLUMNS,
+      data: DATA,
+      enableRowSelection: true,
+      enablePagination: true,
+      pageSize: 2,
+      getRowLabel: (row: { name: string }) => row.name,
+      messages: {
+        selectionStatus: (selected: number, total: number) => `${selected}/${total} gewählt`,
+        selectRow: (label?: string, n?: number) => `Wähle ${label ?? n}`,
+        selectAll: 'Alle wählen',
+        pageStatus: (page: number, count?: number) => `Seite ${page}/${count}`
+      }
+    });
+    document.body.appendChild(element);
+    await flush();
+
+    const root = element.shadowRoot!;
+    expect(root.querySelector('.selection-status')!.textContent).toBe('0/3 gewählt');
+    expect((root.querySelector('.selection-header-checkbox') as any).ariaLabel).toBe('Alle wählen');
+    expect((root.querySelector('tbody fandry-checkbox') as any).ariaLabel).toBe('Wähle Bea');
+    expect(getPaginationStatus(element).textContent).toBe('Seite 1/2');
+  });
+
+  it('falls back to English, and to the row number without a row label', async () => {
+    const element = createElement('fandry-table', { is: FdTable });
+    Object.assign(element, { columns: COLUMNS, data: DATA, enableRowSelection: true });
+    document.body.appendChild(element);
+    await flush();
+
+    const root = element.shadowRoot!;
+    expect(root.querySelector('.selection-status')!.textContent).toBe('0 of 3 selected');
+    expect((root.querySelector('tbody fandry-checkbox') as any).ariaLabel).toBe('Select row 1');
+  });
+});

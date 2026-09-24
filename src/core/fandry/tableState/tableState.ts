@@ -35,6 +35,25 @@ export interface FdTableHeaderCell {
 // itself depends on.
 const RESERVED_SORT_BUTTON_PROPS = ['type', 'class', 'onclick'];
 
+/** Text the table shows or announces that isn't markup; see `messages`. */
+export interface FdTableMessages {
+  /** The footer's selection line. */
+  selectionStatus: (selected: number, total: number) => string;
+  /** A row checkbox's accessible name. `label` is getRowLabel's result, when there is one. */
+  selectRow: (label: string | undefined, rowNumber: number) => string;
+  /** The header checkbox's accessible name. */
+  selectAll: string;
+  /** The pagination status line. `pageCount` is undefined when the total is unknown. */
+  pageStatus: (page: number, pageCount?: number) => string;
+}
+
+export const DEFAULT_TABLE_MESSAGES: FdTableMessages = {
+  selectionStatus: (selected, total) => `${selected} of ${total} selected`,
+  selectRow: (label, rowNumber) => (label ? `Select ${label}` : `Select row ${rowNumber}`),
+  selectAll: 'Select all rows',
+  pageStatus: (page, pageCount) => (pageCount === undefined ? `Page ${page}` : `Page ${page} of ${pageCount}`)
+};
+
 export interface FdTableHeaderGroup {
   id: string;
   headers: FdTableHeaderCell[];
@@ -99,6 +118,22 @@ export default class FdTableState extends Base {
    * still distinct per row, just not as meaningful as real row content).
    */
   @api getRowLabel?: (originalRow: RowData, index: number) => string;
+
+  /** Replaces any of DEFAULT_TABLE_MESSAGES, e.g. to translate them. */
+  @api messages: Partial<FdTableMessages> = {};
+
+  protected get text(): FdTableMessages {
+    return { ...DEFAULT_TABLE_MESSAGES, ...this.messages };
+  }
+
+  get selectAllLabel(): string {
+    return this.text.selectAll;
+  }
+
+  // Handed to the fandry-pagination the default template renders.
+  get paginationMessages(): { status: FdTableMessages['pageStatus'] } {
+    return { status: this.text.pageStatus };
+  }
 
   /**
    * Escape hatch: shallow-merged on top of every tanstack option this
@@ -490,8 +525,7 @@ export default class FdTableState extends Base {
 
   get pageStatus(): string {
     const pageCount = this.resolveTableInstance().getPageCount();
-    const currentPage = this.pageIndex + 1;
-    return pageCount >= 0 ? `Page ${currentPage} of ${pageCount}` : `Page ${currentPage}`;
+    return this.text.pageStatus(this.pageIndex + 1, pageCount >= 0 ? pageCount : undefined);
   }
 
   get resolvedSortButtonProps(): Record<string, unknown> {
@@ -511,7 +545,7 @@ export default class FdTableState extends Base {
     // total it's measured against has to be the same -- getCoreRowModel is
     // the full, unpaginated/unsorted row set.
     const totalCount = table.getCoreRowModel().rows.length;
-    return `${selectedCount} of ${totalCount} selected`;
+    return this.text.selectionStatus(selectedCount, totalCount);
   }
 
   protected toHeaderCell(header: Header<RowData, unknown>): FdTableHeaderCell {
@@ -534,11 +568,8 @@ export default class FdTableState extends Base {
   }
 
   protected resolveRowSelectionAriaLabel(row: Row<RowData>, displayIndex: number): string {
-    if (typeof this.getRowLabel === 'function') {
-      const label = this.getRowLabel(row.original, displayIndex);
-      if (label) return `Select ${label}`;
-    }
-    return `Select row ${displayIndex + 1}`;
+    const label = typeof this.getRowLabel === 'function' ? this.getRowLabel(row.original, displayIndex) : undefined;
+    return this.text.selectRow(label || undefined, displayIndex + 1);
   }
 
   protected resolveHeaderLabel(header: Header<RowData, unknown>): string {

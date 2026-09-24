@@ -737,3 +737,40 @@ describe('fandry-data-table', () => {
     expect(el.shadowRoot!.querySelector('.actions-cell')).toBeNull();
   });
 });
+
+describe('fandry-data-table text', () => {
+  afterEach(() => {
+    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
+  });
+
+  it("takes its buttons, toasts and names from messages, and fandry-table's too", async () => {
+    const el = mount({
+      saveRow: jest.fn(),
+      messages: {
+        save: 'Speichern',
+        noChangesFor: (label: string) => `Keine Änderungen an ${label}.`,
+        rowActions: (label: string) => `Aktionen für ${label}`,
+        selectRow: (label?: string) => `${label} wählen`
+      }
+    });
+    await settle();
+
+    const trigger = bodyRows(el)[0].querySelector('fandry-popover fandry-button') as any;
+    expect(trigger.elementProps.ariaLabel).toBe('Aktionen für Acme');
+    expect((bodyRows(el)[0].querySelector('fandry-checkbox') as any).ariaLabel).toBe('Acme wählen');
+
+    await edit(el, 0);
+    buttonByText(el, 'Speichern').click();
+    await settle();
+
+    expect(toastTexts(el)).toEqual([{ text: 'Keine Änderungen an Acme.', variant: 'info' }]);
+  });
+
+  it('keeps its own English defaults, including a page-scoped select-all', async () => {
+    const el = mount();
+    await settle();
+
+    expect((el.shadowRoot!.querySelector('thead fandry-checkbox') as any).ariaLabel).toBe('Select all rows on this page');
+    expect((bodyRows(el)[0].querySelector('fandry-checkbox') as any).ariaLabel).toBe('Select Acme');
+  });
+});

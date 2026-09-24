@@ -115,6 +115,27 @@ fandry-select::part(panel) { box-shadow: none; }
 
 `::part()` needs native shadow DOM: LWR sites use it, and so do Salesforce orgs with native shadow on. In an org still on synthetic shadow, parts have no effect; tokens work in both.
 
+## Translating
+
+No component has words you can't replace. Visible text is a slot with the English as its fallback; text that can't be markup (accessible names, "2 of 5 selected", "Page 1 of 3") comes from a `messages` prop. Pass only the keys you want to change:
+
+```js
+tableMessages = {
+  selectionStatus: (selected, total) => `${selected} von ${total} ausgewählt`,
+  selectRow: (label, n) => `${label ?? `Zeile ${n}`} auswählen`,
+  pageStatus: (page, count) => `Seite ${page}${count ? ` von ${count}` : ''}`
+};
+```
+
+```html
+<fandry-table messages={tableMessages} ...></fandry-table>
+<fandry-lookup messages={lookupMessages}>
+  <span slot="clear-all">Alle entfernen</span>
+</fandry-lookup>
+```
+
+Each component exports its defaults (`DEFAULT_TABLE_MESSAGES` from `fandry/tableState`, `DEFAULT_FORM_MESSAGES` from `fandry/formState`, ...) as the full list of what can be changed.
+
 ## Extending
 
 `fandry/base` is the shared base class all components extend. It is exported so you can build your own components that share Fandry's stylesheet and tokens:

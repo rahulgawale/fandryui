@@ -27,7 +27,7 @@
       </div>
     </template>
     <template if:true={hasActiveFilters}>
-      <fandry-button variant="ghost" size="sm" onclick={handleClearFilters}>Clear</fandry-button>
+      <fandry-button variant="ghost" size="sm" onclick={handleClearFilters}>{text.clearFilters}</fandry-button>
     </template>
     <div class="toolbar-end">
       <template if:true={canBulkEdit}>
@@ -39,7 +39,7 @@
           <fandry-button slot="trigger" variant="secondary" size="sm" element-props={columnsTriggerProps}>
             Columns
           </fandry-button>
-          <div class="columns" role="group" aria-label="Visible columns">
+          <div class="columns" role="group" aria-label={text.visibleColumns}>
             <template for:each={columnToggles} for:item="toggle">
               <fandry-checkbox
                 key={toggle.columnId}
@@ -69,7 +69,7 @@
                 <fandry-checkbox
                   checked={allRowsSelected}
                   indeterminate={someRowsSelected}
-                  aria-label="Select all rows on this page"
+                  aria-label={selectAllLabel}
                 ></fandry-checkbox>
               </slot>
             </template>
@@ -94,7 +94,7 @@
             </th>
           </template>
           <template if:true={hasRowActions}>
-            <th class="actions-cell" scope="col"><span class="sr-only">Actions</span></th>
+            <th class="actions-cell" scope="col"><span class="sr-only">{text.actions}</span></th>
           </template>
         </tr>
       </thead>
@@ -162,12 +162,12 @@
                       <div class="edit-actions">
                         <fandry-button size="sm" disabled={row.saving} onclick={handleSave}>
                           <template if:true={row.saving}>
-                            <fandry-spinner size="sm" label="Saving"></fandry-spinner>
+                            <fandry-spinner size="sm" label={text.saving}></fandry-spinner>
                           </template>
-                          Save
+                          {text.save}
                         </fandry-button>
                         <fandry-button variant="secondary" size="sm" disabled={row.saving} onclick={handleCancel}>
-                          Cancel
+                          {text.cancel}
                         </fandry-button>
                       </div>
                     </template>
@@ -210,12 +210,12 @@
     <div class="selection">
       <span class="selection-status">{selectionStatus}</span>
       <template if:true={hasSelection}>
-        <fandry-button variant="ghost" size="sm" onclick={handleClearSelection}>Clear selection</fandry-button>
+        <fandry-button variant="ghost" size="sm" onclick={handleClearSelection}>{text.clearSelection}</fandry-button>
       </template>
     </div>
     <div class="pagination" onchange={handlePageChange}>
       <slot name="pagination">
-        <fandry-pagination page-index={pageIndex} page-count={totalPages}></fandry-pagination>
+        <fandry-pagination page-index={pageIndex} page-count={totalPages} messages={paginationMessages}></fandry-pagination>
       </slot>
     </div>
   </div>
@@ -232,7 +232,7 @@
             <fandry-input
               label={field.label}
               type={field.inputType}
-              placeholder="No change"
+              placeholder={text.noChange}
               value={field.value}
               disabled={bulkSaving}
               data-column-id={field.columnId}
@@ -255,12 +255,12 @@
         <fandry-alert variant={bulkAlert.variant}>{bulkAlert.message}</fandry-alert>
       </template>
       <div class="confirm-actions">
-        <fandry-button variant="secondary" disabled={bulkSaving} onclick={handleBulkCancel}>Cancel</fandry-button>
+        <fandry-button variant="secondary" disabled={bulkSaving} onclick={handleBulkCancel}>{text.cancel}</fandry-button>
         <fandry-button disabled={bulkSaving} onclick={handleBulkSave}>
           <template if:true={bulkSaving}>
-            <fandry-spinner size="sm" label="Saving"></fandry-spinner>
+            <fandry-spinner size="sm" label={text.saving}></fandry-spinner>
           </template>
-          Save
+          {text.save}
         </fandry-button>
       </div>
     </div>
@@ -269,20 +269,20 @@
   <fandry-dialog open={deleteDialogOpen} label={deleteDialogLabel} ontoggle={handleDeleteDialogToggle}>
     <div class="confirm">
       <fandry-heading level="3">{deleteDialogQuestion}</fandry-heading>
-      <fandry-text variant="muted">This can't be undone.</fandry-text>
+      <fandry-text variant="muted">{text.cannotUndo}</fandry-text>
       <div class="confirm-actions">
-        <fandry-button variant="secondary" disabled={deleting} onclick={handleDeleteCancel}>Cancel</fandry-button>
+        <fandry-button variant="secondary" disabled={deleting} onclick={handleDeleteCancel}>{text.cancel}</fandry-button>
         <fandry-button disabled={deleting} onclick={handleDeleteConfirm}>
           <template if:true={deleting}>
-            <fandry-spinner size="sm" label="Deleting"></fandry-spinner>
+            <fandry-spinner size="sm" label={text.deleting}></fandry-spinner>
           </template>
-          Delete
+          {text.delete}
         </fandry-button>
       </div>
     </div>
   </fandry-dialog>
 
-  <fandry-toast-viewport placement="bottom-right" label="Notifications">
+  <fandry-toast-viewport placement="bottom-right" label={text.notifications}>
     <template for:each={toasts} for:item="toast">
       <fandry-toast
         key={toast.id}

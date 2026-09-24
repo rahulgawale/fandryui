@@ -335,7 +335,8 @@ fandry-pagination::part(status) {
       { name: 'next-href', type: 'string', default: "''", description: 'Omit to hide the next link (e.g. on the last page).' },
       { name: 'next-label', type: 'string', default: "''", description: 'Title of the next page.' },
       { name: 'page-index', type: 'number', default: 'undefined', description: 'Zero-based current page. Setting it switches from links to Previous/Next buttons; listen for `change` (detail.pageIndex) and update it. Replace controls via the previous, status and next slots.' },
-      { name: 'page-count', type: 'number', default: '-1', description: 'Total pages in page mode; -1 means unknown (Next stays enabled).' }
+      { name: 'page-count', type: 'number', default: '-1', description: 'Total pages in page mode; -1 means unknown (Next stays enabled).' },
+      { name: 'messages', type: '{ label, status(page, pageCount) }', default: '{}', description: 'Replaces the landmark name and page mode\'s status line, e.g. to translate them. Link mode\'s "Previous" / "Next" lines are the previous-eyebrow and next-eyebrow slots.' }
     ],
     code: `<fandry-pagination
   previous-href="/components/pagination"
@@ -1969,7 +1970,8 @@ fandry-table::part(row):hover {
       { name: 'data', type: 'RowData[]', default: '[]', description: 'Row data.' },
       { name: 'enable-pagination', type: 'boolean', default: 'false', description: 'Turns on page-size-driven pagination.' },
       { name: 'enable-row-selection', type: 'boolean', default: 'false', description: 'Turns on checkbox row selection.' },
-      { name: 'enable-global-filter', type: 'boolean', default: 'false', description: 'Turns on a search box that filters all columns.' }
+      { name: 'enable-global-filter', type: 'boolean', default: 'false', description: 'Turns on a search box that filters all columns.' },
+      { name: 'messages', type: '{ selectionStatus, selectRow, selectAll, pageStatus }', default: '{}', description: 'Replaces the table\'s text that isn\'t markup ("2 of 5 selected", checkbox names, "Page 1 of 3"), e.g. to translate it. Any key left out keeps its English default.' }
     ],
     code: `<fandry-table
   columns={columns}
@@ -2043,7 +2045,9 @@ fandry-lookup::part(option-description) {
       { name: 'search (event)', type: 'CustomEvent<{ query }>', default: '—', description: 'Fires when the list opens by click or ArrowDown (immediately, so an empty query can offer recent records), after typing pauses, and in `multiple` mode after each pick.' },
       { name: 'resolve (event)', type: 'CustomEvent<{ values }>', default: '—', description: 'Fires once for ids set through `value` that the lookup can\'t name yet. Look them up and set `record`/`records`. It does not repeat for an id already asked about.' },
       { name: 'change (event)', type: 'CustomEvent<{ value, record }> | CustomEvent<{ values, records }>', default: '—', description: 'Single mode: `{ value, record }` on pick, and `{ value: \'\', record: null }` on clear. Multiple mode: `{ values, records }` on every pick, removal and Clear all.' },
-      { name: 'empty (slot)', type: 'slot', default: "'No records found'", description: 'Replaces the message shown when a search has no matches.' }
+      { name: 'empty (slot)', type: 'slot', default: "'No records found'", description: 'Replaces the message shown when a search has no matches.' },
+      { name: 'clear-all · searching (slots)', type: 'slot', default: "'Clear all' · 'Searching…'", description: 'Replace the Clear all button\'s text and the searching line.' },
+      { name: 'messages', type: '{ searching, clear(name), remove(name) }', default: '{}', description: 'Replaces the accessible names of the spinner and the clear and remove buttons, e.g. to translate them.' }
     ],
     code: `<!-- template -->
 <fandry-lookup
