@@ -14,6 +14,41 @@ export interface FdFormRenderField {
   error: string;
 }
 
+/** Everything the form says; see `messages`. */
+export interface FdFormMessages {
+  required: (label: string) => string;
+  /** Shown when a save is attempted with invalid fields. */
+  invalid: string;
+  noChanges: string;
+  saved: string;
+  saveFailed: (reason: string) => string;
+  /** The reason when a failed save gives none. */
+  unknownError: string;
+  edit: string;
+  save: string;
+  cancel: string;
+  /** The spinner's accessible name while saving. */
+  saving: string;
+  /** How a checkbox or switch reads in `read` mode. */
+  yes: string;
+  no: string;
+}
+
+export const DEFAULT_FORM_MESSAGES: FdFormMessages = {
+  required: (label) => `${label} is required.`,
+  invalid: 'Fix the highlighted fields to continue.',
+  noChanges: 'No changes to save.',
+  saved: 'Saved.',
+  saveFailed: (reason) => `Couldn't save: ${reason}`,
+  unknownError: 'Something went wrong.',
+  edit: 'Edit',
+  save: 'Save',
+  cancel: 'Cancel',
+  saving: 'Saving',
+  yes: 'Yes',
+  no: 'No'
+};
+
 export interface FdFormStatus {
   variant: 'info' | 'success' | 'danger';
   message: string;
@@ -82,6 +117,18 @@ export default class FdFormState extends Base {
    * values are fine. Runs on save, after every field's own rules pass.
    */
   @api validate?: (values: FdFormValues) => FdFormErrors | void | Promise<FdFormErrors | void>;
+
+  /** Replaces any of DEFAULT_FORM_MESSAGES, e.g. to translate them. */
+  @api messages: Partial<FdFormMessages> = {};
+
+  protected get text(): FdFormMessages {
+    return { ...DEFAULT_FORM_MESSAGES, ...this.messages };
+  }
+
+  // Handed to each fandry-form-field.
+  get fieldMessages(): { yes: string; no: string } {
+    return { yes: this.text.yes, no: this.text.no };
+  }
 
   // What the user has typed, over `values`: so a `values` that changes while
   // the user is typing moves every field except the ones they edited.
@@ -347,27 +394,27 @@ export default class FdFormState extends Base {
     this.dispatchEvent(new CustomEvent('modechange', { detail: { mode }, bubbles: true }));
   }
 
-  // Overridable copy, so a subclass can translate or reword without
-  // touching the workflow.
+  /* The form's copy comes from `messages`; a subclass can still override
+     these to reword one message with more context. */
   protected requiredMessage(field: FdFormField): string {
-    return `${field.label} is required.`;
+    return this.text.required(field.label);
   }
 
   protected invalidMessage(): string {
-    return 'Fix the highlighted fields to continue.';
+    return this.text.invalid;
   }
 
   protected noChangesMessage(): string {
-    return 'No changes to save.';
+    return this.text.noChanges;
   }
 
   protected saveSuccessMessage(): string {
-    return 'Saved.';
+    return this.text.saved;
   }
 
   protected saveFailureMessage(error: unknown): string {
-    const reason = error instanceof Error && error.message ? error.message : 'Something went wrong.';
-    return `Couldn't save: ${reason}`;
+    const reason = error instanceof Error && error.message ? error.message : this.text.unknownError;
+    return this.text.saveFailed(reason);
   }
 
   // ---- lifecycle

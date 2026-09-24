@@ -992,3 +992,36 @@ describe('fandry-lookup', () => {
     warn.mockRestore();
   });
 });
+
+describe('fandry-lookup text', () => {
+  afterEach(() => {
+    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
+  });
+
+  it('names its remove and clear buttons from messages', async () => {
+    const multi = create({
+      multiple: true,
+      value: [ACME.id],
+      records: [ACME],
+      messages: { remove: (name: string) => `${name} entfernen` }
+    });
+    const single = create({
+      value: ACME.id,
+      record: ACME,
+      messages: { clear: (name: string) => `${name} leeren` }
+    });
+    await flush();
+    await flush();
+
+    expect(multi.shadowRoot!.querySelector('.pill-remove')!.getAttribute('aria-label')).toBe('Acme Corp entfernen');
+    expect(single.shadowRoot!.querySelector('.clear')!.getAttribute('aria-label')).toBe('Acme Corp leeren');
+  });
+
+  it('makes "Clear all" a slot, with the English text as fallback', async () => {
+    const element = create({ multiple: true, value: [ACME.id], records: [ACME] });
+    await flush();
+    await flush();
+
+    expect(element.shadowRoot!.querySelector('.clear-all slot[name="clear-all"]')!.textContent).toBe('Clear all');
+  });
+});

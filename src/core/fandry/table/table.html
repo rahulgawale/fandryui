@@ -43,7 +43,7 @@
                     class="selection-header-checkbox"
                     checked={allRowsSelected}
                     indeterminate={someRowsSelected}
-                    aria-label="Select all rows"
+                    aria-label={selectAllLabel}
                   ></fandry-checkbox>
                 </slot>
               </template>
@@ -135,7 +135,7 @@
         -->
         <div class="pagination" part="pagination" onchange={handlePageChange}>
           <slot name="pagination">
-            <fandry-pagination page-index={pageIndex} page-count={totalPages}></fandry-pagination>
+            <fandry-pagination page-index={pageIndex} page-count={totalPages} messages={paginationMessages}></fandry-pagination>
           </slot>
         </div>
       </template>

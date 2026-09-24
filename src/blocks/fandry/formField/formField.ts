@@ -51,6 +51,14 @@ const INPUT_TYPES: FdFormFieldType[] = ['text', 'email', 'number', 'tel', 'url',
 
 const EMPTY_TEXT = '—';
 
+/** How a checkbox or switch reads in `read` mode; see `messages`. */
+export interface FdFormFieldMessages {
+  yes: string;
+  no: string;
+}
+
+export const DEFAULT_FORM_FIELD_MESSAGES: FdFormFieldMessages = { yes: 'Yes', no: 'No' };
+
 // A checkbox/switch value that came from serialized data (e.g. Salesforce,
 // which sends booleans as the strings "true"/"false") would read as checked
 // under plain `!!value`, since any non-empty string is truthy -- so those two
@@ -77,6 +85,9 @@ export default class FormField extends Base {
   /** `edit` shows the control; `read` shows the value as text. */
   @api mode: 'read' | 'edit' = 'edit';
   @api disabled = false;
+
+  /** Replaces any of DEFAULT_FORM_FIELD_MESSAGES, e.g. to translate them. */
+  @api messages: Partial<FdFormFieldMessages> = {};
 
   @api
   focus() {
@@ -171,7 +182,10 @@ export default class FormField extends Base {
   }
 
   private readableValue(): string {
-    if (this.isCheckbox || this.isSwitch) return this.checked ? 'Yes' : 'No';
+    if (this.isCheckbox || this.isSwitch) {
+      const text = { ...DEFAULT_FORM_FIELD_MESSAGES, ...this.messages };
+      return this.checked ? text.yes : text.no;
+    }
     if (this.isSelect || this.isRadio) {
       return this.options.find((option) => option.value === this.stringValue)?.label ?? this.stringValue;
     }

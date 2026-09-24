@@ -84,7 +84,7 @@
           </div>
 
           <template if:true={hasChips}>
-            <button type="button" class="clear-all" part="clear-all" tabindex="0" disabled={disabled} onclick={handleClearAll}>Clear all</button>
+            <button type="button" class="clear-all" part="clear-all" tabindex="0" disabled={disabled} onclick={handleClearAll}><slot name="clear-all">Clear all</slot></button>
           </template>
         </template>
       </div>
@@ -136,8 +136,8 @@
                (stale) list down every time a search starts. -->
           <template if:true={searching}>
             <div class="status" part="status">
-              <fandry-spinner size="sm" label="Searching"></fandry-spinner>
-              <span aria-hidden="true">Searching…</span>
+              <fandry-spinner size="sm" label={searchingLabel}></fandry-spinner>
+              <span aria-hidden="true"><slot name="searching">Searching…</slot></span>
             </div>
           </template>
 

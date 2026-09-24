@@ -3,6 +3,19 @@ import Base from 'fandry/base';
 import linksTemplate from './paginationLinks.html';
 import pagesTemplate from './paginationPages.html';
 
+/** Text pagination shows or announces that isn't markup; see `messages`. */
+export interface FdPaginationMessages {
+  /** The navigation landmark's accessible name. */
+  label: string;
+  /** Page mode's status line. `pageCount` is undefined when the total is unknown. */
+  status: (page: number, pageCount?: number) => string;
+}
+
+export const DEFAULT_PAGINATION_MESSAGES: FdPaginationMessages = {
+  label: 'Pagination',
+  status: (page, pageCount) => (pageCount === undefined ? `Page ${page}` : `Page ${page} of ${pageCount}`)
+};
+
 /**
  * Pagination has two shapes, chosen by which props are supplied:
  *
@@ -18,7 +31,10 @@ import pagesTemplate from './paginationPages.html';
  *
  * In page mode each control can be replaced via a named slot (`previous`,
  * `status`, `next`) -- a bubbling click on anything slotted into `previous`
- * or `next` pages, so any clickable element works.
+ * or `next` pages, so any clickable element works. In link mode the small
+ * "Previous" / "Next" lines are the `previous-eyebrow` / `next-eyebrow`
+ * slots. Text that isn't markup (the landmark name, page mode's status line)
+ * comes from `messages`, for translating.
  */
 export default class Pagination extends Base {
   @api previousHref = '';
@@ -31,6 +47,17 @@ export default class Pagination extends Base {
 
   /** Total number of pages; -1 (the default) means unknown. */
   @api pageCount = -1;
+
+  /** Replaces any of DEFAULT_PAGINATION_MESSAGES, e.g. to translate them. */
+  @api messages: Partial<FdPaginationMessages> = {};
+
+  private get text(): FdPaginationMessages {
+    return { ...DEFAULT_PAGINATION_MESSAGES, ...this.messages };
+  }
+
+  get navLabel(): string {
+    return this.text.label;
+  }
 
   get isPageMode(): boolean {
     return typeof this.pageIndex === 'number';
@@ -57,10 +84,7 @@ export default class Pagination extends Base {
   }
 
   get status(): string {
-    const currentPage = (this.pageIndex ?? 0) + 1;
-    return this.pageCount >= 0
-      ? `Page ${currentPage} of ${this.pageCount}`
-      : `Page ${currentPage}`;
+    return this.text.status((this.pageIndex ?? 0) + 1, this.pageCount >= 0 ? this.pageCount : undefined);
   }
 
   handlePrevious() {

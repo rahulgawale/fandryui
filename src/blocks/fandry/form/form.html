@@ -10,6 +10,7 @@
           error={item.error}
           mode={mode}
           disabled={saving}
+          messages={fieldMessages}
           onchange={handleFieldChange}
           onblur={handleFieldBlur}
           onsubmit={handleFieldSubmit}
@@ -28,16 +29,16 @@
     <div class="actions">
       <slot name="actions">
         <template if:true={isReading}>
-          <fandry-button variant="secondary" onclick={handleEdit}>Edit</fandry-button>
+          <fandry-button variant="secondary" onclick={handleEdit}>{text.edit}</fandry-button>
         </template>
         <template if:true={isEditing}>
           <fandry-button disabled={saving} onclick={handleSave}>
             <template if:true={saving}>
-              <fandry-spinner size="sm" label="Saving"></fandry-spinner>
+              <fandry-spinner size="sm" label={text.saving}></fandry-spinner>
             </template>
-            Save
+            {text.save}
           </fandry-button>
-          <fandry-button variant="secondary" disabled={saving} onclick={handleCancel}>Cancel</fandry-button>
+          <fandry-button variant="secondary" disabled={saving} onclick={handleCancel}>{text.cancel}</fandry-button>
         </template>
       </slot>
     </div>
