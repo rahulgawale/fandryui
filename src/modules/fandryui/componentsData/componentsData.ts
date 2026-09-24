@@ -651,6 +651,43 @@ fandry-text::part(base) {
     slug: 'button',
     name: 'Button',
     tag: 'fandry-button',
+    examples: [
+      {
+        title: 'Your own copy: a rainbow button',
+        demo: 'button-copy',
+        code: `<!-- 1. Copy the source into your own namespace and rename it -->
+LWR:        node_modules/fandryui/modules/fandry/button/ -> src/modules/my/rainbowButton/
+Salesforce: force-app/.../lwc/fandryButton/          -> force-app/.../lwc/rainbowButton/
+
+<!-- 2. Keep extends Base: your copy still gets the site's tokens and native shadow DOM -->
+export default class RainbowButton extends Base { ... }
+
+/* 3. Change what you like. This copy adds, to the end of button.css: */
+.button {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  background: transparent;
+  color: hsl(var(--_fd-text));
+}
+
+.button::before {
+  inset: 0;
+  z-index: -2;
+  background: conic-gradient(#ff4d4d, #ffb84d, #f5f54d, #4dff88, #4dd2ff, #7a4dff, #ff4de1, #ff4d4d);
+  animation: rainbow-turn 4s linear infinite;
+}
+
+.button::after {
+  inset: var(--_fd-border-width-lg);
+  z-index: -1;
+  background: hsl(var(--_fd-bg));
+}
+
+<!-- 4. Use it next to the original -->
+<my-rainbow-button>Launch sale</my-rainbow-button>`
+      }
+    ],
     parts: ['base'],
     states: ['default', 'secondary', 'ghost', 'disabled'],
     customize: {

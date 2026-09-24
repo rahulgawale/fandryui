@@ -307,6 +307,28 @@ template — a consumer who needs different markup extends the same base
 and writes their own template, instead of copying the component's
 internals.
 
+**The customization ladder.** Every component keeps each rung open, from
+the quickest change to a complete rewrite, so a site only goes as far as
+it needs:
+
+1. **Tokens** -- set `--fd-*` on `:root` or one section to theme colors,
+   type, spacing, radius, motion.
+2. **Parts and states** -- `::part(control checked)` restyles one element
+   inside a component. The quick win for most visual changes.
+3. **Slots and `messages`** -- replace content and text.
+4. **Extend the state class** -- new markup, same behavior.
+5. **Copy the component** -- its source is short, plain LWC that extends
+   `fandry/base`, so a site can copy one (a button with a rainbow border)
+   into its own namespace and change anything, keeping the tokens and
+   native shadow DOM. On Salesforce, `fandry add` has already put the
+   source in the project.
+
+`lightning-*` offers styling hooks and some slots, but its internals can't
+be restyled, extended or copied: a look it doesn't support means
+rebuilding from SLDS blueprints. Keep every
+rung reachable -- in particular, keep components small and readable
+enough that copying one is a reasonable thing to do.
+
 ---
 
 ### 3. Outcomes over implementations
