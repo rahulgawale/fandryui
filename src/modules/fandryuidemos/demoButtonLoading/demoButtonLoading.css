@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.note {
+  font-size: var(--fd-font-size-sm);
+  color: var(--fd-color-muted);
+}

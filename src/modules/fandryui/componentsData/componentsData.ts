@@ -651,6 +651,40 @@ fandry-text::part(base) {
     slug: 'button',
     name: 'Button',
     tag: 'fandry-button',
+    examples: [
+      {
+        title: 'A loading state, with a slot',
+        demo: 'button-loading',
+        code: `<!-- template: the spinner is just slotted content -->
+<fandry-button disabled={saving} onclick={handleSave}>
+  <template lwc:if={saving}>
+    <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
+  </template>
+  {saveLabel}
+</fandry-button>
+
+// js
+saving = false;
+
+// The text says what's happening; the spinner beside it is decoration.
+get saveLabel() {
+  return this.saving ? 'Saving…' : 'Save';
+}
+
+async handleSave() {
+  if (this.saving) return; // disabled covers a double click; this covers the gap
+  this.saving = true;
+  try {
+    await this.save();
+  } finally {
+    this.saving = false;
+  }
+}
+
+<!-- Need it on many screens? Wrap it once in your own small component that
+     renders fandry-button like this: composition, nothing copied. -->`
+      }
+    ],
     parts: ['base'],
     states: ['default', 'secondary', 'ghost', 'disabled'],
     customize: {
@@ -661,6 +695,7 @@ fandry-text::part(base) {
   <fandry-button class="cta">Add to cart</fandry-button>
   <fandry-button variant="secondary">Save for later</fandry-button>
   <fandry-button variant="ghost">Share</fandry-button>
+  <fandry-button class="rainbow">Launch sale</fandry-button>
 </div>
 
 /* css */
@@ -686,6 +721,48 @@ fandry-button.cta::part(base) {
 fandry-button::part(base secondary) {
   color: hsl(160 84% 26%);
   border-color: hsl(160 84% 26%);
+}
+
+/* Even a rainbow border is only CSS: two layers under the label, on the
+   part's own ::before and ::after. No copy of the component needed. */
+fandry-button.rainbow::part(base) {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  background: transparent;
+  color: hsl(160 40% 14%);
+}
+
+fandry-button.rainbow::part(base)::before,
+fandry-button.rainbow::part(base)::after {
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+}
+
+fandry-button.rainbow::part(base)::before {
+  inset: -1px;
+  z-index: -2;
+  background: conic-gradient(#ff4d4d, #ffb84d, #f5f54d, #4dff88, #4dd2ff, #7a4dff, #ff4de1, #ff4d4d);
+  animation: rainbow-turn 4s linear infinite;
+}
+
+fandry-button.rainbow::part(base)::after {
+  inset: 2px;
+  z-index: -1;
+  background: hsl(0 0% 100%);
+}
+
+@keyframes rainbow-turn {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  fandry-button.rainbow::part(base)::before {
+    animation: none;
+  }
 }`
     },
     category: 'Forms',

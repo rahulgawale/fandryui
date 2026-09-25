@@ -136,6 +136,22 @@ fandry-table::part(row selected)       { background: hsl(160 40% 96%); }
 
 Parts need a real shadow root, so every fandry component opts into native shadow DOM (`static shadowSupportMode = 'native'` on `fandry/base`). They work the same on LWR and on Salesforce, including orgs that still load the synthetic-shadow polyfill for other components. A component of yours that extends `fandry/base` inherits that too.
 
+## Customizing, from a token to a copy
+
+Each step goes further than the one before; go only as far as you need:
+
+1. **Tokens**: `:root { --fd-primary: ...; --fd-radius-md: 0 }` themes everything, or one section.
+2. **Parts and states**: `fandry-button::part(base secondary) { ... }` restyles one element inside a component, including its `::before` / `::after` and animations: a rainbow border is parts only. The quick win for most visual changes.
+3. **Slots and `messages`**: replace content and text (see Translating), or add to it: a button's loading spinner is just a `fandry-spinner` slotted in while `disabled` is set, and the button page shows it.
+4. **Extend the state class** (`fandry/tableState`, `fandry/searchState`, `fandry/formState`, ...): your own markup on the same behavior.
+5. **Copy the component.** When you need what neither CSS nor composition can reach (a different native element, a different internal structure, changed internal behavior), copy its source into your own namespace and change anything. Components are short, plain LWC. Keep `extends Base` and your copy still follows the site's tokens and renders in native shadow DOM:
+   - LWR / LWC OSS: copy `node_modules/fandryui/modules/fandry/button/` to e.g. `src/modules/my/myButton/`, then rename the files and the class.
+   - Salesforce: `fandry add button` already put `fandryButton` in your project; copy that folder to `myButton` and rename it. `fandry add` never overwrites files you changed.
+
+   A copy doesn't get the library's future fixes; that's the trade for owning it. The button page on the docs site has a working example.
+
+Lightning base components offer styling hooks and some slots, but their internals can't be restyled, extended or copied: a look they don't offer means rebuilding the component from SLDS blueprints.
+
 ## Translating
 
 No component has words you can't replace. Visible text is a slot with the English as its fallback; text that can't be markup (accessible names, "2 of 5 selected", "Page 1 of 3") comes from a `messages` prop. Pass only the keys you want to change:

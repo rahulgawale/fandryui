@@ -54,6 +54,7 @@
       "fandryuidemos/demoSelectCustom": ["src/modules/fandryuidemos/demoSelectCustom/demoSelectCustom"],
       "fandryuidemos/demoCommandCustom": ["src/modules/fandryuidemos/demoCommandCustom/demoCommandCustom"],
       "fandryuidemos/demoBreadcrumb": ["src/modules/fandryuidemos/demoBreadcrumb/demoBreadcrumb"],
+      "fandryuidemos/demoButtonLoading": ["src/modules/fandryuidemos/demoButtonLoading/demoButtonLoading"],
       "fandryuidemos/demoAlertTheme": ["src/modules/fandryuidemos/demoAlertTheme/demoAlertTheme"],
       "fandryuidemos/demoAvatarTheme": ["src/modules/fandryuidemos/demoAvatarTheme/demoAvatarTheme"],
       "fandryuidemos/demoBadgeTheme": ["src/modules/fandryuidemos/demoBadgeTheme/demoBadgeTheme"],
