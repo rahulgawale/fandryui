@@ -2,7 +2,7 @@ import { LightningElement } from 'lwc';
 import { COMPONENTS, CATEGORY_ORDER, PART_DESCRIPTIONS, STATE_DESCRIPTIONS, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
 
 import DemoBreadcrumb from 'fandryuidemos/demoBreadcrumb';
-import DemoButtonCopy from 'fandryuidemos/demoButtonCopy';
+import DemoButtonLoading from 'fandryuidemos/demoButtonLoading';
 import DemoAlertTheme from 'fandryuidemos/demoAlertTheme';
 import DemoAvatarTheme from 'fandryuidemos/demoAvatarTheme';
 import DemoBadgeTheme from 'fandryuidemos/demoBadgeTheme';
@@ -127,7 +127,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'menu-item': DemoMenuItem,
   popover: DemoPopover,
   table: DemoTable,
-  'button-copy': DemoButtonCopy,
+  'button-loading': DemoButtonLoading,
   'alert-theme': DemoAlertTheme,
   'avatar-theme': DemoAvatarTheme,
   'badge-theme': DemoBadgeTheme,

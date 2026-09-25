@@ -182,7 +182,7 @@ export default class App extends LightningElement {
             'Extend the shared base class: import Base from "fandry/base" gives your own component Fandry\'s stylesheet and design tokens.',
             'Theme by setting any --fd-* token on :root (e.g. --fd-primary: 210 90% 40%; --fd-radius-md: 0), or on one section to theme just that part of the page.',
             'Restyle one element inside a component with ::part(), e.g. fandry-link::part(link). Each component page lists its parts.',
-            'Need different markup or behavior, which CSS can\'t reach? Copy the component into your own namespace and make it yours. Its source is short, plain LWC; keep extends Base and it still follows your tokens. The button page shows a copy that waits for its async action.',
+            'Need a change inside a component that neither CSS nor slots can reach? Copy it into your own namespace and make it yours. Its source is short, plain LWC; keep extends Base and it still follows your tokens.',
             'Browse every component, its props and examples under Components.'
           ]
         },
@@ -339,8 +339,8 @@ npx fandry add table --overwrite # replace table even if you edited it`
         {
           type: 'note',
           variant: 'info',
-          title: 'Need more than CSS can do? Copy the component.',
-          text: 'Style most things from your own CSS with --fd-* tokens and ::part(), down to a rainbow border. For markup or behavior CSS can\'t reach, like a button that shows a spinner and ignores clicks until its action finishes, copy fandryButton to asyncButton, rename it, and change anything: it still extends fandryBase, so it keeps your tokens and native shadow DOM. fandry add never overwrites files you changed. With lightning-* components the only equivalent is rebuilding from SLDS blueprints.'
+          title: 'Make it yours: CSS, then slots, then your own copy',
+          text: 'Style most things from your own CSS with --fd-* tokens and ::part(), down to a rainbow border. Add to a component through its slots: a loading spinner is just slotted content. For a change inside a component that neither CSS nor slots reach, like a different native element or different internal behavior, copy fandryButton to myButton, rename it, and change anything: it still extends fandryBase, so it keeps your tokens and native shadow DOM. fandry add never overwrites files you changed. With lightning-* components the only equivalent is rebuilding from SLDS blueprints.'
         }
       ]
     },

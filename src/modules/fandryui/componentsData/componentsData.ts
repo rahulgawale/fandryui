@@ -653,42 +653,31 @@ fandry-text::part(base) {
     tag: 'fandry-button',
     examples: [
       {
-        title: 'Your own copy: a button that waits for its action',
-        demo: 'button-copy',
-        code: `<!-- 1. Copy the source into your own namespace and rename it -->
-LWR:        node_modules/fandryui/modules/fandry/button/ -> src/modules/my/asyncButton/
-Salesforce: force-app/.../lwc/fandryButton/          -> force-app/.../lwc/asyncButton/
-
-<!-- 2. Change what parts can't: here, markup and behavior -->
-<button class={classes} part={basePart} type={type} disabled={isDisabled}
-  aria-busy={ariaBusy} onclick={handleClick} lwc:spread={resolvedElementProps}>
-  <template if:true={running}>
-    <c-fandry-spinner size="sm" label={busyLabel}></c-fandry-spinner>
+        title: 'A loading state, with a slot',
+        demo: 'button-loading',
+        code: `<!-- template: the spinner is just slotted content -->
+<fandry-button disabled={saving} onclick={handleSave}>
+  <template lwc:if={saving}>
+    <fandry-spinner size="sm" label="Saving"></fandry-spinner>
   </template>
-  <slot></slot>
-</button>
+  Save
+</fandry-button>
 
-// asyncButton.js: fandry-button's code, plus
-@api action;            // () => Promise, run on click
-@api busyLabel = 'Working';
-@track running = false;
+// js
+saving = false;
 
-get isDisabled() {
-  return this.disabled || this.running;
-}
-
-async handleClick() {
-  if (!this.action || this.running) return; // a second click while saving does nothing
-  this.running = true;
+async handleSave() {
+  if (this.saving) return; // disabled covers a double click; this covers the gap
+  this.saving = true;
   try {
-    await this.action();
+    await this.save();
   } finally {
-    this.running = false;
+    this.saving = false;
   }
 }
 
-<!-- 3. It still extends Base, so your tokens and native shadow DOM still apply -->
-<my-async-button action={save}>Save</my-async-button>`
+<!-- Need it on many screens? Wrap it once in your own small component that
+     renders fandry-button like this: composition, nothing copied. -->`
       }
     ],
     parts: ['base'],

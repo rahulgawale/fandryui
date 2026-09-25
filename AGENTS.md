@@ -317,11 +317,12 @@ it needs:
    inside a component, pseudo-elements and animations included (the button
    page's rainbow border is parts only). The quick win for most visual
    changes.
-3. **Slots and `messages`** -- replace content and text.
+3. **Slots and `messages`** -- replace content and text, or add to it (a
+   button's loading spinner is slotted content, not a feature).
 4. **Extend the state class** -- new markup, same behavior.
-5. **Copy the component** -- for what CSS can't reach: markup and
-   behavior (a button that shows a spinner and ignores clicks until its
-   async action settles). Its source is short, plain LWC that extends
+5. **Copy the component** -- for what neither CSS nor composition can
+   reach: a different native element, a different internal structure, or
+   changed internal behavior. Its source is short, plain LWC that extends
    `fandry/base`, so a site copies it into its own namespace and changes
    anything, keeping the tokens and native shadow DOM. On Salesforce,
    `fandry add` has already put the source in the project.
