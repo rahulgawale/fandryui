@@ -2,9 +2,9 @@
   <div class="row">
     <fandry-button disabled={saving} onclick={handleSave}>
       <template lwc:if={saving}>
-        <fandry-spinner size="sm" label="Saving"></fandry-spinner>
+        <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
       </template>
-      Save
+      {saveLabel}
     </fandry-button>
     <span class="note">{savedLabel} Double-click it: it saves once.</span>
   </div>

@@ -658,13 +658,18 @@ fandry-text::part(base) {
         code: `<!-- template: the spinner is just slotted content -->
 <fandry-button disabled={saving} onclick={handleSave}>
   <template lwc:if={saving}>
-    <fandry-spinner size="sm" label="Saving"></fandry-spinner>
+    <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
   </template>
-  Save
+  {saveLabel}
 </fandry-button>
 
 // js
 saving = false;
+
+// The text says what's happening; the spinner beside it is decoration.
+get saveLabel() {
+  return this.saving ? 'Saving…' : 'Save';
+}
 
 async handleSave() {
   if (this.saving) return; // disabled covers a double click; this covers the gap
