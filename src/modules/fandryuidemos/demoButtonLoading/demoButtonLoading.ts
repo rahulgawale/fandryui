@@ -9,6 +9,11 @@ export default class DemoButtonLoading extends LightningElement {
   saving = false;
   savedCount = 0;
 
+  // The text says what's happening; the spinner beside it is decoration.
+  get saveLabel(): string {
+    return this.saving ? 'Saving…' : 'Save';
+  }
+
   get savedLabel(): string {
     if (this.savedCount === 0) return 'Not saved yet.';
     return this.savedCount === 1 ? 'Saved once.' : `Saved ${this.savedCount} times.`;
