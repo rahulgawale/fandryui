@@ -56,7 +56,7 @@ const PROPS = [
   { name: 'save-row', type: '(row, changes) => Promise', default: '—', description: 'Persists an inline edit. `changes` holds only the changed columns. Reject to keep the row editing and toast the error.' },
   { name: 'save-rows', type: '(rows, changes) => Promise', default: '—', description: 'Persists a multi-record edit as one batch (select two or more rows, then Edit selected). `changes` holds only the fields the user filled in. Resolve with the saved rows or nothing; reject to keep the dialog open and toast the error.' },
   { name: 'delete-row', type: '(row) => Promise', default: '—', description: 'Same contract, for the built-in Delete action (after the confirmation).' },
-  { name: 'row-actions', type: '{ value, label }[]', default: 'Edit, Delete', description: 'The row menu. `edit` and `delete` are built in; any other value fires `rowaction`. An empty list removes the column.' },
+  { name: 'row-actions', type: '{ value, label }[]', default: 'Edit, Delete', description: 'The row menu. `edit` and `delete` are built in, and without a label take theirs from `messages`; any other value fires `rowaction`. An empty list removes the column.' },
   { name: 'column-visibility', type: '{ [columnId]: boolean }', default: '{}', description: 'Which columns are hidden (`{ email: false }`). Set it to start hidden or to restore a saved choice; the block keeps it current as the user toggles columns.' },
   { name: 'page-size', type: 'number', default: '10', description: 'Rows per page.' },
   { name: 'toast-duration', type: 'number', default: '4000', description: 'Milliseconds before a toast dismisses itself.' },

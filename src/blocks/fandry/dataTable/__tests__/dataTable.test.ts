@@ -788,6 +788,19 @@ describe('fandry-data-table text', () => {
     expect(editor.elementProps.ariaLabel).toBe('Name von Acme');
   });
 
+  it('names the built-in row actions from messages, unless an action brings its own label', async () => {
+    const el = mount({
+      rowActions: [{ value: 'edit' }, { value: 'delete' }, { value: 'archive', label: 'Archivieren' }],
+      messages: { edit: 'Bearbeiten', delete: 'Löschen' }
+    });
+    await settle();
+
+    bodyRows(el)[0].querySelector('fandry-popover')!.dispatchEvent(new CustomEvent('toggle', { detail: true, bubbles: true }));
+    await settle();
+    const labels = Array.from(bodyRows(el)[0].querySelectorAll('fandry-menu-item')).map((item: any) => item.label);
+    expect(labels).toEqual(['Bearbeiten', 'Löschen', 'Archivieren']);
+  });
+
   it('names a row from unnamedRow when getRowLabel gives nothing', async () => {
     const el = mount({
       getRowLabel: undefined,

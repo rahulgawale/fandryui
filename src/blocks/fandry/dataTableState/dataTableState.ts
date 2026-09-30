@@ -11,19 +11,6 @@ export interface FdDataTableOption {
 
 export type FdDataTableBadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger';
 
-/**
- * Read from a column's `meta`, so a column stays a plain tanstack ColumnDef
- * -- there is no second column format to learn.
- *
- *   {
- *     id: 'status', accessorKey: 'status', header: 'Status',
- *     meta: {
- *       filter: { options: [{ label: 'Active', value: 'active' }] },
- *       editor: { type: 'select', options: [...] },
- *       badges: { active: 'success' }
- *     }
- *   }
- */
 /** Everything the data table says, on top of fandry-table's own messages; see `messages`. */
 export interface FdDataTableMessages extends FdTableMessages {
   clearFilters: string;
@@ -42,6 +29,7 @@ export interface FdDataTableMessages extends FdTableMessages {
   editField: (header: string, label: string) => string;
   save: string;
   cancel: string;
+  edit: string;
   delete: string;
   /** Spinner names while a request runs. */
   saving: string;
@@ -84,6 +72,7 @@ export const DEFAULT_DATA_TABLE_MESSAGES: FdDataTableMessages = {
   editField: (header, label) => `${header} for ${label}`,
   save: 'Save',
   cancel: 'Cancel',
+  edit: 'Edit',
   delete: 'Delete',
   saving: 'Saving',
   deleting: 'Deleting',
@@ -108,6 +97,19 @@ export const DEFAULT_DATA_TABLE_MESSAGES: FdDataTableMessages = {
   unnamedRow: (rowNumber) => (rowNumber === undefined ? 'this row' : `row ${rowNumber}`)
 };
 
+/**
+ * Read from a column's `meta`, so a column stays a plain tanstack ColumnDef
+ * -- there is no second column format to learn.
+ *
+ *   {
+ *     id: 'status', accessorKey: 'status', header: 'Status',
+ *     meta: {
+ *       filter: { options: [{ label: 'Active', value: 'active' }] },
+ *       editor: { type: 'select', options: [...] },
+ *       badges: { active: 'success' }
+ *     }
+ *   }
+ */
 export interface FdDataTableColumnMeta {
   /** Adds a select to the toolbar that filters rows to one value of this column. */
   filter?: { options: FdDataTableOption[] };
@@ -119,7 +121,8 @@ export interface FdDataTableColumnMeta {
 
 export interface FdDataTableRowAction {
   value: string;
-  label: string;
+  /** Optional for the built-in `edit` and `delete`, which take theirs from `messages`. */
+  label?: string;
 }
 
 export interface FdDataTableFilter {
@@ -235,10 +238,14 @@ export default class FdDataTableState extends FdTableState {
    * `edit` and `delete` are built in; any other value is reported through
    * `rowaction` for the consumer to handle.
    */
-  @api rowActions: FdDataTableRowAction[] = [
-    { value: 'edit', label: 'Edit' },
-    { value: 'delete', label: 'Delete' }
-  ];
+  @api rowActions: FdDataTableRowAction[] = [{ value: 'edit' }, { value: 'delete' }];
+
+  // The row menu's items, a built-in action without a label named from `messages`.
+  get menuActions(): Required<FdDataTableRowAction>[] {
+    const text = this.text;
+    const builtIn: Record<string, string> = { edit: text.edit, delete: text.delete };
+    return this.rowActions.map((action) => ({ value: action.value, label: action.label ?? builtIn[action.value] ?? action.value }));
+  }
 
   /**
    * Which columns are hidden, keyed by column id (`{ email: false }`). Set it

@@ -183,7 +183,7 @@
                           <span aria-hidden="true">&#8943;</span>
                         </fandry-button>
                         <fandry-menu data-row-id={row.id} onselect={handleMenuSelect}>
-                          <template for:each={rowActions} for:item="action">
+                          <template for:each={menuActions} for:item="action">
                             <fandry-menu-item key={action.value} value={action.value} label={action.label}></fandry-menu-item>
                           </template>
                         </fandry-menu>
