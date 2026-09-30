@@ -1,0 +1,13 @@
+<template>
+  <div class="brand row">
+    <fandry-button onclick={handleOpen}>Remove from cart</fandry-button>
+    <fandry-dialog open={isOpen} label="Remove from cart" ontoggle={handleToggle}>
+      <fandry-heading level="3">Remove Stride Runner?</fandry-heading>
+      <fandry-text variant="muted">You can add it back any time.</fandry-text>
+      <div class="row actions">
+        <fandry-button variant="secondary" onclick={handleClose}>Keep it</fandry-button>
+        <fandry-button onclick={handleClose}>Remove</fandry-button>
+      </div>
+    </fandry-dialog>
+  </div>
+</template>

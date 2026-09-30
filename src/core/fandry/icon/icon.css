@@ -26,18 +26,18 @@
    instead always win over that inherited override, since a same-element
    declaration beats inheritance regardless of specificity. */
 .icon--sm {
-  width: var(--fd-icon-size, var(--fd-size-sm));
-  height: var(--fd-icon-size, var(--fd-size-sm));
+  width: var(--fd-icon-size, var(--_fd-size-sm));
+  height: var(--fd-icon-size, var(--_fd-size-sm));
 }
 
 .icon--md {
-  width: var(--fd-icon-size, var(--fd-size-md));
-  height: var(--fd-icon-size, var(--fd-size-md));
+  width: var(--fd-icon-size, var(--_fd-size-md));
+  height: var(--fd-icon-size, var(--_fd-size-md));
 }
 
 .icon--lg {
-  width: var(--fd-icon-size, var(--fd-size-lg));
-  height: var(--fd-icon-size, var(--fd-size-lg));
+  width: var(--fd-icon-size, var(--_fd-size-lg));
+  height: var(--fd-icon-size, var(--_fd-size-lg));
 }
 
 ::slotted(svg),

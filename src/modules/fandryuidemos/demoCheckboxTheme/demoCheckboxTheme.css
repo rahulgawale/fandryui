@@ -1,0 +1,36 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.narrow {
+  max-width: 20rem;
+}
+
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-radius-sm: 0.375rem;
+}
+
+fandry-checkbox::part(control) {
+  border-color: hsl(160 84% 26%);
+}
+
+fandry-checkbox::part(label) {
+  font-weight: 600;
+}

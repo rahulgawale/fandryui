@@ -4,18 +4,18 @@
 
 /* Visible Box */
 .box {
-  width: var(--fd-size-sm);
-  height: var(--fd-size-sm);
-  flex: 0 0 var(--fd-size-sm);
-  border-radius: var(--fd-radius-sm);
-  border: var(--fd-border-width) solid hsl(var(--fd-border));
-  background: hsl(var(--fd-bg));
+  width: var(--_fd-size-sm);
+  height: var(--_fd-size-sm);
+  flex: 0 0 var(--_fd-size-sm);
+  border-radius: var(--_fd-radius-sm);
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  background: hsl(var(--_fd-bg));
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: border-color var(--fd-duration-fast) ease,
-    background-color var(--fd-duration-fast) ease,
-    box-shadow var(--fd-duration-fast) ease;
+  transition: border-color var(--_fd-duration-fast) ease,
+    background-color var(--_fd-duration-fast) ease,
+    box-shadow var(--_fd-duration-fast) ease;
 }
 
 /* Wrapper */
@@ -23,7 +23,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
   cursor: pointer;
   user-select: none;
 }
@@ -46,18 +46,18 @@
 .check {
   width: 10px;
   height: 6px;
-  border-left: 2px solid hsl(var(--fd-primary-foreground));
-  border-bottom: 2px solid hsl(var(--fd-primary-foreground));
+  border-left: 2px solid hsl(var(--_fd-primary-foreground));
+  border-bottom: 2px solid hsl(var(--_fd-primary-foreground));
   transform: translateY(-1px) rotate(-45deg) scale(0.9);
   opacity: 0;
-  transition: opacity var(--fd-duration-fast) ease,
-    transform var(--fd-duration-fast) ease;
+  transition: opacity var(--_fd-duration-fast) ease,
+    transform var(--_fd-duration-fast) ease;
 }
 
 /* Checked */
 .input:checked + .box {
-  background: hsl(var(--fd-primary));
-  border-color: hsl(var(--fd-primary));
+  background: hsl(var(--_fd-primary));
+  border-color: hsl(var(--_fd-primary));
 }
 
 .input:checked + .box .check {
@@ -67,16 +67,16 @@
 
 /* Focus */
 .control:focus-within .box {
-  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
 }
 
 /* Disabled */
 .input:disabled + .box,
 .input:disabled ~ .label {
-  opacity: var(--fd-disabled-opacity);
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
 .label {
-  font-size: var(--fd-font-size-sm);
+  font-size: var(--_fd-font-size-sm);
 }

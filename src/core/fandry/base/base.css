@@ -10,9 +10,9 @@
 }
 
 body {
-  font-family: var(--fd-font-sans);
-  color: hsl(var(--fd-text));
-  line-height: var(--fd-line-height-normal);
+  font-family: var(--_fd-font-sans);
+  color: hsl(var(--_fd-text));
+  line-height: var(--_fd-line-height-normal);
 }
 
 /* ---- Typography ---- */
@@ -24,8 +24,8 @@ p {
 /* ---- Focus (non-form) ---- */
 
 :focus-visible {
-  outline: var(--fd-ring-width) solid hsl(var(--fd-ring-color));
-  outline-offset: var(--fd-ring-offset);
+  outline: var(--_fd-ring-width) solid hsl(var(--_fd-ring-color));
+  outline-offset: var(--_fd-ring-offset);
 }
 
 /* ---- Disabled ---- */
@@ -34,7 +34,7 @@ button:disabled,
 input:disabled,
 textarea:disabled,
 select:disabled {
-  opacity: var(--fd-disabled-opacity);
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -46,7 +46,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--fd-font-heading);
-  font-weight: var(--fd-heading-weight);
-  letter-spacing: var(--fd-heading-letter-spacing);
+  font-family: var(--_fd-font-heading);
+  font-weight: var(--_fd-heading-weight);
+  letter-spacing: var(--_fd-heading-letter-spacing);
 }

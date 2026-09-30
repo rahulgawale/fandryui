@@ -8,16 +8,16 @@
 }
 
 .divider {
-  background: hsl(var(--fd-border));
+  background: hsl(var(--_fd-border));
   border: none;
 }
 
 .divider--horizontal {
   width: 100%;
-  height: var(--fd-border-width);
+  height: var(--_fd-border-width);
 }
 
 .divider--vertical {
-  width: var(--fd-border-width);
+  width: var(--_fd-border-width);
   height: 100%;
 }

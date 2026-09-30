@@ -3,8 +3,8 @@
 }
 
 .table-toolbar {
-  max-width: var(--fd-control-max-width-sm);
-  margin-bottom: var(--fd-space-3);
+  max-width: var(--_fd-control-max-width-sm);
+  margin-bottom: var(--_fd-space-3);
 }
 
 .table-wrapper {
@@ -14,54 +14,59 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text));
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text));
 }
 
 .caption {
   text-align: left;
-  padding-bottom: var(--fd-space-2);
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  padding-bottom: var(--_fd-space-2);
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }
 
 th,
 td {
-  padding: var(--fd-space-2) var(--fd-space-3);
+  padding: var(--_fd-space-2) var(--_fd-space-3);
   text-align: left;
-  border-bottom: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-bottom: var(--_fd-border-width) solid hsl(var(--_fd-border));
 }
 
 th {
-  font-weight: var(--fd-font-weight-semibold);
-  color: hsl(var(--fd-text-muted));
+  font-weight: var(--_fd-font-weight-semibold);
+  color: hsl(var(--_fd-text-muted));
   white-space: nowrap;
 }
 
 .sort-button {
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
   border: none;
   background: transparent;
   font: inherit;
   font-weight: inherit;
+  /* A native button resets these instead of inheriting them, so the
+     header cell's own (a site's ::part(header-cell), say) would stop at a
+     sortable header. */
+  letter-spacing: inherit;
+  text-transform: inherit;
   color: inherit;
   padding: 0;
   cursor: pointer;
 }
 
 .sort-button:hover {
-  color: hsl(var(--fd-text));
+  color: hsl(var(--_fd-text));
 }
 
 .sort-button:focus-visible {
-  outline: var(--fd-ring-width) solid hsl(var(--fd-ring-color));
-  outline-offset: var(--fd-ring-offset);
+  outline: var(--_fd-ring-width) solid hsl(var(--_fd-ring-color));
+  outline-offset: var(--_fd-ring-offset);
 }
 
 .sort-indicator {
-  font-size: var(--fd-font-size-xs);
+  font-size: var(--_fd-font-size-xs);
 }
 
 .table--clickable tbody tr {
@@ -69,7 +74,7 @@ th {
 }
 
 .table--clickable tbody tr:hover {
-  background: hsl(var(--fd-bg-muted));
+  background: hsl(var(--_fd-bg-muted));
 }
 
 .selection-cell {
@@ -80,8 +85,8 @@ th {
 
 .empty-row td {
   text-align: center;
-  color: hsl(var(--fd-text-muted));
-  padding: var(--fd-space-5);
+  color: hsl(var(--_fd-text-muted));
+  padding: var(--_fd-space-5);
   border-bottom: none;
 }
 
@@ -94,12 +99,12 @@ th {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--fd-space-3);
-  margin-top: var(--fd-space-3);
-  padding: var(--fd-space-1) var(--fd-space-1) var(--fd-space-2);
+  gap: var(--_fd-space-3);
+  margin-top: var(--_fd-space-3);
+  padding: var(--_fd-space-1) var(--_fd-space-1) var(--_fd-space-2);
 }
 
 .selection-status {
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }

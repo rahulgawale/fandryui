@@ -5,25 +5,25 @@
 .search {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-1);
-  max-width: var(--fd-control-max-width-sm);
+  gap: var(--_fd-space-1);
+  max-width: var(--_fd-control-max-width-sm);
 }
 
 .label {
-  font-size: var(--fd-font-size-sm);
+  font-size: var(--_fd-font-size-sm);
 }
 
 .input {
   font: inherit;
-  padding: var(--fd-space-1) var(--fd-space-2);
-  border: var(--fd-border-width) solid hsl(var(--fd-border));
-  border-radius: var(--fd-radius-md);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-md);
 }
 
 .input:focus {
   outline: none;
-  border-color: hsl(var(--fd-border-focus));
-  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+  border-color: hsl(var(--_fd-border-focus));
+  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
 }
 
 .list {
@@ -35,23 +35,23 @@
 .option {
   display: flex;
   flex-direction: column;
-  padding: var(--fd-space-1) var(--fd-space-2);
-  border-radius: var(--fd-radius-sm);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  border-radius: var(--_fd-radius-sm);
   cursor: pointer;
 }
 
 .option--active {
-  background: hsl(var(--fd-bg-muted));
+  background: hsl(var(--_fd-bg-muted));
 }
 
 .description,
 .status {
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }
 
 .status {
   margin: 0;
   /* Reserves the status line so the layout doesn't jump as it appears. */
-  min-height: calc(1em * var(--fd-line-height-normal));
+  min-height: calc(1em * var(--_fd-line-height-normal));
 }

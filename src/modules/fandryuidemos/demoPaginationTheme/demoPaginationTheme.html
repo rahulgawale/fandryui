@@ -1,0 +1,12 @@
+<template>
+  <div class="brand stack">
+    <fandry-pagination
+      previous-href="#"
+      previous-label="Sizing guide"
+      next-href="#"
+      next-label="Care instructions"
+      onclick={handleNoopClick}
+    ></fandry-pagination>
+    <fandry-pagination page-index={pageIndex} page-count="5" onchange={handlePageChange}></fandry-pagination>
+  </div>
+</template>

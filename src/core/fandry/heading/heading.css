@@ -9,33 +9,33 @@
    shared rules. */
 .heading {
   margin: 0;
-  font-family: var(--fd-font-heading);
-  font-weight: var(--fd-heading-weight);
-  letter-spacing: var(--fd-heading-letter-spacing);
-  color: hsl(var(--fd-text));
-  line-height: var(--fd-line-height-tight);
+  font-family: var(--_fd-font-heading);
+  font-weight: var(--_fd-heading-weight);
+  letter-spacing: var(--_fd-heading-letter-spacing);
+  color: hsl(var(--_fd-text));
+  line-height: var(--_fd-line-height-tight);
 }
 
 .heading--1 {
-  font-size: var(--fd-font-size-3xl);
+  font-size: var(--_fd-font-size-3xl);
 }
 
 .heading--2 {
-  font-size: var(--fd-font-size-2xl);
+  font-size: var(--_fd-font-size-2xl);
 }
 
 .heading--3 {
-  font-size: var(--fd-font-size-xl);
+  font-size: var(--_fd-font-size-xl);
 }
 
 .heading--4 {
-  font-size: var(--fd-font-size-lg);
+  font-size: var(--_fd-font-size-lg);
 }
 
 .heading--5 {
-  font-size: var(--fd-font-size-md);
+  font-size: var(--_fd-font-size-md);
 }
 
 .heading--6 {
-  font-size: var(--fd-font-size-sm);
+  font-size: var(--_fd-font-size-sm);
 }

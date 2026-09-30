@@ -3,8 +3,8 @@
    this). Not a public utility surface -- a component picks one and applies
    it to its own panel:
 
-     .panel         { animation: fd-fade-scale-in var(--fd-duration-normal) var(--fd-ease-standard); }
-     .panel--closing { animation: fd-fade-scale-out var(--fd-duration-fast) var(--fd-ease-standard) forwards; }
+     .panel         { animation: fd-fade-scale-in var(--_fd-duration-normal) var(--_fd-ease-standard); }
+     .panel--closing { animation: fd-fade-scale-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards; }
 
    The entrance plays on its own the moment the panel is mounted (a CSS
    `transition` can't -- there's no earlier style to interpolate from). The
@@ -37,14 +37,14 @@
 @keyframes fd-fade-up-in {
   from {
     opacity: 0;
-    translate: 0 var(--fd-space-2);
+    translate: 0 var(--_fd-space-2);
   }
 }
 
 @keyframes fd-fade-up-out {
   to {
     opacity: 0;
-    translate: 0 var(--fd-space-2);
+    translate: 0 var(--_fd-space-2);
   }
 }
 

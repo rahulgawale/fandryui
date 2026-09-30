@@ -5,10 +5,10 @@
 .pagination {
   display: flex;
   align-items: center;
-  gap: var(--fd-space-3);
+  gap: var(--_fd-space-3);
 }
 
 .status {
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }

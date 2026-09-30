@@ -1,8 +1,8 @@
 <template>
-  <label class="label" for={htmlFor} lwc:spread={resolvedElementProps}>
+  <label class="label" part="base" for={htmlFor} lwc:spread={resolvedElementProps}>
     <slot></slot>
     <template if:true={required}>
-      <span class="required" aria-hidden="true">*</span>
+      <span class="required" part="required" aria-hidden="true">*</span>
     </template>
   </label>
 </template>

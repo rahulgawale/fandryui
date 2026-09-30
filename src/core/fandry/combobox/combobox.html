@@ -1,11 +1,11 @@
 <template>
-  <div class="form-control">
+  <div class="form-control" part="base">
     <template if:true={hasLabel}>
-      <label class="label" for="input">
+      <label class="label" part="label" for="input">
         <slot name="label">
           {label}
           <template if:true={required}>
-            <span class="required" aria-hidden="true">*</span>
+            <span class="required" part="required" aria-hidden="true">*</span>
           </template>
         </slot>
       </label>
@@ -15,6 +15,7 @@
       <input
         id="input"
         class="input"
+        part="control input"
         type="text"
         autocomplete="off"
         data-name={name}
@@ -35,21 +36,22 @@
         onkeydown={handleInputKeydown}
         lwc:spread={resolvedElementProps}
       />
-      <span class="chevron" aria-hidden="true"></span>
+      <span class="chevron" part="chevron" aria-hidden="true"></span>
 
       <template if:true={isMounted}>
-        <div class={panelClasses} inert={panelInert} onmousedown={handleListboxMouseDown}>
-          <div id="listbox" class="listbox" role="listbox">
+        <div class={panelClasses} part="panel" inert={panelInert} onmousedown={handleListboxMouseDown}>
+          <div id="listbox" class="listbox" part="listbox" role="listbox">
             <template for:each={renderGroups} for:item="group">
-              <div key={group.key} class="group" role="group" aria-label={group.label}>
+              <div key={group.key} class="group" part="group" role="group" aria-label={group.label}>
                 <template if:true={group.hasLabel}>
-                  <div class="group-label" aria-hidden="true">{group.label}</div>
+                  <div class="group-label" part="group-label" aria-hidden="true">{group.label}</div>
                 </template>
                 <template for:each={group.options} for:item="option">
                   <div
                     key={option.id}
                     id={option.id}
                     class={option.classes}
+                    part="option"
                     role="option"
                     data-option-id={option.id}
                     aria-selected={option.ariaSelected}
@@ -61,9 +63,9 @@
                       <lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component>
                     </template>
                     <template if:false={option.component}>
-                      <span class="option-label">{option.label}</span>
+                      <span class="option-label" part="option-label">{option.label}</span>
                       <template if:true={option.hasDescription}>
-                        <span class="option-description">{option.description}</span>
+                        <span class="option-description" part="option-description">{option.description}</span>
                       </template>
                     </template>
                   </div>
@@ -72,14 +74,14 @@
             </template>
           </div>
           <template if:false={hasResults}>
-            <div class="empty"><slot name="empty">No results</slot></div>
+            <div class="empty" part="empty"><slot name="empty">No results</slot></div>
           </template>
         </div>
       </template>
     </div>
 
     <template if:true={hasHelpText}>
-      <div id="help-text" class="help-text">{helpText}</div>
+      <div id="help-text" class="help-text" part="help-text">{helpText}</div>
     </template>
   </div>
 </template>

@@ -180,7 +180,8 @@ export default class App extends LightningElement {
           type: 'list',
           items: [
             'Extend the shared base class: import Base from "fandry/base" gives your own component Fandry\'s stylesheet and design tokens.',
-            'Retheme by setting --brand-primary (H S% L%, no commas) on :root.',
+            'Theme by setting any --fd-* token on :root (e.g. --fd-primary: 210 90% 40%; --fd-radius-md: 0), or on one section to theme just that part of the page.',
+            'Restyle one element inside a component with ::part(), e.g. fandry-link::part(link). Each component page lists its parts.',
             'Browse every component, its props and examples under Components.'
           ]
         },

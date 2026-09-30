@@ -5,20 +5,20 @@
 .form-control {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
 }
 
 .label {
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-1);
-  font-size: var(--fd-font-size-sm);
-  font-weight: var(--fd-font-weight-medium);
-  color: hsl(var(--fd-text));
+  gap: var(--_fd-space-1);
+  font-size: var(--_fd-font-size-sm);
+  font-weight: var(--_fd-font-weight-medium);
+  color: hsl(var(--_fd-text));
 }
 
 .required {
-  color: hsl(var(--fd-danger));
+  color: hsl(var(--_fd-danger));
 }
 
 /* The panel is positioned against this wrapper, so it lines up with the
@@ -35,21 +35,21 @@
 .field {
   display: flex;
   align-items: flex-start;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
   box-sizing: border-box;
   width: 100%;
-  padding: var(--fd-space-1) var(--fd-space-2);
-  color: hsl(var(--fd-text));
-  background: hsl(var(--fd-bg));
-  border: var(--fd-border-width) solid hsl(var(--fd-border));
-  border-radius: var(--fd-radius-md);
-  transition: border-color var(--fd-duration-fast) ease,
-    box-shadow var(--fd-duration-fast) ease;
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  color: hsl(var(--_fd-text));
+  background: hsl(var(--_fd-bg));
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-md);
+  transition: border-color var(--_fd-duration-fast) ease,
+    box-shadow var(--_fd-duration-fast) ease;
 }
 
 .field:focus-within {
-  border-color: hsl(var(--fd-border-focus));
-  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+  border-color: hsl(var(--_fd-border-focus));
+  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
 }
 
 .tokens {
@@ -57,14 +57,14 @@
   flex: 1;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
   min-width: 0;
 }
 
 .input {
   flex: 1;
   /* Wraps to its own line once the chips leave less than this. */
-  min-width: var(--fd-control-min-width-sm);
+  min-width: var(--_fd-control-min-width-sm);
   padding: 0;
   font: inherit;
   color: inherit;
@@ -73,7 +73,7 @@
 }
 
 .input::placeholder {
-  color: hsl(var(--fd-text-muted));
+  color: hsl(var(--_fd-text-muted));
 }
 
 .input:focus {
@@ -81,7 +81,7 @@
 }
 
 .input:disabled {
-  opacity: var(--fd-disabled-opacity);
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -92,7 +92,7 @@
   flex: 1;
   align-items: center;
   justify-content: space-between;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
   min-width: 0;
 }
 
@@ -107,11 +107,11 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
   max-width: 100%;
-  padding: 0 var(--fd-space-1) 0 var(--fd-space-2);
-  border-radius: var(--fd-radius-sm);
-  background: hsl(var(--fd-bg-muted));
+  padding: 0 var(--_fd-space-1) 0 var(--_fd-space-2);
+  border-radius: var(--_fd-radius-sm);
+  background: hsl(var(--_fd-bg-muted));
 }
 
 .pill-label {
@@ -125,7 +125,7 @@
    `resolve`. Muted so it reads as provisional. */
 .selected-label--unresolved,
 .pill-label--unresolved {
-  color: hsl(var(--fd-text-muted));
+  color: hsl(var(--_fd-text-muted));
 }
 
 .clear,
@@ -133,37 +133,37 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--fd-space-1);
+  padding: var(--_fd-space-1);
   font: inherit;
-  color: hsl(var(--fd-text-muted));
+  color: hsl(var(--_fd-text-muted));
   background: transparent;
   border: none;
-  border-radius: var(--fd-radius-sm);
+  border-radius: var(--_fd-radius-sm);
   cursor: pointer;
 }
 
 /* The button's own padding must not make the field taller than the bare
    input it replaces, or choosing a record would shift the layout. */
 .clear {
-  margin-block: calc(var(--fd-space-1) * -1);
+  margin-block: calc(var(--_fd-space-1) * -1);
 }
 
 .clear:hover:not(:disabled),
 .pill-remove:hover:not(:disabled) {
-  color: hsl(var(--fd-text));
+  color: hsl(var(--_fd-text));
 }
 
 .clear:focus-visible,
 .pill-remove:focus-visible,
 .clear-all:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 var(--fd-ring-width) hsl(var(--fd-ring-color));
+  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
 }
 
 .clear:disabled,
 .pill-remove:disabled,
 .clear-all:disabled {
-  opacity: var(--fd-disabled-opacity);
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -171,24 +171,24 @@
    its line box (and by a different amount in every font), an SVG doesn't. */
 .icon {
   display: block;
-  width: var(--fd-size-xs);
-  height: var(--fd-size-xs);
+  width: var(--_fd-size-xs);
+  height: var(--_fd-size-xs);
 }
 
 .clear-all {
   flex-shrink: 0;
-  padding: 0 var(--fd-space-1);
+  padding: 0 var(--_fd-space-1);
   font: inherit;
-  font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text-muted));
   background: transparent;
   border: none;
-  border-radius: var(--fd-radius-sm);
+  border-radius: var(--_fd-radius-sm);
   cursor: pointer;
 }
 
 .clear-all:hover:not(:disabled) {
-  color: hsl(var(--fd-text));
+  color: hsl(var(--_fd-text));
 }
 
 .panel {
@@ -196,82 +196,82 @@
   top: 100%;
   left: 0;
   right: 0;
-  z-index: var(--fd-z-overlay);
-  margin-top: var(--fd-space-1);
+  z-index: var(--_fd-z-overlay);
+  margin-top: var(--_fd-space-1);
 
-  background: hsl(var(--fd-bg));
-  border: var(--fd-border-width) solid hsl(var(--fd-border));
-  border-radius: var(--fd-radius-md);
-  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating));
-  padding: var(--fd-space-2);
+  background: hsl(var(--_fd-bg));
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-md);
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
+  padding: var(--_fd-space-2);
 
   /* Slides down from the field. Motion is defined in base/motion.css; see
      lookup.ts / fandry/motion for how the panel stays mounted through its
      exit. */
-  --fd-slide-y: calc(var(--fd-space-2) * -1);
-  animation: fd-slide-in var(--fd-duration-normal) var(--fd-ease-standard);
+  --fd-slide-y: calc(var(--_fd-space-2) * -1);
+  animation: fd-slide-in var(--_fd-duration-normal) var(--_fd-ease-standard);
 }
 
 .panel--closing {
-  animation: fd-slide-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  animation: fd-slide-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
   pointer-events: none;
 }
 
 .listbox {
   display: flex;
   flex-direction: column;
-  max-height: var(--fd-listbox-max-height);
+  max-height: var(--_fd-listbox-max-height);
   overflow-y: auto;
 }
 
 .option {
   display: flex;
   flex-direction: column;
-  padding: var(--fd-space-1) var(--fd-space-2);
-  border-radius: var(--fd-radius-sm);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  border-radius: var(--_fd-radius-sm);
   cursor: pointer;
 }
 
 .option--active {
-  background: hsl(var(--fd-bg-muted));
+  background: hsl(var(--_fd-bg-muted));
 }
 
 .option--selected .option-label {
-  font-weight: var(--fd-font-weight-semibold);
+  font-weight: var(--_fd-font-weight-semibold);
 }
 
 .option--disabled {
-  opacity: var(--fd-disabled-opacity);
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
 .status {
   display: flex;
   align-items: center;
-  gap: var(--fd-space-2);
-  padding: var(--fd-space-1) var(--fd-space-2);
-  font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text-muted));
+  gap: var(--_fd-space-2);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text-muted));
 }
 
 .option-description {
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }
 
 .group-label {
-  padding: var(--fd-space-1) var(--fd-space-2);
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }
 
 .empty {
-  padding: var(--fd-space-1) var(--fd-space-2);
-  font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text-muted));
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text-muted));
 }
 
 .help-text {
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }

@@ -7,10 +7,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
 
   font-family: inherit;
-  font-weight: var(--fd-font-weight-medium);
+  font-weight: var(--_fd-font-weight-medium);
   line-height: 1;
 
   /* --fd-button-radius is opt-in (default: the standard token, i.e. today's
@@ -19,7 +19,7 @@
      wrapped as a popover trigger, where the token's usual corner radius
      reads as a mismatched rectangle behind a circular avatar) without
      changing every other button sitewide. */
-  border-radius: var(--fd-button-radius, var(--fd-radius-md));
+  border-radius: var(--fd-button-radius, var(--_fd-radius-md));
   /* --fd-button-border-width is opt-in (default: the standard token, same
      unchanged shape everywhere else) -- box-sizing: border-box (this
      project's global reset) folds border width into the fixed `height`
@@ -30,17 +30,17 @@
      tall -- an oval once --fd-button-radius makes it fully round, not a
      circle. Zeroing this out alongside padding is what actually makes
      width and height match. */
-  border: var(--fd-button-border-width, var(--fd-border-width)) solid transparent;
+  border: var(--fd-button-border-width, var(--_fd-border-width)) solid transparent;
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
 
-  transition: background-color var(--fd-duration-fast) ease,
-    border-color var(--fd-duration-fast) ease,
-    box-shadow var(--fd-duration-fast) ease, color var(--fd-duration-fast) ease;
+  transition: background-color var(--_fd-duration-fast) ease,
+    border-color var(--_fd-duration-fast) ease,
+    box-shadow var(--_fd-duration-fast) ease, color var(--_fd-duration-fast) ease;
 
-  background: hsl(var(--fd-primary));
-  color: hsl(var(--fd-primary-foreground));
+  background: hsl(var(--_fd-primary));
+  color: hsl(var(--_fd-primary-foreground));
 }
 
 /* Sizes -- --fd-button-padding-x is opt-in (default: each size's own
@@ -51,66 +51,66 @@
    the difference between a true circle and an oval once --fd-button-radius
    is also set to a full round shape. */
 .button--sm {
-  height: var(--fd-control-height-sm);
-  padding: 0 var(--fd-button-padding-x, var(--fd-space-3));
-  font-size: var(--fd-font-size-sm);
+  height: var(--_fd-control-height-sm);
+  padding: 0 var(--fd-button-padding-x, var(--_fd-space-3));
+  font-size: var(--_fd-font-size-sm);
 }
 
 .button--md {
-  height: var(--fd-control-height-md);
-  padding: 0 var(--fd-button-padding-x, var(--fd-space-4));
-  font-size: var(--fd-font-size-sm);
+  height: var(--_fd-control-height-md);
+  padding: 0 var(--fd-button-padding-x, var(--_fd-space-4));
+  font-size: var(--_fd-font-size-sm);
 }
 
 .button--lg {
-  height: var(--fd-control-height-lg);
-  padding: 0 var(--fd-space-5);
-  font-size: var(--fd-font-size-md);
+  height: var(--_fd-control-height-lg);
+  padding: 0 var(--_fd-space-5);
+  font-size: var(--_fd-font-size-md);
 }
 
 /* Variants */
 .button--default {
-  background: hsl(var(--fd-primary));
-  color: hsl(var(--fd-primary-foreground));
+  background: hsl(var(--_fd-primary));
+  color: hsl(var(--_fd-primary-foreground));
 }
 
 .button--default:hover:not(:disabled) {
-  filter: brightness(var(--fd-hover-brightness));
-  box-shadow: var(--fd-shadow-sm) hsla(var(--fd-primary) / 0.3);
+  filter: brightness(var(--_fd-hover-brightness));
+  box-shadow: var(--_fd-shadow-sm) hsla(var(--_fd-primary) / 0.3);
 }
 
 .button--secondary {
-  background: hsl(var(--fd-bg));
-  color: hsl(var(--fd-text));
-  border-color: hsl(var(--fd-border));
+  background: hsl(var(--_fd-bg));
+  color: hsl(var(--_fd-text));
+  border-color: hsl(var(--_fd-border));
 }
 
 .button--secondary:hover:not(:disabled) {
-  background: hsl(var(--fd-bg-muted));
-  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating));
+  background: hsl(var(--_fd-bg-muted));
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
 }
 
 .button--ghost {
   background: transparent;
-  color: hsl(var(--fd-text));
+  color: hsl(var(--_fd-text));
   border-color: transparent;
 }
 
 .button--ghost:hover:not(:disabled) {
-  background: hsl(var(--fd-bg-muted));
-  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-subtle));
+  background: hsl(var(--_fd-bg-muted));
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-subtle));
 }
 
 /* Focus */
 .button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 var(--fd-ring-width)
-    hsl(var(--fd-ring-color));
+  box-shadow: 0 0 0 var(--_fd-ring-width)
+    hsl(var(--_fd-ring-color));
 }
 
 /* Disabled */
 .button:disabled {
-  opacity: var(--fd-disabled-opacity);
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 

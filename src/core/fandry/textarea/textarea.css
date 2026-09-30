@@ -5,33 +5,33 @@
 .form-control {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
 }
 
 .label {
-  font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text));
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text));
 }
 
 .textarea {
-  border: var(--fd-border-width) solid hsl(var(--fd-border));
-  border-radius: var(--fd-radius-md);
-  padding: var(--fd-space-2);
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-md);
+  padding: var(--_fd-space-2);
   font: inherit;
   resize: vertical;
-  background: hsl(var(--fd-bg));
-  color: hsl(var(--fd-text));
+  background: hsl(var(--_fd-bg));
+  color: hsl(var(--_fd-text));
 }
 
 .textarea:focus-visible {
   outline: none;
-  border-color: hsl(var(--fd-border-focus));
-  box-shadow: 0 0 0 var(--fd-ring-offset) hsl(var(--fd-bg)),
-    0 0 0 calc(var(--fd-ring-width) + var(--fd-ring-offset))
-      hsl(var(--fd-ring-color));
+  border-color: hsl(var(--_fd-border-focus));
+  box-shadow: 0 0 0 var(--_fd-ring-offset) hsl(var(--_fd-bg)),
+    0 0 0 calc(var(--_fd-ring-width) + var(--_fd-ring-offset))
+      hsl(var(--_fd-ring-color));
 }
 
 .help-text {
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }

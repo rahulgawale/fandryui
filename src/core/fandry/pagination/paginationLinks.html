@@ -1,9 +1,9 @@
 <template>
-  <nav class="pagination" aria-label="Pagination">
+  <nav class="pagination" part="base" aria-label="Pagination">
     <template if:true={hasPrevious}>
-      <a class="link link--previous" href={previousHref}>
-        <span class="eyebrow">← Previous</span>
-        <span class="title">{previousLabel}</span>
+      <a class="link link--previous" part="link previous" href={previousHref}>
+        <span class="eyebrow" part="eyebrow">← Previous</span>
+        <span class="title" part="title">{previousLabel}</span>
       </a>
     </template>
     <template if:false={hasPrevious}>
@@ -11,9 +11,9 @@
     </template>
 
     <template if:true={hasNext}>
-      <a class="link link--next" href={nextHref}>
-        <span class="eyebrow">Next →</span>
-        <span class="title">{nextLabel}</span>
+      <a class="link link--next" part="link next" href={nextHref}>
+        <span class="eyebrow" part="eyebrow">Next →</span>
+        <span class="title" part="title">{nextLabel}</span>
       </a>
     </template>
     <template if:false={hasNext}>

@@ -6,34 +6,34 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--fd-space-3);
+  gap: var(--_fd-space-3);
 
-  padding: var(--fd-space-3) var(--fd-space-4);
-  border-radius: var(--fd-radius-md);
-  border-left: var(--fd-border-width-lg) solid hsl(var(--fd-accent));
-  background: hsl(var(--fd-bg));
-  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-floating));
+  padding: var(--_fd-space-3) var(--_fd-space-4);
+  border-radius: var(--_fd-radius-md);
+  border-left: var(--_fd-border-width-lg) solid hsl(var(--_fd-accent));
+  background: hsl(var(--_fd-bg));
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
 
-  font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text));
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text));
 
   /* Motion is defined in base/motion.css; see toast.ts / fandry/motion for
      how the toast stays mounted through its exit. */
-  animation: fd-fade-up-in var(--fd-duration-normal) var(--fd-ease-standard);
+  animation: fd-fade-up-in var(--_fd-duration-normal) var(--_fd-ease-standard);
 }
 
 .toast--success {
-  border-left-color: hsl(var(--fd-success));
+  border-left-color: hsl(var(--_fd-success));
 }
 
 .toast--warning {
-  border-left-color: hsl(var(--fd-warning));
+  border-left-color: hsl(var(--_fd-warning));
 }
 
 .toast--danger {
-  border-left-color: hsl(var(--fd-danger));
+  border-left-color: hsl(var(--_fd-danger));
 }
 
 .toast--closing {
-  animation: fd-fade-up-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  animation: fd-fade-up-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
 }

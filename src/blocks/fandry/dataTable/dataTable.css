@@ -17,15 +17,15 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--fd-space-2);
-  margin-bottom: var(--fd-space-3);
+  gap: var(--_fd-space-2);
+  margin-bottom: var(--_fd-space-3);
   /* fandry-select inherits its font, so match the table's text size. */
-  font-size: var(--fd-font-size-sm);
+  font-size: var(--_fd-font-size-sm);
 }
 
 .search {
-  flex: 1 1 var(--fd-control-min-width-sm);
-  max-width: var(--fd-control-max-width-sm);
+  flex: 1 1 var(--_fd-control-min-width-sm);
+  max-width: var(--_fd-control-max-width-sm);
 }
 
 /* fandry-select sizes to its content, so the slot does too -- a fixed slot
@@ -37,7 +37,7 @@
 .toolbar-end {
   display: flex;
   align-items: center;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
   margin-left: auto;
 }
 
@@ -45,9 +45,9 @@
 .columns {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-2);
-  min-width: var(--fd-overlay-min-width-sm);
-  padding: var(--fd-space-1);
+  gap: var(--_fd-space-2);
+  min-width: var(--_fd-overlay-min-width-sm);
+  padding: var(--_fd-space-1);
 }
 
 /* ---- table
@@ -63,36 +63,36 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text));
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text));
 }
 
 .caption {
   text-align: left;
-  padding-bottom: var(--fd-space-2);
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  padding-bottom: var(--_fd-space-2);
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }
 
 th,
 td {
   position: relative;
-  padding: var(--fd-space-2) var(--fd-space-3);
+  padding: var(--_fd-space-2) var(--_fd-space-3);
   text-align: left;
   vertical-align: middle;
-  border-bottom: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-bottom: var(--_fd-border-width) solid hsl(var(--_fd-border));
 }
 
 th {
-  font-weight: var(--fd-font-weight-semibold);
-  color: hsl(var(--fd-text-muted));
+  font-weight: var(--_fd-font-weight-semibold);
+  color: hsl(var(--_fd-text-muted));
   white-space: nowrap;
 }
 
 .sort-button {
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
   border: none;
   background: transparent;
   font: inherit;
@@ -103,16 +103,16 @@ th {
 }
 
 .sort-button:hover {
-  color: hsl(var(--fd-text));
+  color: hsl(var(--_fd-text));
 }
 
 .sort-button:focus-visible {
-  outline: var(--fd-ring-width) solid hsl(var(--fd-ring-color));
-  outline-offset: var(--fd-ring-offset);
+  outline: var(--_fd-ring-width) solid hsl(var(--_fd-ring-color));
+  outline-offset: var(--_fd-ring-offset);
 }
 
 .sort-indicator {
-  font-size: var(--fd-font-size-xs);
+  font-size: var(--_fd-font-size-xs);
 }
 
 .selection-cell {
@@ -124,40 +124,40 @@ th {
 /* Wide enough for Save + Cancel, so entering edit mode doesn't reflow. */
 .actions-cell {
   width: 1px;
-  min-width: calc(var(--fd-control-min-width-sm) * 1.5);
+  min-width: calc(var(--_fd-control-min-width-sm) * 1.5);
   white-space: nowrap;
   text-align: right;
 }
 
 .edit-actions {
   display: inline-flex;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
 }
 
 .empty-row td {
   text-align: center;
-  color: hsl(var(--fd-text-muted));
-  padding: var(--fd-space-5);
+  color: hsl(var(--_fd-text-muted));
+  padding: var(--_fd-space-5);
   border-bottom: none;
 }
 
 /* ---- row states */
 
 tbody tr:hover {
-  background: hsl(var(--fd-bg-muted));
+  background: hsl(var(--_fd-bg-muted));
 }
 
 .row--editing,
 .row--editing:hover {
-  background: hsl(var(--fd-bg-muted));
-  box-shadow: inset var(--fd-border-width-lg) 0 0 hsl(var(--fd-accent));
+  background: hsl(var(--_fd-bg-muted));
+  box-shadow: inset var(--_fd-border-width-lg) 0 0 hsl(var(--_fd-accent));
 }
 
 /* Saving: the row's content breathes, and can't be interacted with until
    the request settles. */
 .row--saving td {
   pointer-events: none;
-  animation: fd-row-saving var(--fd-duration-slowest) ease-in-out infinite;
+  animation: fd-row-saving var(--_fd-duration-slowest) ease-in-out infinite;
 }
 
 /* Saved: a wash of the success colour that fades out. It is an overlay whose
@@ -167,10 +167,10 @@ tbody tr:hover {
   content: '';
   position: absolute;
   inset: 0;
-  background: hsl(var(--fd-success));
+  background: hsl(var(--_fd-success));
   opacity: 0;
   pointer-events: none;
-  animation: fd-row-saved var(--fd-duration-slowest) var(--fd-ease-standard);
+  animation: fd-row-saved var(--_fd-duration-slowest) var(--_fd-ease-standard);
 }
 
 @keyframes fd-row-saving {
@@ -179,7 +179,7 @@ tbody tr:hover {
     opacity: 1;
   }
   50% {
-    opacity: var(--fd-pulse-opacity);
+    opacity: var(--_fd-pulse-opacity);
   }
 }
 
@@ -198,20 +198,20 @@ tbody tr:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--fd-space-3);
-  margin-top: var(--fd-space-3);
-  padding: var(--fd-space-1) var(--fd-space-1) var(--fd-space-2);
+  gap: var(--_fd-space-3);
+  margin-top: var(--_fd-space-3);
+  padding: var(--_fd-space-1) var(--_fd-space-1) var(--_fd-space-2);
 }
 
 .selection {
   display: flex;
   align-items: center;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
 }
 
 .selection-status {
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }
 
 /* ---- multi-record edit */
@@ -219,7 +219,7 @@ tbody tr:hover {
 .bulk {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-3);
+  gap: var(--_fd-space-3);
 }
 
 /* ---- delete confirmation */
@@ -227,11 +227,11 @@ tbody tr:hover {
 .confirm {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-3);
+  gap: var(--_fd-space-3);
 }
 
 .confirm-actions {
   display: flex;
   justify-content: flex-end;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
 }

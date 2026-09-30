@@ -7,7 +7,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-2);
+  gap: var(--_fd-space-2);
   cursor: pointer;
   user-select: none;
 }
@@ -32,27 +32,27 @@
   height: 20px;
   flex: 0 0 36px;
   border-radius: 999px;
-  background: hsl(var(--fd-border));
+  background: hsl(var(--_fd-border));
   display: inline-flex;
   align-items: center;
   padding: 2px;
-  transition: background-color var(--fd-duration-fast) ease,
-    box-shadow var(--fd-duration-fast) ease;
+  transition: background-color var(--_fd-duration-fast) ease,
+    box-shadow var(--_fd-duration-fast) ease;
 }
 
 /* Thumb */
 .thumb {
-  width: var(--fd-size-sm);
-  height: var(--fd-size-sm);
+  width: var(--_fd-size-sm);
+  height: var(--_fd-size-sm);
   border-radius: 50%;
-  background: hsl(var(--fd-bg));
+  background: hsl(var(--_fd-bg));
   transform: translateX(0);
-  transition: transform var(--fd-duration-fast) ease;
+  transition: transform var(--_fd-duration-fast) ease;
 }
 
 /* Checked */
 .input:checked + .track {
-  background: hsl(var(--fd-primary));
+  background: hsl(var(--_fd-primary));
 }
 
 .input:checked + .track .thumb {
@@ -61,18 +61,18 @@
 
 /* Focus */
 .control:focus-within .track {
-  box-shadow: 0 0 0 var(--fd-ring-width)
-    hsl(var(--fd-ring-color));
+  box-shadow: 0 0 0 var(--_fd-ring-width)
+    hsl(var(--_fd-ring-color));
 }
 
 /* Disabled */
 .input:disabled + .track,
 .input:disabled ~ .label {
-  opacity: var(--fd-disabled-opacity);
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
 /* Label */
 .label {
-  font-size: var(--fd-font-size-sm);
+  font-size: var(--_fd-font-size-sm);
 }

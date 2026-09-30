@@ -5,5 +5,5 @@
 .selected {
   margin: var(--fd-space-3) 0 0;
   font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text-muted));
+  color: var(--fd-color-muted);
 }

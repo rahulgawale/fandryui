@@ -5,45 +5,45 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  z-index: var(--fd-z-overlay);
+  z-index: var(--_fd-z-overlay);
 
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--fd-space-4);
+  padding: var(--_fd-space-4);
 
-  background: hsl(var(--fd-backdrop) / var(--fd-backdrop-opacity));
+  background: hsl(var(--_fd-backdrop) / var(--_fd-backdrop-opacity));
 
   /* Motion is defined in base/motion.css; see dialog.ts / fandry/motion for
      how the dialog stays mounted through its exit. */
-  animation: fd-fade-in var(--fd-duration-normal) var(--fd-ease-standard);
+  animation: fd-fade-in var(--_fd-duration-normal) var(--_fd-ease-standard);
 }
 
 .backdrop--closing {
-  animation: fd-fade-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  animation: fd-fade-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
 }
 
 .panel {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-3);
+  gap: var(--_fd-space-3);
 
   width: 100%;
-  min-width: var(--fd-overlay-min-width-sm);
-  max-width: var(--fd-overlay-max-width-md);
-  max-height: calc(100vh - var(--fd-space-5) * 2);
+  min-width: var(--_fd-overlay-min-width-sm);
+  max-width: var(--_fd-overlay-max-width-md);
+  max-height: calc(100vh - var(--_fd-space-5) * 2);
   overflow-y: auto;
 
-  background: hsl(var(--fd-bg));
-  border-radius: var(--fd-radius-lg);
-  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-modal));
-  padding: var(--fd-space-5);
+  background: hsl(var(--_fd-bg));
+  border-radius: var(--_fd-radius-lg);
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-modal));
+  padding: var(--_fd-space-5);
 
-  animation: fd-fade-scale-in var(--fd-duration-normal) var(--fd-ease-emphasized);
+  animation: fd-fade-scale-in var(--_fd-duration-normal) var(--_fd-ease-emphasized);
 }
 
 .backdrop--closing .panel {
-  animation: fd-fade-scale-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  animation: fd-fade-scale-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
 }
 
 .panel:focus {

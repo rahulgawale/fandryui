@@ -5,22 +5,22 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  z-index: var(--fd-z-overlay);
+  z-index: var(--_fd-z-overlay);
 
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: var(--fd-overlay-offset-top) var(--fd-space-4) var(--fd-space-4);
+  padding: var(--_fd-overlay-offset-top) var(--_fd-space-4) var(--_fd-space-4);
 
-  background: hsl(var(--fd-backdrop) / var(--fd-backdrop-opacity));
+  background: hsl(var(--_fd-backdrop) / var(--_fd-backdrop-opacity));
 
   /* Motion is defined in base/motion.css; see command.ts / fandry/motion for
      how the palette stays mounted through its exit. */
-  animation: fd-fade-in var(--fd-duration-normal) var(--fd-ease-standard);
+  animation: fd-fade-in var(--_fd-duration-normal) var(--_fd-ease-standard);
 }
 
 .backdrop--closing {
-  animation: fd-fade-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  animation: fd-fade-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
 }
 
 .panel {
@@ -28,41 +28,41 @@
   flex-direction: column;
 
   width: 100%;
-  max-width: var(--fd-overlay-max-width-md);
-  max-height: calc(100vh - var(--fd-overlay-offset-top) - var(--fd-space-4));
+  max-width: var(--_fd-overlay-max-width-md);
+  max-height: calc(100vh - var(--_fd-overlay-offset-top) - var(--_fd-space-4));
   overflow: hidden;
 
-  background: hsl(var(--fd-bg));
-  border-radius: var(--fd-radius-lg);
-  box-shadow: var(--fd-shadow-sm) hsl(var(--fd-shadow-color-modal));
+  background: hsl(var(--_fd-bg));
+  border-radius: var(--_fd-radius-lg);
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-modal));
 
-  animation: fd-fade-scale-in var(--fd-duration-normal) var(--fd-ease-emphasized);
+  animation: fd-fade-scale-in var(--_fd-duration-normal) var(--_fd-ease-emphasized);
 }
 
 .backdrop--closing .panel {
-  animation: fd-fade-scale-out var(--fd-duration-fast) var(--fd-ease-standard) forwards;
+  animation: fd-fade-scale-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
 }
 
 .search {
   flex-shrink: 0;
-  border-bottom: var(--fd-border-width) solid hsl(var(--fd-border));
+  border-bottom: var(--_fd-border-width) solid hsl(var(--_fd-border));
 }
 
 .input {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  padding: var(--fd-space-3) var(--fd-space-4);
+  padding: var(--_fd-space-3) var(--_fd-space-4);
 
   font: inherit;
-  font-size: var(--fd-font-size-md);
-  color: hsl(var(--fd-text));
+  font-size: var(--_fd-font-size-md);
+  color: hsl(var(--_fd-text));
   background: transparent;
   border: none;
 }
 
 .input::placeholder {
-  color: hsl(var(--fd-text-muted));
+  color: hsl(var(--_fd-text-muted));
 }
 
 /* The palette is the whole point of the screen, and this is its one tab
@@ -75,42 +75,42 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: var(--fd-space-2);
+  padding: var(--_fd-space-2);
 }
 
 .option {
   display: flex;
   align-items: baseline;
-  gap: var(--fd-space-3);
-  padding: var(--fd-space-2) var(--fd-space-3);
-  border-radius: var(--fd-radius-sm);
+  gap: var(--_fd-space-3);
+  padding: var(--_fd-space-2) var(--_fd-space-3);
+  border-radius: var(--_fd-radius-sm);
   cursor: pointer;
 }
 
 .option--active {
-  background: hsl(var(--fd-bg-muted));
+  background: hsl(var(--_fd-bg-muted));
 }
 
 .option--disabled {
-  opacity: var(--fd-disabled-opacity);
+  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
 .option-description {
   margin-left: auto;
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }
 
 .group-label {
-  padding: var(--fd-space-2) var(--fd-space-3) var(--fd-space-1);
-  font-size: var(--fd-font-size-xs);
-  color: hsl(var(--fd-text-muted));
+  padding: var(--_fd-space-2) var(--_fd-space-3) var(--_fd-space-1);
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text-muted));
 }
 
 .empty {
-  padding: var(--fd-space-4);
+  padding: var(--_fd-space-4);
   text-align: center;
-  font-size: var(--fd-font-size-sm);
-  color: hsl(var(--fd-text-muted));
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text-muted));
 }

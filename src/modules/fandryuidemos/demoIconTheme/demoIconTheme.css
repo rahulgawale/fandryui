@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.narrow {
+  max-width: 20rem;
+}
+
+fandry-icon::part(base) {
+  box-sizing: content-box;
+  padding: 0.5rem;
+  color: hsl(45 90% 45%);
+  background: hsl(45 90% 94%);
+  border-radius: 999px;
+}
+
+/* A per-component hook: the icon's size. */
+.large {
+  --fd-icon-size: 2.5rem;
+}

@@ -1,0 +1,31 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.narrow {
+  max-width: 20rem;
+}
+
+fandry-tooltip::part(panel) {
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  background: hsl(160 84% 26%);
+  border-radius: 0.5rem;
+}
+
+fandry-tooltip::part(arrow) {
+  background: hsl(160 84% 26%);
+}

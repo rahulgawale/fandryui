@@ -12,7 +12,7 @@
      flush against the *previous* crumb's text and only has breathing room
      on its *other* side (confirmed live: "Documents/ Projects" instead of
      "Documents / Projects"). Matching the gap here makes it symmetric. */
-  gap: var(--fd-space-1);
+  gap: var(--_fd-space-1);
 
   margin: 0;
   padding: 0;

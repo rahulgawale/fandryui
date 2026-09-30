@@ -64,12 +64,19 @@ If you are unsure whether something belongs in core/fandry/, it probably does no
 
 This is a **component library**, not a production application.
 
-✅ Good:
+Every token has two names. A site **sets** the public `--fd-*` name (on
+`:root`, a section, or one element) to theme everything below it. A
+component **reads** the private `--_fd-*` name, which `tokens.css` resolves
+from the public one or the default. `tokens.css` never declares a public
+name: declaring it on `:host` is what would stop a site's value at the
+shadow boundary.
+
+✅ Good (inside a primitive, a block, or anything that extends Base):
 
 ```css
-border-radius: var(--fd-radius-sm);
-padding: var(--fd-space-2);
-color: hsl(var(--fd-text));
+border-radius: var(--_fd-radius-sm);
+padding: var(--_fd-space-2);
+color: hsl(var(--_fd-text));
 ```
 
 ❌ Bad:
@@ -87,12 +94,25 @@ Hard-coded values:
 - Create inconsistency
 - Are not acceptable in primitives
 
-If a token doesn't exist, add it to `fandry/base/tokens.css` first.
+If a token doesn't exist, add it to `fandry/base/tokens.css` first, as
+`--_fd-name: var(--fd-name, default);`.
+
+### Parts
+
+Every element a site might reasonably restyle carries a `part`, named from
+the shared vocabulary in `componentsData`'s `PART_DESCRIPTIONS` (`base` for
+the single outermost element; `label`, `control`, `input`, `help-text`,
+`indicator`, `panel`, `option`, ...). Reuse a name that means the same thing
+before inventing one. `part` on a child fandry-* component is taken as a
+property and never reaches the DOM: expose the child's element with
+`exportparts="base: name"` instead. A component's `parts` list in
+`componentsData` must match its templates; `parts.test.ts` checks it. Parts
+are public API: renaming or removing one is a breaking change.
 
 ### Motion
 
 Motion is CSS-first and lives inside the component that owns it. Use the
-`--fd-duration-*`/`--fd-ease-*` tokens and the keyframes in
+`--_fd-duration-*`/`--_fd-ease-*` tokens and the keyframes in
 `fandry/base/motion.css`; animate `opacity` and transforms, not layout. A
 transient primitive (one that mounts/unmounts a panel) stays mounted until
 its exit animation has finished, via `exitFinished()` from `fandry/motion` —

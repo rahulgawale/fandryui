@@ -1,9 +1,9 @@
 <template>
-  <div class="form-control">
+  <div class="form-control" part="base">
     <template if:true={hasLabel}>
-      <span class="label" id="radio-group-label">{label}</span>
+      <span class="label" part="label" id="radio-group-label">{label}</span>
     </template>
-    <div class="radio-group" role="radiogroup" aria-labelledby={labelledBy} aria-label={ariaLabel}>
+    <div class="radio-group" part="list" role="radiogroup" aria-labelledby={labelledBy} aria-label={ariaLabel}>
       <slot onslotchange={handleSlotChange}></slot>
     </div>
   </div>

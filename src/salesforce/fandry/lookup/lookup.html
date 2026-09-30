@@ -2,26 +2,27 @@
   <!-- Every native <button> here carries tabindex="0": macOS Safari skips
        buttons in the Tab order (and won't keep programmatic focus on them)
        unless they have one -- see fandry-button. -->
-  <div class="form-control">
+  <div class="form-control" part="base">
     <template if:true={hasLabel}>
-      <label id="label" class="label" for="input">
+      <label id="label" class="label" part="label" for="input">
         <slot name="label">
           {label}
           <template if:true={required}>
-            <span class="required" aria-hidden="true">*</span>
+            <span class="required" part="required" aria-hidden="true">*</span>
           </template>
         </slot>
       </label>
     </template>
 
     <div class="control">
-      <div class="field" onmousedown={handleFieldMouseDown} onclick={handleFieldClick}>
+      <div class="field" part="control" onmousedown={handleFieldMouseDown} onclick={handleFieldClick}>
         <template if:true={showSelected}>
-          <div class="selected" role="group" aria-labelledby="label">
-            <span class={selectedLabelClasses}>{selectedLabel}</span>
+          <div class="selected" part="selected" role="group" aria-labelledby="label">
+            <span class={selectedLabelClasses} part="selected-label">{selectedLabel}</span>
             <button
               type="button"
               class="clear"
+              part="clear-button"
               tabindex="0"
               aria-label={clearLabel}
               disabled={disabled}
@@ -35,13 +36,14 @@
         </template>
 
         <template if:true={showInput}>
-          <div class="tokens">
+          <div class="tokens" part="chips">
             <template for:each={chips} for:item="chip">
-              <span key={chip.id} class="pill">
-                <span class={chip.labelClasses}>{chip.label}</span>
+              <span key={chip.id} class="pill" part="chip">
+                <span class={chip.labelClasses} part="chip-label">{chip.label}</span>
                 <button
                   type="button"
                   class="pill-remove"
+                  part="chip-remove"
                   tabindex="0"
                   data-record-id={chip.id}
                   aria-label={chip.removeLabel}
@@ -58,6 +60,7 @@
             <input
               id="input"
               class="input"
+              part="input"
               type="text"
               autocomplete="off"
               data-name={name}
@@ -81,30 +84,32 @@
           </div>
 
           <template if:true={hasChips}>
-            <button type="button" class="clear-all" tabindex="0" disabled={disabled} onclick={handleClearAll}>Clear all</button>
+            <button type="button" class="clear-all" part="clear-all" tabindex="0" disabled={disabled} onclick={handleClearAll}>Clear all</button>
           </template>
         </template>
       </div>
 
       <template if:true={showPanel}>
-        <div class={panelClasses} inert={panelInert} onmousedown={handleListboxMouseDown}>
+        <div class={panelClasses} part="panel" inert={panelInert} onmousedown={handleListboxMouseDown}>
           <div
             id="listbox"
             class="listbox"
+            part="listbox"
             role="listbox"
             aria-busy={ariaBusy}
             aria-multiselectable={ariaMultiselectable}
           >
             <template for:each={renderGroups} for:item="group">
-              <div key={group.key} class="group" role="group" aria-label={group.label}>
+              <div key={group.key} class="group" part="group" role="group" aria-label={group.label}>
                 <template if:true={group.hasLabel}>
-                  <div class="group-label" aria-hidden="true">{group.label}</div>
+                  <div class="group-label" part="group-label" aria-hidden="true">{group.label}</div>
                 </template>
                 <template for:each={group.options} for:item="option">
                   <div
                     key={option.id}
                     id={option.id}
                     class={option.classes}
+                    part="option"
                     role="option"
                     data-option-id={option.id}
                     aria-selected={option.ariaSelected}
@@ -116,9 +121,9 @@
                       <lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component>
                     </template>
                     <template if:false={option.component}>
-                      <span class="option-label">{option.label}</span>
+                      <span class="option-label" part="option-label">{option.label}</span>
                       <template if:true={option.hasDescription}>
-                        <span class="option-description">{option.description}</span>
+                        <span class="option-description" part="option-description">{option.description}</span>
                       </template>
                     </template>
                   </div>
@@ -130,21 +135,21 @@
           <!-- Below the results, not above: inserting it above would push the
                (stale) list down every time a search starts. -->
           <template if:true={searching}>
-            <div class="status">
+            <div class="status" part="status">
               <fandry-spinner size="sm" label="Searching"></fandry-spinner>
               <span aria-hidden="true">Searching…</span>
             </div>
           </template>
 
           <template if:true={showEmpty}>
-            <div class="empty"><slot name="empty">No records found</slot></div>
+            <div class="empty" part="empty"><slot name="empty">No records found</slot></div>
           </template>
         </div>
       </template>
     </div>
 
     <template if:true={hasHelpText}>
-      <div id="help-text" class="help-text">{helpText}</div>
+      <div id="help-text" class="help-text" part="help-text">{helpText}</div>
     </template>
   </div>
 </template>

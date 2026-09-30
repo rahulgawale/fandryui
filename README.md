@@ -167,7 +167,8 @@ consumer writes:
 
 - **Tokens** (`src/core/fandry/base/tokens.css`): `--fd-duration-fast` (120ms),
   `--fd-duration-normal` (200ms), `--fd-duration-slow` (320ms),
-  `--fd-ease-standard`, `--fd-ease-emphasized`. Components enter with
+  `--fd-ease-standard`, `--fd-ease-emphasized` -- set on any ancestor to change
+  them, like every other token (components read them as `--_fd-*`). Components enter with
   `normal` and exit with `fast`.
 - **Primitives** (`src/core/fandry/base/motion.css`): internal `@keyframes` for
   fade, fade-up, fade-scale, and slide (each with an `-in`/`-out` pair). They

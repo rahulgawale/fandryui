@@ -1,3 +1,19 @@
+/* ---- How theming works ----
+   Every token has a public name, --fd-*, and a private one, --_fd-*.
+
+   A site sets the public name wherever it wants the change to apply -- on
+   :root for the whole site, on a section, or on one element -- and it flows
+   into every fandry-* component below it, across their shadow roots:
+
+     :root  { --fd-radius-md: 0; --fd-primary: 222 47% 11%; }
+     .promo { --fd-bg: 38 92% 95%; }
+
+   This file never declares a public name. It declares each private one from
+   the public one, falling back to the default below, and components read
+   only the private names. (Declaring the public names here, on :host, is
+   what used to stop a site's values at every component's shadow boundary:
+   a component's own declaration beats an inherited one.) */
+
 :host {
   /* ---- Colors (HSL, no commas) ----
      Lightness on primary/accent/success/warning is darkened from the
@@ -8,57 +24,52 @@
      2.14:1). Same hue/saturation, lightness only, each now clears 4.5:1
      with a small margin (~4.7-4.9:1). --fd-danger was already compliant
      (4.80:1) and is unchanged. */
-  /* var(--brand-primary, ...) first -- same pattern as --fd-font-heading
-     below: a page-level source of truth (nothing declares it by default,
-     so this falls back to the literal), settable at runtime via
-     document.documentElement.style.setProperty('--brand-primary', ...)
-     (see heroDemoGrid.ts's "Apply theme" handler) so retheming actually
-     cascades into every fandry-* primitive's shadow root instead of being
-     shadowed by this file's own :host declaration. */
-  --fd-primary: var(--brand-primary, 330 81% 48%);
-  --fd-primary-foreground: 0 0% 100%;
+  /* --brand-primary / --brand-accent are the older way to set these two, and
+     still work when --fd-primary / --fd-accent are not set (heroDemoGrid.ts's
+     "Apply theme" sets them on <html> at runtime). */
+  --_fd-primary: var(--fd-primary, var(--brand-primary, 330 81% 48%));
+  --_fd-primary-foreground: var(--fd-primary-foreground, 0 0% 100%);
 
-  /* var(--brand-accent, ...) -- see --fd-primary's identical note above. */
-  --fd-accent: var(--brand-accent, 199 89% 36%);
-  --fd-accent-foreground: 0 0% 100%;
+  --_fd-accent: var(--fd-accent, var(--brand-accent, 199 89% 36%));
+  --_fd-accent-foreground: var(--fd-accent-foreground, 0 0% 100%);
 
-  --fd-success: 142 71% 30%;
-  --fd-success-foreground: 0 0% 100%;
+  --_fd-success: var(--fd-success, 142 71% 30%);
+  --_fd-success-foreground: var(--fd-success-foreground, 0 0% 100%);
 
-  --fd-warning: 38 92% 32%;
-  --fd-warning-foreground: 0 0% 100%;
+  --_fd-warning: var(--fd-warning, 38 92% 32%);
+  --_fd-warning-foreground: var(--fd-warning-foreground, 0 0% 100%);
 
-  --fd-danger: 0 72% 51%;
-  --fd-danger-foreground: 0 0% 100%;
+  --_fd-danger: var(--fd-danger, 0 72% 51%);
+  --_fd-danger-foreground: var(--fd-danger-foreground, 0 0% 100%);
 
   /* Distinct hue from --fd-primary, lightness picked the same way (see
      block comment above): clears 8.5:1 against a white background, well
      past WCAG AA's 4.5:1 floor. */
-  --fd-link-visited: 271 55% 40%;
+  --_fd-link-visited: var(--fd-link-visited, 271 55% 40%);
 
-  --fd-bg: 0 0% 100%;
-  --fd-bg-muted: 220 14% 96%;
+  --_fd-bg: var(--fd-bg, 0 0% 100%);
+  --_fd-bg-muted: var(--fd-bg-muted, 220 14% 96%);
 
-  --fd-text: 222 47% 11%;
-  --fd-text-muted: 220 9% 46%;
+  --_fd-text: var(--fd-text, 222 47% 11%);
+  --_fd-text-muted: var(--fd-text-muted, 220 9% 46%);
 
-  --fd-border: 220 13% 91%;
-  --fd-border-focus: 222 89% 56%;
-  --fd-border-width: 1px;
-  --fd-border-width-md: 1.5px;
-  --fd-border-width-lg: 3px;
+  --_fd-border: var(--fd-border, 220 13% 91%);
+  --_fd-border-focus: var(--fd-border-focus, 222 89% 56%);
+  --_fd-border-width: var(--fd-border-width, 1px);
+  --_fd-border-width-md: var(--fd-border-width-md, 1.5px);
+  --_fd-border-width-lg: var(--fd-border-width-lg, 3px);
 
   /* ---- Surface tint (semantic-color-derived backgrounds) ---- */
-  --fd-surface-tint: 12%;
+  --_fd-surface-tint: var(--fd-surface-tint, 12%);
 
   /* ---- Pulse (loading-state opacity dip, e.g. fandry-skeleton) ---- */
-  --fd-pulse-opacity: 0.5;
+  --_fd-pulse-opacity: var(--fd-pulse-opacity, 0.5);
 
   /* ---- Disabled state ---- */
-  --fd-disabled-opacity: 0.5;
+  --_fd-disabled-opacity: var(--fd-disabled-opacity, 0.5);
 
   /* ---- Elevation (hover/pressed shadows) ---- */
-  --fd-shadow-sm: 0 2px 8px;
+  --_fd-shadow-sm: var(--fd-shadow-sm, 0 2px 8px);
 
   /* ---- Shadow colors (hsl channels + alpha, used as `hsl(var(...))`).
      Paired with --fd-shadow-sm above: a floating panel casts a lighter
@@ -66,120 +77,120 @@
      (floating) and fandry-command (modal); popover, tooltip, toast and
      dialog use them too. --fd-shadow-color-subtle is the lighter one
      for a button's hover/pressed lift. ---- */
-  --fd-shadow-color-floating: 0 0% 0% / 0.15;
-  --fd-shadow-color-modal: 0 0% 0% / 0.25;
-  --fd-shadow-color-subtle: 0 0% 0% / 0.1;
-  --fd-hover-brightness: 1.1;
+  --_fd-shadow-color-floating: var(--fd-shadow-color-floating, 0 0% 0% / 0.15);
+  --_fd-shadow-color-modal: var(--fd-shadow-color-modal, 0 0% 0% / 0.25);
+  --_fd-shadow-color-subtle: var(--fd-shadow-color-subtle, 0 0% 0% / 0.1);
+  --_fd-hover-brightness: var(--fd-hover-brightness, 1.1);
 
   /* ---- Stacking (floating overlay panels -- fandry-popover, fandry-tooltip).
      One shared token so a host page that already runs its own high
      z-index scale (e.g. an SLDS org, where modals/toasts commonly sit in
      the thousands) can lift every fandry-* overlay above it by overriding
      this single value, instead of chasing per-component z-indexes. ---- */
-  --fd-z-overlay: 50;
+  --_fd-z-overlay: var(--fd-z-overlay, 50);
 
   /* ---- Overlay backdrop (fandry-dialog's scrim behind the modal panel) ---- */
-  --fd-backdrop: 222 47% 11%;
-  --fd-backdrop-opacity: 0.6;
+  --_fd-backdrop: var(--fd-backdrop, 222 47% 11%);
+  --_fd-backdrop-opacity: var(--fd-backdrop-opacity, 0.6);
 
   /* ---- Fixed-height controls (buttons, and similar) ---- */
-  --fd-control-height-sm: 32px;
-  --fd-control-height-md: 36px;
-  --fd-control-height-lg: 40px;
+  --_fd-control-height-sm: var(--fd-control-height-sm, 32px);
+  --_fd-control-height-md: var(--fd-control-height-md, 36px);
+  --_fd-control-height-lg: var(--fd-control-height-lg, 40px);
 
   /* ---- Max-width cap for a standalone control (e.g. a search box that
      shouldn't stretch full-width of its container) ---- */
-  --fd-control-max-width-sm: 16rem;
+  --_fd-control-max-width-sm: var(--fd-control-max-width-sm, 16rem);
 
   /* ---- Min-width floor for a text field that shares a row with other
      content (e.g. fandry-lookup's input beside its chips) -- below this it
      wraps to its own line instead of shrinking to nothing. ---- */
-  --fd-control-min-width-sm: 8rem;
+  --_fd-control-min-width-sm: var(--fd-control-min-width-sm, 8rem);
 
   /* ---- Max-height of a scrolling option list (fandry-combobox,
      fandry-lookup) before it scrolls. ---- */
-  --fd-listbox-max-height: 16rem;
+  --_fd-listbox-max-height: var(--fd-listbox-max-height, 16rem);
 
   /* ---- Min-width floor for a floating panel with no trigger of its own to
      size against (e.g. fandry-menu -- unlike fandry-select's listbox, which sizes
      itself off its trigger button via `min-width: 100%`). ---- */
-  --fd-overlay-min-width-sm: 10rem;
+  --_fd-overlay-min-width-sm: var(--fd-overlay-min-width-sm, 10rem);
 
   /* ---- Max-width cap for a floating overlay panel's content (e.g.
      fandry-tooltip's bubble) -- kept separate from
      --fd-control-max-width-sm even though the two currently share a
      value: one caps a form control, the other caps a block of prose, and
      a consumer should be able to size those independently. ---- */
-  --fd-overlay-max-width-sm: 16rem;
+  --_fd-overlay-max-width-sm: var(--fd-overlay-max-width-sm, 16rem);
 
   /* ---- Max-width cap for a larger floating overlay's content (e.g.
      fandry-dialog's panel) -- a step up from --fd-overlay-max-width-sm's
      tooltip-bubble sizing, for content with real structure (a heading, a
      paragraph, a row of actions) rather than a short line of prose. ---- */
-  --fd-overlay-max-width-md: 32rem;
+  --_fd-overlay-max-width-md: var(--fd-overlay-max-width-md, 32rem);
 
   /* ---- Distance from the top of the viewport to a top-anchored modal panel
      (e.g. fandry-command's palette) -- sits in the upper third, where the
      eye already is, rather than dead-center like fandry-dialog. ---- */
-  --fd-overlay-offset-top: 15vh;
+  --_fd-overlay-offset-top: var(--fd-overlay-offset-top, 15vh);
 
   /* ---- Focus ring (explicit, shared) ---- */
-  --fd-ring-color: 222 89% 56%;
-  --fd-ring-width: 2px;
-  --fd-ring-offset: 0px;
+  --_fd-ring-color: var(--fd-ring-color, 222 89% 56%);
+  --_fd-ring-width: var(--fd-ring-width, 2px);
+  --_fd-ring-offset: var(--fd-ring-offset, 0px);
 
   /* ---- Radius ---- */
-  --fd-radius-sm: 0.25rem;
-  --fd-radius-md: 0.375rem;
-  --fd-radius-lg: 0.5rem;
+  --_fd-radius-sm: var(--fd-radius-sm, 0.25rem);
+  --_fd-radius-md: var(--fd-radius-md, 0.375rem);
+  --_fd-radius-lg: var(--fd-radius-lg, 0.5rem);
 
   /* ---- Spacing ---- */
-  --fd-space-1: 0.25rem;
-  --fd-space-2: 0.5rem;
-  --fd-space-3: 0.75rem;
-  --fd-space-4: 1rem;
-  --fd-space-5: 1.25rem;
+  --_fd-space-1: var(--fd-space-1, 0.25rem);
+  --_fd-space-2: var(--fd-space-2, 0.5rem);
+  --_fd-space-3: var(--fd-space-3, 0.75rem);
+  --_fd-space-4: var(--fd-space-4, 1rem);
+  --_fd-space-5: var(--fd-space-5, 1.25rem);
 
   /* ---- Size scale (icons, spinners) ---- */
-  --fd-size-xs: 0.75rem;
-  --fd-size-sm: 1rem;
-  --fd-size-md: 1.5rem;
-  --fd-size-lg: 2rem;
+  --_fd-size-xs: var(--fd-size-xs, 0.75rem);
+  --_fd-size-sm: var(--fd-size-sm, 1rem);
+  --_fd-size-md: var(--fd-size-md, 1.5rem);
+  --_fd-size-lg: var(--fd-size-lg, 2rem);
 
   /* ---- Border-drawn dropdown caret (fandry-combobox), sized relative to
      the surrounding text. ---- */
-  --fd-chevron-size: 0.4em;
+  --_fd-chevron-size: var(--fd-chevron-size, 0.4em);
 
   /* ---- Avatar size scale -- kept independent of --fd-size-* above.
      Icons/spinners are decorative glyphs that read fine small; an avatar
      carries a face or initials, so it needs to stay legible even at its
      smallest size. ---- */
-  --fd-avatar-size-sm: 1.5rem;
-  --fd-avatar-size-md: 2.25rem;
-  --fd-avatar-size-lg: 3rem;
+  --_fd-avatar-size-sm: var(--fd-avatar-size-sm, 1.5rem);
+  --_fd-avatar-size-md: var(--fd-avatar-size-md, 2.25rem);
+  --_fd-avatar-size-lg: var(--fd-avatar-size-lg, 3rem);
 
   /* ---- Motion ----
      Transition/enter/exit durations -- the three a component reaches for.
      Exits use --fd-duration-fast (leaving should feel quicker than
      arriving); see base/motion.css for the shared keyframes and the
      prefers-reduced-motion override at the bottom of this file. */
-  --fd-duration-fast: 120ms;
-  --fd-duration-normal: 200ms;
-  --fd-duration-slow: 320ms;
+  --_fd-duration-fast: var(--fd-duration-fast, 120ms);
+  --_fd-duration-normal: var(--fd-duration-normal, 200ms);
+  --_fd-duration-slow: var(--fd-duration-slow, 320ms);
 
   /* Looping indicators (spinner, skeleton, indeterminate progress) -- a
      separate scale from the transition durations above: they convey "still
      working" rather than a state change, so prefers-reduced-motion leaves
      them running. */
-  --fd-duration-spin: 0.6s;
-  --fd-duration-slowest: 1.5s;
+  --_fd-duration-spin: var(--fd-duration-spin, 0.6s);
+  --_fd-duration-slowest: var(--fd-duration-slowest, 1.5s);
 
   /* standard: symmetric UI movement and everything that exits.
      emphasized: a large surface arriving (e.g. fandry-dialog's panel) --
      decelerates harder so it settles rather than just stops. */
-  --fd-ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  --fd-ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
-  --fd-ease-in-out: var(--fd-ease-standard);
+  --_fd-ease-standard: var(--fd-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+  --_fd-ease-emphasized: var(--fd-ease-emphasized, cubic-bezier(0.05, 0.7, 0.1, 1));
+  --_fd-ease-in-out: var(--fd-ease-in-out, var(--_fd-ease-standard));
 
   /* ---- Font ----
      var(--font-*, ...) first -- those are the page-level source of truth
@@ -188,30 +199,30 @@
      loads global.css gets its brand fonts; the literal fallback after is
      what a standalone context without that :root (e.g. a Salesforce org)
      gets instead. */
-  --fd-font-sans: var(--font-body, "Inter"), ui-sans-serif, system-ui,
+  --_fd-font-sans: var(--fd-font-sans, var(--font-body, "Inter"), ui-sans-serif, system-ui,
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
-  --fd-font-mono: var(--font-code, "Geist Mono"), ui-monospace,
-    SFMono-Regular, Menlo, monospace;
+    Arial, sans-serif);
+  --_fd-font-mono: var(--fd-font-mono, var(--font-code, "Geist Mono"), ui-monospace,
+    SFMono-Regular, Menlo, monospace);
 
-  --fd-font-size-xs: 0.75rem;
-  --fd-font-size-sm: 0.875rem;
-  --fd-font-size-md: 1rem;
-  --fd-font-size-lg: 1.125rem;
-  --fd-font-size-xl: 1.5rem;
-  --fd-font-size-2xl: 1.875rem;
-  --fd-font-size-3xl: 2.25rem;
+  --_fd-font-size-xs: var(--fd-font-size-xs, 0.75rem);
+  --_fd-font-size-sm: var(--fd-font-size-sm, 0.875rem);
+  --_fd-font-size-md: var(--fd-font-size-md, 1rem);
+  --_fd-font-size-lg: var(--fd-font-size-lg, 1.125rem);
+  --_fd-font-size-xl: var(--fd-font-size-xl, 1.5rem);
+  --_fd-font-size-2xl: var(--fd-font-size-2xl, 1.875rem);
+  --_fd-font-size-3xl: var(--fd-font-size-3xl, 2.25rem);
 
-  --fd-line-height-normal: 1.5;
-  --fd-line-height-tight: 1.25;
+  --_fd-line-height-normal: var(--fd-line-height-normal, 1.5);
+  --_fd-line-height-tight: var(--fd-line-height-tight, 1.25);
 
-  --fd-font-weight-medium: 500;
-  --fd-font-weight-semibold: 600;
-  --fd-font-weight-bold: 700;
+  --_fd-font-weight-medium: var(--fd-font-weight-medium, 500);
+  --_fd-font-weight-semibold: var(--fd-font-weight-semibold, 600);
+  --_fd-font-weight-bold: var(--fd-font-weight-bold, 700);
 
-  --fd-font-heading: var(--font-heading, "Sora"), var(--fd-font-sans);
-  --fd-heading-weight: 600;
-  --fd-heading-letter-spacing: -0.01em;
+  --_fd-font-heading: var(--fd-font-heading, var(--font-heading, "Sora"), var(--_fd-font-sans));
+  --_fd-heading-weight: var(--fd-heading-weight, 600);
+  --_fd-heading-letter-spacing: var(--fd-heading-letter-spacing, -0.01em);
 }
 
 /* ---- Reduced motion ----
@@ -221,8 +232,8 @@
    lands instantly. Nothing for a consumer to opt into. */
 @media (prefers-reduced-motion: reduce) {
   :host {
-    --fd-duration-fast: 0ms;
-    --fd-duration-normal: 0ms;
-    --fd-duration-slow: 0ms;
+    --_fd-duration-fast: 0ms;
+    --_fd-duration-normal: 0ms;
+    --_fd-duration-slow: 0ms;
   }
 }

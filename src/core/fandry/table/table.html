@@ -7,7 +7,7 @@
       a bubbling "input" event with the search string as `.detail`, the
       same contract fandry-input already fulfills.
     -->
-    <div class="table-toolbar" oninput={handleGlobalFilterInput}>
+    <div class="table-toolbar" part="toolbar" oninput={handleGlobalFilterInput}>
       <slot name="search">
         <fandry-input
           placeholder={globalFilterPlaceholder}
@@ -17,10 +17,10 @@
       </slot>
     </div>
   </template>
-  <div class="table-wrapper">
-    <table class={tableClasses} aria-busy={loading}>
+  <div class="table-wrapper" part="container">
+    <table class={tableClasses} part="table" aria-busy={loading}>
       <template if:true={hasCaption}>
-        <caption class="caption">{caption}</caption>
+        <caption class="caption" part="caption">{caption}</caption>
       </template>
       <thead>
         <!--
@@ -29,14 +29,14 @@
           named <slot> (below) isn't allowed to appear inside a `for:each`
           iterator, so this can't be written as a for:each over headerGroups.
         -->
-        <tr>
+        <tr part="header-row">
           <template if:true={enableRowSelection}>
             <!--
               `onchange` delegated onto the <th> (see the search toolbar
               comment above for why) -- slot="selection-all" to replace
               the default "select all" control.
             -->
-            <th class="selection-cell" scope="col" onchange={handleToggleAllRowsSelected}>
+            <th class="selection-cell" part="header-cell selection-cell" scope="col" onchange={handleToggleAllRowsSelected}>
               <template if:true={enableMultiRowSelection}>
                 <slot name="selection-all">
                   <fandry-checkbox
@@ -50,21 +50,22 @@
             </th>
           </template>
           <template for:each={headerGroup.headers} for:item="header">
-            <th key={header.id} scope="col" aria-sort={header.ariaSort}>
+            <th key={header.id} part="header-cell" scope="col" aria-sort={header.ariaSort}>
               <template if:true={header.canSort}>
                 <button
                   type="button"
                   class="sort-button"
+                  part="sort-button"
                   data-column-id={header.columnId}
                   onclick={handleHeaderClick}
                   lwc:spread={resolvedSortButtonProps}
                 >
-                  <span class="header-label">{header.label}</span>
-                  <span class="sort-indicator" aria-hidden="true">{header.sortIndicator}</span>
+                  <span class="header-label" part="header-label">{header.label}</span>
+                  <span class="sort-indicator" part="sort-indicator" aria-hidden="true">{header.sortIndicator}</span>
                 </button>
               </template>
               <template if:false={header.canSort}>
-                <span class="header-label">{header.label}</span>
+                <span class="header-label" part="header-label">{header.label}</span>
               </template>
             </th>
           </template>
@@ -73,14 +74,14 @@
       <tbody>
         <template if:true={loading}>
           <template for:each={loadingRows} for:item="loadingRow">
-            <tr key={loadingRow} class="loading-row" aria-hidden="true">
+            <tr key={loadingRow} class="loading-row" part="row loading-row" aria-hidden="true">
               <template if:true={enableRowSelection}>
-                <td class="selection-cell">
+                <td class="selection-cell" part="cell selection-cell">
                   <fandry-skeleton variant="circle"></fandry-skeleton>
                 </td>
               </template>
               <template for:each={loadingCells} for:item="loadingCell">
-                <td key={loadingCell}>
+                <td key={loadingCell} part="cell">
                   <fandry-skeleton variant="text"></fandry-skeleton>
                 </td>
               </template>
@@ -90,9 +91,9 @@
         <template if:false={loading}>
           <template if:true={hasRows}>
             <template for:each={rows} for:item="row">
-              <tr key={row.id} data-row-id={row.id} onclick={handleRowClick}>
+              <tr key={row.id} part="row" data-row-id={row.id} onclick={handleRowClick}>
                 <template if:true={enableRowSelection}>
-                  <td class="selection-cell" onclick={handleSelectionCellClick}>
+                  <td class="selection-cell" part="cell selection-cell" onclick={handleSelectionCellClick}>
                     <fandry-checkbox
                       checked={row.selected}
                       data-row-id={row.id}
@@ -102,14 +103,14 @@
                   </td>
                 </template>
                 <template for:each={row.cells} for:item="cell">
-                  <td key={cell.id}>{cell.value}</td>
+                  <td key={cell.id} part="cell">{cell.value}</td>
                 </template>
               </tr>
             </template>
           </template>
           <template if:false={hasRows}>
-            <tr class="empty-row">
-              <td class="empty-cell" colspan={columnCount}>
+            <tr class="empty-row" part="row empty-row">
+              <td class="empty-cell" part="cell empty" colspan={columnCount}>
                 <slot name="empty">No data</slot>
               </td>
             </tr>
@@ -119,8 +120,8 @@
     </table>
   </div>
   <template if:true={hasFooter}>
-    <div class="table-footer">
-      <span class="selection-status">{selectionStatus}</span>
+    <div class="table-footer" part="footer">
+      <span class="selection-status" part="selection-status">{selectionStatus}</span>
       <template if:true={enablePagination}>
         <!--
           `onchange` is delegated onto the wrapper (see the search toolbar
@@ -132,7 +133,7 @@
           already fulfills; read the current page state via `pagechange` or
           getTanstackTable().
         -->
-        <div class="pagination" onchange={handlePageChange}>
+        <div class="pagination" part="pagination" onchange={handlePageChange}>
           <slot name="pagination">
             <fandry-pagination page-index={pageIndex} page-count={totalPages}></fandry-pagination>
           </slot>

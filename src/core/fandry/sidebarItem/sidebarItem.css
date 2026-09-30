@@ -5,34 +5,34 @@
 /* Holds the tab stop; the <a> is tabindex="-1" (see Base.activateAnchorOnEnter). */
 .tab-stop {
   display: block;
-  border-radius: var(--fd-radius-md);
+  border-radius: var(--_fd-radius-md);
 }
 
 .item {
   display: block;
-  padding: var(--fd-space-2) var(--fd-space-3);
-  border-radius: var(--fd-radius-md);
-  color: hsl(var(--fd-text-muted));
-  font-size: var(--fd-font-size-sm);
+  padding: var(--_fd-space-2) var(--_fd-space-3);
+  border-radius: var(--_fd-radius-md);
+  color: hsl(var(--_fd-text-muted));
+  font-size: var(--_fd-font-size-sm);
   text-decoration: none;
-  line-height: var(--fd-line-height-tight);
+  line-height: var(--_fd-line-height-tight);
 }
 
 .item:hover {
-  background: hsl(var(--fd-bg-muted));
-  color: hsl(var(--fd-text));
+  background: hsl(var(--_fd-bg-muted));
+  color: hsl(var(--_fd-text));
 }
 
 .item--active {
-  background: hsl(var(--fd-primary) / 0.1);
+  background: hsl(var(--_fd-primary) / 0.1);
   /* Plain --fd-primary text on its own 10% tint is only ~4.0:1 at the default
      brand color, under WCAG AA's 4.5:1 for this small text. Mixing in some of
      the body text color reaches ~6.4:1, still reads as the brand color, and
      follows any retheme because it derives from the token. */
-  color: color-mix(in srgb, hsl(var(--fd-primary)) 70%, hsl(var(--fd-text)));
-  font-weight: var(--fd-font-weight-semibold);
+  color: color-mix(in srgb, hsl(var(--_fd-primary)) 70%, hsl(var(--_fd-text)));
+  font-weight: var(--_fd-font-weight-semibold);
 }
 
 .item--active:hover {
-  background: hsl(var(--fd-primary) / 0.14);
+  background: hsl(var(--_fd-primary) / 0.14);
 }
