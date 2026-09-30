@@ -31,7 +31,8 @@ export const DEFAULT_PAGINATION_MESSAGES: FdPaginationMessages = {
  *
  * In page mode each control can be replaced via a named slot (`previous`,
  * `status`, `next`) -- a bubbling click on anything slotted into `previous`
- * or `next` pages, so any clickable element works. In link mode the small
+ * or `next` pages, so any clickable element works; `previous-text` /
+ * `next-text` replace just the default buttons' words. In link mode the small
  * "Previous" / "Next" lines are the `previous-eyebrow` / `next-eyebrow`
  * slots. Text that isn't markup (the landmark name, page mode's status line)
  * comes from `messages`, for translating.

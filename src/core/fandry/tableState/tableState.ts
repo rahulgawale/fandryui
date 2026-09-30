@@ -45,13 +45,20 @@ export interface FdTableMessages {
   selectAll: string;
   /** The pagination status line. `pageCount` is undefined when the total is unknown. */
   pageStatus: (page: number, pageCount?: number) => string;
+  /** The pagination landmark's accessible name, and its buttons' words. */
+  paginationLabel: string;
+  previousPage: string;
+  nextPage: string;
 }
 
 export const DEFAULT_TABLE_MESSAGES: FdTableMessages = {
   selectionStatus: (selected, total) => `${selected} of ${total} selected`,
   selectRow: (label, rowNumber) => (label ? `Select ${label}` : `Select row ${rowNumber}`),
   selectAll: 'Select all rows',
-  pageStatus: (page, pageCount) => (pageCount === undefined ? `Page ${page}` : `Page ${page} of ${pageCount}`)
+  pageStatus: (page, pageCount) => (pageCount === undefined ? `Page ${page}` : `Page ${page} of ${pageCount}`),
+  paginationLabel: 'Pagination',
+  previousPage: 'Previous',
+  nextPage: 'Next'
 };
 
 export interface FdTableHeaderGroup {
@@ -131,8 +138,8 @@ export default class FdTableState extends Base {
   }
 
   // Handed to the fandry-pagination the default template renders.
-  get paginationMessages(): { status: FdTableMessages['pageStatus'] } {
-    return { status: this.text.pageStatus };
+  get paginationMessages(): { label: string; status: FdTableMessages['pageStatus'] } {
+    return { label: this.text.paginationLabel, status: this.text.pageStatus };
   }
 
   /**

@@ -788,6 +788,27 @@ describe('fandry-data-table text', () => {
     expect(editor.elementProps.ariaLabel).toBe('Name von Acme');
   });
 
+  it('names a row from unnamedRow when getRowLabel gives nothing', async () => {
+    const el = mount({
+      getRowLabel: undefined,
+      saveRow: jest.fn(),
+      messages: {
+        rowActions: (label: string) => `Aktionen für ${label}`,
+        noChangesFor: (label: string) => `Keine Änderungen an ${label}.`,
+        unnamedRow: (rowNumber?: number) => (rowNumber === undefined ? 'diese Zeile' : `Zeile ${rowNumber}`)
+      }
+    });
+    await settle();
+
+    const trigger = bodyRows(el)[0].querySelector('fandry-popover fandry-button') as any;
+    expect(trigger.elementProps.ariaLabel).toBe('Aktionen für Zeile 1');
+
+    await edit(el, 0);
+    buttonByText(el, 'Save').click();
+    await settle();
+    expect(toastTexts(el)).toEqual([{ text: 'Keine Änderungen an diese Zeile.', variant: 'info' }]);
+  });
+
   it('keeps its own English defaults, including a page-scoped select-all', async () => {
     const el = mount();
     await settle();

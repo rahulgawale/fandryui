@@ -135,7 +135,10 @@
         -->
         <div class="pagination" part="pagination" onchange={handlePageChange}>
           <slot name="pagination">
-            <fandry-pagination page-index={pageIndex} page-count={totalPages} messages={paginationMessages}></fandry-pagination>
+            <fandry-pagination page-index={pageIndex} page-count={totalPages} messages={paginationMessages}>
+              <span slot="previous-text">{text.previousPage}</span>
+              <span slot="next-text">{text.nextPage}</span>
+            </fandry-pagination>
           </slot>
         </div>
       </template>

@@ -954,7 +954,10 @@ describe('fandry-table text', () => {
         selectionStatus: (selected: number, total: number) => `${selected}/${total} gewählt`,
         selectRow: (label?: string, n?: number) => `Wähle ${label ?? n}`,
         selectAll: 'Alle wählen',
-        pageStatus: (page: number, count?: number) => `Seite ${page}/${count}`
+        pageStatus: (page: number, count?: number) => `Seite ${page}/${count}`,
+        paginationLabel: 'Seiten',
+        previousPage: 'Zurück',
+        nextPage: 'Weiter'
       }
     });
     document.body.appendChild(element);
@@ -965,6 +968,10 @@ describe('fandry-table text', () => {
     expect((root.querySelector('.selection-header-checkbox') as any).ariaLabel).toBe('Alle wählen');
     expect((root.querySelector('tbody fandry-checkbox') as any).ariaLabel).toBe('Wähle Bea');
     expect(getPaginationStatus(element).textContent).toBe('Seite 1/2');
+    const pagination = root.querySelector('fandry-pagination') as any;
+    expect(pagination.messages.label).toBe('Seiten');
+    expect(pagination.querySelector('[slot="previous-text"]').textContent).toBe('Zurück');
+    expect(pagination.querySelector('[slot="next-text"]').textContent).toBe('Weiter');
   });
 
   it('falls back to English, and to the row number without a row label', async () => {

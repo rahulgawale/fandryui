@@ -67,6 +67,8 @@ export interface FdDataTableMessages extends FdTableMessages {
   deleteFailed: (label: string, reason: string) => string;
   /** The reason when a failed request gives none. */
   unknownError: string;
+  /** A row's name when getRowLabel gives none; `rowNumber` is undefined outside the rows (a toast, the delete dialog). */
+  unnamedRow: (rowNumber?: number) => string;
 }
 
 export const DEFAULT_DATA_TABLE_MESSAGES: FdDataTableMessages = {
@@ -102,7 +104,8 @@ export const DEFAULT_DATA_TABLE_MESSAGES: FdDataTableMessages = {
   saveFailed: (label, reason) => `Couldn't save ${label}: ${reason}`,
   deleted: (label) => `Deleted ${label}.`,
   deleteFailed: (label, reason) => `Couldn't delete ${label}: ${reason}`,
-  unknownError: 'Something went wrong.'
+  unknownError: 'Something went wrong.',
+  unnamedRow: (rowNumber) => (rowNumber === undefined ? 'this row' : `row ${rowNumber}`)
 };
 
 export interface FdDataTableColumnMeta {
@@ -500,11 +503,11 @@ export default class FdDataTableState extends FdTableState {
   }
 
   private rowLabel(row: Row<RowData>, index: number): string {
-    return (typeof this.getRowLabel === 'function' && this.getRowLabel(row.original, index)) || `row ${index + 1}`;
+    return (typeof this.getRowLabel === 'function' && this.getRowLabel(row.original, index)) || this.text.unnamedRow(index + 1);
   }
 
   private labelOf(original: RowData): string {
-    return (typeof this.getRowLabel === 'function' && this.getRowLabel(original, 0)) || 'this row';
+    return (typeof this.getRowLabel === 'function' && this.getRowLabel(original, 0)) || this.text.unnamedRow();
   }
 
   private toDataCell(cell: Cell<RowData, unknown>, editing: boolean, rowLabel: string): FdDataTableCell {

@@ -171,4 +171,15 @@ describe('fandry-pagination text', () => {
     expect(previous.textContent).toBe('← Previous');
     expect(next.textContent).toBe('Next →');
   });
+
+  it("makes page mode's button words slots, with the English text as fallback", () => {
+    const element = createElement('fandry-pagination', { is: FdPagination });
+    Object.assign(element, { pageIndex: 0, pageCount: 2 });
+    document.body.appendChild(element);
+
+    const previous = element.shadowRoot!.querySelector('fandry-button slot[name="previous-text"]')!;
+    const next = element.shadowRoot!.querySelector('fandry-button slot[name="next-text"]')!;
+    expect(previous.textContent).toBe('Previous');
+    expect(next.textContent).toBe('Next');
+  });
 });

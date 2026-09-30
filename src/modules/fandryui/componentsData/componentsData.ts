@@ -334,7 +334,7 @@ fandry-pagination::part(status) {
       { name: 'previous-label', type: 'string', default: "''", description: 'Title of the previous page.' },
       { name: 'next-href', type: 'string', default: "''", description: 'Omit to hide the next link (e.g. on the last page).' },
       { name: 'next-label', type: 'string', default: "''", description: 'Title of the next page.' },
-      { name: 'page-index', type: 'number', default: 'undefined', description: 'Zero-based current page. Setting it switches from links to Previous/Next buttons; listen for `change` (detail.pageIndex) and update it. Replace controls via the previous, status and next slots.' },
+      { name: 'page-index', type: 'number', default: 'undefined', description: 'Zero-based current page. Setting it switches from links to Previous/Next buttons; listen for `change` (detail.pageIndex) and update it. Replace controls via the previous, status and next slots, or just the buttons\' words via previous-text and next-text.' },
       { name: 'page-count', type: 'number', default: '-1', description: 'Total pages in page mode; -1 means unknown (Next stays enabled).' },
       { name: 'messages', type: '{ label, status(page, pageCount) }', default: '{}', description: 'Replaces the landmark name and page mode\'s status line, e.g. to translate them. Link mode\'s "Previous" / "Next" lines are the previous-eyebrow and next-eyebrow slots.' }
     ],
@@ -1971,7 +1971,7 @@ fandry-table::part(row):hover {
       { name: 'enable-pagination', type: 'boolean', default: 'false', description: 'Turns on page-size-driven pagination.' },
       { name: 'enable-row-selection', type: 'boolean', default: 'false', description: 'Turns on checkbox row selection.' },
       { name: 'enable-global-filter', type: 'boolean', default: 'false', description: 'Turns on a search box that filters all columns.' },
-      { name: 'messages', type: '{ selectionStatus, selectRow, selectAll, pageStatus }', default: '{}', description: 'Replaces the table\'s text that isn\'t markup ("2 of 5 selected", checkbox names, "Page 1 of 3"), e.g. to translate it. Any key left out keeps its English default.' }
+      { name: 'messages', type: '{ selectionStatus, selectRow, selectAll, pageStatus, paginationLabel, previousPage, nextPage }', default: '{}', description: 'Replaces the table\'s own text ("2 of 5 selected", checkbox names, the pagination\'s name, Previous/Next and "Page 1 of 3"), e.g. to translate it. Any key left out keeps its English default.' }
     ],
     code: `<fandry-table
   columns={columns}
