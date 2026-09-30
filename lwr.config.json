@@ -41,6 +41,12 @@
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
+            "id": "getting-started-theming",
+            "path": "/getting-started/theming",
+            "rootComponent": "fandryui/gettingStarted",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
             "id": "components",
             "path": "/components",
             "rootComponent": "fandryui/componentsIndex",

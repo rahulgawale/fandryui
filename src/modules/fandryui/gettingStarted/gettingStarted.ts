@@ -1,6 +1,7 @@
 import { LightningElement } from 'lwc';
 import {
   GETTING_STARTED_PAGES,
+  PLATFORM_PAGES,
   getGettingStartedPage
 } from 'fandryui/gettingStartedData';
 
@@ -34,7 +35,7 @@ export default class GettingStarted extends LightningElement {
 
   // Overview links to the two platform pages, as cards.
   get platformCards() {
-    return GETTING_STARTED_PAGES.filter((page) => page.slug).map((page) => ({
+    return PLATFORM_PAGES.map((page) => ({
       slug: page.slug,
       name: page.name,
       badge: page.badge,

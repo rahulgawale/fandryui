@@ -119,6 +119,20 @@ Components work with no global stylesheet: every design token has a default insi
 }
 ```
 
+A token set on a component's own element changes that one instance (and what it renders). Write the rule in the stylesheet of the component whose template renders the element: a selector only matches elements in its own shadow tree, and `:root` in a component's stylesheet never reaches the page.
+
+```html
+<fandry-button class="danger">Delete</fandry-button>
+<fandry-input label="Search" style="--fd-radius-md: 999px"></fandry-input>
+```
+
+```css
+.danger       { --fd-primary: 0 72% 51%; }   /* this instance */
+fandry-button { --fd-radius-md: 999px; }     /* every button this component renders */
+```
+
+On Salesforce, where you don't own the page: set the tokens on `:host` of your outermost component, load a static resource holding the `:root` rule with `loadStyle`, or, on an Experience Cloud LWR site, put it in the head markup. The docs site's **Theming** page (`/getting-started/theming`) covers all of this.
+
 The full list, with defaults, is in `modules/fandry/base/tokens.css` (the `--fd-*` names; the `--_fd-*` ones are what components read internally, so don't set those). `--brand-primary` / `--brand-accent` still work as the older names for `--fd-primary` / `--fd-accent`.
 
 To restyle one element inside a component, use its parts. Each component's page lists them:

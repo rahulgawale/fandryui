@@ -438,6 +438,301 @@ sf project deploy start --source-dir fandryui --source-dir force-app --target-or
   ]
 };
 
+/* Every public token, grouped for the theming page. theming.test.ts fails
+   when this and fandry/base/tokens.css disagree. */
+export const THEMING_TOKENS = `Color (H S% L%)   --fd-primary  --fd-primary-foreground
+                  --fd-accent  --fd-accent-foreground
+                  --fd-success  --fd-success-foreground
+                  --fd-warning  --fd-warning-foreground
+                  --fd-danger  --fd-danger-foreground
+                  --fd-bg  --fd-bg-muted  --fd-text  --fd-text-muted
+                  --fd-border  --fd-border-focus  --fd-link-visited
+Borders           --fd-border-width  --fd-border-width-md  --fd-border-width-lg
+Radius            --fd-radius-sm  --fd-radius-md  --fd-radius-lg  --fd-radius-full
+Spacing           --fd-space-1  --fd-space-2  --fd-space-3  --fd-space-4  --fd-space-5
+Sizes             --fd-size-xs  --fd-size-sm  --fd-size-md  --fd-size-lg
+                  --fd-control-height-sm  --fd-control-height-md  --fd-control-height-lg
+                  --fd-control-max-width-sm  --fd-control-min-width-sm
+                  --fd-listbox-max-height  --fd-chevron-size
+                  --fd-overlay-min-width-sm  --fd-overlay-max-width-sm
+                  --fd-overlay-max-width-md  --fd-overlay-offset-top
+                  --fd-avatar-size-sm  --fd-avatar-size-md  --fd-avatar-size-lg
+                  --fd-switch-width  --fd-switch-padding  --fd-tooltip-arrow-size
+                  --fd-sidebar-width  --fd-toast-width  --fd-form-column-min-width
+Focus ring        --fd-ring-color  --fd-ring-width  --fd-ring-offset
+Surfaces          --fd-surface-tint  --fd-shadow-sm  --fd-shadow-color-floating
+                  --fd-shadow-color-modal  --fd-shadow-color-subtle
+                  --fd-hover-brightness  --fd-disabled-opacity  --fd-pulse-opacity
+                  --fd-backdrop  --fd-backdrop-opacity  --fd-z-overlay
+Type              --fd-font-sans  --fd-font-mono  --fd-font-heading
+                  --fd-font-size-xs  --fd-font-size-sm  --fd-font-size-md
+                  --fd-font-size-lg  --fd-font-size-xl  --fd-font-size-2xl
+                  --fd-font-size-3xl  --fd-line-height-normal  --fd-line-height-tight
+                  --fd-font-weight-medium  --fd-font-weight-semibold
+                  --fd-font-weight-bold  --fd-heading-weight
+                  --fd-heading-letter-spacing
+Motion            --fd-duration-fast  --fd-duration-normal  --fd-duration-slow
+                  --fd-duration-spin  --fd-duration-slowest
+                  --fd-ease-standard  --fd-ease-emphasized  --fd-ease-in-out`;
+
+const THEMING: GettingStartedPage = {
+  slug: 'theming',
+  name: 'Theming',
+  badge: 'css',
+  title: 'Theming',
+  description:
+    'Set --fd-* tokens to change colors, type, spacing, radius and motion for the whole site, one section or one component. Use ::part() to restyle one element inside a component.',
+  sections: [
+    {
+      id: 'how',
+      title: 'How it works',
+      blocks: [
+        {
+          type: 'text',
+          text: 'Every token has two names. You set the public one, --fd-*. Components read a private one, --_fd-*, which each component resolves from the public name or its default. Custom properties inherit through shadow roots, so a value you set on any ancestor reaches every fandry component below it, and the ones those components render.'
+        },
+        {
+          type: 'code',
+          label: 'Inside every component (fandry/base/tokens.css)',
+          code: `:host {
+  --_fd-primary: var(--fd-primary, 330 81% 48%);
+  --_fd-radius-md: var(--fd-radius-md, 0.375rem);
+  /* ... */
+}`
+        },
+        {
+          type: 'list',
+          items: [
+            'Set --fd-* names only. The --_fd-* names are internal and can change.',
+            'Colors are bare HSL channels with no commas and no hsl(): --fd-primary: 210 90% 40%. Components wrap them in hsl() themselves, which is how they add transparency.',
+            'Nothing needs a global stylesheet: every token has a default. Set only what you want to change.'
+          ]
+        }
+      ]
+    },
+    {
+      id: 'global',
+      title: 'Set a token for the whole site',
+      blocks: [
+        {
+          type: 'text',
+          text: 'Put the tokens on :root in a stylesheet the page loads. Every fandry component on the page inherits them.'
+        },
+        {
+          type: 'code',
+          label: 'LWR / LWC OSS: src/assets/theme.css',
+          code: `:root {
+  --fd-primary: 210 90% 40%;
+  --fd-primary-foreground: 0 0% 100%;
+  --fd-radius-md: 0;
+  --fd-font-sans: "Brand Sans", system-ui, sans-serif;
+}`
+        },
+        {
+          type: 'code',
+          label: 'LWR / LWC OSS: src/layouts/index.html',
+          code: `<head>
+  <link rel="stylesheet" href="/assets/theme.css" />
+</head>`
+        },
+        {
+          type: 'note',
+          variant: 'warning',
+          title: ':root in a component stylesheet does not work',
+          text: "A component's own CSS is scoped to that component, so :root { ... } in my/app/app.css never reaches the page. Use a stylesheet the layout loads, or set the tokens on :host (see below)."
+        },
+        {
+          type: 'text',
+          text: 'On Salesforce, where the page is not yours to edit, pick the place that matches where your components run:'
+        },
+        {
+          type: 'list',
+          items: [
+            'Experience Cloud LWR site: in Experience Builder, Settings > Advanced > Edit Head Markup, add a <style> with the :root rule, or a <link> to a static resource holding it.',
+            'Lightning pages, apps and record pages: set the tokens on :host of your outermost component. Everything it renders inherits them, including fandry components nested in other components.',
+            'A whole Lightning app from one file: upload the :root rule as a CSS static resource and load it once with loadStyle from lightning/platformResourceLoader.'
+          ]
+        },
+        {
+          type: 'code',
+          label: 'Salesforce: force-app/main/default/lwc/myApp/myApp.css',
+          code: `:host {
+  --fd-primary: 210 90% 40%;
+  --fd-radius-md: 0;
+}`
+        },
+        {
+          type: 'code',
+          label: 'Salesforce: loadStyle a static resource named fandryTheme',
+          code: `import { LightningElement } from 'lwc';
+import { loadStyle } from 'lightning/platformResourceLoader';
+import fandryTheme from '@salesforce/resourceUrl/fandryTheme';
+
+export default class MyApp extends LightningElement {
+  connectedCallback() {
+    loadStyle(this, fandryTheme);
+  }
+}`
+        }
+      ]
+    },
+    {
+      id: 'section',
+      title: 'Override for one section',
+      blocks: [
+        {
+          type: 'text',
+          text: 'Set the same tokens on any element. Only the components inside it change; the nearest value wins, as with any inherited CSS property.'
+        },
+        {
+          type: 'code',
+          label: 'my/app/app.html',
+          code: `<section class="promo">
+  <fandry-card>...</fandry-card>
+  <fandry-button>Shop the sale</fandry-button>
+</section>`
+        },
+        {
+          type: 'code',
+          label: 'my/app/app.css',
+          code: `.promo {
+  --fd-bg: 38 92% 95%;
+  --fd-primary: 24 95% 40%;
+}`
+        }
+      ]
+    },
+    {
+      id: 'component',
+      title: 'Override for one component',
+      blocks: [
+        {
+          type: 'text',
+          text: 'A fandry component reads its tokens on its own element, so a token set on the element itself changes that one instance, and whatever it renders: set --fd-primary on a fandry-table and its checkboxes and pagination buttons follow.'
+        },
+        {
+          type: 'code',
+          label: 'my/app/app.html',
+          code: `<fandry-button class="danger">Delete</fandry-button>
+<fandry-button>Cancel</fandry-button>
+
+<!-- or inline, for a one-off -->
+<fandry-input label="Search" style="--fd-radius-md: 999px"></fandry-input>`
+        },
+        {
+          type: 'code',
+          label: 'my/app/app.css',
+          code: `/* one instance */
+.danger {
+  --fd-primary: 0 72% 51%;
+}
+
+/* every fandry-button this component renders */
+fandry-button {
+  --fd-radius-md: 999px;
+}`
+        },
+        {
+          type: 'note',
+          variant: 'info',
+          title: 'Put the rule where the element is',
+          text: "A selector only matches elements in its own shadow tree. .danger or fandry-button in app.css matches the buttons in app.html, not buttons inside some other component, and a global stylesheet's fandry-button rule matches only buttons outside every component. To change every button on the site, set the token on :root; to change the buttons of one component, set it in that component's CSS. On Salesforce the tag is c-fandry-button."
+        }
+      ]
+    },
+    {
+      id: 'parts',
+      title: 'Restyle one element inside a component',
+      blocks: [
+        {
+          type: 'text',
+          text: "When no token covers it, style the element directly with ::part(). Each component's page lists its parts and states. A part also carries the name of each state while it is on, so naming both targets that state only. The same rule as above applies: write it in the stylesheet of the component whose template renders the element."
+        },
+        {
+          type: 'code',
+          label: 'my/app/app.css',
+          code: `fandry-link::part(link) {
+  color: inherit;
+  text-decoration: none;
+}
+
+fandry-checkbox::part(control checked) {
+  background: hsl(160 84% 26%);
+}
+
+.danger::part(base) {
+  text-transform: uppercase;
+}`
+        },
+        {
+          type: 'text',
+          text: 'Parts need native shadow DOM, which every fandry component uses, on LWR and on Salesforce alike. Tokens work everywhere.'
+        }
+      ]
+    },
+    {
+      id: 'order',
+      title: 'Which value wins',
+      blocks: [
+        {
+          type: 'list',
+          items: [
+            'An inline style or a rule on the component element itself.',
+            'The nearest ancestor that sets the token: a section, then your component\'s :host, then :root.',
+            'The default in tokens.css.',
+            'Reduced motion wins over all of them: when the user asks for it, the transition durations go to 0ms whatever the site sets. Looping indicators (spinner, skeleton) keep running.'
+          ]
+        }
+      ]
+    },
+    {
+      id: 'own-css',
+      title: 'Using tokens in your own CSS',
+      blocks: [
+        {
+          type: 'text',
+          text: 'The private --_fd-* names only exist inside fandry components and components that extend fandry/base. A component that extends Base reads them like the library does. Any other CSS, including markup you slot into a fandry component, only sees the --fd-* values you set yourself, so give it a fallback.'
+        },
+        {
+          type: 'code',
+          label: 'Your CSS',
+          code: `/* my component extends Base from 'fandry/base' */
+.toolbar {
+  gap: var(--_fd-space-2);
+  color: hsl(var(--_fd-text-muted));
+}
+
+/* a plain LightningElement */
+.toolbar {
+  gap: var(--fd-space-2, 0.5rem);
+}`
+        }
+      ]
+    },
+    {
+      id: 'reference',
+      title: 'Every token',
+      blocks: [
+        {
+          type: 'text',
+          text: 'The defaults are in fandry/base/tokens.css (node_modules/fandryui/modules/fandry/base/ on LWR, fandryBase/ on Salesforce). --brand-primary and --brand-accent still work as the older names for --fd-primary and --fd-accent.'
+        },
+        {
+          type: 'code',
+          label: 'Tokens',
+          code: THEMING_TOKENS
+        },
+        {
+          type: 'note',
+          variant: 'warning',
+          title: 'Deprecated component hooks',
+          text: '--fd-button-radius, --fd-button-padding-x, --fd-button-border-width, --fd-card-bg, --fd-card-height and --fd-icon-size still work but will be removed. Use a token set on the element, or its base part: .round::part(base) { border-radius: 999px }.'
+        }
+      ]
+    }
+  ]
+};
+
 const OVERVIEW: GettingStartedPage = {
   slug: '',
   name: 'Overview',
@@ -501,7 +796,10 @@ npx fandry add button table
   ]
 };
 
-export const GETTING_STARTED_PAGES: GettingStartedPage[] = [OVERVIEW, LWR_OSS, SALESFORCE];
+export const GETTING_STARTED_PAGES: GettingStartedPage[] = [OVERVIEW, LWR_OSS, SALESFORCE, THEMING];
+
+// The pages the overview offers as "choose your platform" cards.
+export const PLATFORM_PAGES: GettingStartedPage[] = [LWR_OSS, SALESFORCE];
 
 export function getGettingStartedPage(slug: string): GettingStartedPage {
   return GETTING_STARTED_PAGES.find((page) => page.slug === slug) ?? OVERVIEW;
