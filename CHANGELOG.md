@@ -1,3 +1,10 @@
+# [0.17.0](https://github.com/rahulgawale/fandryui/compare/v0.16.0...v0.17.0) (2026-09-30)
+
+
+### Features
+
+* theme every token from the page and expose parts on every primitive ([#78](https://github.com/rahulgawale/fandryui/issues/78)) ([d80890a](https://github.com/rahulgawale/fandryui/commit/d80890aa03a78ce877d95403d5234a8b278b822c))
+
 # [0.16.0](https://github.com/rahulgawale/fandryui/compare/v0.15.1...v0.16.0) (2026-09-23)
 
 
