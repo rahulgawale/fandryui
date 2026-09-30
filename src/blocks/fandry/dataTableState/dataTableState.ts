@@ -27,12 +27,19 @@ export type FdDataTableBadgeVariant = 'default' | 'primary' | 'success' | 'warni
 /** Everything the data table says, on top of fandry-table's own messages; see `messages`. */
 export interface FdDataTableMessages extends FdTableMessages {
   clearFilters: string;
+  /** A toolbar filter's "all values" option, and the filter's name. */
+  anyValue: (header: string) => string;
+  filterBy: (header: string) => string;
+  /** The button that opens the column toggles. */
+  columns: string;
   /** The column toggles' group name. */
   visibleColumns: string;
   /** The actions column's header, for screen readers. */
   actions: string;
   /** A row's actions menu button. */
   rowActions: (label: string) => string;
+  /** An inline editor's name: the column's header, for this row. */
+  editField: (header: string, label: string) => string;
   save: string;
   cancel: string;
   delete: string;
@@ -66,9 +73,13 @@ export const DEFAULT_DATA_TABLE_MESSAGES: FdDataTableMessages = {
   ...DEFAULT_TABLE_MESSAGES,
   selectAll: 'Select all rows on this page',
   clearFilters: 'Clear',
+  anyValue: (header) => `Any ${header.toLowerCase()}`,
+  filterBy: (header) => `Filter by ${header.toLowerCase()}`,
+  columns: 'Columns',
   visibleColumns: 'Visible columns',
   actions: 'Actions',
   rowActions: (label) => `Actions for ${label}`,
+  editField: (header, label) => `${header} for ${label}`,
   save: 'Save',
   cancel: 'Cancel',
   delete: 'Delete',
@@ -361,13 +372,14 @@ export default class FdDataTableState extends FdTableState {
         if (!filter) return [];
 
         const header = this.headerText(column.columnDef.header, column.id);
+        const text = this.text;
         return [
           {
             columnId: column.id,
             label: header,
             value: String(column.getFilterValue() ?? NO_FILTER),
-            options: [{ label: `Any ${header.toLowerCase()}`, value: NO_FILTER }, ...filter.options],
-            selectProps: { ariaLabel: `Filter by ${header.toLowerCase()}`, tabIndex: 0 }
+            options: [{ label: text.anyValue(header), value: NO_FILTER }, ...filter.options],
+            selectProps: { ariaLabel: text.filterBy(header), tabIndex: 0 }
           }
         ];
       });
@@ -519,7 +531,7 @@ export default class FdDataTableState extends FdTableState {
       options: editor?.options ?? [],
       // fandry-input/-select spread this onto their native control. `disabled`
       // is a real prop on both, so it is bound separately in the template.
-      editorProps: { ariaLabel: `${header} for ${rowLabel}`, tabIndex: 0 }
+      editorProps: { ariaLabel: this.text.editField(header, rowLabel), tabIndex: 0 }
     };
   }
 

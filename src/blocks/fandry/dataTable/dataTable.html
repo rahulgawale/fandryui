@@ -37,7 +37,7 @@
       <template if:true={hasColumnToggles}>
         <fandry-popover placement="bottom" align="end" open={columnsOpen} ontoggle={handleColumnsToggle}>
           <fandry-button slot="trigger" variant="secondary" size="sm" element-props={columnsTriggerProps}>
-            Columns
+            {text.columns}
           </fandry-button>
           <div class="columns" role="group" aria-label={text.visibleColumns}>
             <template for:each={columnToggles} for:item="toggle">

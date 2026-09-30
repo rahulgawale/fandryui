@@ -766,6 +766,28 @@ describe('fandry-data-table text', () => {
     expect(toastTexts(el)).toEqual([{ text: 'Keine Änderungen an Acme.', variant: 'info' }]);
   });
 
+  it('names its filters, column toggle button and inline editors from messages', async () => {
+    const el = mount({
+      saveRow: jest.fn(),
+      messages: {
+        anyValue: (header: string) => `${header}: alle`,
+        filterBy: (header: string) => `Nach ${header} filtern`,
+        columns: 'Spalten',
+        editField: (header: string, label: string) => `${header} von ${label}`
+      }
+    });
+    await settle();
+
+    const select = el.shadowRoot!.querySelector('.filter fandry-select') as any;
+    expect(select.options[0].label).toBe('Status: alle');
+    expect(select.elementProps.ariaLabel).toBe('Nach Status filtern');
+    expect(el.shadowRoot!.querySelector('.toolbar-end fandry-popover fandry-button')!.textContent!.trim()).toBe('Spalten');
+
+    await edit(el, 0);
+    const editor = el.shadowRoot!.querySelector('tr.row--editing [data-column-id="name"]') as any;
+    expect(editor.elementProps.ariaLabel).toBe('Name von Acme');
+  });
+
   it('keeps its own English defaults, including a page-scoped select-all', async () => {
     const el = mount();
     await settle();
