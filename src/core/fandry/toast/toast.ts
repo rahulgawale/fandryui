@@ -102,6 +102,6 @@ export default class FdToast extends Base {
   }
 
   get basePart(): string {
-    return partList('base', { [this.variant]: true });
+    return partList('base', { [this.variant || 'info']: true });
   }
 }

@@ -5,7 +5,7 @@
  * `fandry-checkbox::part(control checked)` -- ::part() with several names
  * matches only an element that has all of them.
  *
- * States are the same words everywhere (checked, selected, active,
+ * States are the same words everywhere (checked, chosen, active,
  * disabled, a variant's name, ...), so a site learns them once.
  */
 export function partList(name: string, states: Record<string, unknown> = {}): string {

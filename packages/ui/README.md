@@ -117,9 +117,9 @@ A part also carries its state's name while the state is on, so naming both style
 
 ```css
 fandry-checkbox::part(control checked) { background: hsl(160 84% 26%); }
-fandry-select::part(option selected)   { font-weight: 700; }
+fandry-select::part(option chosen)     { font-weight: 700; }
 fandry-button::part(base secondary)    { border-color: currentColor; }
-fandry-table::part(row selected)       { background: hsl(160 40% 96%); }
+fandry-table::part(row chosen)         { background: hsl(160 40% 96%); }
 ```
 
 `::part()` needs native shadow DOM: LWR sites use it, and so do Salesforce orgs with native shadow on. In an org still on synthetic shadow, parts have no effect; tokens work in both.

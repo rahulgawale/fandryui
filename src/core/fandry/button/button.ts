@@ -41,6 +41,6 @@ export default class FdButton extends Base {
   }
 
   get basePart(): string {
-    return partList('base', { [this.variant]: true, disabled: this.disabled });
+    return partList('base', { [this.variant || 'default']: true, disabled: this.disabled });
   }
 }

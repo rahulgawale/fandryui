@@ -63,6 +63,6 @@ export default class FdLink extends Base {
   }
 
   get linkPart(): string {
-    return partList('link', { [this.variant]: true, disabled: this.disabled });
+    return partList('link', { [this.variant || 'default']: true, disabled: this.disabled });
   }
 }

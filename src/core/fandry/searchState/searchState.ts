@@ -28,7 +28,7 @@ export interface FdSearchRenderOption {
   hasDescription: boolean;
   disabled: boolean;
   classes: string;
-  /** The option's `part`: `option` plus `selected` / `active` / `disabled`. */
+  /** The option's `part`: `option` plus `chosen` / `active` / `disabled`. */
   part: string;
   ariaSelected: 'true' | 'false';
   ariaDisabled: 'true' | 'false';
@@ -265,7 +265,7 @@ export default class FdSearchState extends Base {
       ]
         .filter(Boolean)
         .join(' '),
-      part: partList('option', { selected, active: id === activeId, disabled })
+      part: partList('option', { chosen: selected, active: id === activeId, disabled })
     };
   }
 

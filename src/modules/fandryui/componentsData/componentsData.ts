@@ -115,7 +115,7 @@ export const STATE_DESCRIPTIONS: Record<string, string> = {
   checked: 'The box, circle or track of a checked control.',
   indeterminate: 'A checkbox that is neither checked nor unchecked, or a progress bar with no known value.',
   disabled: 'A control, option or item that cannot be used.',
-  selected: 'The chosen option, or a selected table row.',
+  chosen: 'The selected option, or a selected table row.',
   active: 'The option the keyboard or pointer is on.',
   current: 'The link to the page being viewed.',
   sorted: 'A header cell whose column is sorted (also `ascending` or `descending`).',
@@ -314,6 +314,7 @@ fandry-divider::part(base) {
     name: 'Pagination',
     tag: 'fandry-pagination',
     parts: ['base', 'link', 'previous', 'eyebrow', 'title', 'next', 'status', 'button'],
+    states: ['disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'pagination-theme',
@@ -749,7 +750,7 @@ fandry-checkbox::part(control checked) {
     name: 'Combobox',
     tag: 'fandry-combobox',
     parts: ['base', 'label', 'required', 'control', 'input', 'chevron', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty', 'help-text'],
-    states: ['disabled', 'selected', 'active'],
+    states: ['disabled', 'chosen', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'combobox-theme',
@@ -1104,7 +1105,7 @@ fandry-radio::part(label) {
     name: 'Select',
     tag: 'fandry-select',
     parts: ['base', 'label', 'required', 'control', 'value', 'chevron', 'listbox', 'option', 'group', 'group-label', 'help-text', 'panel'],
-    states: ['disabled', 'selected', 'active'],
+    states: ['disabled', 'chosen', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'select-theme',
@@ -1137,7 +1138,7 @@ fandry-select::part(option) {
 }
 
 /* A state: only the chosen option. */
-fandry-select::part(option selected) {
+fandry-select::part(option chosen) {
   font-weight: 700;
   color: hsl(160 84% 26%);
 }`
@@ -1658,7 +1659,7 @@ fandry-avatar::part(initials) {
     name: 'Command',
     tag: 'fandry-command',
     parts: ['backdrop', 'panel', 'search', 'input', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty'],
-    states: ['selected', 'active', 'disabled'],
+    states: ['chosen', 'active', 'disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'command-theme',
@@ -1990,7 +1991,7 @@ fandry-popover::part(panel) {
     name: 'Table',
     tag: 'fandry-table',
     parts: ['toolbar', 'container', 'table', 'caption', 'header-row', 'header-cell', 'selection-cell', 'sort-button', 'header-label', 'sort-indicator', 'row', 'loading-row', 'cell', 'empty-row', 'empty', 'footer', 'selection-status', 'pagination'],
-    states: ['selected', 'sorted', 'ascending', 'descending'],
+    states: ['chosen', 'sorted', 'ascending', 'descending'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'table-theme',
@@ -2051,7 +2052,7 @@ fandry-table::part(row):hover {
     name: 'Lookup',
     tag: 'fandry-lookup',
     parts: ['base', 'label', 'required', 'control', 'selected', 'selected-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text'],
-    states: ['disabled', 'selected', 'active'],
+    states: ['disabled', 'chosen', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'lookup-theme',

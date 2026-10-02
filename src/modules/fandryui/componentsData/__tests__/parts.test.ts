@@ -37,8 +37,8 @@ function sources(folder: string): string[] {
 /* What a component exposes. Parts: its templates' static `part`s, the names
    it re-exports with `exportparts`, and the names given to partList() in its
    TS. States: partList()'s state keys, where `[this.variant]` stands for
-   every value of the `variant` prop. A component can have more than one
-   template (pagination has two). */
+   every value of the `variant` prop, and state words re-exported from a
+   child. A component can have more than one template (pagination has two). */
 function exposed(tag: string): { parts: string[]; states: string[] } {
   const folder = SOURCE_DIRS.map((dir) => join(ROOT, dir, folderOf(tag))).find((dir) => existsSync(dir));
   if (!folder) throw new Error(`no source folder for ${tag}`);
@@ -50,7 +50,10 @@ function exposed(tag: string): { parts: string[]; states: string[] } {
       value.split(/\s+/).forEach((name) => parts.add(name));
     }
     for (const [, value] of html.matchAll(/\bexportparts="([^"]+)"/g)) {
-      value.split(',').forEach((item) => parts.add(item.split(':').pop()!.trim()));
+      value.split(',').forEach((item) => {
+        const name = item.split(':').pop()!.trim();
+        (STATE_DESCRIPTIONS[name] ? states : parts).add(name);
+      });
     }
   }
   for (const ts of sources(folder)) {
@@ -61,7 +64,7 @@ function exposed(tag: string): { parts: string[]; states: string[] } {
         const key = entry.trim().match(/^(\w+)/);
         if (key) states.add(key[1]);
       }
-      if (body.includes('[this.variant]')) {
+      if (body.includes('[this.variant ||')) {
         const union = ts.match(/@api variant:([^=]+)=/);
         for (const [, value] of union![1].matchAll(/'([\w-]+)'/g)) states.add(value);
       }
@@ -87,6 +90,11 @@ describe('component parts', () => {
     const used = new Set(COMPONENTS.flatMap((entry) => entry.states ?? []));
     expect([...used].filter((name) => !STATE_DESCRIPTIONS[name])).toEqual([]);
     expect(Object.keys(STATE_DESCRIPTIONS).filter((name) => !used.has(name))).toEqual([]);
+  });
+
+  it('never uses a state word as a part name', () => {
+    // `::part(selected)` would match a part named selected and every selected option alike.
+    expect(Object.keys(STATE_DESCRIPTIONS).filter((name) => PART_DESCRIPTIONS[name])).toEqual([]);
   });
 
   it('renders part and exportparts on the real elements', async () => {
@@ -159,7 +167,15 @@ describe('part states at runtime', () => {
     expect(element.shadowRoot!.querySelector('button')!.getAttribute('part')).toBe('base secondary');
   });
 
-  it('marks the selected option of a select', async () => {
+  it('falls back to the default variant when none is given', async () => {
+    const element = createElement('fandry-button', { is: FdButton }) as HTMLElement & { variant: string | undefined };
+    element.variant = undefined;
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('button')!.getAttribute('part')).toBe('base default');
+  });
+
+  it('marks the chosen option of a select', async () => {
     const element = createElement('fandry-select', { is: FdSelect }) as unknown as HTMLElement;
     Object.assign(element, { options: [{ label: 'A', value: 'a' }, { label: 'B', value: 'b', disabled: true }], value: 'a' });
     document.body.appendChild(element);
@@ -170,6 +186,6 @@ describe('part states at runtime', () => {
 
     // Opening highlights the chosen option, so it is also `active`.
     const parts = Array.from(element.shadowRoot!.querySelectorAll('[role="option"]')).map((option) => option.getAttribute('part'));
-    expect(parts).toEqual(['option selected active', 'option disabled']);
+    expect(parts).toEqual(['option chosen active', 'option disabled']);
   });
 });

@@ -26,6 +26,6 @@ export default class FdText extends Base {
   }
 
   get basePart(): string {
-    return partList('base', { [this.variant]: true });
+    return partList('base', { [this.variant || 'default']: true });
   }
 }

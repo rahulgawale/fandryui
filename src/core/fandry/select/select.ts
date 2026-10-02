@@ -203,7 +203,7 @@ export default class Select extends Base {
       ]
         .filter(Boolean)
         .join(' '),
-      part: partList('option', { selected, active, disabled })
+      part: partList('option', { chosen: selected, active, disabled })
     };
   }
 
