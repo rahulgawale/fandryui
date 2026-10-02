@@ -37,15 +37,15 @@ describe('fandry-breadcrumb-item', () => {
     expect(link.hasAttribute('href')).toBe(false);
   });
 
-  it('hides its own separator when first, and shows one otherwise', () => {
-    const first = createElement('fandry-breadcrumb-item', { is: FdBreadcrumbItem });
-    first.first = true;
-    document.body.appendChild(first);
-    expect(first.shadowRoot!.querySelector('.separator')).toBeNull();
+  /* Every crumb renders its separator; CSS hides the first crumb's
+     (:host(:first-child)), which jsdom can't evaluate -- checked in a real
+     browser instead. */
+  it('renders its separator, with no public prop to hide it', () => {
+    const element = createElement('fandry-breadcrumb-item', { is: FdBreadcrumbItem });
+    document.body.appendChild(element);
 
-    const rest = createElement('fandry-breadcrumb-item', { is: FdBreadcrumbItem });
-    document.body.appendChild(rest);
-    expect(rest.shadowRoot!.querySelector('.separator')).not.toBeNull();
+    expect(element.shadowRoot!.querySelector('.separator')).not.toBeNull();
+    expect('first' in element).toBe(false);
   });
 
   it('makes a linked crumb a tab stop with the link role, and leaves plain-text crumbs alone', () => {

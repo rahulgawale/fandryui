@@ -58,7 +58,10 @@ export default class FdMenu extends Base {
   // `disabled={row.disabled}` and the bound array updates. Neither
   // `slotchange` nor `renderedCallback` fire for that (see the class
   // comment above and menuItem.ts), so this is the only signal fandry-menu gets.
-  handleItemChange = () => {
+  handleItemChange = (event: Event) => {
+    // Internal to menu and its items: stop it here so it never reaches the
+    // consumer's markup around the menu.
+    event.stopPropagation();
     this.updateRovingTabIndex();
   };
 
