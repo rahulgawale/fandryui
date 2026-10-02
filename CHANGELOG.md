@@ -1,3 +1,10 @@
+## [0.18.5](https://github.com/rahulgawale/fandryui/compare/v0.18.4...v0.18.5) (2026-10-02)
+
+
+### Bug Fixes
+
+* stop leaking breadcrumb and menu internals into public API ([#86](https://github.com/rahulgawale/fandryui/issues/86)) ([632f440](https://github.com/rahulgawale/fandryui/commit/632f440ea4a7973e16ba5b5549ba126c06334b2b))
+
 ## [0.18.4](https://github.com/rahulgawale/fandryui/compare/v0.18.3...v0.18.4) (2026-10-02)
 
 
