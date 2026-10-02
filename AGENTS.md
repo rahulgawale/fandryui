@@ -98,9 +98,10 @@ If a token doesn't exist, add it to `fandry/base/tokens.css` first, as
 `--_fd-name: var(--fd-name, default);`. Sizes that belong to one component
 (the switch's width, the tooltip's arrow) are tokens too, and whatever can
 be derived from them is `calc()`ed rather than written down.
-`base/__tests__/tokens.test.ts` fails on a `px`/`rem` length or a color
+`base/__tests__/tokens.test.ts` fails on a length, duration or color
 literal in component CSS; only `1px` (screen-reader-only boxes, optical
-nudges) and zero are allowed.
+nudges), `1em` (one line of the text), zero, and the layout units `%` and
+`vw`/`vh` are allowed.
 
 ### Text
 
