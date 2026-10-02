@@ -119,6 +119,18 @@ property and never reaches the DOM: expose the child's element with
 `componentsData` must match its templates; `parts.test.ts` checks it. Parts
 are public API: renaming or removing one is a breaking change.
 
+A state a site might style (checked, selected, active, current, disabled,
+a variant) is an extra name on the part that shows it, built with
+`partList('control', { checked: this.checked })` from `fandry/parts`, so
+`::part(control checked)` targets it. Use the words in
+`STATE_DESCRIPTIONS`; one word, one meaning (`current` is the page being
+viewed, `active` the option under the keyboard), and never a word that is
+also one of the same component's part names: `::part()` looks only inside
+its own host, so `fandry-lookup::part(selected)` would match a part named
+`selected` and every selected option alike. A part re-exported from a child loses its states
+unless `exportparts` lists them too (`exportparts="base: button, disabled"`).
+A class a site can't see is not a state it can style.
+
 ### Motion
 
 Motion is CSS-first and lives inside the component that owns it. Use the

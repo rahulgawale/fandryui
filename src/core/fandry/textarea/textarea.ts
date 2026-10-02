@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -110,5 +111,9 @@ export default class Textarea extends Base {
         bubbles: true
       })
     );
+  }
+
+  get controlPart(): string {
+    return partList('control textarea', { disabled: this.disabled });
   }
 }

@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 export default class Progress extends Base {
   @api label = '';
@@ -57,5 +58,9 @@ export default class Progress extends Base {
   // ariaCurrent.
   get ariaValueNow(): string | undefined {
     return this.indeterminate ? undefined : String(this.clampedValue);
+  }
+
+  get indicatorPart(): string {
+    return partList('indicator', { indeterminate: this.indeterminate });
   }
 }

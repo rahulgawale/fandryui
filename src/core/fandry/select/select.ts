@@ -1,5 +1,6 @@
 import { api, track, LightningElement } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 export interface FdSelectOption {
   label: string;
@@ -35,6 +36,7 @@ interface RenderOption extends FlatOption {
   ariaSelected: 'true' | 'false';
   ariaDisabled: 'true' | 'false';
   classes: string;
+  part: string;
   resolvedComponentProps: Record<string, unknown>;
 }
 
@@ -181,7 +183,8 @@ export default class Select extends Base {
 
   private decorateOption(option: FdSelectOption, id: string): RenderOption {
     const disabled = !!option.disabled;
-    const selected = option.value === this.value;
+    // Like selectedEntry, the placeholder is never the chosen option, even while value is ''.
+    const selected = id !== 'option-placeholder' && option.value === this.value;
     const active = id === this.activeOptionId;
 
     return {
@@ -200,7 +203,8 @@ export default class Select extends Base {
         disabled ? 'option--disabled' : ''
       ]
         .filter(Boolean)
-        .join(' ')
+        .join(' '),
+      part: partList('option', { selected, active, disabled })
     };
   }
 
@@ -402,4 +406,8 @@ export default class Select extends Base {
 
     this.activeOptionId = target.dataset.optionId ?? null;
   };
+
+  get controlPart(): string {
+    return partList('control', { disabled: this.disabled });
+  }
 }

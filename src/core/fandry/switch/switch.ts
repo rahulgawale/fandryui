@@ -1,4 +1,5 @@
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 import { api } from 'lwc';
 
 // See checkbox.ts for why this list exists: it keeps a consumer's
@@ -42,5 +43,9 @@ export default class Switch extends Base {
         bubbles: true
       })
     );
+  }
+
+  get controlPart(): string {
+    return partList('control', { checked: this.checked, disabled: this.disabled });
   }
 }

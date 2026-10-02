@@ -22,6 +22,8 @@ export interface ComponentEntry {
   props: ComponentProp[];
   /** Elements a page can style with `tag::part(name)`; described in PART_DESCRIPTIONS. */
   parts?: string[];
+  /** Names added to a part while a state is on (`::part(control checked)`); described in STATE_DESCRIPTIONS. */
+  states?: string[];
   code: string;
   examples?: ComponentExample[];
   /** A live example of theming this component with tokens and parts, shown under the default example. */
@@ -93,14 +95,41 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   footer: 'The bar under the table.',
   'selection-status': 'The "n of m selected" text.',
   pagination: 'The wrapper of the pagination slot.',
-  selected: 'The chosen record, in single-select mode.',
-  'selected-label': 'The chosen record\'s name.',
+  selection: 'The chosen record, in single-select mode.',
+  'selection-label': 'The chosen record\'s name.',
   'clear-button': 'The button that clears the chosen record.',
   chips: 'The row of chosen records and the input, in multi-select mode.',
   chip: 'One chosen record.',
   'chip-label': 'A chosen record\'s name.',
   'chip-remove': 'The button that removes one chosen record.',
   'clear-all': 'The Clear all button.'
+};
+
+/*
+  States are names added to a part while the state is on, so a page can
+  style one state: `fandry-checkbox::part(control checked)` (::part() with
+  several names matches only an element that has all of them). The same
+  word means the same thing on every component.
+*/
+export const STATE_DESCRIPTIONS: Record<string, string> = {
+  checked: 'The box, circle or track of a checked control.',
+  indeterminate: 'A checkbox that is neither checked nor unchecked, or a progress bar with no known value.',
+  disabled: 'A control, option or item that cannot be used.',
+  selected: 'The chosen option, or a selected table row.',
+  active: 'The option the keyboard or pointer is on.',
+  current: 'The link to the page being viewed.',
+  sorted: 'A header cell whose column is sorted (also `ascending` or `descending`).',
+  ascending: 'A header cell sorted low to high.',
+  descending: 'A header cell sorted high to low.',
+  default: 'The default look (`variant="default"`).',
+  primary: '`variant="primary"`.',
+  secondary: '`variant="secondary"`.',
+  ghost: '`variant="ghost"`.',
+  muted: '`variant="muted"`.',
+  info: '`variant="info"`.',
+  success: '`variant="success"`.',
+  warning: '`variant="warning"`.',
+  danger: '`variant="danger"`.'
 };
 
 export const COMPONENTS: ComponentEntry[] = [
@@ -159,6 +188,7 @@ fandry-breadcrumb-item::part(link) {
     name: 'Breadcrumb Item',
     tag: 'fandry-breadcrumb-item',
     parts: ['base', 'separator', 'link'],
+    states: ['current'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'breadcrumb-theme',
@@ -284,6 +314,7 @@ fandry-divider::part(base) {
     name: 'Pagination',
     tag: 'fandry-pagination',
     parts: ['base', 'link', 'previous', 'eyebrow', 'title', 'next', 'status', 'button'],
+    states: ['disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'pagination-theme',
@@ -413,6 +444,7 @@ fandry-sidebar-item::part(link) {
     name: 'Sidebar Item',
     tag: 'fandry-sidebar-item',
     parts: ['base', 'link'],
+    states: ['current'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'sidebar-theme',
@@ -581,6 +613,7 @@ fandry-label::part(required) {
     name: 'Text',
     tag: 'fandry-text',
     parts: ['base'],
+    states: ['default', 'muted'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'text-theme',
@@ -619,6 +652,7 @@ fandry-text::part(base) {
     name: 'Button',
     tag: 'fandry-button',
     parts: ['base'],
+    states: ['default', 'secondary', 'ghost', 'disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'button-theme',
@@ -646,6 +680,12 @@ fandry-button::part(base) {
 fandry-button.cta::part(base) {
   padding-inline: 1.5rem;
   box-shadow: 0 6px 16px hsl(160 84% 26% / 0.35);
+}
+
+/* A variant is a state too: only secondary buttons. */
+fandry-button::part(base secondary) {
+  color: hsl(160 84% 26%);
+  border-color: hsl(160 84% 26%);
 }`
     },
     category: 'Forms',
@@ -663,6 +703,7 @@ fandry-button.cta::part(base) {
     name: 'Checkbox',
     tag: 'fandry-checkbox',
     parts: ['base', 'control', 'indicator', 'label'],
+    states: ['checked', 'indeterminate', 'disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'checkbox-theme',
@@ -687,6 +728,11 @@ fandry-checkbox::part(control) {
 
 fandry-checkbox::part(label) {
   font-weight: 600;
+}
+
+/* A state: only the checked box. */
+fandry-checkbox::part(control checked) {
+  box-shadow: 0 0 0 3px hsl(160 84% 26% / 0.2);
 }`
     },
     category: 'Forms',
@@ -704,6 +750,7 @@ fandry-checkbox::part(label) {
     name: 'Combobox',
     tag: 'fandry-combobox',
     parts: ['base', 'label', 'required', 'control', 'input', 'chevron', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty', 'help-text'],
+    states: ['disabled', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'combobox-theme',
@@ -845,6 +892,7 @@ export default class PeopleSearch extends FdSearchState {
     name: 'Input',
     tag: 'fandry-input',
     parts: ['base', 'label', 'control', 'prefix', 'input', 'suffix', 'help-text', 'required'],
+    states: ['disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'input-theme',
@@ -902,6 +950,7 @@ fandry-input::part(help-text) {
     name: 'Link',
     tag: 'fandry-link',
     parts: ['base', 'link'],
+    states: ['default', 'muted', 'disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'link-theme',
@@ -939,6 +988,7 @@ fandry-link::part(link):hover {
     name: 'Radio',
     tag: 'fandry-radio',
     parts: ['base', 'control', 'indicator', 'label'],
+    states: ['checked', 'disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'radio-theme',
@@ -1055,6 +1105,7 @@ fandry-radio::part(label) {
     name: 'Select',
     tag: 'fandry-select',
     parts: ['base', 'label', 'required', 'control', 'value', 'chevron', 'listbox', 'option', 'group', 'group-label', 'help-text', 'panel'],
+    states: ['disabled', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'select-theme',
@@ -1084,6 +1135,12 @@ fandry-select::part(panel) {
 
 fandry-select::part(option) {
   padding-block: 0.5rem;
+}
+
+/* A state: only the chosen option. */
+fandry-select::part(option selected) {
+  font-weight: 700;
+  color: hsl(160 84% 26%);
 }`
     },
     category: 'Forms',
@@ -1139,6 +1196,7 @@ planOptions = [
     name: 'Switch',
     tag: 'fandry-switch',
     parts: ['base', 'control', 'indicator', 'label'],
+    states: ['checked', 'disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'switch-theme',
@@ -1179,6 +1237,7 @@ fandry-switch::part(label) {
     name: 'Textarea',
     tag: 'fandry-textarea',
     parts: ['base', 'label', 'control', 'textarea', 'help-text', 'required'],
+    states: ['disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'textarea-theme',
@@ -1223,6 +1282,7 @@ fandry-textarea::part(label) {
     name: 'Alert',
     tag: 'fandry-alert',
     parts: ['base', 'title', 'body'],
+    states: ['info', 'success', 'warning', 'danger'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'alert-theme',
@@ -1265,6 +1325,7 @@ fandry-alert::part(title) {
     name: 'Badge',
     tag: 'fandry-badge',
     parts: ['base'],
+    states: ['default', 'primary', 'success', 'warning', 'danger'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'badge-theme',
@@ -1303,6 +1364,7 @@ fandry-badge::part(base) {
     name: 'Progress',
     tag: 'fandry-progress',
     parts: ['base', 'indicator'],
+    states: ['indeterminate'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'progress-theme',
@@ -1417,6 +1479,7 @@ fandry-spinner::part(base) {
     name: 'Toast',
     tag: 'fandry-toast',
     parts: ['base'],
+    states: ['info', 'success', 'warning', 'danger'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'toast-theme',
@@ -1596,6 +1659,7 @@ fandry-avatar::part(initials) {
     name: 'Command',
     tag: 'fandry-command',
     parts: ['backdrop', 'panel', 'search', 'input', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty'],
+    states: ['selected', 'active', 'disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'command-theme',
@@ -1837,6 +1901,7 @@ fandry-menu-item.danger::part(base) {
     name: 'Menu Item',
     tag: 'fandry-menu-item',
     parts: ['base'],
+    states: ['disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'menu-theme',
@@ -1926,6 +1991,7 @@ fandry-popover::part(panel) {
     name: 'Table',
     tag: 'fandry-table',
     parts: ['toolbar', 'container', 'table', 'caption', 'header-row', 'header-cell', 'selection-cell', 'sort-button', 'header-label', 'sort-indicator', 'row', 'loading-row', 'cell', 'empty-row', 'empty', 'footer', 'selection-status', 'pagination'],
+    states: ['selected', 'sorted', 'ascending', 'descending'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'table-theme',
@@ -1985,7 +2051,8 @@ fandry-table::part(row):hover {
     slug: 'lookup',
     name: 'Lookup',
     tag: 'fandry-lookup',
-    parts: ['base', 'label', 'required', 'control', 'selected', 'selected-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text'],
+    parts: ['base', 'label', 'required', 'control', 'selection', 'selection-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text'],
+    states: ['disabled', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'lookup-theme',

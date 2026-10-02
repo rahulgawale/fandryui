@@ -100,6 +100,30 @@
                 </tbody>
               </table>
             </div>
+            <template if:true={hasStates}>
+              <fandry-text variant="muted" size="sm" class="section-note states-note">
+                States are extra names on a part while the state is on. Name both to style one state, e.g.
+                <code>fandry-checkbox::part(control checked)</code>.
+              </fandry-text>
+              <div class="props-table-wrap">
+                <table class="props-table">
+                  <thead>
+                    <tr>
+                      <th>State</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template for:each={states} for:item="state">
+                      <tr key={state.name}>
+                        <td><code>{state.name}</code></td>
+                        <td>{state.description}</td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+              </div>
+            </template>
             <template if:true={customizeCode}>
               <pre class="code-block parts-code"><code>{customizeCode}</code></pre>
             </template>

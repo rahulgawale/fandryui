@@ -8,7 +8,7 @@
     -->
     <span onclick={handlePrevious}>
       <slot name="previous">
-        <fandry-button exportparts="base: button" variant="secondary" size="sm" disabled={previousDisabled}>
+        <fandry-button exportparts="base: button, disabled" variant="secondary" size="sm" disabled={previousDisabled}>
           <slot name="previous-text">Previous</slot>
         </fandry-button>
       </slot>
@@ -18,7 +18,7 @@
     </slot>
     <span onclick={handleNext}>
       <slot name="next">
-        <fandry-button exportparts="base: button" variant="secondary" size="sm" disabled={nextDisabled}>
+        <fandry-button exportparts="base: button, disabled" variant="secondary" size="sm" disabled={nextDisabled}>
           <slot name="next-text">Next</slot>
         </fandry-button>
       </slot>

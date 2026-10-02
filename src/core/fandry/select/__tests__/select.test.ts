@@ -82,6 +82,9 @@ describe('fandry-select', () => {
     const firstOption = element.shadowRoot!.querySelector('.listbox [role="option"]')!;
     expect(firstOption.getAttribute('aria-disabled')).toBe('true');
     expect(firstOption.textContent).toBe('Choose a plan');
+    // Nothing is chosen yet, so the placeholder isn't the selected option.
+    expect(firstOption.getAttribute('aria-selected')).toBe('false');
+    expect(firstOption.getAttribute('part')).toBe('option disabled');
   });
 
   it('shows the first option label when no placeholder or value is set', () => {
