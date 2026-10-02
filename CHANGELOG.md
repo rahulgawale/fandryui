@@ -1,3 +1,10 @@
+# [0.18.0](https://github.com/rahulgawale/fandryui/compare/v0.17.1...v0.18.0) (2026-10-02)
+
+
+### Features
+
+* let a site style a part's states ([#80](https://github.com/rahulgawale/fandryui/issues/80)) ([75df5f2](https://github.com/rahulgawale/fandryui/commit/75df5f2d9daf406e6a3dcdb382bfdce5dd00f341))
+
 ## [0.17.1](https://github.com/rahulgawale/fandryui/compare/v0.17.0...v0.17.1) (2026-10-02)
 
 
