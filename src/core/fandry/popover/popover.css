@@ -34,20 +34,20 @@
 
 .panel--bottom {
   margin-top: var(--_fd-space-1);
-  --fd-slide-y: calc(var(--_fd-space-2) * -1);
+  --_fd-slide-y: calc(var(--_fd-space-2) * -1);
 }
 
 .panel--top {
   margin-bottom: var(--_fd-space-1);
-  --fd-slide-y: var(--_fd-space-2);
+  --_fd-slide-y: var(--_fd-space-2);
 }
 
 .panel--left {
   margin-right: var(--_fd-space-1);
-  --fd-slide-x: var(--_fd-space-2);
+  --_fd-slide-x: var(--_fd-space-2);
 }
 
 .panel--right {
   margin-left: var(--_fd-space-1);
-  --fd-slide-x: calc(var(--_fd-space-2) * -1);
+  --_fd-slide-x: calc(var(--_fd-space-2) * -1);
 }

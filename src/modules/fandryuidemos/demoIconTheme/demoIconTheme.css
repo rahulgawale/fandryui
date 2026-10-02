@@ -27,7 +27,8 @@ fandry-icon::part(base) {
   border-radius: 999px;
 }
 
-/* A per-component hook: the icon's size. */
-.large {
-  --fd-icon-size: 2.5rem;
+/* One icon only, at any size. */
+.large::part(base) {
+  width: 2.5rem;
+  height: 2.5rem;
 }
