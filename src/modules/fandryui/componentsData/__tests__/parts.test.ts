@@ -92,9 +92,11 @@ describe('component parts', () => {
     expect(Object.keys(STATE_DESCRIPTIONS).filter((name) => !used.has(name))).toEqual([]);
   });
 
-  it('never uses a state word as a part name', () => {
-    // `::part(selected)` would match a part named selected and every selected option alike.
-    expect(Object.keys(STATE_DESCRIPTIONS).filter((name) => PART_DESCRIPTIONS[name])).toEqual([]);
+  /* ::part() looks only inside its own host, so a word may be a part on one
+     component and a state on another -- but not both on the same one, or
+     `::part(selected)` would match the part and every selected option alike. */
+  it.each(COMPONENTS.map((entry) => [entry.tag, entry]))('%s never uses a state word as one of its part names', (_tag, entry) => {
+    expect((entry.states ?? []).filter((state) => entry.parts?.includes(state))).toEqual([]);
   });
 
   it('renders part and exportparts on the real elements', async () => {
@@ -175,7 +177,7 @@ describe('part states at runtime', () => {
     expect(element.shadowRoot!.querySelector('button')!.getAttribute('part')).toBe('base default');
   });
 
-  it('marks the chosen option of a select', async () => {
+  it('marks the selected option of a select', async () => {
     const element = createElement('fandry-select', { is: FdSelect }) as unknown as HTMLElement;
     Object.assign(element, { options: [{ label: 'A', value: 'a' }, { label: 'B', value: 'b', disabled: true }], value: 'a' });
     document.body.appendChild(element);
@@ -186,6 +188,6 @@ describe('part states at runtime', () => {
 
     // Opening highlights the chosen option, so it is also `active`.
     const parts = Array.from(element.shadowRoot!.querySelectorAll('[role="option"]')).map((option) => option.getAttribute('part'));
-    expect(parts).toEqual(['option chosen active', 'option disabled']);
+    expect(parts).toEqual(['option selected active', 'option disabled']);
   });
 });

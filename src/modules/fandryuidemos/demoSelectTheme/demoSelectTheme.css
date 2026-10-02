@@ -42,7 +42,7 @@ fandry-select::part(option) {
 }
 
 /* A state: only the chosen option. */
-fandry-select::part(option chosen) {
+fandry-select::part(option selected) {
   font-weight: 700;
   color: hsl(160 84% 26%);
 }

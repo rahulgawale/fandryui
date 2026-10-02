@@ -78,7 +78,7 @@ export interface FdTableRow {
   id: string;
   cells: FdTableCell[];
   selected: boolean;
-  /** The row's `part`: `row`, plus `chosen`. */
+  /** The row's `part`: `row`, plus `selected`. */
   part: string;
   selectionAriaLabel: string;
 }
@@ -473,7 +473,7 @@ export default class FdTableState extends Base {
           value: this.toCellValue(cell)
         })),
         selected: row.getIsSelected(),
-        part: partList('row', { chosen: row.getIsSelected() }),
+        part: partList('row', { selected: row.getIsSelected() }),
         selectionAriaLabel: this.resolveRowSelectionAriaLabel(row, index)
       }));
   }
