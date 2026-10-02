@@ -1,5 +1,6 @@
 import { api, track } from 'lwc';
-import FdTableState from 'fandry/tableState';
+import FdTableState, { DEFAULT_TABLE_MESSAGES } from 'fandry/tableState';
+import type { FdTableMessages } from 'fandry/tableState';
 import { exitFinished } from 'fandry/motion';
 import type { Cell, ColumnFiltersState, Row, RowData, Updater, VisibilityState } from '@tanstack/table-core';
 
@@ -9,6 +10,92 @@ export interface FdDataTableOption {
 }
 
 export type FdDataTableBadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger';
+
+/** Everything the data table says, on top of fandry-table's own messages; see `messages`. */
+export interface FdDataTableMessages extends FdTableMessages {
+  clearFilters: string;
+  /** A toolbar filter's "all values" option, and the filter's name. */
+  anyValue: (header: string) => string;
+  filterBy: (header: string) => string;
+  /** The button that opens the column toggles. */
+  columns: string;
+  /** The column toggles' group name. */
+  visibleColumns: string;
+  /** The actions column's header, for screen readers. */
+  actions: string;
+  /** A row's actions menu button. */
+  rowActions: (label: string) => string;
+  /** An inline editor's name: the column's header, for this row. */
+  editField: (header: string, label: string) => string;
+  save: string;
+  cancel: string;
+  edit: string;
+  delete: string;
+  /** Spinner names while a request runs. */
+  saving: string;
+  deleting: string;
+  clearSelection: string;
+  bulkEdit: (count: number) => string;
+  bulkDialogHeading: (count: number) => string;
+  /** The blank choice in a multi-record edit: leave this column alone. */
+  noChange: string;
+  deleteLabel: (label: string) => string;
+  deleteQuestion: (label: string) => string;
+  cannotUndo: string;
+  /** The toast region's name. */
+  notifications: string;
+  saved: (label: string) => string;
+  noChangesFor: (label: string) => string;
+  editInProgress: string;
+  bulkNoChanges: string;
+  bulkSaved: (count: number) => string;
+  bulkSaveFailed: (count: number, reason: string) => string;
+  saveFailed: (label: string, reason: string) => string;
+  deleted: (label: string) => string;
+  deleteFailed: (label: string, reason: string) => string;
+  /** The reason when a failed request gives none. */
+  unknownError: string;
+  /** A row's name when getRowLabel gives none; `rowNumber` is undefined outside the rows (a toast, the delete dialog). */
+  unnamedRow: (rowNumber?: number) => string;
+}
+
+export const DEFAULT_DATA_TABLE_MESSAGES: FdDataTableMessages = {
+  ...DEFAULT_TABLE_MESSAGES,
+  selectAll: 'Select all rows on this page',
+  clearFilters: 'Clear',
+  anyValue: (header) => `Any ${header.toLowerCase()}`,
+  filterBy: (header) => `Filter by ${header.toLowerCase()}`,
+  columns: 'Columns',
+  visibleColumns: 'Visible columns',
+  actions: 'Actions',
+  rowActions: (label) => `Actions for ${label}`,
+  editField: (header, label) => `${header} for ${label}`,
+  save: 'Save',
+  cancel: 'Cancel',
+  edit: 'Edit',
+  delete: 'Delete',
+  saving: 'Saving',
+  deleting: 'Deleting',
+  clearSelection: 'Clear selection',
+  bulkEdit: (count) => `Edit ${count} selected`,
+  bulkDialogHeading: (count) => `Edit ${count} records`,
+  noChange: 'No change',
+  deleteLabel: (label) => `Delete ${label}`,
+  deleteQuestion: (label) => `Delete ${label}?`,
+  cannotUndo: "This can't be undone.",
+  notifications: 'Notifications',
+  saved: (label) => `Saved ${label}.`,
+  noChangesFor: (label) => `No changes to save for ${label}.`,
+  editInProgress: 'Save or cancel the current edit before editing another row.',
+  bulkNoChanges: 'Fill in at least one field to apply, or cancel.',
+  bulkSaved: (count) => `Saved ${count} records.`,
+  bulkSaveFailed: (count, reason) => `Couldn't save ${count} records: ${reason}`,
+  saveFailed: (label, reason) => `Couldn't save ${label}: ${reason}`,
+  deleted: (label) => `Deleted ${label}.`,
+  deleteFailed: (label, reason) => `Couldn't delete ${label}: ${reason}`,
+  unknownError: 'Something went wrong.',
+  unnamedRow: (rowNumber) => (rowNumber === undefined ? 'this row' : `row ${rowNumber}`)
+};
 
 /**
  * Read from a column's `meta`, so a column stays a plain tanstack ColumnDef
@@ -34,7 +121,8 @@ export interface FdDataTableColumnMeta {
 
 export interface FdDataTableRowAction {
   value: string;
-  label: string;
+  /** Optional for the built-in `edit` and `delete`, which take theirs from `messages`. */
+  label?: string;
 }
 
 export interface FdDataTableFilter {
@@ -140,14 +228,24 @@ export default class FdDataTableState extends FdTableState {
   /** `(row) => Promise<void>` -- same contract as `saveRow`, for the built-in Delete action. */
   @api deleteRow?: (row: RowData) => Promise<void>;
 
+  /* `messages` (declared by fandry-table) takes any of
+     DEFAULT_DATA_TABLE_MESSAGES here, the table's own included. */
+  protected get text(): FdDataTableMessages {
+    return { ...DEFAULT_DATA_TABLE_MESSAGES, ...(this.messages as Partial<FdDataTableMessages>) };
+  }
+
   /**
    * `edit` and `delete` are built in; any other value is reported through
    * `rowaction` for the consumer to handle.
    */
-  @api rowActions: FdDataTableRowAction[] = [
-    { value: 'edit', label: 'Edit' },
-    { value: 'delete', label: 'Delete' }
-  ];
+  @api rowActions: FdDataTableRowAction[] = [{ value: 'edit' }, { value: 'delete' }];
+
+  // The row menu's items, a built-in action without a label named from `messages`.
+  get menuActions(): Required<FdDataTableRowAction>[] {
+    const text = this.text;
+    const builtIn: Record<string, string> = { edit: text.edit, delete: text.delete };
+    return this.rowActions.map((action) => ({ value: action.value, label: action.label ?? builtIn[action.value] ?? action.value }));
+  }
 
   /**
    * Which columns are hidden, keyed by column id (`{ email: false }`). Set it
@@ -265,7 +363,7 @@ export default class FdDataTableState extends FdTableState {
           // popover.html), so it is wired onto the fandry-button here.
           menuTriggerProps: {
             tabIndex: 0,
-            ariaLabel: `Actions for ${label}`,
+            ariaLabel: this.text.rowActions(label),
             ariaHasPopup: 'menu',
             ariaExpanded: String(row.id === this.menuRowId)
           },
@@ -284,13 +382,14 @@ export default class FdDataTableState extends FdTableState {
         if (!filter) return [];
 
         const header = this.headerText(column.columnDef.header, column.id);
+        const text = this.text;
         return [
           {
             columnId: column.id,
             label: header,
             value: String(column.getFilterValue() ?? NO_FILTER),
-            options: [{ label: `Any ${header.toLowerCase()}`, value: NO_FILTER }, ...filter.options],
-            selectProps: { ariaLabel: `Filter by ${header.toLowerCase()}`, tabIndex: 0 }
+            options: [{ label: text.anyValue(header), value: NO_FILTER }, ...filter.options],
+            selectProps: { ariaLabel: text.filterBy(header), tabIndex: 0 }
           }
         ];
       });
@@ -334,11 +433,11 @@ export default class FdDataTableState extends FdTableState {
   }
 
   get bulkEditLabel(): string {
-    return `Edit ${this.selectedCount} selected`;
+    return this.text.bulkEdit(this.selectedCount);
   }
 
   get bulkDialogHeading(): string {
-    return `Edit ${this.selectedCount} records`;
+    return this.text.bulkDialogHeading(this.selectedCount);
   }
 
   get bulkFields(): FdDataTableBulkField[] {
@@ -353,7 +452,7 @@ export default class FdDataTableState extends FdTableState {
         isSelectEditor: type === 'select',
         inputType: type === 'number' ? 'number' : 'text',
         // A blank is "leave this column alone", so it has to be choosable.
-        options: [{ label: 'No change', value: '' }, ...(editor.options ?? [])]
+        options: [{ label: this.text.noChange, value: '' }, ...(editor.options ?? [])]
       };
     });
   }
@@ -395,11 +494,11 @@ export default class FdDataTableState extends FdTableState {
   }
 
   get deleteDialogLabel(): string {
-    return this.deleteCandidate ? `Delete ${this.labelOf(this.deleteCandidate)}` : 'Delete';
+    return this.deleteCandidate ? this.text.deleteLabel(this.labelOf(this.deleteCandidate)) : this.text.delete;
   }
 
   get deleteDialogQuestion(): string {
-    return this.deleteCandidate ? `Delete ${this.labelOf(this.deleteCandidate)}?` : '';
+    return this.deleteCandidate ? this.text.deleteQuestion(this.labelOf(this.deleteCandidate)) : '';
   }
 
   private metaOf(columnDef: { meta?: unknown }): FdDataTableColumnMeta {
@@ -411,11 +510,11 @@ export default class FdDataTableState extends FdTableState {
   }
 
   private rowLabel(row: Row<RowData>, index: number): string {
-    return (typeof this.getRowLabel === 'function' && this.getRowLabel(row.original, index)) || `row ${index + 1}`;
+    return (typeof this.getRowLabel === 'function' && this.getRowLabel(row.original, index)) || this.text.unnamedRow(index + 1);
   }
 
   private labelOf(original: RowData): string {
-    return (typeof this.getRowLabel === 'function' && this.getRowLabel(original, 0)) || 'this row';
+    return (typeof this.getRowLabel === 'function' && this.getRowLabel(original, 0)) || this.text.unnamedRow();
   }
 
   private toDataCell(cell: Cell<RowData, unknown>, editing: boolean, rowLabel: string): FdDataTableCell {
@@ -442,7 +541,7 @@ export default class FdDataTableState extends FdTableState {
       options: editor?.options ?? [],
       // fandry-input/-select spread this onto their native control. `disabled`
       // is a real prop on both, so it is bound separately in the template.
-      editorProps: { ariaLabel: `${header} for ${rowLabel}`, tabIndex: 0 }
+      editorProps: { ariaLabel: this.text.editField(header, rowLabel), tabIndex: 0 }
     };
   }
 
@@ -796,46 +895,46 @@ export default class FdDataTableState extends FdTableState {
     this.toasts = this.toasts.filter((toast) => toast.id !== id);
   }
 
-  // Overridable copy, so a subclass can translate or reword without
-  // touching the workflow.
+  /* The block's copy comes from `messages`; a subclass can still override
+     these to reword one message with more context. */
   protected saveSuccessMessage(label: string): string {
-    return `Saved ${label}.`;
+    return this.text.saved(label);
   }
 
   protected noChangesMessage(label: string): string {
-    return `No changes to save for ${label}.`;
+    return this.text.noChangesFor(label);
   }
 
   protected editInProgressMessage(): string {
-    return 'Save or cancel the current edit before editing another row.';
+    return this.text.editInProgress;
   }
 
   protected bulkNoChangesMessage(): string {
-    return 'Fill in at least one field to apply, or cancel.';
+    return this.text.bulkNoChanges;
   }
 
   protected bulkSaveSuccessMessage(count: number): string {
-    return `Saved ${count} records.`;
+    return this.text.bulkSaved(count);
   }
 
   protected bulkSaveFailureMessage(count: number, error: unknown): string {
-    return `Couldn't save ${count} records: ${this.errorText(error)}`;
+    return this.text.bulkSaveFailed(count, this.errorText(error));
   }
 
   protected saveFailureMessage(label: string, error: unknown): string {
-    return `Couldn't save ${label}: ${this.errorText(error)}`;
+    return this.text.saveFailed(label, this.errorText(error));
   }
 
   protected deleteSuccessMessage(label: string): string {
-    return `Deleted ${label}.`;
+    return this.text.deleted(label);
   }
 
   protected deleteFailureMessage(label: string, error: unknown): string {
-    return `Couldn't delete ${label}: ${this.errorText(error)}`;
+    return this.text.deleteFailed(label, this.errorText(error));
   }
 
   private errorText(error: unknown): string {
-    return error instanceof Error && error.message ? error.message : 'Something went wrong.';
+    return error instanceof Error && error.message ? error.message : this.text.unknownError;
   }
 
   // ---- lifecycle

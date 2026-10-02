@@ -58,6 +58,7 @@ const PROPS = [
   { name: 'mode', type: "'read' | 'edit'", default: "'edit'", description: 'Whether the form shows controls or the values as text. Set it to choose where the form starts; the block keeps it current as the user moves between the two.' },
   { name: 'save-values', type: '(values, changes) => Promise', default: '—', description: 'Persists the form. `values` is everything with the edits applied, `changes` only what differs. Resolve with the saved values or nothing; reject to stay in edit mode and show the message.' },
   { name: 'validate', type: '(values) => errors | Promise', default: '—', description: 'Rules that span fields or need the server. Return `{ [field name]: message }`. Runs on save, once every field\'s own rules pass.' },
+  { name: 'messages', type: 'object', default: '{}', description: 'Everything the form says (buttons, statuses, "is required", Yes / No in read mode), e.g. to translate it: any key of DEFAULT_FORM_MESSAGES (fandry/formState). Keys you leave out keep their English default.' },
   { name: 'edit() · save() · cancel()', type: 'methods', default: '—', description: 'What the default buttons call. Use them from your own buttons in the `actions` slot.' }
 ];
 
