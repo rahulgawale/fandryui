@@ -62,4 +62,36 @@ describe('design tokens', () => {
     }
     expect(problems).toEqual([]);
   });
+
+  /* A length, duration or color written into a component can't be themed.
+     The only literals allowed are 1px (screen-reader-only boxes, a one-pixel
+     optical nudge), 1em (one line of the surrounding text), unitless zero,
+     and the layout units % and vw/vh; everything else is a token, or derived
+     from one. */
+  it('has no hard-coded lengths, durations or colors in component CSS', () => {
+    const literal = new RegExp(
+      [
+        String.raw`(?<![\w-])(?!-?1px\b|-?1em\b)-?\d*\.?\d+(px|r?em|pt|m?s)\b`,
+        String.raw`#[0-9a-f]{3,8}\b`,
+        String.raw`\brgba?\(`,
+        String.raw`\b(hsla?|hwb|lab|lch|oklab|oklch)\(\s*-?[\d.]`,
+        String.raw`(?<![\w-])(white|black|gr[ae]y|silver|red|green|blue|yellow|orange|purple|pink)(?![\w-])`
+      ].join('|'),
+      'i'
+    );
+    const problems: string[] = [];
+    for (const dir of COMPONENT_DIRS) {
+      for (const file of cssFiles(join(ROOT, dir))) {
+        if (file === TOKENS || file.endsWith('motion.css')) continue;
+        /* Blank comments out line for line, so a reported line number is the file's. */
+        const lines = readFileSync(file, 'utf8')
+          .replace(/\/\*[\s\S]*?\*\//g, (comment) => comment.replace(/[^\n]/g, ''))
+          .split(/\r?\n/);
+        lines.forEach((line, index) => {
+          if (literal.test(line)) problems.push(`${relative(ROOT, file)}:${index + 1}: ${line.trim()}`);
+        });
+      }
+    }
+    expect(problems).toEqual([]);
+  });
 });

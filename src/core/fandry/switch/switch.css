@@ -28,14 +28,14 @@
 
 /* Track */
 .track {
-  width: 36px;
-  height: 20px;
-  flex: 0 0 36px;
-  border-radius: 999px;
+  width: var(--_fd-switch-width);
+  height: calc(var(--_fd-size-sm) + 2 * var(--_fd-switch-padding));
+  flex: 0 0 var(--_fd-switch-width);
+  border-radius: var(--_fd-radius-full);
   background: hsl(var(--_fd-border));
   display: inline-flex;
   align-items: center;
-  padding: 2px;
+  padding: var(--_fd-switch-padding);
   transition: background-color var(--_fd-duration-fast) ease,
     box-shadow var(--_fd-duration-fast) ease;
 }
@@ -56,7 +56,7 @@
 }
 
 .input:checked + .track .thumb {
-  transform: translateX(16px);
+  transform: translateX(calc(var(--_fd-switch-width) - var(--_fd-size-sm) - 2 * var(--_fd-switch-padding)));
 }
 
 /* Focus */

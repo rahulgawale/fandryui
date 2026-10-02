@@ -44,10 +44,11 @@
 
 /* Check mark */
 .check {
-  width: 10px;
-  height: 6px;
-  border-left: 2px solid hsl(var(--_fd-primary-foreground));
-  border-bottom: 2px solid hsl(var(--_fd-primary-foreground));
+  /* Proportional to the box, so the mark follows --fd-size-sm. */
+  width: calc(var(--_fd-size-sm) * 0.625);
+  height: calc(var(--_fd-size-sm) * 0.375);
+  border-left: calc(var(--_fd-size-sm) * 0.125) solid hsl(var(--_fd-primary-foreground));
+  border-bottom: calc(var(--_fd-size-sm) * 0.125) solid hsl(var(--_fd-primary-foreground));
   transform: translateY(-1px) rotate(-45deg) scale(0.9);
   opacity: 0;
   transition: opacity var(--_fd-duration-fast) ease,
