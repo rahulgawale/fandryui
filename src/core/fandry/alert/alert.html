@@ -1,8 +1,8 @@
 <template>
   <div class={classes} part={basePart} role={role}>
-    <template if:true={hasTitle}>
-      <p class="title" part="title">{title}</p>
-    </template>
+    <p class="title" part="title" hidden={titleHidden}>
+      <slot name="title" onslotchange={handleTextSlotChange}>{title}</slot>
+    </p>
     <div class="body" part="body">
       <slot></slot>
     </div>

@@ -17,12 +17,13 @@ describe('fandry-input', () => {
     expect(label).not.toBeNull();
   });
 
-  it('omits the label when none is provided', () => {
+  // It stays in the DOM, hidden, so a slotted label can still fill it.
+  it('hides the label when none is provided', () => {
     const element = createElement('fandry-input', { is: FdInput });
     document.body.appendChild(element);
 
-    const label = element.shadowRoot!.querySelector('fandry-label');
-    expect(label).toBeNull();
+    const label = element.shadowRoot!.querySelector('fandry-label')!;
+    expect(label.hasAttribute('hidden')).toBe(true);
   });
 
   it('dispatches a semantic "input" event carrying the new value', () => {
