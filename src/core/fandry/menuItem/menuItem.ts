@@ -1,6 +1,7 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { resolveElementProps } from 'fandry/elementProps';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property (or the click/keydown
@@ -55,7 +56,7 @@ export default class FdMenuItem extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-menu-item');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-menu-item');
   }
 
   // Lets fandry-menu move real focus to a specific item's internal element

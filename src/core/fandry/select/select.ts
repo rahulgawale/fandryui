@@ -1,6 +1,8 @@
 import { api, track, LightningElement } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { resolveElementProps } from 'fandry/elementProps';
+import { slotHasContent } from 'fandry/textSlots';
 
 export interface FdSelectOption {
   label: string;
@@ -118,7 +120,7 @@ export default class Select extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-select');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-select');
   }
 
   // Flattened in render order (placeholder, then flat options, then group
@@ -411,15 +413,12 @@ export default class Select extends Base {
     return partList('control', { disabled: this.disabled });
   }
 
-  /* Which text slots have content, so a label or help text a page slots in
-     shows even without the matching prop. The wrapper stays in the DOM
-     (hidden while empty), so its slot is always there to be filled. */
+  // Which text slots have content -- see fandry/textSlots.
   textSlots: Record<string, boolean> = {};
 
   handleTextSlotChange(event: Event) {
     const slot = event.target as HTMLSlotElement;
-    const filled = slot.assignedNodes().some((node) => node.nodeType === 1 || (node.nodeType === 3 && !!node.textContent?.trim()));
-    this.textSlots = { ...this.textSlots, [slot.name || 'default']: filled };
+    this.textSlots = { ...this.textSlots, [slot.name || 'default']: slotHasContent(slot) };
   }
 
   get labelHidden(): boolean {

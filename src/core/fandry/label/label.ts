@@ -1,5 +1,6 @@
 import Base from 'fandry/base';
 import { api } from 'lwc';
+import { resolveElementProps } from 'fandry/elementProps';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -20,6 +21,6 @@ export default class Label extends Base {
   @api elementProps: Record<string, unknown> = {};
 
   get resolvedElementProps(): Record<string, unknown> {
-    return this.resolveElementProps(this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-label');
+    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-label');
   }
 }
