@@ -27,6 +27,7 @@
       "fandry/parts": ["src/core/fandry/parts/parts"],
       "fandry/elementProps": ["src/core/fandry/elementProps/elementProps"],
       "fandry/anchorTabStop": ["src/core/fandry/anchorTabStop/anchorTabStop"],
+      "fandry/textSlots": ["src/core/fandry/textSlots/textSlots"],
       "fandry/searchState": ["src/core/fandry/searchState/searchState"],
       // Record-aware components live in src/salesforce (same `fandry` namespace).
       "fandry/lookup": ["src/salesforce/fandry/lookup/lookup"],

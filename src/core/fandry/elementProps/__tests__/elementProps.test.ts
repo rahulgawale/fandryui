@@ -44,7 +44,7 @@ describe('the library does not call Base helpers', () => {
     });
 
   it('imports fandry/elementProps and fandry/anchorTabStop instead', () => {
-    const calls = /this\.(resolveElementProps|activateAnchorOnEnter|resolveTabStopIndex|withoutTabIndex)\(/;
+    const calls = /(this|super)\.(resolveElementProps|activateAnchorOnEnter|resolveTabStopIndex|withoutTabIndex)\(/;
     const offenders = ['src/core/fandry', 'src/salesforce/fandry', 'src/blocks/fandry']
       .flatMap((dir) => files(join(ROOT, dir)))
       .filter((file) => calls.test(readFileSync(file, 'utf8')))

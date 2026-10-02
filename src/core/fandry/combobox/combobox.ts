@@ -4,6 +4,7 @@ import { partList } from 'fandry/parts';
 import type { FdSearchItem } from 'fandry/searchState';
 import { exitFinished } from 'fandry/motion';
 import { resolveElementProps } from 'fandry/elementProps';
+import { slotHasContent } from 'fandry/textSlots';
 
 export type FdComboboxOption = FdSearchItem;
 
@@ -233,15 +234,12 @@ export default class FdCombobox extends FdSearchState {
     return partList('control input', { disabled: this.disabled });
   }
 
-  /* Which text slots have content, so a label or help text a page slots in
-     shows even without the matching prop. The wrapper stays in the DOM
-     (hidden while empty), so its slot is always there to be filled. */
+  // Which text slots have content -- see fandry/textSlots.
   textSlots: Record<string, boolean> = {};
 
   handleTextSlotChange(event: Event) {
     const slot = event.target as HTMLSlotElement;
-    const filled = slot.assignedNodes().some((node) => node.nodeType === 1 || (node.nodeType === 3 && !!node.textContent?.trim()));
-    this.textSlots = { ...this.textSlots, [slot.name || 'default']: filled };
+    this.textSlots = { ...this.textSlots, [slot.name || 'default']: slotHasContent(slot) };
   }
 
   get labelHidden(): boolean {

@@ -7,8 +7,8 @@ import { activateAnchorOnEnter, resolveTabStopIndex, withoutTabIndex } from "fan
  * Base - Base class for all Fandry UI components
  * Provides shared styles (tokens + base) to all fandry-* primitives, and
  * nothing else: behavior shared by a few components lives in its own module
- * (fandry/motion, fandry/elementProps, fandry/anchorTabStop, fandry/parts),
- * which a component imports when it needs it.
+ * (fandry/motion, fandry/elementProps, fandry/anchorTabStop, fandry/parts,
+ * fandry/textSlots), which a component imports when it needs it.
  */
 export default class Base extends LightningElement {
   static stylesheets = [baseStyles];
