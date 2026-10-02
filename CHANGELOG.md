@@ -1,3 +1,10 @@
+## [0.17.1](https://github.com/rahulgawale/fandryui/compare/v0.17.0...v0.17.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* let a site replace every word a component shows or announces ([#79](https://github.com/rahulgawale/fandryui/issues/79)) ([8e09050](https://github.com/rahulgawale/fandryui/commit/8e090507cbb0885165aac73ef9f42ddaddb85051))
+
 # [0.17.0](https://github.com/rahulgawale/fandryui/compare/v0.16.0...v0.17.0) (2026-09-30)
 
 
