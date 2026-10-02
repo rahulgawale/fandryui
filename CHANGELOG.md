@@ -1,3 +1,10 @@
+## [0.18.3](https://github.com/rahulgawale/fandryui/compare/v0.18.2...v0.18.3) (2026-10-02)
+
+
+### Bug Fixes
+
+* give every field the same label and help-text slots ([#83](https://github.com/rahulgawale/fandryui/issues/83)) ([edbc00b](https://github.com/rahulgawale/fandryui/commit/edbc00b3a517f5e39365a86dfe3f6d49579f782c))
+
 ## [0.18.2](https://github.com/rahulgawale/fandryui/compare/v0.18.1...v0.18.2) (2026-10-02)
 
 
