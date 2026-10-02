@@ -5,6 +5,22 @@ import FdInput from '../../../../core/fandry/input/input';
 import FdCheckbox from '../../../../core/fandry/checkbox/checkbox';
 import FdButton from '../../../../core/fandry/button/button';
 import FdSelect from '../../../../core/fandry/select/select';
+import FdAlert from '../../../../core/fandry/alert/alert';
+import FdBadge from '../../../../core/fandry/badge/badge';
+import FdText from '../../../../core/fandry/text/text';
+import FdToast from '../../../../core/fandry/toast/toast';
+import FdLink from '../../../../core/fandry/link/link';
+import FdRadio from '../../../../core/fandry/radio/radio';
+import FdSwitch from '../../../../core/fandry/switch/switch';
+import FdTextarea from '../../../../core/fandry/textarea/textarea';
+import FdCombobox from '../../../../core/fandry/combobox/combobox';
+import FdCommand from '../../../../core/fandry/command/command';
+import FdProgress from '../../../../core/fandry/progress/progress';
+import FdBreadcrumbItem from '../../../../core/fandry/breadcrumbItem/breadcrumbItem';
+import FdSidebarItem from '../../../../core/fandry/sidebarItem/sidebarItem';
+import FdMenuItem from '../../../../core/fandry/menuItem/menuItem';
+import FdTable from '../../../../core/fandry/table/table';
+import FdPagination from '../../../../core/fandry/pagination/pagination';
 import { COMPONENTS, PART_DESCRIPTIONS, STATE_DESCRIPTIONS } from '../componentsData';
 
 const ROOT = resolve(__dirname, '../../../../..');
@@ -149,6 +165,17 @@ describe('part states at runtime', () => {
     while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const render = (tag: string, is: any, props: Record<string, unknown> = {}): HTMLElement => {
+    const element = createElement(tag, { is }) as HTMLElement;
+    Object.assign(element, props);
+    document.body.appendChild(element);
+    return element;
+  };
+  const partOf = (element: HTMLElement, selector: string) => element.shadowRoot!.querySelector(selector)!.getAttribute('part');
+  const optionParts = (element: HTMLElement) =>
+    Array.from(element.shadowRoot!.querySelectorAll('[role="option"]')).map((option) => option.getAttribute('part'));
+
   it('adds and removes checked on a checkbox control', async () => {
     const element = createElement('fandry-checkbox', { is: FdCheckbox }) as HTMLElement & { checked: boolean; disabled: boolean };
     document.body.appendChild(element);
@@ -159,6 +186,34 @@ describe('part states at runtime', () => {
     element.disabled = true;
     await flush();
     expect(control()).toBe('control checked disabled');
+    element.checked = false;
+    await flush();
+    expect(control()).toBe('control disabled');
+  });
+
+  /* The source scan above only sees that a component builds a state; these
+     render each one with the state on, so a template that went back to a
+     static `part` would fail here. */
+  it.each([
+    ['fandry-alert', FdAlert, { variant: 'danger' }, '[part~="base"]', 'base danger'],
+    ['fandry-badge', FdBadge, { variant: 'primary' }, '[part~="base"]', 'base primary'],
+    ['fandry-text', FdText, { variant: 'muted' }, '[part~="base"]', 'base muted'],
+    ['fandry-toast', FdToast, { variant: 'success' }, '[part~="base"]', 'base success'],
+    ['fandry-button', FdButton, { variant: 'ghost', disabled: true }, '[part~="base"]', 'base ghost disabled'],
+    ['fandry-link', FdLink, { href: '/a', variant: 'muted', disabled: true }, '[part~="link"]', 'link muted disabled'],
+    ['fandry-checkbox', FdCheckbox, { indeterminate: true }, '[part~="control"]', 'control indeterminate'],
+    ['fandry-radio', FdRadio, { checked: true, disabled: true }, '[part~="control"]', 'control checked disabled'],
+    ['fandry-switch', FdSwitch, { checked: true }, '[part~="control"]', 'control checked'],
+    ['fandry-input', FdInput, { disabled: true }, '[part~="control"]', 'control disabled'],
+    ['fandry-textarea', FdTextarea, { disabled: true }, '[part~="control"]', 'control textarea disabled'],
+    ['fandry-select', FdSelect, { disabled: true }, '[part~="control"]', 'control disabled'],
+    ['fandry-combobox', FdCombobox, { disabled: true }, '[part~="control"]', 'control input disabled'],
+    ['fandry-progress', FdProgress, { indeterminate: true }, '[part~="indicator"]', 'indicator indeterminate'],
+    ['fandry-breadcrumb-item', FdBreadcrumbItem, { href: '/a', current: true }, '[part~="link"]', 'link current'],
+    ['fandry-sidebar-item', FdSidebarItem, { href: '/a', active: true }, '[part~="link"]', 'link current'],
+    ['fandry-menu-item', FdMenuItem, { disabled: true }, '[part~="base"]', 'base disabled']
+  ])('%s renders its state on the part', (tag, is, props, selector, expected) => {
+    expect(partOf(render(tag, is, props), selector)).toBe(expected);
   });
 
   it("names a button's variant on its base", async () => {
@@ -189,5 +244,53 @@ describe('part states at runtime', () => {
     // Opening highlights the chosen option, so it is also `active`.
     const parts = Array.from(element.shadowRoot!.querySelectorAll('[role="option"]')).map((option) => option.getAttribute('part'));
     expect(parts).toEqual(['option selected active', 'option disabled']);
+  });
+
+  const OPTIONS = [
+    { label: 'Free', value: 'free' },
+    { label: 'Pro', value: 'pro' },
+    { label: 'Team', value: 'team', disabled: true }
+  ];
+
+  it('marks the selected option of a combobox (built by fandry/searchState)', async () => {
+    const element = render('fandry-combobox', FdCombobox, { options: OPTIONS, value: 'pro' });
+    element.shadowRoot!.querySelector('.input')!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await flush();
+
+    expect(optionParts(element)).toEqual(['option', 'option selected active', 'option disabled']);
+  });
+
+  it("binds the option part in fandry-command's own template", async () => {
+    const element = render('fandry-command', FdCommand, { items: OPTIONS, label: 'Commands', open: true });
+    await flush();
+
+    expect(optionParts(element)).toEqual(['option active', 'option', 'option disabled']);
+  });
+
+  it('marks sorted header cells and selected rows of a table', async () => {
+    const element = render('fandry-table', FdTable, {
+      columns: [{ id: 'name', accessorKey: 'name', header: 'Name' }],
+      data: [{ name: 'Bea' }, { name: 'Amir' }],
+      enableRowSelection: true
+    });
+    (element.shadowRoot!.querySelector('button[data-column-id="name"]') as HTMLElement).click();
+    await flush();
+    const box = element.shadowRoot!.querySelector('tbody fandry-checkbox')!.shadowRoot!.querySelector('input') as HTMLInputElement;
+    box.checked = true;
+    box.dispatchEvent(new Event('change'));
+    await flush();
+
+    expect(partOf(element, 'th[aria-sort="ascending"]')).toBe('header-cell sorted ascending');
+    const rows = Array.from(element.shadowRoot!.querySelectorAll('tbody tr')).map((row) => row.getAttribute('part'));
+    expect(rows).toEqual(['row selected', 'row']);
+  });
+
+  it("re-exports disabled from pagination's buttons", () => {
+    const element = render('fandry-pagination', FdPagination, { pageIndex: 0, pageCount: 3 });
+    const [previous, next] = Array.from(element.shadowRoot!.querySelectorAll('fandry-button'));
+
+    expect(previous.getAttribute('exportparts')).toBe('base: button, disabled');
+    expect(partOf(previous as HTMLElement, 'button')).toBe('base secondary disabled');
+    expect(partOf(next as HTMLElement, 'button')).toBe('base secondary');
   });
 });

@@ -18,7 +18,7 @@
       <div class="field" part={controlPart} onmousedown={handleFieldMouseDown} onclick={handleFieldClick}>
         <template if:true={showSelected}>
           <div class="selected" part="selection" role="group" aria-labelledby="label">
-            <span class={selectedLabelClasses} part="selected-label">{selectedLabel}</span>
+            <span class={selectedLabelClasses} part="selection-label">{selectedLabel}</span>
             <button
               type="button"
               class="clear"

@@ -249,6 +249,9 @@ describe('fandry-lookup', () => {
 
       expect(element.shadowRoot!.querySelector('.input')).toBeNull();
       expect(element.shadowRoot!.querySelector('.selected-label')?.textContent).toBe('Acme Corp');
+      // `selection`, not `selected`: that is the state word on a selected option.
+      expect(element.shadowRoot!.querySelector('.selected')!.getAttribute('part')).toBe('selection');
+      expect(element.shadowRoot!.querySelector('.selected-label')!.getAttribute('part')).toBe('selection-label');
       // Shown as the value, not as a chip (a chip would suggest room for more).
       expect(element.shadowRoot!.querySelector('.pill')).toBeNull();
       const clear = element.shadowRoot!.querySelector('.clear') as HTMLElement;

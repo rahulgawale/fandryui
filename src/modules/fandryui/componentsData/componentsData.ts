@@ -96,7 +96,7 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   'selection-status': 'The "n of m selected" text.',
   pagination: 'The wrapper of the pagination slot.',
   selection: 'The chosen record, in single-select mode.',
-  'selected-label': 'The chosen record\'s name.',
+  'selection-label': 'The chosen record\'s name.',
   'clear-button': 'The button that clears the chosen record.',
   chips: 'The row of chosen records and the input, in multi-select mode.',
   chip: 'One chosen record.',
@@ -2051,7 +2051,7 @@ fandry-table::part(row):hover {
     slug: 'lookup',
     name: 'Lookup',
     tag: 'fandry-lookup',
-    parts: ['base', 'label', 'required', 'control', 'selection', 'selected-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text'],
+    parts: ['base', 'label', 'required', 'control', 'selection', 'selection-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text'],
     states: ['disabled', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',

@@ -183,7 +183,8 @@ export default class Select extends Base {
 
   private decorateOption(option: FdSelectOption, id: string): RenderOption {
     const disabled = !!option.disabled;
-    const selected = option.value === this.value;
+    // Like selectedEntry, the placeholder is never the chosen option, even while value is ''.
+    const selected = id !== 'option-placeholder' && option.value === this.value;
     const active = id === this.activeOptionId;
 
     return {
