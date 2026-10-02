@@ -1,3 +1,10 @@
+## [0.18.4](https://github.com/rahulgawale/fandryui/compare/v0.18.3...v0.18.4) (2026-10-02)
+
+
+### Bug Fixes
+
+* keep Base to shared styles; move its helpers into modules ([#85](https://github.com/rahulgawale/fandryui/issues/85)) ([4c4c92e](https://github.com/rahulgawale/fandryui/commit/4c4c92e54fac25eaa4b4d2caaa914db11c0cca18))
+
 ## [0.18.3](https://github.com/rahulgawale/fandryui/compare/v0.18.2...v0.18.3) (2026-10-02)
 
 
