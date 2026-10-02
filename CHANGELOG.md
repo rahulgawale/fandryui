@@ -1,3 +1,10 @@
+## [0.18.2](https://github.com/rahulgawale/fandryui/compare/v0.18.1...v0.18.2) (2026-10-02)
+
+
+### Bug Fixes
+
+* deprecate per-component hooks in favor of tokens and parts ([#82](https://github.com/rahulgawale/fandryui/issues/82)) ([1620d6e](https://github.com/rahulgawale/fandryui/commit/1620d6e993a07c4c289dad1fcb8c2b4ff84455d7))
+
 ## [0.18.1](https://github.com/rahulgawale/fandryui/compare/v0.18.0...v0.18.1) (2026-10-02)
 
 
