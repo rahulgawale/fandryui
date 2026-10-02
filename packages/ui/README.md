@@ -9,10 +9,10 @@ Docs and live examples: <https://fandryui.forcetrails.com>
 Every fandry component renders in **native shadow DOM**, not Salesforce's synthetic-shadow polyfill: `fandry/base` sets `static shadowSupportMode = 'native'`, which LWC honours per component even in orgs that load the polyfill. Lightning base components were built on synthetic shadow and Salesforce is moving them to native over time; fandry is native already. What that gives you:
 
 - **Restyling from outside.** `::part()` and `exportparts` need a real shadow root. Under synthetic shadow a component's internals can't be styled from your CSS at all.
-- **Standard behavior.** Encapsulation, slots, focus and `event.composedPath()` work as the web platform specifies, not as a polyfill approximates them, so browser docs and devtools tell the truth.
+- **Standard behavior.** Encapsulation, slots and focus work as the web platform specifies, not as a polyfill approximates them, so browser docs and devtools tell the truth. (Lightning Web Security still filters `event.composedPath()` across components on Salesforce; that doesn't depend on the shadow mode.)
 - **One behavior everywhere.** The same component behaves identically on an LWR site and in a Salesforce org, whatever shadow mode the org uses for everything else.
 
-Your own components can stay in whatever mode they use today: a synthetic-shadow component can use fandry components and style them with parts and tokens (checked in a Salesforce org). Global stylesheets such as SLDS don't reach inside a fandry component, by design; theme it with `--fd-*` tokens and parts instead.
+Your own components can stay in whatever mode they use today: a synthetic-shadow component can use fandry components and style them with parts and tokens (checked in a Salesforce org), and what you slot into a fandry component keeps your mode. The exception is a component you hand to fandry to render for you, such as an option's or a table cell's `component`: LWC gives a component the mode of the template that renders it, so that one, and everything it renders, runs in native shadow too, and global CSS stops reaching it. Global stylesheets such as SLDS don't reach inside a fandry component, by design; theme it with `--fd-*` tokens and parts instead.
 
 ## Installation
 

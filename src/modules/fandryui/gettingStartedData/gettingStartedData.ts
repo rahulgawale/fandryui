@@ -220,7 +220,7 @@ const SALESFORCE: GettingStartedPage = {
           type: 'note',
           variant: 'info',
           title: 'Native shadow DOM, whatever your org uses',
-          text: "Fandry components render in native shadow DOM (they set static shadowSupportMode = 'native'), even in orgs that run other components on the synthetic-shadow polyfill. That is what lets you restyle their internals with ::part() and keeps their behavior identical to LWR. Your own components don't need to change: they can stay synthetic and still use and style fandry components. SLDS and other global CSS don't reach inside them; theme them with --fd-* tokens and parts."
+          text: "Fandry components render in native shadow DOM (they set static shadowSupportMode = 'native'), even in orgs that run other components on the synthetic-shadow polyfill. That is what lets you restyle their internals with ::part() and keeps their behavior identical to LWR. Your own components don't need to change: they can stay synthetic and still use and style fandry components, and what you slot in keeps your mode. A component you pass for fandry to render (an option's or a table cell's component) runs in native shadow like the fandry component around it, so global CSS no longer reaches it. SLDS and other global CSS don't reach inside them; theme them with --fd-* tokens and parts."
         }
       ]
     },
