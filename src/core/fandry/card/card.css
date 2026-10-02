@@ -1,8 +1,8 @@
 :host {
   display: block;
   /* Height is auto, never 100%: that would silently stretch every card in
-     any grid. A card that should fill its cell says so with
-     `fandry-card, fandry-card::part(base) { height: 100% }`.
+     any grid. Cards that should fill their cells say so with
+     `.equal fandry-card, .equal fandry-card::part(base) { height: 100% }`.
      Deprecated: --fd-card-height (and --fd-card-bg below) still work, but
      use the host and the base part instead, as above. */
   height: var(--fd-card-height, auto);

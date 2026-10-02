@@ -98,7 +98,7 @@ describe('design tokens', () => {
   /* A per-component custom property (a "hook") looks like a token but isn't
      one, and duplicates what scoped tokens and parts already do. These six
      are deprecated and still read for existing sites; a new one fails. */
-  it('reads no public --fd-* name except the deprecated hooks', () => {
+  it('reads or sets no public --fd-* name except the deprecated hooks', () => {
     const DEPRECATED_HOOKS = [
       '--fd-button-radius',
       '--fd-button-border-width',
@@ -112,8 +112,11 @@ describe('design tokens', () => {
       for (const file of cssFiles(join(ROOT, dir))) {
         if (file === TOKENS) continue;
         const css = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
-        for (const [, name] of css.matchAll(/var\((--fd-[\w-]+)/g)) {
+        for (const [, name] of css.matchAll(/var\(\s*(--fd-[\w-]+)/g)) {
           if (!DEPRECATED_HOOKS.includes(name)) problems.push(`${relative(ROOT, file)} reads ${name}`);
+        }
+        for (const [, name] of css.matchAll(/(?:^|[\s;{])(--fd-[\w-]+)\s*:/gm)) {
+          problems.push(`${relative(ROOT, file)} sets ${name}; a component's own variable is --_fd-*`);
         }
       }
     }

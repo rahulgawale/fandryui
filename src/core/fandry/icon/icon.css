@@ -18,7 +18,8 @@
 
 /* Deprecated: --fd-icon-size still works, but size one icon with its part
    instead (`.big::part(base) { width: 3rem; height: 3rem }`), or every
-   size step with the --fd-size-* tokens. */
+   size step by setting the --fd-size-* tokens on fandry-icon (set higher
+   up, they also resize checkboxes, radios, switches and spinners). */
 .icon--sm {
   width: var(--fd-icon-size, var(--_fd-size-sm));
   height: var(--fd-icon-size, var(--_fd-size-sm));
