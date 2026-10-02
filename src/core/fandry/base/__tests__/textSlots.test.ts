@@ -30,6 +30,15 @@ describe('text slots', () => {
     expect(host.shadowRoot!.querySelector(wrapper)!.hasAttribute('hidden')).toBe(false);
   });
 
+  it('keeps the required asterisk beside a slotted label', async () => {
+    const harness = createElement('text-slots-harness', { is: TextSlotsHarness });
+    document.body.appendChild(harness);
+    await settle();
+
+    const select = harness.shadowRoot!.querySelector('.select')!;
+    expect(select.shadowRoot!.querySelector('.label .required')).not.toBeNull();
+  });
+
   it('points the radio group at its slotted label', async () => {
     const harness = createElement('text-slots-harness', { is: TextSlotsHarness });
     document.body.appendChild(harness);

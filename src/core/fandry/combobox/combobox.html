@@ -1,13 +1,11 @@
 <template>
   <div class="form-control" part="base">
     <label class="label" part="label" for="input" hidden={labelHidden}>
-        <slot name="label" onslotchange={handleTextSlotChange}>
-          {label}
-          <template if:true={required}>
-            <span class="required" part="required" aria-hidden="true">*</span>
-          </template>
-        </slot>
-      </label>
+      <slot name="label" onslotchange={handleTextSlotChange}>{label}</slot>
+      <template if:true={required}>
+        <span class="required" part="required" aria-hidden="true">*</span>
+      </template>
+    </label>
 
     <div class="control">
       <input
