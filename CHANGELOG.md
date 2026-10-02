@@ -1,3 +1,10 @@
+## [0.18.1](https://github.com/rahulgawale/fandryui/compare/v0.18.0...v0.18.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* make the last hard-coded sizes themable ([#81](https://github.com/rahulgawale/fandryui/issues/81)) ([00209ac](https://github.com/rahulgawale/fandryui/commit/00209ac74f013c693c90ea42754457887d32fc5d))
+
 # [0.18.0](https://github.com/rahulgawale/fandryui/compare/v0.17.1...v0.18.0) (2026-10-02)
 
 
