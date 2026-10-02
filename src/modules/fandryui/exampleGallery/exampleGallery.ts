@@ -38,6 +38,7 @@ export default class ExampleGallery extends LightningElement {
     { key: 'redesign', label: 'Redesign', title: 'Website Redesign', body: 'Design files, briefs, and assets for the Q3 site redesign.' }
   ];
 
+  crumbMessages = { label: 'Folder path' };
   activeCrumbKey = 'redesign';
 
   get crumbItems() {

@@ -18,9 +18,20 @@ describe('fandry-breadcrumb', () => {
     expect(element.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Breadcrumb');
   });
 
-  it('reflects a custom ariaLabel onto the nav landmark', () => {
+  it('takes the landmark name from messages', () => {
+    const element = createElement('fandry-breadcrumb', { is: FdBreadcrumb });
+    element.messages = { label: "Fil d'Ariane" };
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe("Fil d'Ariane");
+  });
+
+  /* ariaLabel is deprecated in favor of messages.label but keeps working,
+     and wins when both are set. */
+  it('still reflects a custom ariaLabel onto the nav landmark', () => {
     const element = createElement('fandry-breadcrumb', { is: FdBreadcrumb });
     element.ariaLabel = 'Trail';
+    element.messages = { label: "Fil d'Ariane" };
     document.body.appendChild(element);
 
     expect(element.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Trail');

@@ -176,7 +176,10 @@ fandry-breadcrumb-item::part(link) {
     },
     category: 'Layout',
     description: 'A navigation trail of ancestor pages — pair with fandry-breadcrumb-item for each crumb.',
-    props: [{ name: 'aria-label', type: 'string', default: "'Breadcrumb'", description: 'Accessible name for the nav landmark.' }],
+    props: [
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the nav landmark\'s accessible name ("Breadcrumb"), e.g. to translate it.' },
+      { name: 'aria-label', type: 'string', default: "''", description: 'Deprecated: set messages.label instead. Still overrides it when set.' }
+    ],
     code: `<fandry-breadcrumb>
   <fandry-breadcrumb-item href="/">Home</fandry-breadcrumb-item>
   <fandry-breadcrumb-item href="/components">Components</fandry-breadcrumb-item>
