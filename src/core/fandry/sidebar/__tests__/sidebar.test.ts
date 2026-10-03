@@ -19,10 +19,20 @@ describe('fandry-sidebar', () => {
   it('applies a custom aria-label', () => {
     const element = createElement('fandry-sidebar', { is: FdSidebar });
     element.ariaLabel = 'Components';
+    element.messages = { label: 'Barre latérale' };
     document.body.appendChild(element);
 
     const nav = element.shadowRoot!.querySelector('nav.sidebar')!;
     expect(nav.getAttribute('aria-label')).toBe('Components');
+  });
+
+  it('takes the default name from messages', () => {
+    const element = createElement('fandry-sidebar', { is: FdSidebar });
+    element.messages = { label: 'Barre latérale' };
+    document.body.appendChild(element);
+
+    const nav = element.shadowRoot!.querySelector('nav.sidebar')!;
+    expect(nav.getAttribute('aria-label')).toBe('Barre latérale');
   });
 
   it('exposes a default slot for content', () => {

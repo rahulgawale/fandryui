@@ -176,7 +176,10 @@ fandry-breadcrumb-item::part(link) {
     },
     category: 'Layout',
     description: 'A navigation trail of ancestor pages — pair with fandry-breadcrumb-item for each crumb.',
-    props: [{ name: 'aria-label', type: 'string', default: "'Breadcrumb'", description: 'Accessible name for the nav landmark.' }],
+    props: [
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names this nav landmark, e.g. "Folder path". Overrides messages.label.' },
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Breadcrumb") for every instance, e.g. to translate it.' }
+    ],
     code: `<fandry-breadcrumb>
   <fandry-breadcrumb-item href="/">Home</fandry-breadcrumb-item>
   <fandry-breadcrumb-item href="/components">Components</fandry-breadcrumb-item>
@@ -367,7 +370,8 @@ fandry-pagination::part(status) {
       { name: 'next-label', type: 'string', default: "''", description: 'Title of the next page.' },
       { name: 'page-index', type: 'number', default: 'undefined', description: 'Zero-based current page. Setting it switches from links to Previous/Next buttons; listen for `change` (detail.pageIndex) and update it. Replace controls via the previous, status and next slots, or just the buttons\' words via previous-text and next-text.' },
       { name: 'page-count', type: 'number', default: '-1', description: 'Total pages in page mode; -1 means unknown (Next stays enabled).' },
-      { name: 'messages', type: '{ label, status(page, pageCount) }', default: '{}', description: 'Replaces the landmark name and page mode\'s status line, e.g. to translate them. Link mode\'s "Previous" / "Next" lines are the previous-eyebrow and next-eyebrow slots.' }
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names this nav landmark, e.g. "Results pages". Overrides messages.label.' },
+      { name: 'messages', type: '{ label, status(page, pageCount) }', default: '{}', description: 'Replaces the default landmark name ("Pagination") and page mode\'s status line, e.g. to translate them. Link mode\'s "Previous" / "Next" lines are the previous-eyebrow and next-eyebrow slots.' }
     ],
     code: `<fandry-pagination
   previous-href="/components/pagination"
@@ -433,7 +437,10 @@ fandry-sidebar-item::part(link) {
     },
     category: 'Layout',
     description: 'A vertical navigation rail — pair with fandry-sidebar-item for links.',
-    props: [{ name: 'aria-label', type: 'string', default: "'Sidebar'", description: 'Accessible name for the nav landmark.' }],
+    props: [
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names this nav landmark, e.g. "Components". Overrides messages.label.' },
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Sidebar") for every instance, e.g. to translate it.' }
+    ],
     code: `<fandry-sidebar aria-label="Components">
   <fandry-sidebar-item href="/components/button" active>Button</fandry-sidebar-item>
   <fandry-sidebar-item href="/components/card">Card</fandry-sidebar-item>
