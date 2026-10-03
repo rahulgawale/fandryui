@@ -1,3 +1,10 @@
+# [0.19.0](https://github.com/rahulgawale/fandryui/compare/v0.18.5...v0.19.0) (2026-10-03)
+
+
+### Features
+
+* render every component in native shadow DOM, on Salesforce too ([#87](https://github.com/rahulgawale/fandryui/issues/87)) ([32d7526](https://github.com/rahulgawale/fandryui/commit/32d75262aa14cbe20e6f20109f2f03289df5b1fa))
+
 ## [0.18.5](https://github.com/rahulgawale/fandryui/compare/v0.18.4...v0.18.5) (2026-10-02)
 
 
