@@ -29,14 +29,14 @@
     <div class="actions">
       <slot name="actions">
         <template if:true={isReading}>
-          <fandry-button variant="secondary" onclick={handleEdit}>{text.edit}</fandry-button>
+          <fandry-button variant="secondary" data-action="edit" onclick={handleEdit}>{text.edit}</fandry-button>
         </template>
         <template if:true={isEditing}>
-          <fandry-button disabled={saving} onclick={handleSave}>
+          <fandry-button element-props={saveButtonProps} onclick={handleSave}>
             <template if:true={saving}>
-              <fandry-spinner size="sm" label={text.saving}></fandry-spinner>
+              <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
             </template>
-            {text.save}
+            {saveLabel}
           </fandry-button>
           <fandry-button variant="secondary" disabled={saving} onclick={handleCancel}>{text.cancel}</fandry-button>
         </template>

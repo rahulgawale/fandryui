@@ -657,7 +657,7 @@ fandry-text::part(base) {
         title: 'A loading state, with a slot',
         demo: 'button-loading',
         code: `<!-- template: the spinner is just slotted content -->
-<fandry-button disabled={saving} onclick={handleSave}>
+<fandry-button element-props={saveButtonProps} onclick={handleSave}>
   <template lwc:if={saving}>
     <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
   </template>
@@ -672,8 +672,14 @@ get saveLabel() {
   return this.saving ? 'Saving…' : 'Save';
 }
 
+// aria-disabled, not disabled: disabling the focused button would drop
+// focus to the page. tabIndex: 0 is fandry-button's own default.
+get saveButtonProps() {
+  return { tabIndex: 0, ariaDisabled: this.saving ? 'true' : null };
+}
+
 async handleSave() {
-  if (this.saving) return; // disabled covers a double click; this covers the gap
+  if (this.saving) return; // the button stays clickable while saving
   this.saving = true;
   try {
     await this.save();
