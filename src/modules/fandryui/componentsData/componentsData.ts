@@ -177,8 +177,8 @@ fandry-breadcrumb-item::part(link) {
     category: 'Layout',
     description: 'A navigation trail of ancestor pages — pair with fandry-breadcrumb-item for each crumb.',
     props: [
-      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the nav landmark\'s accessible name ("Breadcrumb"), e.g. to translate it.' },
-      { name: 'aria-label', type: 'string', default: "''", description: 'Deprecated: set messages.label instead. Still overrides it when set.' }
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names this nav landmark, e.g. "Folder path". Overrides messages.label.' },
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Breadcrumb") for every instance, e.g. to translate it.' }
     ],
     code: `<fandry-breadcrumb>
   <fandry-breadcrumb-item href="/">Home</fandry-breadcrumb-item>
@@ -436,7 +436,10 @@ fandry-sidebar-item::part(link) {
     },
     category: 'Layout',
     description: 'A vertical navigation rail — pair with fandry-sidebar-item for links.',
-    props: [{ name: 'aria-label', type: 'string', default: "'Sidebar'", description: 'Accessible name for the nav landmark.' }],
+    props: [
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names this nav landmark, e.g. "Components". Overrides messages.label.' },
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Sidebar") for every instance, e.g. to translate it.' }
+    ],
     code: `<fandry-sidebar aria-label="Components">
   <fandry-sidebar-item href="/components/button" active>Button</fandry-sidebar-item>
   <fandry-sidebar-item href="/components/card">Card</fandry-sidebar-item>

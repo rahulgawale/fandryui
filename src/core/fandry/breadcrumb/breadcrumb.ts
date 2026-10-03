@@ -19,7 +19,7 @@ export default class Breadcrumb extends Base {
   /** Replaces any of DEFAULT_BREADCRUMB_MESSAGES, e.g. to translate them. */
   @api messages: Partial<FdBreadcrumbMessages> = {};
 
-  /** @deprecated Set `messages.label`. Still wins over it when set. */
+  /** This instance's name, as `aria-label` on any element. Wins over `messages.label`. */
   @api ariaLabel = '';
 
   get navLabel(): string {

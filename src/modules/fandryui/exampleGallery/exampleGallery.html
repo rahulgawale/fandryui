@@ -253,7 +253,7 @@
           </div>
           <fandry-heading level="3">Breadcrumb navigation</fandry-heading>
           <fandry-text variant="muted" size="sm">Each crumb swaps the card below — fandry-breadcrumb driving real state.</fandry-text>
-          <fandry-breadcrumb class="crumb-nav" messages={crumbMessages}>
+          <fandry-breadcrumb class="crumb-nav" aria-label="Folder path">
             <template for:each={crumbItems} for:item="crumb">
               <fandry-breadcrumb-item
                 key={crumb.key}

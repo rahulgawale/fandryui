@@ -26,9 +26,8 @@ describe('fandry-breadcrumb', () => {
     expect(element.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe("Fil d'Ariane");
   });
 
-  /* ariaLabel is deprecated in favor of messages.label but keeps working,
-     and wins when both are set. */
-  it('still reflects a custom ariaLabel onto the nav landmark', () => {
+  // aria-label names one instance; messages.label translates the default.
+  it('takes a custom aria-label over messages', () => {
     const element = createElement('fandry-breadcrumb', { is: FdBreadcrumb });
     element.ariaLabel = 'Trail';
     element.messages = { label: "Fil d'Ariane" };
