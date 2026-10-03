@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { join, relative, resolve } from 'path';
+import { AriaPropNameToAttrNameMap } from '@lwc/shared';
 import { resolveElementProps } from '../elementProps';
 
 describe('resolveElementProps', () => {
@@ -51,5 +52,34 @@ describe('the library does not call Base helpers', () => {
       .map((file) => relative(ROOT, file));
 
     expect(offenders).toEqual([]);
+  });
+});
+
+/* A reserved key only guards anything if it is spelled the way lwc:spread
+   sets it: 'ariaDescribedby' never matched a consumer's ariaDescribedBy, so
+   it went through. Every aria* key in a reserved list must be an ARIA
+   property LWC knows, or its element-reference form (ariaDescribedByElements,
+   ariaActiveDescendantElement). */
+describe('reserved elementProps keys', () => {
+  const ROOT = resolve(__dirname, '../../../../..');
+  const files = (dir: string): string[] =>
+    readdirSync(dir).flatMap((name) => {
+      const path = join(dir, name);
+      if (statSync(path).isDirectory()) return name === '__tests__' ? [] : files(path);
+      return name.endsWith('.ts') ? [path] : [];
+    });
+  const isAriaProperty = (key: string) => key.replace(/Elements?$/, '') in AriaPropNameToAttrNameMap;
+
+  it('spell every aria* key as the property LWC sets', () => {
+    const misspelled = ['src/core/fandry', 'src/salesforce/fandry', 'src/blocks/fandry']
+      .flatMap((dir) => files(join(ROOT, dir)))
+      .flatMap((file) =>
+        [...readFileSync(file, 'utf8').matchAll(/RESERVED_\w+ = \[([^\]]*)\]/g)]
+          .flatMap(([, list]) => list.match(/aria\w+/g) ?? [])
+          .filter((key) => !isAriaProperty(key))
+          .map((key) => `${relative(ROOT, file)}: ${key}`)
+      );
+
+    expect(misspelled).toEqual([]);
   });
 });

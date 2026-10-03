@@ -45,4 +45,12 @@ describe('fandry-icon', () => {
     const span = element.shadowRoot!.querySelector('span')!;
     expect(span.className).toBe('icon icon--lg');
   });
+
+  it('takes aria-label, which wins over label', () => {
+    const element = createElement('fandry-icon', { is: FdIcon });
+    Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('span')!.getAttribute('aria-label')).toBe('From aria-label');
+  });
 });

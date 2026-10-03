@@ -4,6 +4,8 @@ import { partList } from 'fandry/parts';
 
 export default class Progress extends Base {
   @api label = '';
+  /** The accessible name, as `aria-label` on any element. Wins over `label`. */
+  @api ariaLabel = '';
   @api indeterminate = false;
 
   private _value = 0;
@@ -31,6 +33,10 @@ export default class Progress extends Base {
 
   set max(value: number) {
     this._max = Number(value);
+  }
+
+  get accessibleLabel(): string {
+    return this.ariaLabel || this.label;
   }
 
   get clampedValue(): number {

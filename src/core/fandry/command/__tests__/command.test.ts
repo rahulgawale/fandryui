@@ -289,4 +289,15 @@ describe('fandry-command', () => {
     expect(element.shadowRoot!.querySelector('.backdrop')).toBeNull();
     animations.restore();
   });
+
+  it('takes aria-label, which wins over label', () => {
+    const element = createElement('fandry-command', { is: FdCommand });
+    element.open = true;
+    Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
+    document.body.appendChild(element);
+
+    for (const selector of ['.panel', 'input', '.listbox']) {
+      expect(element.shadowRoot!.querySelector(selector)!.getAttribute('aria-label')).toBe('From aria-label');
+    }
+  });
 });

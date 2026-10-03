@@ -71,4 +71,12 @@ describe('fandry-toast-viewport', () => {
     const viewport = element.shadowRoot!.querySelector('div')!;
     expect(viewport.className).toBe('viewport viewport--bottom-right viewport--contained');
   });
+
+  it('takes aria-label, which wins over label', () => {
+    const element = createElement('fandry-toast-viewport', { is: FdToastViewport });
+    Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('div')!.getAttribute('aria-label')).toBe('From aria-label');
+  });
 });

@@ -245,4 +245,13 @@ describe('fandry-dialog', () => {
       expect(document.body.style.overflow).toBe('');
     });
   });
+
+  it('takes aria-label, which wins over label', () => {
+    const element = createElement('fandry-dialog', { is: FdDialog });
+    element.open = true;
+    Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('.panel')!.getAttribute('aria-label')).toBe('From aria-label');
+  });
 });

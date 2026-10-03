@@ -21,7 +21,7 @@ const RESERVED_ELEMENT_PROPS = [
   'readonly',
   'required',
   'class',
-  'ariaDescribedby',
+  'ariaDescribedBy',
   'ariaDescribedByElements',
   'oninput',
   'onchange',

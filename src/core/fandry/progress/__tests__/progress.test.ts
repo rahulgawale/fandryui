@@ -64,4 +64,12 @@ describe('fandry-progress', () => {
     expect(bar.classList.contains('bar--indeterminate')).toBe(true);
     expect(bar.style.width).toBe('');
   });
+
+  it('takes aria-label, which wins over label', () => {
+    const element = createElement('fandry-progress', { is: FdProgress });
+    Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('.track')!.getAttribute('aria-label')).toBe('From aria-label');
+  });
 });

@@ -569,7 +569,8 @@ fandry-icon::part(base) {
     description: 'A sizing/color frame around a slotted glyph — brings no icon set of its own.',
     props: [
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Icon size.' },
-      { name: 'label', type: 'string', default: "''", description: 'Set only when the icon is the sole content conveying meaning (icon-only button).' }
+      { name: 'label', type: 'string', default: "''", description: 'Set only when the icon is the sole content conveying meaning (icon-only button).' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' }
     ],
     code: `<fandry-icon size="md" label="Favorite">
   <svg viewBox="0 0 24 24">...</svg>
@@ -1500,6 +1501,7 @@ fandry-progress::part(indicator) {
       { name: 'value', type: 'number', default: '0', description: 'Current progress, from 0 to max.' },
       { name: 'max', type: 'number', default: '100', description: 'Maximum value.' },
       { name: 'label', type: 'string', default: "''", description: 'Accessible label.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' },
       { name: 'indeterminate', type: 'boolean', default: 'false', description: 'Shows an animated bar of unknown duration instead of value/max.' }
     ],
     code: `<fandry-progress value="60" label="Uploading"></fandry-progress>`
@@ -1572,7 +1574,9 @@ fandry-spinner::part(base) {
     description: 'A loading spinner in three sizes.',
     props: [
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size.' },
-      { name: 'label', type: 'string', default: "'Loading'", description: 'Accessible label.' }
+      { name: 'label', type: 'string', default: "''", description: 'Names this spinner, e.g. "Saving changes". Overrides messages.label.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' },
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Loading") for every instance, e.g. to translate it.' }
     ],
     code: `<fandry-spinner size="md"></fandry-spinner>`
   },
@@ -1668,7 +1672,8 @@ fandry-toast-viewport::part(base) {
     props: [
       { name: 'placement', type: "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'", default: "'bottom-right'", description: 'Corner to stack from.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'position: absolute against the nearest positioned ancestor instead of the viewport.' },
-      { name: 'label', type: 'string', default: "''", description: 'Accessible label for the stacking region.' }
+      { name: 'label', type: 'string', default: "''", description: 'Accessible label for the stacking region.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' }
     ],
     code: `<fandry-toast-viewport placement="bottom-right" label="Notifications">
   <fandry-toast variant="info">Heads up.</fandry-toast>
@@ -1806,6 +1811,7 @@ fandry-command::part(option-description) {
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the palette is shown. Listen for `toggle` (detail is the new state) and update it.' },
       { name: 'label', type: 'string', default: "''", description: 'Accessible name of the palette.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' },
       { name: 'placeholder', type: 'string', default: "''", description: 'Hint shown in the empty search box.' },
       { name: 'items', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The commands. Ungrouped items list first; grouped items sit under their heading.' },
       { name: 'select (event)', type: 'CustomEvent<{ value }>', default: '—', description: 'Fired when an item is picked; the palette then closes itself.' },
@@ -1944,7 +1950,8 @@ fandry-dialog::part(backdrop) {
     description: 'A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger.',
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Open state (consumer-controlled via ontoggle).' },
-      { name: 'label', type: 'string', default: "''", description: 'Accessible name for the dialog (aria-label).' }
+      { name: 'label', type: 'string', default: "''", description: 'Accessible name for the dialog.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' }
     ],
     code: `<fandry-dialog open={isOpen} label="Delete item" ontoggle={handleToggle}>
   <fandry-heading level="3">Delete item?</fandry-heading>

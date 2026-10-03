@@ -41,4 +41,25 @@ describe('fandry-spinner', () => {
     const spinner = element.shadowRoot!.querySelector('[role="status"]')!;
     expect(spinner.getAttribute('aria-label')).toBe('Saving changes');
   });
+
+  it('takes its default label from messages', () => {
+    const element = createElement('fandry-spinner', { is: FdSpinner });
+    element.messages = { label: 'Chargement' };
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('span')!.getAttribute('aria-label')).toBe('Chargement');
+
+    element.label = 'Enregistrement';
+    return Promise.resolve().then(() => {
+      expect(element.shadowRoot!.querySelector('span')!.getAttribute('aria-label')).toBe('Enregistrement');
+    });
+  });
+
+  it('takes aria-label, which wins over label', () => {
+    const element = createElement('fandry-spinner', { is: FdSpinner });
+    Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('span')!.getAttribute('aria-label')).toBe('From aria-label');
+  });
 });
