@@ -1555,8 +1555,9 @@ fandry-spinner::part(base) {
     description: 'A loading spinner in three sizes.',
     props: [
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size.' },
-      { name: 'label', type: 'string', default: "'Loading'", description: 'Accessible label.' },
-      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' }
+      { name: 'label', type: 'string', default: "''", description: 'Names this spinner, e.g. "Saving changes". Overrides messages.label.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' },
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Loading") for every instance, e.g. to translate it.' }
     ],
     code: `<fandry-spinner size="md"></fandry-spinner>`
   },
