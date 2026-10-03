@@ -1,3 +1,10 @@
+## [0.19.6](https://github.com/rahulgawale/fandryui/compare/v0.19.5...v0.19.6) (2026-10-03)
+
+
+### Bug Fixes
+
+* **site:** wrap footer links on narrow screens ([#103](https://github.com/rahulgawale/fandryui/issues/103)) ([fa685c8](https://github.com/rahulgawale/fandryui/commit/fa685c809151a09f46782f7bebe6a969aa672128))
+
 ## [0.19.5](https://github.com/rahulgawale/fandryui/compare/v0.19.4...v0.19.5) (2026-10-03)
 
 
