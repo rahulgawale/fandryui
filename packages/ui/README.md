@@ -4,6 +4,22 @@ Small, extensible [Lightning Web Components](https://lwc.dev) you own and can re
 
 Docs and live examples: <https://fandryui.forcetrails.com>
 
+## Native shadow DOM, on Salesforce too
+
+Every fandry component renders in **native shadow DOM**, not Salesforce's synthetic-shadow polyfill: `fandry/base` sets `static shadowSupportMode = 'native'`, which LWC honours per component even in orgs that load the polyfill. Lightning base components were built on synthetic shadow and Salesforce is moving them to native over time; fandry is native already. What that gives you:
+
+- **Restyling from outside.** `::part()` and `exportparts` need a real shadow root. Under synthetic shadow a component's internals can't be styled from your CSS at all.
+- **Standard behavior.** Encapsulation, slots and focus work as the web platform specifies, not as a polyfill approximates them, so browser docs and devtools tell the truth. (Lightning Web Security still filters `event.composedPath()` across components on Salesforce; that doesn't depend on the shadow mode.)
+- **One behavior everywhere.** The same component behaves identically on an LWR site and in a Salesforce org, whatever shadow mode the org uses for everything else.
+
+Your own components can stay in whatever mode they use today. Global stylesheets such as SLDS don't reach inside a fandry component, by design; theme it with `--fd-*` tokens and parts instead.
+
+Lightning base components and fandry, checked in a Salesforce org:
+
+- **Fandry inside Lightning or your own synthetic-shadow components** works, including styling fandry with parts and tokens.
+- **Lightning components slotted into fandry** (a `<lightning-button>` in a card or dialog, a `<lightning-icon>` in an icon) work and look as they do anywhere else: slotted content keeps the mode of the component whose template it's in.
+- **Inside an option's `component`** (select, combobox, command, lookup), don't use Lightning base components. LWC gives a component the mode of the template that renders it, so that component and everything it renders run in native shadow, where Salesforce doesn't support base components: they lose their SLDS styling (a `lightning-badge` renders as plain text). Use plain markup styled by your component's own CSS, or fandry components.
+
 ## Installation
 
 ```bash
@@ -124,7 +140,7 @@ fandry-table::part(row selected)       { background: hsl(160 40% 96%); }
 
 **Deprecated:** `--fd-button-radius`, `--fd-button-padding-x`, `--fd-button-border-width`, `--fd-card-bg`, `--fd-card-height` and `--fd-icon-size` still work but will be removed. Use the part instead: `.round::part(base) { border-radius: 999px; padding-inline: 0; border-width: 0 }` (without the border, the box is wider than tall and comes out an oval), `.promo::part(base) { background: ... }`, `.equal fandry-card, .equal fandry-card::part(base) { height: 100% }`, `.big::part(base) { width: 3rem; height: 3rem }`. Parts need native shadow (see below): an org still on synthetic shadow should keep using these properties until it switches.
 
-`::part()` needs native shadow DOM: LWR sites use it, and so do Salesforce orgs with native shadow on. In an org still on synthetic shadow, parts have no effect; tokens work in both.
+Parts need a real shadow root, so every fandry component opts into native shadow DOM (`static shadowSupportMode = 'native'` on `fandry/base`). They work the same on LWR and on Salesforce, including orgs that still load the synthetic-shadow polyfill for other components. A component of yours that extends `fandry/base` inherits that too.
 
 ## Translating
 

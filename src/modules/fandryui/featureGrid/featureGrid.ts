@@ -5,8 +5,8 @@ export default class FeatureGrid extends LightningElement {
     {
       key: 'native',
       chipClass: 'icon-chip tint-primary',
-      title: 'Native LWC components',
-      description: 'Built with native Lightning Web Components — no framework to fight, no compile step surprises.',
+      title: 'Native shadow DOM, even on Salesforce',
+      description: 'Plain Lightning Web Components in real, standards-based shadow DOM, on LWR and in your org, not the synthetic polyfill base components grew up on.',
       iconPath: 'M13 2L3 14h7l-1 8 10-12h-7l1-8z'
     },
     {

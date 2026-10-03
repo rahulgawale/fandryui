@@ -2,7 +2,12 @@ import { createElement } from 'lwc';
 import MenuHarness from './menuHarness';
 import MenuStandaloneHarness from './menuStandaloneHarness';
 
-const flush = () => Promise.resolve();
+/* In native shadow the items reach the parent through slotchange, a
+   microtask after render, so the roving tabindex settles one tick later. */
+const flush = async () => {
+  await Promise.resolve();
+  await Promise.resolve();
+};
 
 describe('fandry-menu', () => {
   afterEach(() => {
