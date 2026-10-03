@@ -692,7 +692,7 @@ fandry-checkbox::part(control checked) {
       blocks: [
         {
           type: 'text',
-          text: 'The private --_fd-* names only exist inside fandry components and components that extend fandry/base. A component that extends Base reads them like the library does. Any other CSS, including markup you slot into a fandry component, only sees the --fd-* values you set yourself, so give it a fallback.'
+          text: 'The private --_fd-* names only exist inside fandry components and components that extend fandry/base. A component that extends Base reads them like the library does. Any other CSS should read the --fd-* names, with a fallback: outside a fandry component the private names are not set, and markup you slot into one inherits them only while it sits in that slot.'
         },
         {
           type: 'code',
