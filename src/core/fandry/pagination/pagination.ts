@@ -5,7 +5,7 @@ import pagesTemplate from './paginationPages.html';
 
 /** Text pagination shows or announces that isn't markup; see `messages`. */
 export interface FdPaginationMessages {
-  /** The navigation landmark's accessible name. */
+  /** The navigation landmark's accessible name, when `aria-label` is not set. */
   label: string;
   /** Page mode's status line. `pageCount` is undefined when the total is unknown. */
   status: (page: number, pageCount?: number) => string;
@@ -52,12 +52,15 @@ export default class Pagination extends Base {
   /** Replaces any of DEFAULT_PAGINATION_MESSAGES, e.g. to translate them. */
   @api messages: Partial<FdPaginationMessages> = {};
 
+  /** This instance's name, as `aria-label` on any element. Wins over `messages.label`. */
+  @api ariaLabel = '';
+
   private get text(): FdPaginationMessages {
     return { ...DEFAULT_PAGINATION_MESSAGES, ...this.messages };
   }
 
   get navLabel(): string {
-    return this.text.label;
+    return this.ariaLabel || this.text.label;
   }
 
   get isPageMode(): boolean {

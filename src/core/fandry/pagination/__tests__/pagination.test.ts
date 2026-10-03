@@ -151,6 +151,15 @@ describe('fandry-pagination text', () => {
     expect(element.shadowRoot!.querySelector('.status')!.textContent).toBe('Seite 2 von 5');
   });
 
+  // aria-label names one instance; messages.label translates the default.
+  it('takes a custom aria-label over messages', () => {
+    const element = createElement('fandry-pagination', { is: FdPagination });
+    Object.assign(element, { pageIndex: 0, ariaLabel: 'Results pages', messages: { label: 'Seiten' } });
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Results pages');
+  });
+
   it('keeps the default for any message it is not given, and passes an unknown total as undefined', () => {
     const element = createElement('fandry-pagination', { is: FdPagination });
     const status = jest.fn(() => 'custom');
