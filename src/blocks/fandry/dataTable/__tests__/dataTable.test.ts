@@ -82,6 +82,13 @@ async function typeInto(el: HTMLElement, columnId: string, value: string) {
 const buttonByText = (el: HTMLElement, text: string) =>
   Array.from(el.shadowRoot!.querySelectorAll('fandry-button')).find((b) => b.textContent!.trim() === text) as HTMLElement;
 
+// Blurs whatever has focus, through every shadow root, leaving it on the page.
+function blurAll() {
+  let active = document.activeElement as HTMLElement | null;
+  while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement as HTMLElement;
+  active?.blur();
+}
+
 const toastTexts = (el: HTMLElement) =>
   Array.from(el.shadowRoot!.querySelectorAll('fandry-toast')).map((t) => ({
     text: t.textContent!.trim(),
@@ -372,6 +379,69 @@ describe('fandry-data-table', () => {
       expect(bodyRows(el)[2].classList.contains('row--editing')).toBe(false);
     });
 
+    it('keeps Save focusable while saving: aria-disabled and "Saving…", not disabled', async () => {
+      let finish: () => void = () => {};
+      const saveRow = jest.fn(() => new Promise<void>((resolve) => (finish = resolve)));
+      const el = mount({ saveRow });
+
+      await edit(el, 0);
+      await typeInto(el, 'seats', '12');
+      buttonByText(el, 'Save').click();
+      await settle();
+
+      const saving = buttonByText(el, 'Saving…') as any;
+      expect(saving.disabled).toBe(false);
+      expect(saving.elementProps).toEqual({ tabIndex: 0, ariaDisabled: 'true' });
+      expect(saving.querySelector('fandry-spinner').getAttribute('aria-hidden')).toBe('true');
+      saving.click();
+      await settle();
+      expect(saveRow).toHaveBeenCalledTimes(1);
+
+      finish();
+      await settle();
+    });
+
+    /* Ending the edit removes the row's editors and buttons; focus on one
+       would otherwise fall to the page. */
+    it('moves focus to the row\'s actions button when Save or Cancel ends the edit', async () => {
+      const el = mount({ saveRow: jest.fn().mockResolvedValue(undefined) });
+      const actions = () => bodyRows(el)[0].querySelector('[data-action="row-actions"]');
+
+      await edit(el, 0);
+      await typeInto(el, 'seats', '12');
+      buttonByText(el, 'Save').focus();
+      buttonByText(el, 'Save').click();
+      await settle();
+      expect(bodyRows(el)[0].classList.contains('row--editing')).toBe(false);
+      expect(el.shadowRoot!.activeElement).toBe(actions());
+
+      await edit(el, 0);
+      buttonByText(el, 'Cancel').focus();
+      buttonByText(el, 'Cancel').click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(actions());
+    });
+
+    /* Safari doesn't focus a button when it's clicked: focus is on the page,
+       not on Save or Cancel, when the click lands. */
+    it('moves focus to the row\'s actions button after a click that leaves focus on the page (Safari)', async () => {
+      const el = mount({ saveRow: jest.fn().mockResolvedValue(undefined) });
+      const actions = () => bodyRows(el)[0].querySelector('[data-action="row-actions"]');
+
+      await edit(el, 0);
+      await typeInto(el, 'seats', '12');
+      blurAll();
+      buttonByText(el, 'Save').click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(actions());
+
+      await edit(el, 0);
+      blurAll();
+      buttonByText(el, 'Cancel').click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(actions());
+    });
+
     it('lets only one row be edited at a time, and does not discard the first row\'s draft', async () => {
       const el = mount();
       await edit(el, 0);
@@ -418,6 +488,26 @@ describe('fandry-data-table', () => {
       expect(onDelete.mock.calls[0][0].detail).toEqual({ id: '2', row: DATA[1] });
       expect(dialog(el).open).toBe(false);
       expect(toastTexts(el)).toEqual([{ text: 'Deleted Globex.', variant: 'success' }]);
+    });
+
+    it('keeps Delete focusable while deleting: aria-disabled and "Deleting…"', async () => {
+      let finish: () => void = () => {};
+      const deleteRow = jest.fn(() => new Promise<void>((resolve) => (finish = resolve)));
+      const el = mount({ deleteRow });
+
+      await chooseMenuAction(el, 1, 'delete');
+      buttonByText(el, 'Delete').click();
+      await settle();
+
+      const deleting = buttonByText(el, 'Deleting…') as any;
+      expect(deleting.disabled).toBe(false);
+      expect(deleting.elementProps).toEqual({ tabIndex: 0, ariaDisabled: 'true' });
+      deleting.click();
+      await settle();
+      expect(deleteRow).toHaveBeenCalledTimes(1);
+
+      finish();
+      await settle();
     });
 
     it('does nothing when the confirmation is cancelled', async () => {
@@ -637,6 +727,29 @@ describe('fandry-data-table', () => {
       });
       expect(onSelection.mock.calls.pop()![0].detail.rows).toEqual([]);
       expect(toastTexts(el)).toEqual([{ text: 'Saved 2 records.', variant: 'success' }]);
+    });
+
+    it('keeps Save focusable while the batch saves: aria-disabled and "Saving…"', async () => {
+      let finish: () => void = () => {};
+      const saveRows = jest.fn(() => new Promise<void>((resolve) => (finish = resolve)));
+      const el = mount({ saveRows });
+
+      await select(el, 0, 1);
+      await openDialog(el);
+      await fill(el, 'seats', '50');
+      buttonByText(el, 'Save').click();
+      await settle();
+
+      const saving = buttonByText(el, 'Saving…') as any;
+      expect(saving.disabled).toBe(false);
+      expect(saving.elementProps).toEqual({ tabIndex: 0, ariaDisabled: 'true' });
+      expect(saving.querySelector('fandry-spinner').getAttribute('aria-hidden')).toBe('true');
+      saving.click();
+      await settle();
+      expect(saveRows).toHaveBeenCalledTimes(1);
+
+      finish();
+      await settle();
     });
 
     it('applies the changes itself when there is no hook', async () => {

@@ -27,7 +27,7 @@ export interface FdFormMessages {
   edit: string;
   save: string;
   cancel: string;
-  /** The spinner's accessible name while saving. */
+  /** The Save button's text while saving. */
   saving: string;
   /** How a checkbox or switch reads in `read` mode. */
   yes: string;
@@ -44,7 +44,7 @@ export const DEFAULT_FORM_MESSAGES: FdFormMessages = {
   edit: 'Edit',
   save: 'Save',
   cancel: 'Cancel',
-  saving: 'Saving',
+  saving: 'Saving…',
   yes: 'Yes',
   no: 'No'
 };
@@ -69,7 +69,9 @@ function escapeAttrValue(value: string): string {
  * fandry-form is this class plus the ready-made markup; a consumer who wants
  * other markup extends this class and writes their own template, rendering
  * each of `renderFields` with fandry-form-field or with their own controls
- * (see FdDataTableState for the same seam in the data-table block).
+ * (see FdDataTableState for the same seam in the data-table block). Mark
+ * each field's element with `data-name` and the Edit action with
+ * `data-action="edit"`, which is where focus goes when the form moves it.
  *
  * Data is controlled: this component never edits `values`. What the user
  * types is a draft over it, and a successful save is reported through `save`
@@ -140,7 +142,13 @@ export default class FdFormState extends Base {
   @track protected status: FdFormStatus | null = null;
 
   private editedFromRead = false;
-  private focusPending: 'first' | 'invalid' | null = null;
+  private focusPending: 'first' | 'invalid' | 'edit' | 'restore' | null = null;
+  // What had focus in the form when a save started: the save disables it.
+  private focusBeforeSave: HTMLElement | null = null;
+  /* Safari doesn't focus a button when it's clicked, so after a click on
+     Save or Cancel focus is still on the page. A click on the form's own
+     button counts as focus in the form all the same. */
+  private actionClicked = false;
 
   // ---- rendering model
 
@@ -154,6 +162,19 @@ export default class FdFormState extends Base {
 
   get hasStatus(): boolean {
     return this.status !== null;
+  }
+
+  // The button's name comes from its text; the spinner beside it is hidden.
+  get saveLabel(): string {
+    return this.saving ? this.text.saving : this.text.save;
+  }
+
+  /* aria-disabled, not disabled, while saving: disabling the Save button
+     the user just pressed drops focus to the page, so a keyboard user loses
+     their place and never hears the new label. save() ignores the clicks.
+     tabIndex is fandry-button's own default, which elementProps replaces. */
+  get saveButtonProps(): Record<string, unknown> {
+    return { tabIndex: 0, ariaDisabled: this.saving ? 'true' : null };
   }
 
   get statusVariant(): string {
@@ -329,6 +350,8 @@ export default class FdFormState extends Base {
 
     this.submitAttempted = true;
     this.status = null;
+    this.focusBeforeSave = this.template.activeElement as HTMLElement | null;
+    const hadFocus = this.hasFocus();
     this.saving = true;
     try {
       // The server's last verdict was about the last attempt; ask again.
@@ -356,11 +379,12 @@ export default class FdFormState extends Base {
       this.clearDraft();
       this.dispatchEvent(new CustomEvent('save', { detail: { values: result, changes }, bubbles: true }));
       this.status = { variant: 'success', message: this.saveSuccessMessage() };
-      this.leaveEdit();
+      this.leaveEdit(hadFocus);
     } catch (error) {
       this.status = { variant: 'danger', message: this.saveFailureMessage(error) };
     } finally {
       this.saving = false;
+      if (!this.focusPending && this.focusBeforeSave) this.focusPending = 'restore';
     }
   }
 
@@ -369,11 +393,20 @@ export default class FdFormState extends Base {
   }
 
   handleCancel() {
+    this.actionClicked = true;
     this.cancel();
+    this.actionClicked = false;
   }
 
   handleSave() {
+    // save() reads it before its first await.
+    this.actionClicked = true;
     void this.save();
+    this.actionClicked = false;
+  }
+
+  private hasFocus(): boolean {
+    return this.actionClicked || this.template.activeElement !== null;
   }
 
   private clearDraft() {
@@ -383,9 +416,12 @@ export default class FdFormState extends Base {
     this.submitAttempted = false;
   }
 
-  private leaveEdit() {
+  /* Read mode removes Save and Cancel, so focus on either would fall to the
+     page; it goes to Edit instead. */
+  private leaveEdit(hadFocus = this.hasFocus()) {
     if (!this.editedFromRead) return;
     this.editedFromRead = false;
+    if (hadFocus) this.focusPending = 'edit';
     this.setMode('read');
   }
 
@@ -421,6 +457,22 @@ export default class FdFormState extends Base {
 
   renderedCallback() {
     if (!this.focusPending) return;
+    const focusBeforeSave = this.focusBeforeSave;
+    this.focusBeforeSave = null;
+
+    /* 'edit' and 'restore' put back focus the form took away (by removing
+       or disabling what had it), so they only act while focus is lost:
+       never when the user has moved it somewhere else meanwhile. */
+    if (this.focusPending === 'edit' || this.focusPending === 'restore') {
+      const target =
+        this.focusPending === 'edit'
+          ? (this.template.querySelector('[data-action="edit"]') as HTMLElement | null)
+          : focusBeforeSave;
+      this.focusPending = null;
+      const lost = !document.activeElement || document.activeElement === document.body;
+      if (lost && target?.isConnected) target.focus();
+      return;
+    }
 
     const wanted = this.focusPending === 'invalid' ? this.firstInvalid() : this.editableFields[0];
     this.focusPending = null;

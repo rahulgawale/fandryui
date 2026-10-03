@@ -57,7 +57,7 @@
   color: hsl(var(--_fd-primary-foreground));
 }
 
-.button--default:hover:not(:disabled) {
+.button--default:hover:not(:disabled):not([aria-disabled='true']) {
   filter: brightness(var(--_fd-hover-brightness));
   box-shadow: var(--_fd-shadow-sm) hsla(var(--_fd-primary) / 0.3);
 }
@@ -68,7 +68,7 @@
   border-color: hsl(var(--_fd-border));
 }
 
-.button--secondary:hover:not(:disabled) {
+.button--secondary:hover:not(:disabled):not([aria-disabled='true']) {
   background: hsl(var(--_fd-bg-muted));
   box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
 }
@@ -79,7 +79,7 @@
   border-color: transparent;
 }
 
-.button--ghost:hover:not(:disabled) {
+.button--ghost:hover:not(:disabled):not([aria-disabled='true']) {
   background: hsl(var(--_fd-bg-muted));
   box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-subtle));
 }
@@ -91,14 +91,15 @@
     hsl(var(--_fd-ring-color));
 }
 
-/* Disabled */
-.button:disabled {
+/* Disabled. aria-disabled is a disabled button that keeps focus. */
+.button:disabled,
+.button[aria-disabled='true'] {
   opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
 /* Active (pressed) */
-.button:active:not(:disabled) {
+.button:active:not(:disabled):not([aria-disabled='true']) {
   transform: translateY(1px);
   box-shadow: none;
 }

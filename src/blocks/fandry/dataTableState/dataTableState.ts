@@ -31,7 +31,7 @@ export interface FdDataTableMessages extends FdTableMessages {
   cancel: string;
   edit: string;
   delete: string;
-  /** Spinner names while a request runs. */
+  /** The Save and Delete buttons' text while their request runs. */
   saving: string;
   deleting: string;
   clearSelection: string;
@@ -74,8 +74,8 @@ export const DEFAULT_DATA_TABLE_MESSAGES: FdDataTableMessages = {
   cancel: 'Cancel',
   edit: 'Edit',
   delete: 'Delete',
-  saving: 'Saving',
-  deleting: 'Deleting',
+  saving: 'Saving…',
+  deleting: 'Deleting…',
   clearSelection: 'Clear selection',
   bulkEdit: (count) => `Edit ${count} selected`,
   bulkDialogHeading: (count) => `Edit ${count} records`,
@@ -177,6 +177,8 @@ export interface FdDataTableRow {
   saving: boolean;
   menuOpen: boolean;
   menuTriggerProps: Record<string, unknown>;
+  saveLabel: string;
+  saveButtonProps: Record<string, unknown>;
   cells: FdDataTableCell[];
 }
 
@@ -188,6 +190,15 @@ export interface FdDataTableToast {
 
 const NO_FILTER = '';
 
+/* aria-disabled, not disabled, while a button's request runs: disabling the
+   button the user just pressed drops focus to the page, so a keyboard user
+   loses their place and never hears the new label. The handlers ignore the
+   clicks. tabIndex is fandry-button's own default, which elementProps
+   replaces. */
+function busyButtonProps(busy: boolean): Record<string, unknown> {
+  return { tabIndex: 0, ariaDisabled: busy ? 'true' : null };
+}
+
 /**
  * FdDataTableState is the behavior behind the data-table block, with no
  * template of its own: it extends FdTableState (headless tanstack state) and
@@ -196,7 +207,8 @@ const NO_FILTER = '';
  * saving/saved/loading states around it. fandry-data-table is this class plus
  * the ready-made markup; a consumer who wants different markup extends this
  * class and writes their own template (see FdTableState for the same seam one
- * level down).
+ * level down). Mark each row's actions button with `data-action="row-actions"`
+ * and `data-row-id`: focus goes there when a row's edit ends.
  *
  * Data is controlled: this component never edits `data`. A successful save or
  * delete is reported through `rowsave` / `rowdelete`, and the consumer puts
@@ -277,6 +289,11 @@ export default class FdDataTableState extends FdTableState {
 
   private toastCounter = 0;
   private focusEditorPending = false;
+  /* Focus the table took away -- by ending a row's edit, which removes its
+     editors and buttons, or by disabling a field during a save -- goes back
+     on the next render: to that row's actions button, or to what had it. */
+  private refocusRowId: string | null = null;
+  private refocusElement: HTMLElement | null = null;
   private savedFlashRunning = false;
 
   constructor() {
@@ -367,6 +384,8 @@ export default class FdDataTableState extends FdTableState {
             ariaHasPopup: 'menu',
             ariaExpanded: String(row.id === this.menuRowId)
           },
+          saveLabel: saving ? this.text.saving : this.text.save,
+          saveButtonProps: busyButtonProps(saving),
           cells: row
             .getVisibleCells()
             .map((cell) => this.toDataCell(cell, editing, label))
@@ -499,6 +518,28 @@ export default class FdDataTableState extends FdTableState {
 
   get deleteDialogQuestion(): string {
     return this.deleteCandidate ? this.text.deleteQuestion(this.labelOf(this.deleteCandidate)) : '';
+  }
+
+  // A busy button's name comes from its text; the spinner beside it is hidden.
+  get bulkSaveLabel(): string {
+    return this.bulkSaving ? this.text.saving : this.text.save;
+  }
+
+  get bulkSaveButtonProps(): Record<string, unknown> {
+    return busyButtonProps(this.bulkSaving);
+  }
+
+  get deleteConfirmLabel(): string {
+    return this.deleting ? this.text.deleting : this.text.delete;
+  }
+
+  get deleteButtonProps(): Record<string, unknown> {
+    return busyButtonProps(this.deleting);
+  }
+
+  private rowActionsButton(rowId: string): HTMLElement | null {
+    const buttons = [...this.template.querySelectorAll('[data-action="row-actions"]')] as HTMLElement[];
+    return buttons.find((button) => button.dataset.rowId === rowId) ?? null;
   }
 
   private metaOf(columnDef: { meta?: unknown }): FdDataTableColumnMeta {
@@ -688,6 +729,16 @@ export default class FdDataTableState extends FdTableState {
 
   handleCancel() {
     if (this.anySaving) return;
+    this.endEdit();
+  }
+
+  /* The row's editors and buttons go, so focus on one moves to its actions.
+     Not only when one has focus: Safari doesn't focus a button when it's
+     clicked, so after a click on Save or Cancel focus is on the page. Every
+     way an edit ends is the user's action in this row, and focus only moves
+     while it is lost. */
+  private endEdit() {
+    this.refocusRowId = this.editingRowId;
     this.editingRowId = null;
     this.draft = {};
   }
@@ -722,13 +773,13 @@ export default class FdDataTableState extends FdTableState {
       return;
     }
 
+    const focusBeforeSave = this.template.activeElement as HTMLElement | null;
     this.savingRowIds = { ...this.savingRowIds, [rowId]: true };
     try {
       const saved = this.saveRow ? await this.saveRow(row.original, changes) : undefined;
       const result = saved ?? { ...(row.original as object), ...changes };
 
-      this.editingRowId = null;
-      this.draft = {};
+      this.endEdit();
       this.markSaved([rowId]);
       this.dispatchEvent(
         new CustomEvent('rowsave', { detail: { id: rowId, row: result, changes }, bubbles: true })
@@ -737,6 +788,8 @@ export default class FdDataTableState extends FdTableState {
       this.showToast('success', this.saveSuccessMessage(this.labelOf(result)));
     } catch (error) {
       this.showToast('danger', this.saveFailureMessage(label, error));
+      // A save started with Enter disabled the field the user was in.
+      this.refocusElement = focusBeforeSave;
     } finally {
       const { [rowId]: _done, ...rest } = this.savingRowIds;
       this.savingRowIds = rest;
@@ -817,6 +870,7 @@ export default class FdDataTableState extends FdTableState {
 
     const ids = rows.map((row) => row.id);
     const originals = rows.map((row) => row.original);
+    const focusBeforeSave = this.template.activeElement as HTMLElement | null;
     this.bulkSaving = true;
     this.bulkAlert = null;
     this.savingRowIds = { ...this.savingRowIds, ...Object.fromEntries(ids.map((id) => [id, true])) };
@@ -842,6 +896,7 @@ export default class FdDataTableState extends FdTableState {
       const message = this.bulkSaveFailureMessage(ids.length, error);
       this.bulkAlert = { variant: 'danger', message };
       this.showToast('danger', message);
+      this.refocusElement = focusBeforeSave;
     } finally {
       const remaining = { ...this.savingRowIds };
       ids.forEach((id) => delete remaining[id]);
@@ -949,6 +1004,15 @@ export default class FdDataTableState extends FdTableState {
     if (this.focusEditorPending) {
       this.focusEditorPending = false;
       (this.template.querySelector('.editor') as HTMLElement | null)?.focus();
+    }
+
+    if (this.refocusRowId !== null || this.refocusElement) {
+      const target = this.refocusRowId !== null ? this.rowActionsButton(this.refocusRowId) : this.refocusElement;
+      this.refocusRowId = null;
+      this.refocusElement = null;
+      // Only while focus is lost: never when the user has moved it meanwhile.
+      const lost = !document.activeElement || document.activeElement === document.body;
+      if (lost && target?.isConnected) target.focus();
     }
 
     if (this.savedFlashRunning) {

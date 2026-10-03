@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <fandry-button disabled={saving} onclick={handleSave}>
+    <fandry-button element-props={saveButtonProps} onclick={handleSave}>
       <template lwc:if={saving}>
         <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
       </template>

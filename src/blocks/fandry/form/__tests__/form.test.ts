@@ -54,6 +54,13 @@ function edit(el: HTMLElement, name: string, value: unknown) {
 const leave = (el: HTMLElement, name: string) =>
   control(el, name)!.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
 
+// Blurs whatever has focus, through every shadow root, leaving it on the page.
+function blurAll() {
+  let active = document.activeElement as HTMLElement | null;
+  while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement as HTMLElement;
+  active?.blur();
+}
+
 afterEach(() => {
   while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
 });
@@ -360,7 +367,7 @@ describe('fandry-form', () => {
       expect((control(el, 'name') as any).value).toBe('Acme Inc');
     });
 
-    it('disables the fields and the actions while the hook runs, and ignores a second save', async () => {
+    it('disables the fields and Cancel while the hook runs, and ignores a second save', async () => {
       let finish: () => void = () => {};
       const saveValues = jest.fn(() => new Promise<void>((resolve) => (finish = resolve)));
       const el = mount({ saveValues });
@@ -372,13 +379,34 @@ describe('fandry-form', () => {
 
       expect((control(el, 'name') as any).disabled).toBe(true);
       expect((button(el, 'Cancel') as any).disabled).toBe(true);
-      button(el, 'Save')!.click();
+      button(el, 'Saving…')!.click();
       await settle();
       expect(saveValues).toHaveBeenCalledTimes(1);
 
       finish();
       await settle();
       expect((control(el, 'name') as any).disabled).toBe(false);
+    });
+
+    it('keeps Save focusable while saving: aria-disabled and "Saving…", not disabled', async () => {
+      let finish: () => void = () => {};
+      const saveValues = jest.fn(() => new Promise<void>((resolve) => (finish = resolve)));
+      const el = mount({ saveValues });
+      await settle();
+
+      edit(el, 'name', 'Acme Inc');
+      button(el, 'Save')!.click();
+      await settle();
+
+      const saving = button(el, 'Saving…') as any;
+      expect(saving.disabled).toBe(false);
+      expect(saving.elementProps).toEqual({ tabIndex: 0, ariaDisabled: 'true' });
+      expect(saving.shadowRoot.querySelector('button').getAttribute('part')).toBe('base default disabled');
+      expect(saving.querySelector('fandry-spinner').getAttribute('aria-hidden')).toBe('true');
+
+      finish();
+      await settle();
+      expect((button(el, 'Save') as any).elementProps).toEqual({ tabIndex: 0, ariaDisabled: null });
     });
 
     it('saves on Enter in a text field', async () => {
@@ -581,6 +609,69 @@ describe('fandry-form', () => {
       el.cancel();
       await settle();
       expect(el.mode).toBe('read');
+    });
+
+    /* Read mode removes Save and Cancel; focus on either would otherwise fall
+       to the page. */
+    it('moves focus to Edit when Save or Cancel returns the form to read mode', async () => {
+      const saveValues = jest.fn(async () => undefined);
+      const el = mount({ mode: 'read', saveValues });
+      await settle();
+
+      button(el, 'Edit')!.click();
+      await settle();
+      edit(el, 'name', 'Acme Inc');
+      button(el, 'Save')!.focus();
+      button(el, 'Save')!.click();
+      await settle();
+      expect(el.mode).toBe('read');
+      expect(el.shadowRoot!.activeElement).toBe(button(el, 'Edit'));
+
+      button(el, 'Edit')!.click();
+      await settle();
+      button(el, 'Cancel')!.focus();
+      button(el, 'Cancel')!.click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(button(el, 'Edit'));
+    });
+
+    /* Safari doesn't focus a button when it's clicked: focus is on the page,
+       not on Save or Cancel, when the click lands. */
+    it('moves focus to Edit after a click that leaves focus on the page (Safari)', async () => {
+      const el = mount({ mode: 'read', saveValues: jest.fn(async () => undefined) });
+      await settle();
+
+      button(el, 'Edit')!.click();
+      await settle();
+      edit(el, 'name', 'Acme Inc');
+      blurAll();
+      button(el, 'Save')!.click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(button(el, 'Edit'));
+
+      button(el, 'Edit')!.click();
+      await settle();
+      blurAll();
+      button(el, 'Cancel')!.click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(button(el, 'Edit'));
+    });
+
+    it('does not take focus when it is saved from outside', async () => {
+      const el = mount({ mode: 'read' });
+      await settle();
+
+      el.edit();
+      await settle();
+      edit(el, 'name', 'Acme Inc');
+      const outside = document.createElement('button');
+      document.body.appendChild(outside);
+      outside.focus();
+      el.save();
+      await settle();
+
+      expect(el.mode).toBe('read');
+      expect(document.activeElement).toBe(outside);
     });
 
     it('shows no validation errors while reading', async () => {

@@ -664,7 +664,7 @@ fandry-text::part(base) {
         title: 'A loading state, with a slot',
         demo: 'button-loading',
         code: `<!-- template: the spinner is just slotted content -->
-<fandry-button disabled={saving} onclick={handleSave}>
+<fandry-button element-props={saveButtonProps} onclick={handleSave}>
   <template lwc:if={saving}>
     <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
   </template>
@@ -679,8 +679,14 @@ get saveLabel() {
   return this.saving ? 'Saving…' : 'Save';
 }
 
+// aria-disabled, not disabled: disabling the focused button would drop
+// focus to the page. tabIndex: 0 is fandry-button's own default.
+get saveButtonProps() {
+  return { tabIndex: 0, ariaDisabled: this.saving ? 'true' : null };
+}
+
 async handleSave() {
-  if (this.saving) return; // disabled covers a double click; this covers the gap
+  if (this.saving) return; // the button stays clickable while saving
   this.saving = true;
   try {
     await this.save();
@@ -778,7 +784,13 @@ fandry-button.rainbow::part(base)::after {
     props: [
       { name: 'variant', type: "'default' | 'secondary' | 'ghost'", default: "'default'", description: 'Visual style.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the button.' },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description:
+          "Disables the button. A button that must keep focus (one that is saving) takes `element-props={ tabIndex: 0, ariaDisabled: 'true' }` instead: it looks the same and has the same `disabled` state."
+      },
       { name: 'type', type: "'button' | 'submit' | 'reset'", default: "'button'", description: 'Native button type.' }
     ],
     code: `<fandry-button variant="secondary" size="lg">Save</fandry-button>`
