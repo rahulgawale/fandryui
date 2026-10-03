@@ -1,3 +1,10 @@
+## [0.19.1](https://github.com/rahulgawale/fandryui/compare/v0.19.0...v0.19.1) (2026-10-03)
+
+
+### Bug Fixes
+
+* breadcrumb, sidebar and pagination take aria-label, with defaults in messages ([#98](https://github.com/rahulgawale/fandryui/issues/98)) ([7033600](https://github.com/rahulgawale/fandryui/commit/70336008afa661f37c0df876f39b8529f99b04a4))
+
 # [0.19.0](https://github.com/rahulgawale/fandryui/compare/v0.18.5...v0.19.0) (2026-10-03)
 
 
