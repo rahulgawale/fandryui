@@ -1,3 +1,10 @@
+## [0.19.3](https://github.com/rahulgawale/fandryui/compare/v0.19.2...v0.19.3) (2026-10-03)
+
+
+### Bug Fixes
+
+* keep focus on a loading button, and on Edit after the form saves ([#100](https://github.com/rahulgawale/fandryui/issues/100)) ([1820375](https://github.com/rahulgawale/fandryui/commit/18203758162e82692ae489a34cfe0f3f0af0f522))
+
 ## [0.19.2](https://github.com/rahulgawale/fandryui/compare/v0.19.1...v0.19.2) (2026-10-03)
 
 
