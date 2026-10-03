@@ -1,20 +1,26 @@
 <template>
   <nav class="pagination" part="base" aria-label={navLabel}>
+    <!-- Each .tab-stop is the link's tab stop: Safari's plain Tab skips an
+         <a href> (see fandry/anchorTabStop). -->
     <template if:true={hasPrevious}>
-      <a class="link link--previous" part="link previous" href={previousHref}>
-        <span class="eyebrow" part="eyebrow"><slot name="previous-eyebrow">← Previous</slot></span>
-        <span class="title" part="title">{previousLabel}</span>
-      </a>
+      <span class="tab-stop" role="link" tabindex="0" aria-labelledby="previous" onkeydown={handleLinkKeydown} onclick={handleLinkClick}>
+        <a id="previous" class="link link--previous" part="link previous" href={previousHref} aria-hidden="true" tabindex="-1">
+          <span class="eyebrow" part="eyebrow"><slot name="previous-eyebrow">← Previous</slot></span>
+          <span class="title" part="title">{previousLabel}</span>
+        </a>
+      </span>
     </template>
     <template if:false={hasPrevious}>
       <span class="spacer"></span>
     </template>
 
     <template if:true={hasNext}>
-      <a class="link link--next" part="link next" href={nextHref}>
-        <span class="eyebrow" part="eyebrow"><slot name="next-eyebrow">Next →</slot></span>
-        <span class="title" part="title">{nextLabel}</span>
-      </a>
+      <span class="tab-stop" role="link" tabindex="0" aria-labelledby="next" onkeydown={handleLinkKeydown} onclick={handleLinkClick}>
+        <a id="next" class="link link--next" part="link next" href={nextHref} aria-hidden="true" tabindex="-1">
+          <span class="eyebrow" part="eyebrow"><slot name="next-eyebrow">Next →</slot></span>
+          <span class="title" part="title">{nextLabel}</span>
+        </a>
+      </span>
     </template>
     <template if:false={hasNext}>
       <span class="spacer"></span>
