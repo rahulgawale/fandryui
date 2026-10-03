@@ -145,6 +145,10 @@ export default class FdFormState extends Base {
   private focusPending: 'first' | 'invalid' | 'edit' | 'restore' | null = null;
   // What had focus in the form when a save started: the save disables it.
   private focusBeforeSave: HTMLElement | null = null;
+  /* Safari doesn't focus a button when it's clicked, so after a click on
+     Save or Cancel focus is still on the page. A click on the form's own
+     button counts as focus in the form all the same. */
+  private actionClicked = false;
 
   // ---- rendering model
 
@@ -347,6 +351,7 @@ export default class FdFormState extends Base {
     this.submitAttempted = true;
     this.status = null;
     this.focusBeforeSave = this.template.activeElement as HTMLElement | null;
+    const hadFocus = this.hasFocus();
     this.saving = true;
     try {
       // The server's last verdict was about the last attempt; ask again.
@@ -374,7 +379,7 @@ export default class FdFormState extends Base {
       this.clearDraft();
       this.dispatchEvent(new CustomEvent('save', { detail: { values: result, changes }, bubbles: true }));
       this.status = { variant: 'success', message: this.saveSuccessMessage() };
-      this.leaveEdit(this.focusBeforeSave !== null);
+      this.leaveEdit(hadFocus);
     } catch (error) {
       this.status = { variant: 'danger', message: this.saveFailureMessage(error) };
     } finally {
@@ -388,11 +393,20 @@ export default class FdFormState extends Base {
   }
 
   handleCancel() {
+    this.actionClicked = true;
     this.cancel();
+    this.actionClicked = false;
   }
 
   handleSave() {
+    // save() reads it before its first await.
+    this.actionClicked = true;
     void this.save();
+    this.actionClicked = false;
+  }
+
+  private hasFocus(): boolean {
+    return this.actionClicked || this.template.activeElement !== null;
   }
 
   private clearDraft() {
@@ -404,7 +418,7 @@ export default class FdFormState extends Base {
 
   /* Read mode removes Save and Cancel, so focus on either would fall to the
      page; it goes to Edit instead. */
-  private leaveEdit(hadFocus = this.template.activeElement !== null) {
+  private leaveEdit(hadFocus = this.hasFocus()) {
     if (!this.editedFromRead) return;
     this.editedFromRead = false;
     if (hadFocus) this.focusPending = 'edit';

@@ -729,12 +729,16 @@ export default class FdDataTableState extends FdTableState {
 
   handleCancel() {
     if (this.anySaving) return;
-    this.endEdit(this.template.activeElement !== null);
+    this.endEdit();
   }
 
-  // The row's editors and buttons go, so focus on one moves to its actions.
-  private endEdit(hadFocus: boolean) {
-    if (hadFocus) this.refocusRowId = this.editingRowId;
+  /* The row's editors and buttons go, so focus on one moves to its actions.
+     Not only when one has focus: Safari doesn't focus a button when it's
+     clicked, so after a click on Save or Cancel focus is on the page. Every
+     way an edit ends is the user's action in this row, and focus only moves
+     while it is lost. */
+  private endEdit() {
+    this.refocusRowId = this.editingRowId;
     this.editingRowId = null;
     this.draft = {};
   }
@@ -775,7 +779,7 @@ export default class FdDataTableState extends FdTableState {
       const saved = this.saveRow ? await this.saveRow(row.original, changes) : undefined;
       const result = saved ?? { ...(row.original as object), ...changes };
 
-      this.endEdit(focusBeforeSave !== null);
+      this.endEdit();
       this.markSaved([rowId]);
       this.dispatchEvent(
         new CustomEvent('rowsave', { detail: { id: rowId, row: result, changes }, bubbles: true })

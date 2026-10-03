@@ -82,6 +82,13 @@ async function typeInto(el: HTMLElement, columnId: string, value: string) {
 const buttonByText = (el: HTMLElement, text: string) =>
   Array.from(el.shadowRoot!.querySelectorAll('fandry-button')).find((b) => b.textContent!.trim() === text) as HTMLElement;
 
+// Blurs whatever has focus, through every shadow root, leaving it on the page.
+function blurAll() {
+  let active = document.activeElement as HTMLElement | null;
+  while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement as HTMLElement;
+  active?.blur();
+}
+
 const toastTexts = (el: HTMLElement) =>
   Array.from(el.shadowRoot!.querySelectorAll('fandry-toast')).map((t) => ({
     text: t.textContent!.trim(),
@@ -410,6 +417,26 @@ describe('fandry-data-table', () => {
 
       await edit(el, 0);
       buttonByText(el, 'Cancel').focus();
+      buttonByText(el, 'Cancel').click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(actions());
+    });
+
+    /* Safari doesn't focus a button when it's clicked: focus is on the page,
+       not on Save or Cancel, when the click lands. */
+    it('moves focus to the row\'s actions button after a click that leaves focus on the page (Safari)', async () => {
+      const el = mount({ saveRow: jest.fn().mockResolvedValue(undefined) });
+      const actions = () => bodyRows(el)[0].querySelector('[data-action="row-actions"]');
+
+      await edit(el, 0);
+      await typeInto(el, 'seats', '12');
+      blurAll();
+      buttonByText(el, 'Save').click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(actions());
+
+      await edit(el, 0);
+      blurAll();
       buttonByText(el, 'Cancel').click();
       await settle();
       expect(el.shadowRoot!.activeElement).toBe(actions());

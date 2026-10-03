@@ -54,6 +54,13 @@ function edit(el: HTMLElement, name: string, value: unknown) {
 const leave = (el: HTMLElement, name: string) =>
   control(el, name)!.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
 
+// Blurs whatever has focus, through every shadow root, leaving it on the page.
+function blurAll() {
+  let active = document.activeElement as HTMLElement | null;
+  while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement as HTMLElement;
+  active?.blur();
+}
+
 afterEach(() => {
   while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
 });
@@ -623,6 +630,28 @@ describe('fandry-form', () => {
       button(el, 'Edit')!.click();
       await settle();
       button(el, 'Cancel')!.focus();
+      button(el, 'Cancel')!.click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(button(el, 'Edit'));
+    });
+
+    /* Safari doesn't focus a button when it's clicked: focus is on the page,
+       not on Save or Cancel, when the click lands. */
+    it('moves focus to Edit after a click that leaves focus on the page (Safari)', async () => {
+      const el = mount({ mode: 'read', saveValues: jest.fn(async () => undefined) });
+      await settle();
+
+      button(el, 'Edit')!.click();
+      await settle();
+      edit(el, 'name', 'Acme Inc');
+      blurAll();
+      button(el, 'Save')!.click();
+      await settle();
+      expect(el.shadowRoot!.activeElement).toBe(button(el, 'Edit'));
+
+      button(el, 'Edit')!.click();
+      await settle();
+      blurAll();
       button(el, 'Cancel')!.click();
       await settle();
       expect(el.shadowRoot!.activeElement).toBe(button(el, 'Edit'));
