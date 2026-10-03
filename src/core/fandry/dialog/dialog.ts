@@ -4,6 +4,8 @@ import { exitFinished } from 'fandry/motion';
 
 export default class Dialog extends Base {
   @api label = '';
+  /** The accessible name, as `aria-label` on any element. Wins over `label`. */
+  @api ariaLabel = '';
 
   private _open = false;
 
@@ -58,6 +60,10 @@ export default class Dialog extends Base {
     if (this.open) {
       this.unlockBodyScroll();
     }
+  }
+
+  get accessibleLabel(): string {
+    return this.ariaLabel || this.label;
   }
 
   get backdropClasses(): string {

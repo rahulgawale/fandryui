@@ -22,6 +22,8 @@ export default class FdToastViewport extends Base {
   // also be a navigable landmark, e.g. so a screen reader user can jump
   // back and review a toast that already finished announcing.
   @api label = '';
+  /** The accessible name, as `aria-label` on any element. Wins over `label`. */
+  @api ariaLabel = '';
 
   get classes(): string {
     return [
@@ -33,11 +35,11 @@ export default class FdToastViewport extends Base {
       .join(' ');
   }
 
-  get role(): 'region' | undefined {
-    return this.label ? 'region' : undefined;
+  get accessibleLabel(): string | undefined {
+    return this.ariaLabel || this.label || undefined;
   }
 
-  get ariaLabel(): string | undefined {
-    return this.label ? this.label : undefined;
+  get role(): 'region' | undefined {
+    return this.accessibleLabel ? 'region' : undefined;
   }
 }

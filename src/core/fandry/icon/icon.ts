@@ -9,6 +9,8 @@ export default class FdIcon extends Base {
   // assistive tech entirely rather than announced. Set this only when the
   // icon is the sole content conveying meaning (e.g. an icon-only button).
   @api label = '';
+  /** The accessible name, as `aria-label` on any element. Wins over `label`. */
+  @api ariaLabel = '';
 
   // Deliberately no `name`/registry lookup and no `elementProps` --
   // fandry-icon doesn't ship or own an icon set. It's a sizing/color frame
@@ -24,7 +26,7 @@ export default class FdIcon extends Base {
   }
 
   get isDecorative(): boolean {
-    return !this.label;
+    return !this.ariaLabel && !this.label;
   }
 
   get role(): 'img' | undefined {
@@ -35,7 +37,7 @@ export default class FdIcon extends Base {
     return this.isDecorative ? 'true' : undefined;
   }
 
-  get ariaLabel(): string | undefined {
-    return this.isDecorative ? undefined : this.label;
+  get accessibleLabel(): string | undefined {
+    return this.isDecorative ? undefined : this.ariaLabel || this.label;
   }
 }

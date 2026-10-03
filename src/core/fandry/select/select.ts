@@ -69,9 +69,9 @@ const RESERVED_ELEMENT_PROPS = [
   'ariaExpanded',
   'ariaControls',
   'ariaControlsElements',
-  'ariaActivedescendant',
+  'ariaActiveDescendant',
   'ariaActiveDescendantElement',
-  'ariaDescribedby',
+  'ariaDescribedBy',
   'ariaDescribedByElements',
   'ariaRequired',
   'onkeydown'

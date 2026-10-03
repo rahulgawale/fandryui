@@ -32,6 +32,8 @@ const NO_ITEMS: FdSearchItem[] = [];
  */
 export default class FdCommand extends FdSearchState {
   @api label = '';
+  /** The accessible name, as `aria-label` on any element. Wins over `label`. */
+  @api ariaLabel = '';
   @api placeholder = '';
   @api items: FdCommandItem[] = [];
 
@@ -101,6 +103,10 @@ export default class FdCommand extends FdSearchState {
     if (this.open) {
       this.unlockBodyScroll();
     }
+  }
+
+  get accessibleLabel(): string {
+    return this.ariaLabel || this.label;
   }
 
   get backdropClasses(): string {
