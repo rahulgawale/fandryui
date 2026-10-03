@@ -105,10 +105,12 @@ export default class FdMenu extends Base {
     });
   }
 
+  /* The item the key was pressed in. Not composedPath(): on Salesforce the
+     path this host listener sees starts at the menu itself and leaves out
+     its slotted items (checked in an org). The target, retargeted to this
+     menu's own tree, is the item or something slotted inside it. */
   private currentItem(event: KeyboardEvent): FdMenuItemElement | undefined {
-    return event.composedPath().find((node) => (node as Element).tagName === 'FANDRY-MENU-ITEM') as
-      | FdMenuItemElement
-      | undefined;
+    return ((event.target as Element).closest('fandry-menu-item') ?? undefined) as FdMenuItemElement | undefined;
   }
 
   private moveFocus(current: FdMenuItemElement, delta: number) {

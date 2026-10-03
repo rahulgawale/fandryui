@@ -134,9 +134,8 @@ export default class RadioGroup extends Base {
     // logic below.
     event.preventDefault();
 
-    const currentRadio = event
-      .composedPath()
-      .find((node) => (node as Element).tagName === 'FANDRY-RADIO') as FdRadioElement | undefined;
+    // The target, not composedPath(), for the reason in menu.ts's currentItem.
+    const currentRadio = ((event.target as Element).closest('fandry-radio') ?? undefined) as FdRadioElement | undefined;
     if (!currentRadio) {
       return;
     }

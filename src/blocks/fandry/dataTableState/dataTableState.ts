@@ -675,7 +675,7 @@ export default class FdDataTableState extends FdTableState {
   handleEditorKeydown(event: KeyboardEvent) {
     // Only from a text field: a select's own trigger uses Enter/Escape to
     // open, choose and close its listbox.
-    if ((event.target as HTMLElement).tagName !== 'FANDRY-INPUT') return;
+    if ((event.target as HTMLElement).localName !== 'fandry-input') return;
 
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -784,7 +784,7 @@ export default class FdDataTableState extends FdTableState {
 
   handleBulkKeydown(event: KeyboardEvent) {
     // Enter in a text field submits, as it does in a row.
-    if (event.key === 'Enter' && (event.target as HTMLElement).tagName === 'FANDRY-INPUT') {
+    if (event.key === 'Enter' && (event.target as HTMLElement).localName === 'fandry-input') {
       event.preventDefault();
       void this.handleBulkSave();
     }
