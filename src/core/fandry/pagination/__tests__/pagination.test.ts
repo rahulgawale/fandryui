@@ -51,8 +51,9 @@ describe('fandry-pagination', () => {
   });
 
   /* Safari's plain Tab skips an <a href>, so a non-link wrapper is each
-     link's tab stop, named by its link, and Enter on it follows the link. */
-  it('gives each link a tab stop that Safari reaches, and follows the link on Enter', () => {
+     link's tab stop, named by its link, and Enter or a click on it follows
+     the link. */
+  it('gives each link a tab stop that Safari reaches, and follows the link on Enter or a click', () => {
     const element = createElement('fandry-pagination', { is: FdPagination });
     element.previousHref = '/components/badge';
     element.previousLabel = 'Badge';
@@ -79,6 +80,10 @@ describe('fandry-pagination', () => {
     });
     stops[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     expect(clicked).toEqual(['/components/card']);
+
+    // A screen reader's activation is a click on the tab stop itself.
+    stops[0].dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(clicked).toEqual(['/components/card', '/components/badge']);
   });
 
   describe('page mode', () => {

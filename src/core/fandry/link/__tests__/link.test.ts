@@ -109,6 +109,33 @@ describe('fandry-link', () => {
     expect(clicks[0].shiftKey).toBe(false);
   });
 
+  /* A screen reader activates the role="link" tab stop with a click on the
+     tab stop itself, not on the aria-hidden anchor. */
+  it('forwards a click on the tab stop to the anchor, once, and leaves a click on the anchor alone', () => {
+    const element = createElement('fandry-link', { is: FdLink });
+    element.href = 'https://example.com';
+    document.body.appendChild(element);
+
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    const anchorClicks: MouseEvent[] = [];
+    anchor.addEventListener('click', (event) => {
+      event.preventDefault();
+      anchorClicks.push(event as MouseEvent);
+    });
+    let hostClicks = 0;
+    element.addEventListener('click', () => hostClicks++);
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
+
+    tabStop.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true, metaKey: true }));
+    expect(anchorClicks).toHaveLength(1);
+    expect(anchorClicks[0].metaKey).toBe(true);
+    expect(hostClicks).toBe(1);
+
+    anchor.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+    expect(anchorClicks).toHaveLength(2);
+    expect(hostClicks).toBe(2);
+  });
+
   it('exposes the link role and name on the tab stop and hides the anchor from assistive tech', () => {
     const element = createElement('fandry-link', { is: FdLink });
     element.href = 'https://example.com';

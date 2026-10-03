@@ -3,7 +3,7 @@
     <!-- Each .tab-stop is the link's tab stop: Safari's plain Tab skips an
          <a href> (see fandry/anchorTabStop). -->
     <template if:true={hasPrevious}>
-      <span class="tab-stop" role="link" tabindex="0" aria-labelledby="previous" onkeydown={handleLinkKeydown}>
+      <span class="tab-stop" role="link" tabindex="0" aria-labelledby="previous" onkeydown={handleLinkKeydown} onclick={handleLinkClick}>
         <a id="previous" class="link link--previous" part="link previous" href={previousHref} aria-hidden="true" tabindex="-1">
           <span class="eyebrow" part="eyebrow"><slot name="previous-eyebrow">← Previous</slot></span>
           <span class="title" part="title">{previousLabel}</span>
@@ -15,7 +15,7 @@
     </template>
 
     <template if:true={hasNext}>
-      <span class="tab-stop" role="link" tabindex="0" aria-labelledby="next" onkeydown={handleLinkKeydown}>
+      <span class="tab-stop" role="link" tabindex="0" aria-labelledby="next" onkeydown={handleLinkKeydown} onclick={handleLinkClick}>
         <a id="next" class="link link--next" part="link next" href={nextHref} aria-hidden="true" tabindex="-1">
           <span class="eyebrow" part="eyebrow"><slot name="next-eyebrow">Next →</slot></span>
           <span class="title" part="title">{nextLabel}</span>
