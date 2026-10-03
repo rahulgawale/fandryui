@@ -1,3 +1,10 @@
+## [0.19.2](https://github.com/rahulgawale/fandryui/compare/v0.19.1...v0.19.2) (2026-10-03)
+
+
+### Bug Fixes
+
+* match fandry tags by lowercase localName so keyboard works on Salesforce ([#99](https://github.com/rahulgawale/fandryui/issues/99)) ([d007981](https://github.com/rahulgawale/fandryui/commit/d0079819f64ec6bf164ebd2207bee08aa3490979))
+
 ## [0.19.1](https://github.com/rahulgawale/fandryui/compare/v0.19.0...v0.19.1) (2026-10-03)
 
 
