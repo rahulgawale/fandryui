@@ -1,3 +1,10 @@
+## [0.19.5](https://github.com/rahulgawale/fandryui/compare/v0.19.4...v0.19.5) (2026-10-03)
+
+
+### Bug Fixes
+
+* Safari can Tab to pagination links, and screen readers can follow link tab stops ([#102](https://github.com/rahulgawale/fandryui/issues/102)) ([e9d9884](https://github.com/rahulgawale/fandryui/commit/e9d988419ee0ccc0299c5026c2f3978013ed81c0))
+
 ## [0.19.4](https://github.com/rahulgawale/fandryui/compare/v0.19.3...v0.19.4) (2026-10-03)
 
 
