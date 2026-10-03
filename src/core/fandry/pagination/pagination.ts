@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { activateAnchorOnEnter } from 'fandry/anchorTabStop';
 import linksTemplate from './paginationLinks.html';
 import pagesTemplate from './paginationPages.html';
 
@@ -69,6 +70,11 @@ export default class Pagination extends Base {
 
   render() {
     return this.isPageMode ? pagesTemplate : linksTemplate;
+  }
+
+  // Enter on a link's tab stop follows the link inside it.
+  handleLinkKeydown(event: KeyboardEvent): void {
+    activateAnchorOnEnter(event, event.currentTarget as HTMLElement);
   }
 
   get hasPrevious(): boolean {

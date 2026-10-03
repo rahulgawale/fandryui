@@ -7,13 +7,32 @@
   gap: var(--_fd-space-4);
 }
 
-.link,
+.tab-stop,
 .spacer {
   flex: 1;
   min-width: 0;
 }
 
+.tab-stop {
+  display: flex;
+  border-radius: var(--_fd-radius-lg);
+}
+
+.tab-stop:focus-visible {
+  outline: none;
+}
+
+/* The ring is on the link, where the card's border and radius are, so
+   ::part(link) restyles it too. */
+.tab-stop:focus-visible .link,
+.link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
+}
+
 .link {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: calc(var(--_fd-space-1) / 2);

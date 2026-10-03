@@ -50,6 +50,37 @@ describe('fandry-pagination', () => {
     expect(element.shadowRoot!.querySelectorAll('a').length).toBe(2);
   });
 
+  /* Safari's plain Tab skips an <a href>, so a non-link wrapper is each
+     link's tab stop, named by its link, and Enter on it follows the link. */
+  it('gives each link a tab stop that Safari reaches, and follows the link on Enter', () => {
+    const element = createElement('fandry-pagination', { is: FdPagination });
+    element.previousHref = '/components/badge';
+    element.previousLabel = 'Badge';
+    element.nextHref = '/components/card';
+    element.nextLabel = 'Card';
+    document.body.appendChild(element);
+
+    const stops = Array.from(element.shadowRoot!.querySelectorAll('.tab-stop')) as HTMLElement[];
+    expect(stops.map((stop) => [stop.getAttribute('role'), stop.getAttribute('tabindex')])).toEqual([
+      ['link', '0'],
+      ['link', '0']
+    ]);
+    for (const stop of stops) {
+      const anchor = stop.querySelector('a')!;
+      expect(anchor.getAttribute('tabindex')).toBe('-1');
+      expect(anchor.getAttribute('aria-hidden')).toBe('true');
+      expect(stop.getAttribute('aria-labelledby')).toBe(anchor.id);
+    }
+
+    const clicked: string[] = [];
+    element.shadowRoot!.addEventListener('click', (event) => {
+      clicked.push((event.target as HTMLAnchorElement).getAttribute('href')!);
+      event.preventDefault();
+    });
+    stops[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(clicked).toEqual(['/components/card']);
+  });
+
   describe('page mode', () => {
     const getButtons = (element: HTMLElement) =>
       Array.from(element.shadowRoot!.querySelectorAll('fandry-button')) as (HTMLElement & {
