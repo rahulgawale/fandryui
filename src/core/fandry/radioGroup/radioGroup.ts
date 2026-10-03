@@ -136,7 +136,7 @@ export default class RadioGroup extends Base {
 
     const currentRadio = event
       .composedPath()
-      .find((node) => (node as Element).tagName === 'FANDRY-RADIO') as FdRadioElement | undefined;
+      .find((node) => (node as Element).localName === 'fandry-radio') as FdRadioElement | undefined;
     if (!currentRadio) {
       return;
     }

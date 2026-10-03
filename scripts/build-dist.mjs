@@ -292,6 +292,13 @@ function verify(targetName, t, components) {
           ? /(?<![\w-])c-fandry-|(?<![\w/.-])c\/fandry[A-Z]/
           : /(?<![\w/.-])fandry\/[a-zA-Z]|(?<![\w-])fandry-[a-z]/;
       if (wrong.test(text)) problems.push(`${where}: wrong-flavor fandry reference left behind`);
+
+      /* The rename only sees lowercase tags, so an uppercase one ('FANDRY-INPUT',
+         compared against tagName) would keep its LWR name on Salesforce and
+         never match. Compare localName with the lowercase tag instead. */
+      if (targetName === 'sfdx' && /(?<![\w-])FANDRY-[A-Z]/.test(text)) {
+        problems.push(`${where}: uppercase fandry tag name; compare localName with the lowercase tag`);
+      }
     }
   }
 

@@ -106,7 +106,7 @@ export default class FdMenu extends Base {
   }
 
   private currentItem(event: KeyboardEvent): FdMenuItemElement | undefined {
-    return event.composedPath().find((node) => (node as Element).tagName === 'FANDRY-MENU-ITEM') as
+    return event.composedPath().find((node) => (node as Element).localName === 'fandry-menu-item') as
       | FdMenuItemElement
       | undefined;
   }

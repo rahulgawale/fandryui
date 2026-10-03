@@ -208,7 +208,7 @@ export default class FormField extends Base {
     // in a textarea (a new line) or a select (its trigger uses Enter to open).
     // Checked here, inside the field's own tree, where the event's target is
     // still the input -- from the form's side it is just this field.
-    if (event.key === 'Enter' && (event.target as HTMLElement).tagName === 'FANDRY-INPUT') {
+    if (event.key === 'Enter' && (event.target as HTMLElement).localName === 'fandry-input') {
       event.preventDefault();
       this.dispatchEvent(new CustomEvent('submit', { bubbles: true }));
     }
