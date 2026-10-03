@@ -335,10 +335,10 @@ it needs:
    `fandry add` has already put the source in the project.
 
 `lightning-*` offers styling hooks and some slots, but its internals can't
-be restyled, extended or copied: a look it doesn't support means
-rebuilding from SLDS blueprints. Keep every
-rung reachable -- in particular, keep components small and readable
-enough that copying one is a reasonable thing to do.
+be restyled or extended, and the component in an org isn't source a site
+can copy and change: a look it doesn't support means rebuilding from SLDS
+blueprints. Keep every rung reachable -- in particular, keep components
+small and readable enough that copying one is a reasonable thing to do.
 
 ---
 

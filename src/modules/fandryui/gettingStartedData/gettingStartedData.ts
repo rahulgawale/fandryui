@@ -340,7 +340,7 @@ npx fandry add table --overwrite # replace table even if you edited it`
           type: 'note',
           variant: 'info',
           title: 'Make it yours: CSS, then slots, then your own copy',
-          text: 'Style most things from your own CSS with --fd-* tokens and ::part(), down to a rainbow border. Add to a component through its slots: a loading spinner is just slotted content. For a change inside a component that neither CSS nor slots reach, like a different native element or different internal behavior, copy fandryButton to myButton, rename it, and change anything: it still extends fandryBase, so it keeps your tokens and native shadow DOM. fandry add never overwrites files you changed. With lightning-* components the only equivalent is rebuilding from SLDS blueprints.'
+          text: 'Style most things from your own CSS with --fd-* tokens and ::part(), down to a rainbow border. Add to a component through its slots: a loading spinner is just slotted content. For a change inside a component that neither CSS nor slots reach, like a different native element or different internal behavior, copy fandryButton to myButton, rename it, and change anything: it still extends fandryBase, so it keeps your tokens and native shadow DOM. fandry add does not overwrite files you changed unless you pass --overwrite. With lightning-* components the only equivalent is rebuilding from SLDS blueprints.'
         }
       ]
     },

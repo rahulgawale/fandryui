@@ -152,11 +152,11 @@ Each step goes further than the one before; go only as far as you need:
 4. **Extend the state class** (`fandry/tableState`, `fandry/searchState`, `fandry/formState`, ...): your own markup on the same behavior.
 5. **Copy the component.** When you need what neither CSS nor composition can reach (a different native element, a different internal structure, changed internal behavior), copy its source into your own namespace and change anything. Components are short, plain LWC. Keep `extends Base` and your copy still follows the site's tokens and renders in native shadow DOM:
    - LWR / LWC OSS: copy `node_modules/fandryui/modules/fandry/button/` to e.g. `src/modules/my/myButton/`, then rename the files and the class.
-   - Salesforce: `fandry add button` already put `fandryButton` in your project; copy that folder to `myButton` and rename it. `fandry add` never overwrites files you changed.
+   - Salesforce: `fandry add button` already put `fandryButton` in your project; copy that folder to `myButton` and rename it. `fandry add` doesn't overwrite files you changed unless you pass `--overwrite`.
 
-   A copy doesn't get the library's future fixes; that's the trade for owning it. The button page on the docs site has a working example.
+   A copy doesn't get the library's future fixes; that's the trade for owning it.
 
-Lightning base components offer styling hooks and some slots, but their internals can't be restyled, extended or copied: a look they don't offer means rebuilding the component from SLDS blueprints.
+Lightning base components offer styling hooks and some slots, but their internals can't be restyled or extended, and the component in your org isn't source you can copy and change: a look they don't offer means rebuilding the component from SLDS blueprints.
 
 ## Translating
 
