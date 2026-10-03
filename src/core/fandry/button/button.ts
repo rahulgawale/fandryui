@@ -41,7 +41,11 @@ export default class FdButton extends Base {
     button?.focus();
   }
 
+  /* A button that must keep focus while it can't be used (one that is
+     saving) takes aria-disabled through elementProps instead of `disabled`;
+     it looks and parts the same, so ::part(base disabled) reaches both. */
   get basePart(): string {
-    return partList('base', { [this.variant || 'default']: true, disabled: this.disabled });
+    const ariaDisabled = String(this.elementProps?.ariaDisabled) === 'true';
+    return partList('base', { [this.variant || 'default']: true, disabled: this.disabled || ariaDisabled });
   }
 }

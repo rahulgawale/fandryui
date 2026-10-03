@@ -777,7 +777,13 @@ fandry-button.rainbow::part(base)::after {
     props: [
       { name: 'variant', type: "'default' | 'secondary' | 'ghost'", default: "'default'", description: 'Visual style.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the button.' },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description:
+          "Disables the button. A button that must keep focus (one that is saving) takes `element-props={ tabIndex: 0, ariaDisabled: 'true' }` instead: it looks the same and has the same `disabled` state."
+      },
       { name: 'type', type: "'button' | 'submit' | 'reset'", default: "'button'", description: 'Native button type.' }
     ],
     code: `<fandry-button variant="secondary" size="lg">Save</fandry-button>`

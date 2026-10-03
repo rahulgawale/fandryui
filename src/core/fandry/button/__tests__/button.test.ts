@@ -81,6 +81,20 @@ describe('fandry-button', () => {
     focusSpy.mockRestore();
   });
 
+  it('parts an aria-disabled button as disabled, and keeps it enabled', async () => {
+    const element = createElement('fandry-button', { is: FdButton });
+    element.elementProps = { tabIndex: 0, ariaDisabled: 'true' };
+    document.body.appendChild(element);
+
+    const button = element.shadowRoot!.querySelector('button')!;
+    expect(button.disabled).toBe(false);
+    expect(button.getAttribute('part')).toBe('base default disabled');
+
+    element.elementProps = { tabIndex: 0, ariaDisabled: null };
+    await Promise.resolve();
+    expect(button.getAttribute('part')).toBe('base default');
+  });
+
   it('does not let elementProps clobber a library-controlled prop, and warns once about it', () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const element = createElement('fandry-button', { is: FdButton });

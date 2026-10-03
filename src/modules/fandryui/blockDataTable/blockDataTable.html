@@ -53,10 +53,16 @@
           onrowdelete={handleRowDelete}
           onrowselectionchange={handleSelectionChange}
         >
-          <fandry-button slot="toolbar" variant="secondary" size="sm" disabled={loading} onclick={handleRefresh}>
+          <fandry-button slot="toolbar" variant="secondary" size="sm" element-props={refreshButtonProps} onclick={handleRefresh}>
             Refresh
           </fandry-button>
-          <fandry-button slot="toolbar" size="sm" disabled={noSelection} onclick={handleBulkDelete}>
+          <fandry-button
+            slot="toolbar"
+            size="sm"
+            disabled={noSelection}
+            element-props={bulkDeleteButtonProps}
+            onclick={handleBulkDelete}
+          >
             {bulkDeleteLabel}
           </fandry-button>
         </fandry-data-table>

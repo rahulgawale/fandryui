@@ -160,11 +160,11 @@
                   <td class="actions-cell">
                     <template if:true={row.editing}>
                       <div class="edit-actions">
-                        <fandry-button size="sm" disabled={row.saving} onclick={handleSave}>
+                        <fandry-button size="sm" element-props={row.saveButtonProps} onclick={handleSave}>
                           <template if:true={row.saving}>
-                            <fandry-spinner size="sm" label={text.saving}></fandry-spinner>
+                            <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
                           </template>
-                          {text.save}
+                          {row.saveLabel}
                         </fandry-button>
                         <fandry-button variant="secondary" size="sm" disabled={row.saving} onclick={handleCancel}>
                           {text.cancel}
@@ -179,7 +179,14 @@
                         data-row-id={row.id}
                         ontoggle={handleMenuToggle}
                       >
-                        <fandry-button slot="trigger" variant="ghost" size="sm" element-props={row.menuTriggerProps}>
+                        <fandry-button
+                          slot="trigger"
+                          variant="ghost"
+                          size="sm"
+                          data-action="row-actions"
+                          data-row-id={row.id}
+                          element-props={row.menuTriggerProps}
+                        >
                           <span aria-hidden="true">&#8943;</span>
                         </fandry-button>
                         <fandry-menu data-row-id={row.id} onselect={handleMenuSelect}>
@@ -259,11 +266,11 @@
       </template>
       <div class="confirm-actions">
         <fandry-button variant="secondary" disabled={bulkSaving} onclick={handleBulkCancel}>{text.cancel}</fandry-button>
-        <fandry-button disabled={bulkSaving} onclick={handleBulkSave}>
+        <fandry-button element-props={bulkSaveButtonProps} onclick={handleBulkSave}>
           <template if:true={bulkSaving}>
-            <fandry-spinner size="sm" label={text.saving}></fandry-spinner>
+            <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
           </template>
-          {text.save}
+          {bulkSaveLabel}
         </fandry-button>
       </div>
     </div>
@@ -275,11 +282,11 @@
       <fandry-text variant="muted">{text.cannotUndo}</fandry-text>
       <div class="confirm-actions">
         <fandry-button variant="secondary" disabled={deleting} onclick={handleDeleteCancel}>{text.cancel}</fandry-button>
-        <fandry-button disabled={deleting} onclick={handleDeleteConfirm}>
+        <fandry-button element-props={deleteButtonProps} onclick={handleDeleteConfirm}>
           <template if:true={deleting}>
-            <fandry-spinner size="sm" label={text.deleting}></fandry-spinner>
+            <fandry-spinner size="sm" aria-hidden="true"></fandry-spinner>
           </template>
-          {text.delete}
+          {deleteConfirmLabel}
         </fandry-button>
       </div>
     </div>

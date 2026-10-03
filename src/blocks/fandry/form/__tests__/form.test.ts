@@ -394,6 +394,7 @@ describe('fandry-form', () => {
       const saving = button(el, 'Saving…') as any;
       expect(saving.disabled).toBe(false);
       expect(saving.elementProps).toEqual({ tabIndex: 0, ariaDisabled: 'true' });
+      expect(saving.shadowRoot.querySelector('button').getAttribute('part')).toBe('base default disabled');
       expect(saving.querySelector('fandry-spinner').getAttribute('aria-hidden')).toBe('true');
 
       finish();

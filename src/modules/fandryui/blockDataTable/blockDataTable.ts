@@ -127,6 +127,7 @@ export default class BlockDataTable extends LightningElement {
   rows: Person[] = [];
   loading = true;
   selectedRows: Person[] = [];
+  deletingSelection = false;
   simulateErrors = false;
 
   private benchmark = benchmarkOptionsFromUrl();
@@ -176,7 +177,12 @@ export default class BlockDataTable extends LightningElement {
   }
 
   get bulkDeleteLabel(): string {
+    if (this.deletingSelection) return 'Deleting…';
     return this.noSelection ? 'Delete selected' : `Delete ${this.selectedRows.length} selected`;
+  }
+
+  get bulkDeleteButtonProps(): Record<string, unknown> {
+    return { tabIndex: 0, ariaDisabled: this.deletingSelection ? 'true' : null };
   }
 
   getRowLabel = (row: Person) => row.name;
@@ -216,14 +222,20 @@ export default class BlockDataTable extends LightningElement {
 
   // ---- toolbar controls (slot="toolbar")
 
+  // aria-disabled, not disabled: disabling the pressed button drops focus.
+  get refreshButtonProps(): Record<string, unknown> {
+    return { tabIndex: 0, ariaDisabled: this.loading ? 'true' : null };
+  }
+
   handleRefresh() {
-    void this.load();
+    if (!this.loading) void this.load();
   }
 
   async handleBulkDelete() {
     const doomed = this.selectedRows;
-    if (!doomed.length) return;
+    if (!doomed.length || this.deletingSelection) return;
 
+    this.deletingSelection = true;
     try {
       await this.api.remove(doomed.map((row) => row.id));
       const ids = new Set(doomed.map((row) => row.id));
@@ -232,6 +244,8 @@ export default class BlockDataTable extends LightningElement {
       this.table?.showToast('success', `Deleted ${doomed.length} ${doomed.length === 1 ? 'person' : 'people'}.`);
     } catch (error) {
       this.table?.showToast('danger', `Couldn't delete: ${(error as Error).message}`);
+    } finally {
+      this.deletingSelection = false;
     }
   }
 
