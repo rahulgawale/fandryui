@@ -41,21 +41,12 @@ describe('fandry-spinner', () => {
     const spinner = element.shadowRoot!.querySelector('[role="status"]')!;
     expect(spinner.getAttribute('aria-label')).toBe('Saving changes');
   });
-});
 
-// aria-label, as on any element, names it too, and wins over `label`.
-describe('fandry-spinner aria-label', () => {
-  afterEach(() => {
-    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
-  });
-
-  it('names it with aria-label over label', () => {
+  it('takes aria-label, which wins over label', () => {
     const element = createElement('fandry-spinner', { is: FdSpinner });
     Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
     document.body.appendChild(element);
 
-    for (const selector of ['span']) {
-      expect(element.shadowRoot!.querySelector(selector)!.getAttribute('aria-label')).toBe('From aria-label');
-    }
+    expect(element.shadowRoot!.querySelector('span')!.getAttribute('aria-label')).toBe('From aria-label');
   });
 });

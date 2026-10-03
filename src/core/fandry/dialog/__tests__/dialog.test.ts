@@ -245,22 +245,13 @@ describe('fandry-dialog', () => {
       expect(document.body.style.overflow).toBe('');
     });
   });
-});
 
-// aria-label, as on any element, names it too, and wins over `label`.
-describe('fandry-dialog aria-label', () => {
-  afterEach(() => {
-    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
-  });
-
-  it('names it with aria-label over label', () => {
+  it('takes aria-label, which wins over label', () => {
     const element = createElement('fandry-dialog', { is: FdDialog });
     element.open = true;
     Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
     document.body.appendChild(element);
 
-    for (const selector of ['.panel']) {
-      expect(element.shadowRoot!.querySelector(selector)!.getAttribute('aria-label')).toBe('From aria-label');
-    }
+    expect(element.shadowRoot!.querySelector('.panel')!.getAttribute('aria-label')).toBe('From aria-label');
   });
 });

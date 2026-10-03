@@ -289,17 +289,9 @@ describe('fandry-command', () => {
     expect(element.shadowRoot!.querySelector('.backdrop')).toBeNull();
     animations.restore();
   });
-});
 
-// aria-label, as on any element, names it too, and wins over `label`.
-describe('fandry-command aria-label', () => {
-  afterEach(() => {
-    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
-  });
-
-  it('names it with aria-label over label', () => {
+  it('takes aria-label, which wins over label', () => {
     const element = createElement('fandry-command', { is: FdCommand });
-    Object.assign(element, { items: [] });
     element.open = true;
     Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
     document.body.appendChild(element);

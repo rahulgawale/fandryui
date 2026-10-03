@@ -64,21 +64,12 @@ describe('fandry-progress', () => {
     expect(bar.classList.contains('bar--indeterminate')).toBe(true);
     expect(bar.style.width).toBe('');
   });
-});
 
-// aria-label, as on any element, names it too, and wins over `label`.
-describe('fandry-progress aria-label', () => {
-  afterEach(() => {
-    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
-  });
-
-  it('names it with aria-label over label', () => {
+  it('takes aria-label, which wins over label', () => {
     const element = createElement('fandry-progress', { is: FdProgress });
     Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
     document.body.appendChild(element);
 
-    for (const selector of ['.track']) {
-      expect(element.shadowRoot!.querySelector(selector)!.getAttribute('aria-label')).toBe('From aria-label');
-    }
+    expect(element.shadowRoot!.querySelector('.track')!.getAttribute('aria-label')).toBe('From aria-label');
   });
 });

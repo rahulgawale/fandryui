@@ -1930,7 +1930,7 @@ fandry-dialog::part(backdrop) {
     description: 'A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger.',
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Open state (consumer-controlled via ontoggle).' },
-      { name: 'label', type: 'string', default: "''", description: 'Accessible name for the dialog (aria-label).' },
+      { name: 'label', type: 'string', default: "''", description: 'Accessible name for the dialog.' },
       { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' }
     ],
     code: `<fandry-dialog open={isOpen} label="Delete item" ontoggle={handleToggle}>

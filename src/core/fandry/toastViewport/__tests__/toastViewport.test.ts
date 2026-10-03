@@ -71,21 +71,12 @@ describe('fandry-toast-viewport', () => {
     const viewport = element.shadowRoot!.querySelector('div')!;
     expect(viewport.className).toBe('viewport viewport--bottom-right viewport--contained');
   });
-});
 
-// aria-label, as on any element, names it too, and wins over `label`.
-describe('fandry-toast-viewport aria-label', () => {
-  afterEach(() => {
-    while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
-  });
-
-  it('names it with aria-label over label', () => {
+  it('takes aria-label, which wins over label', () => {
     const element = createElement('fandry-toast-viewport', { is: FdToastViewport });
     Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
     document.body.appendChild(element);
 
-    for (const selector of ['div']) {
-      expect(element.shadowRoot!.querySelector(selector)!.getAttribute('aria-label')).toBe('From aria-label');
-    }
+    expect(element.shadowRoot!.querySelector('div')!.getAttribute('aria-label')).toBe('From aria-label');
   });
 });
