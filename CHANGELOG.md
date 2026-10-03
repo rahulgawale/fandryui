@@ -1,3 +1,10 @@
+## [0.19.4](https://github.com/rahulgawale/fandryui/compare/v0.19.3...v0.19.4) (2026-10-03)
+
+
+### Bug Fixes
+
+* aria-label names dialog, command, toast viewport, spinner, progress and icon ([#101](https://github.com/rahulgawale/fandryui/issues/101)) ([f971835](https://github.com/rahulgawale/fandryui/commit/f971835a834b9e18642834cc0c5d81c14c0cc291)), closes [#98](https://github.com/rahulgawale/fandryui/issues/98)
+
 ## [0.19.3](https://github.com/rahulgawale/fandryui/compare/v0.19.2...v0.19.3) (2026-10-03)
 
 
