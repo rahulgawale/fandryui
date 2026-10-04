@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  /* Placed straight in the page layout, it brings its own side margins. */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 0 var(--_fd-space-6, 2rem) var(--_fd-space-6, 2rem);
+}
+
+.status {
+  display: flex;
+  justify-content: center;
+  padding: var(--_fd-space-6, 2rem);
+}
+
+.notice {
+  margin: 0 0 var(--_fd-space-4, 1rem);
+  padding: var(--_fd-space-3, 0.75rem) var(--_fd-space-4, 1rem);
+  border-radius: var(--_fd-radius-md, 0.5rem);
+  background: hsl(var(--_fd-bg-muted, 0 0% 96%));
+  color: hsl(var(--_fd-text-muted, 0 0% 40%));
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Flair__c</fullName>
+    <description>A label shown over the product image: New, Bestseller, an offer. A discount flair is added from the prices.</description>
+    <label>Flair</label>
+    <length>40</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

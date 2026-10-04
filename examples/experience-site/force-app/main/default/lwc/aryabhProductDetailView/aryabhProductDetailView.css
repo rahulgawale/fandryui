@@ -1,0 +1,131 @@
+:host {
+  display: block;
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: var(--_fd-space-6, 2rem);
+  align-items: start;
+}
+
+.picture {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--_fd-product-image-ratio, 4 / 5);
+  border-radius: var(--_fd-radius-lg, 0.75rem);
+  background: hsl(var(--_fd-bg-muted, 0 0% 96%));
+}
+
+.picture-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flairs {
+  position: absolute;
+  top: var(--_fd-space-3, 0.75rem);
+  left: var(--_fd-space-3, 0.75rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--_fd-space-1, 0.25rem);
+}
+
+.thumbs {
+  display: flex;
+  gap: var(--_fd-space-2, 0.5rem);
+  margin-top: var(--_fd-space-3, 0.75rem);
+}
+
+.thumb {
+  flex: 0 0 auto;
+  width: 4.5rem;
+  aspect-ratio: var(--_fd-product-image-ratio, 4 / 5);
+  padding: 0;
+  overflow: hidden;
+  border: var(--_fd-border-width, 1px) solid hsl(var(--_fd-border, 0 0% 88%));
+  border-radius: var(--_fd-radius-md, 0.5rem);
+  background: hsl(var(--_fd-bg-muted, 0 0% 96%));
+  cursor: pointer;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb--selected {
+  border-color: hsl(var(--_fd-text, 0 0% 10%));
+}
+
+.thumb:focus-visible,
+.swatch:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--_fd-ring-width, 2px) hsl(var(--_fd-ring-color, 220 90% 56%));
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_fd-space-4, 1rem);
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--_fd-space-2, 0.5rem);
+  margin: 0;
+  font-size: var(--_fd-font-size-xl, 1.25rem);
+  font-weight: var(--_fd-font-weight-semibold, 600);
+}
+
+.compare {
+  color: hsl(var(--_fd-text-muted, 0 0% 45%));
+  font-weight: normal;
+}
+
+.assistive {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.colours-label {
+  margin: 0 0 var(--_fd-space-2, 0.5rem);
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--_fd-space-2, 0.5rem);
+}
+
+.swatch {
+  width: var(--_fd-size-lg, 2rem);
+  height: var(--_fd-size-lg, 2rem);
+  padding: 0;
+  border: var(--_fd-border-width, 1px) solid hsl(var(--_fd-border, 0 0% 80%));
+  border-radius: var(--_fd-radius-full, 999px);
+  background: var(--_fd-swatch-color);
+  cursor: pointer;
+}
+
+.swatch--selected {
+  box-shadow: 0 0 0 var(--_fd-border-width-md, 2px) hsl(var(--_fd-bg, 0 0% 100%)), 0 0 0 calc(var(--_fd-border-width-md, 2px) * 2) hsl(var(--_fd-text, 0 0% 10%));
+}
+
+.buy {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--_fd-space-3, 0.75rem);
+}
+
+.quantity {
+  width: 6rem;
+}

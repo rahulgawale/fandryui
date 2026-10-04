@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Aryabh Featured Products</masterLabel>
+    <description>A row of product cards (fandry-product-card) with the first products of a category.</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="heading" type="String" label="Heading" default="Featured"/>
+            <property name="categoryId" type="String" label="Category ID" description="The category whose first products are shown, such as the catalog's top category."/>
+            <property name="count" type="Integer" label="Number of products" default="4" min="1" max="12"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

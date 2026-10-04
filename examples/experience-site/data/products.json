@@ -1,0 +1,260 @@
+{
+  "_comment": "The store's products, the source scripts/setup-store.mjs builds the org data from. A product with more than one colour becomes a variation parent with one variation per colour; images are read from src/assets/products. Prices are in the org currency; compareAtPrice goes in the strikethrough price book.",
+  "products": [
+    {
+      "sku": "AO-STRIDE-RUNNER",
+      "name": "Stride Runner",
+      "description": "Running shoes",
+      "category": "Shoes",
+      "price": 120,
+      "compareAtPrice": 160,
+      "flair": "Sale",
+      "flairVariant": "danger",
+      "colors": [
+        {
+          "name": "Coral",
+          "swatch": "#e76f51",
+          "image": "stride-runner-coral.svg",
+          "hoverImage": "stride-runner-coral-alt.svg"
+        },
+        {
+          "name": "Navy",
+          "swatch": "#27415e",
+          "image": "stride-runner-navy.svg",
+          "hoverImage": "stride-runner-navy-alt.svg"
+        },
+        {
+          "name": "Sage",
+          "swatch": "#8ab17d",
+          "image": "stride-runner-sage.svg",
+          "hoverImage": "stride-runner-sage-alt.svg"
+        }
+      ]
+    },
+    {
+      "sku": "AO-TRAIL-PACK",
+      "name": "Trail Pack 22L",
+      "description": "Daypack",
+      "category": "Bags",
+      "price": 89,
+      "flair": "New",
+      "flairVariant": "success",
+      "colors": [
+        {
+          "name": "Olive",
+          "swatch": "#6b7443",
+          "image": "trail-pack-olive.svg",
+          "hoverImage": "trail-pack-olive-alt.svg"
+        },
+        {
+          "name": "Sand",
+          "swatch": "#d4a373",
+          "image": "trail-pack-sand.svg",
+          "hoverImage": "trail-pack-sand-alt.svg"
+        },
+        {
+          "name": "Charcoal",
+          "swatch": "#3d4349",
+          "image": "trail-pack-charcoal.svg",
+          "hoverImage": "trail-pack-charcoal-alt.svg"
+        }
+      ]
+    },
+    {
+      "sku": "AO-EVERYDAY-MUG",
+      "name": "Everyday Mug",
+      "description": "Stoneware, 350 ml",
+      "category": "Home",
+      "price": 18,
+      "flair": "Buy 2, get 1 free",
+      "flairVariant": "primary",
+      "colors": [
+        {
+          "name": "Cream",
+          "swatch": "#efe6d5",
+          "image": "everyday-mug-cream.svg",
+          "hoverImage": "everyday-mug-cream-alt.svg"
+        },
+        {
+          "name": "Terracotta",
+          "swatch": "#c8553d",
+          "image": "everyday-mug-terracotta.svg",
+          "hoverImage": "everyday-mug-terracotta-alt.svg"
+        },
+        {
+          "name": "Slate",
+          "swatch": "#5c6b73",
+          "image": "everyday-mug-slate.svg",
+          "hoverImage": "everyday-mug-slate-alt.svg"
+        }
+      ]
+    },
+    {
+      "sku": "AO-STUDIO-HEADPHONES",
+      "name": "Studio Headphones",
+      "description": "Wireless, noise cancelling",
+      "category": "Audio",
+      "price": 199,
+      "compareAtPrice": 249,
+      "flair": "Bestseller",
+      "flairVariant": "warning",
+      "colors": [
+        {
+          "name": "Charcoal",
+          "swatch": "#3d4349",
+          "image": "studio-headphones-charcoal.svg",
+          "hoverImage": "studio-headphones-charcoal-alt.svg"
+        },
+        {
+          "name": "Pearl",
+          "swatch": "#e4e7eb",
+          "image": "studio-headphones-pearl.svg",
+          "hoverImage": "studio-headphones-pearl-alt.svg"
+        },
+        {
+          "name": "Blush",
+          "swatch": "#e5989b",
+          "image": "studio-headphones-blush.svg",
+          "hoverImage": "studio-headphones-blush-alt.svg"
+        }
+      ]
+    },
+    {
+      "sku": "AO-ARC-LAMP",
+      "name": "Arc Desk Lamp",
+      "description": "Dimmable LED",
+      "category": "Home",
+      "price": 64,
+      "colors": [
+        {
+          "name": "Sunflower",
+          "swatch": "#f4a938",
+          "image": "arc-lamp-sunflower.svg",
+          "hoverImage": "arc-lamp-sunflower-alt.svg"
+        },
+        {
+          "name": "White",
+          "swatch": "#f7f7f5",
+          "image": "arc-lamp-white.svg",
+          "hoverImage": "arc-lamp-white-alt.svg"
+        },
+        {
+          "name": "Teal",
+          "swatch": "#2a9d8f",
+          "image": "arc-lamp-teal.svg",
+          "hoverImage": "arc-lamp-teal-alt.svg"
+        }
+      ]
+    },
+    {
+      "sku": "AO-ESSENTIAL-TEE",
+      "name": "Essential Tee",
+      "description": "Organic cotton",
+      "category": "Apparel",
+      "price": 28,
+      "flair": "Offer: 3 for $70",
+      "flairVariant": "primary",
+      "colors": [
+        {
+          "name": "White",
+          "swatch": "#f7f7f5",
+          "image": "essential-tee-white.svg",
+          "hoverImage": "essential-tee-white-alt.svg"
+        },
+        {
+          "name": "Heather",
+          "swatch": "#a9aeb4",
+          "image": "essential-tee-heather.svg",
+          "hoverImage": "essential-tee-heather-alt.svg"
+        },
+        {
+          "name": "Forest",
+          "swatch": "#2d6a4f",
+          "image": "essential-tee-forest.svg",
+          "hoverImage": "essential-tee-forest-alt.svg"
+        },
+        {
+          "name": "Navy",
+          "swatch": "#27415e",
+          "image": "essential-tee-navy.svg",
+          "hoverImage": "essential-tee-navy-alt.svg"
+        }
+      ]
+    },
+    {
+      "sku": "AO-HYDRO-BOTTLE",
+      "name": "Hydro Bottle",
+      "description": "Insulated, 750 ml",
+      "category": "Outdoor",
+      "price": 29,
+      "compareAtPrice": 40,
+      "flair": "Sale",
+      "flairVariant": "danger",
+      "colors": [
+        {
+          "name": "Sky",
+          "swatch": "#8ecae6",
+          "image": "hydro-bottle-sky.svg",
+          "hoverImage": "hydro-bottle-sky-alt.svg"
+        },
+        {
+          "name": "Lilac",
+          "swatch": "#b8b0f0",
+          "image": "hydro-bottle-lilac.svg",
+          "hoverImage": "hydro-bottle-lilac-alt.svg"
+        },
+        {
+          "name": "Charcoal",
+          "swatch": "#3d4349",
+          "image": "hydro-bottle-charcoal.svg",
+          "hoverImage": "hydro-bottle-charcoal-alt.svg"
+        }
+      ]
+    },
+    {
+      "sku": "AO-RIBBED-BEANIE",
+      "name": "Ribbed Beanie",
+      "description": "Merino wool",
+      "category": "Apparel",
+      "price": 22,
+      "compareAtPrice": 26,
+      "colors": [
+        {
+          "name": "Mustard",
+          "swatch": "#e9c46a",
+          "image": "ribbed-beanie-mustard.svg",
+          "hoverImage": "ribbed-beanie-mustard-alt.svg"
+        },
+        {
+          "name": "Brick",
+          "swatch": "#bc4749",
+          "image": "ribbed-beanie-brick.svg",
+          "hoverImage": "ribbed-beanie-brick-alt.svg"
+        },
+        {
+          "name": "Heather",
+          "swatch": "#a9aeb4",
+          "image": "ribbed-beanie-heather.svg",
+          "hoverImage": "ribbed-beanie-heather-alt.svg"
+        }
+      ]
+    },
+    {
+      "sku": "AO-CANVAS-TOTE",
+      "name": "Canvas Tote",
+      "description": "Heavy cotton canvas",
+      "category": "Bags",
+      "price": 36,
+      "flair": "New",
+      "flairVariant": "success",
+      "colors": [
+        {
+          "name": "Natural",
+          "swatch": "#e9dcc9",
+          "image": "canvas-tote-natural.svg",
+          "hoverImage": "canvas-tote-natural-alt.svg"
+        }
+      ]
+    }
+  ]
+}

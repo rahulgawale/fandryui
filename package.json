@@ -27,7 +27,8 @@
     "build:npm": "node scripts/build-dist.mjs",
     "verify:npm": "node scripts/verify-npm.mjs",
     "verify:sfdx": "node scripts/verify-sfdx.mjs",
-    "example:sfdx": "cd examples/salesforce && node ../../packages/ui/dist/bin/fandry.mjs init && node ../../packages/ui/dist/bin/fandry.mjs add button input table"
+    "example:sfdx": "cd examples/salesforce && node ../../packages/ui/dist/bin/fandry.mjs init && node ../../packages/ui/dist/bin/fandry.mjs add button input table",
+    "example:experience": "cd examples/experience-site && node ../../packages/ui/dist/bin/fandry.mjs init && node ../../packages/ui/dist/bin/fandry.mjs add product-catalog toast toastViewport spinner heading text"
   },
   "dependencies": {
     "@tanstack/table-core": "^8.21.3",

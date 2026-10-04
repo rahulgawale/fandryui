@@ -1,0 +1,85 @@
+<template>
+  <template lwc:if={hasProduct}>
+    <article class="detail">
+      <div class="gallery">
+        <div class="picture">
+          <img class="picture-image" src={shownPicture} alt={imageAlt} />
+          <template lwc:if={hasFlairs}>
+            <div class="flairs">
+              <template for:each={flairs} for:item="flair">
+                <c-fandry-badge key={flair.key} variant={flair.variant}>{flair.label}</c-fandry-badge>
+              </template>
+            </div>
+          </template>
+        </div>
+        <template lwc:if={hasThumbnails}>
+          <div class="thumbs" role="group" aria-label="Pictures">
+            <template for:each={thumbnails} for:item="thumb">
+              <button
+                key={thumb.key}
+                type="button"
+                class={thumb.classes}
+                aria-label={thumb.label}
+                aria-pressed={thumb.pressed}
+                data-src={thumb.src}
+                tabindex="0"
+                onclick={handleThumbClick}
+              ><img src={thumb.src} alt="" /></button>
+            </template>
+          </div>
+        </template>
+      </div>
+
+      <div class="info">
+        <c-fandry-heading level="1">{name}</c-fandry-heading>
+        <template lwc:if={hasSubtitle}>
+          <c-fandry-text variant="muted">{subtitle}</c-fandry-text>
+        </template>
+
+        <p class="price">
+          <template lwc:if={isDiscounted}>
+            <span class="assistive">{discountedPriceText}</span>
+          </template>
+          <span class="current" aria-hidden={currentPriceHidden}>{priceText}</span>
+          <template lwc:if={isDiscounted}>
+            <s class="compare" aria-hidden="true">{compareAtPriceText}</s>
+          </template>
+        </p>
+
+        <template lwc:if={hasSwatches}>
+          <div class="colours">
+            <p class="colours-label">Colour: <strong>{selectedSwatchLabel}</strong></p>
+            <div class="swatches" role="group" aria-label={swatchesLabel}>
+              <template for:each={swatches} for:item="swatch">
+                <button
+                  key={swatch.name}
+                  type="button"
+                  class={swatch.classes}
+                  style={swatch.style}
+                  title={swatch.name}
+                  aria-label={swatch.name}
+                  aria-pressed={swatch.ariaPressed}
+                  data-name={swatch.name}
+                  tabindex="0"
+                  onclick={handleSwatchClick}
+                ></button>
+              </template>
+            </div>
+          </div>
+        </template>
+
+        <div class="buy">
+          <c-fandry-input
+            class="quantity"
+            type="number"
+            label="Quantity"
+            value={quantity}
+            element-props={quantityProps}
+            oninput={handleQuantityInput}
+          ></c-fandry-input>
+          <c-fandry-button class="add" size="lg" element-props={addButtonProps} onclick={handleAddClick}>{addLabel}</c-fandry-button>
+        </div>
+      </div>
+    </article>
+  </template>
+</template>
