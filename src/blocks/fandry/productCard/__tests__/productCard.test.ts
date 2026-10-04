@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import ProductCard from '../productCard';
+import RoundedPriceCard from './roundedPriceCard';
 import { discountFlair, discountPercent, formatPrice } from 'fandry/productCardState';
 
 const RUNNER = {
@@ -195,6 +196,54 @@ describe('fandry-product-card', () => {
     const el = mount({ product: RUNNER });
     await settle();
 
-    expect($(el, 'slot[name="actions"] fandry-button.add')).not.toBeNull();
+    expect($(el, 'slot[name="actions"] fandry-button.add')!.textContent).toBe('Add to cart');
+  });
+
+  it('reads a discounted price as one phrase and hides the two visible prices', async () => {
+    const el = mount({ product: RUNNER });
+    await settle();
+
+    expect($(el, '.assistive')!.textContent).toMatch(/^\$120\.00, was \$160\.00$/);
+    expect($(el, '.current')!.getAttribute('aria-hidden')).toBe('true');
+    expect($(el, '.compare')!.getAttribute('aria-hidden')).toBe('true');
+
+    el.product = TOTE;
+    await settle();
+    expect($(el, '.assistive')).toBeNull();
+    expect($(el, '.current')!.hasAttribute('aria-hidden')).toBe(false);
+  });
+
+  it('takes its words from messages', async () => {
+    const el = mount({
+      product: RUNNER,
+      messages: { addToCart: 'Ajouter', swatches: 'Couleurs', discountedPrice: (price: string, was: string) => `${price} au lieu de ${was}` }
+    });
+    await settle();
+
+    expect($(el, 'fandry-button.add')!.textContent).toBe('Ajouter');
+    expect($(el, '.swatches')!.getAttribute('aria-label')).toBe('Couleurs');
+    expect($(el, '.assistive')!.textContent).toMatch(/au lieu de/);
+  });
+
+  it('formats both prices through formatPrice(), which a subclass can override', async () => {
+    const el = createElement('rounded-price-card', { is: RoundedPriceCard }) as HTMLElement & Record<string, any>;
+    Object.assign(el, { product: { ...RUNNER, price: 119.6 }, currency: 'EUR' });
+    document.body.appendChild(el);
+    await settle();
+
+    expect($(el, '.current')!.textContent).toBe('120 EUR');
+    expect($(el, '.compare')!.textContent).toBe('160 EUR');
+  });
+
+  it('exposes parts, with the selected swatch as option selected', async () => {
+    const el = mount({ product: RUNNER, swatch: 'Navy' });
+    await settle();
+
+    for (const part of ['base', 'media', 'image', 'hover-image', 'flairs', 'actions', 'body', 'subtitle', 'title', 'price', 'current-price', 'compare-at-price', 'swatches', 'selection-label']) {
+      expect(el.shadowRoot!.querySelector(`[part~="${part}"]`)).not.toBeNull();
+    }
+    expect($$(el, '.swatch').map((swatch) => swatch.getAttribute('part'))).toEqual(['option', 'option selected', 'option']);
+    expect($(el, 'fandry-badge')!.getAttribute('exportparts')).toContain('base: flair');
+    expect($(el, 'fandry-button.add')!.getAttribute('exportparts')).toBe('base: button');
   });
 });

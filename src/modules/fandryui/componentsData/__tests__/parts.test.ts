@@ -81,8 +81,10 @@ function exposed(tag: string): { parts: string[]; states: string[] } {
         if (key) states.add(key[1]);
       }
       if (body.includes('[this.variant ||')) {
-        const union = ts.match(/@api variant:([^=]+)=/);
-        for (const [, value] of union![1].matchAll(/'([\w-]+)'/g)) states.add(value);
+        // The union is written on the prop, or in a type alias it names.
+        const declared = ts.match(/@api variant:([^=]+)=/)![1].trim();
+        const union = declared.includes("'") ? declared : ts.match(new RegExp(`type ${declared} =([^;]+);`))![1];
+        for (const [, value] of union.matchAll(/'([\w-]+)'/g)) states.add(value);
       }
     }
   }

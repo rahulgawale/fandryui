@@ -1,101 +1,115 @@
 <template>
-  <div class="catalog">
-    <aside class="filters" aria-label="Filters">
-      <fandry-input
-        type="search"
-        label="Search"
-        placeholder="Search products"
-        value={query}
-        oninput={handleQueryInput}
-      ></fandry-input>
+  <div class="catalog" part="base">
+    <aside class="filters" part="filters" aria-label={text.filters}>
+      <!--
+        Replaces the built-in filters. Controls you put here change the
+        filters through catalog.setFilters(), and a key of your own is read
+        by matchProduct. filters-end adds to whichever panel is showing.
+      -->
+      <slot name="filters">
+        <fandry-input
+          type="search"
+          label={text.search}
+          placeholder={text.searchPlaceholder}
+          value={query}
+          oninput={handleQueryInput}
+        ></fandry-input>
 
-      <fandry-select
-        label="Category"
-        value={category}
-        options={categoryOptions}
-        onchange={handleCategoryChange}
-      ></fandry-select>
+        <fandry-select
+          class="category"
+          label={text.category}
+          value={category}
+          options={categoryOptions}
+          onchange={handleCategoryChange}
+        ></fandry-select>
 
-      <template if:true={hasColorOptions}>
-        <div class="group" role="group" aria-labelledby="color-label">
-          <span class="group-label" id="color-label">Color</span>
-          <div class="colors">
-            <template for:each={colorOptions} for:item="color">
-              <button
-                key={color.name}
-                type="button"
-                class={color.classes}
-                aria-pressed={color.ariaPressed}
-                data-name={color.name}
-                tabindex="0"
-                onclick={handleColorClick}
-              >
-                <span class="dot" style={color.style}></span>
-                {color.name}
-              </button>
-            </template>
+        <template if:true={hasColorOptions}>
+          <div class="group" part="group" role="group" aria-labelledby="color-label">
+            <span class="group-label" part="group-label" id="color-label">{text.color}</span>
+            <div class="colors" part="colors">
+              <template for:each={colorOptions} for:item="color">
+                <button
+                  key={color.name}
+                  type="button"
+                  class={color.classes}
+                  part={color.part}
+                  aria-pressed={color.ariaPressed}
+                  data-name={color.name}
+                  tabindex="0"
+                  onclick={handleColorClick}
+                >
+                  <span class="dot" part="swatch" style={color.style}></span>
+                  {color.name}
+                </button>
+              </template>
+            </div>
+          </div>
+        </template>
+
+        <div class="group" part="group" role="group" aria-labelledby="price-label">
+          <span class="group-label" part="group-label" id="price-label">{text.price}</span>
+          <div class="price-range" part="price-range">
+            <fandry-input
+              class="min-price"
+              type="number"
+              placeholder={text.minPrice}
+              value={minPrice}
+              element-props={minPriceProps}
+              oninput={handleMinPriceInput}
+            ></fandry-input>
+            <fandry-input
+              class="max-price"
+              type="number"
+              placeholder={text.maxPrice}
+              value={maxPrice}
+              element-props={maxPriceProps}
+              oninput={handleMaxPriceInput}
+            ></fandry-input>
           </div>
         </div>
-      </template>
 
-      <div class="group" role="group" aria-labelledby="price-label">
-        <span class="group-label" id="price-label">Price</span>
-        <div class="price-range">
-          <fandry-input
-            type="number"
-            placeholder="Min"
-            value={minPrice}
-            element-props={minPriceProps}
-            oninput={handleMinPriceInput}
-          ></fandry-input>
-          <fandry-input
-            type="number"
-            placeholder="Max"
-            value={maxPrice}
-            element-props={maxPriceProps}
-            oninput={handleMaxPriceInput}
-          ></fandry-input>
-        </div>
-      </div>
+        <fandry-switch label={text.onSale} checked={onSale} onchange={handleOnSaleChange}></fandry-switch>
+      </slot>
 
-      <fandry-switch label="On sale" checked={onSale} onchange={handleOnSaleChange}></fandry-switch>
+      <slot name="filters-end"></slot>
 
       <template if:true={hasActiveFilters}>
-        <fandry-button variant="ghost" class="clear" onclick={handleClearFilters}>Clear filters</fandry-button>
+        <fandry-button variant="ghost" class="clear" exportparts="base: clear-all" onclick={handleClearFilters}>
+          {text.clearFilters}
+        </fandry-button>
       </template>
     </aside>
 
-    <section class="results" aria-label="Products">
-      <div class="toolbar">
-        <p class="count" role="status">{resultLabel}</p>
-        <fandry-select
-          class="sort"
-          label="Sort by"
-          value={sort}
-          options={sortOptions}
-          onchange={handleSortChange}
-        ></fandry-select>
+    <section class="results" part="results" aria-label={text.products}>
+      <div class="toolbar" part="toolbar">
+        <p class="count" part="status" role="status">{resultLabel}</p>
+        <template if:true={hasSorts}>
+          <fandry-select
+            class="sort"
+            label={text.sortBy}
+            value={sort}
+            options={sortOptions}
+            onchange={handleSortChange}
+          ></fandry-select>
+        </template>
       </div>
 
       <template if:true={hasResults}>
-        <ul class="grid">
+        <ul class="grid" part="list">
           <template for:each={items} for:item="item">
-            <li key={item.key} class="item">
-              <fandry-product-card
-                product={item.product}
-                swatch={item.swatch}
-                currency={currency}
-                onaddtocart={handleAddToCart}
-              ></fandry-product-card>
+            <li key={item.key} class="item" part="item">
+              <lwc:component lwc:is={card} lwc:spread={item.props} onaddtocart={handleAddToCart}></lwc:component>
             </li>
           </template>
         </ul>
       </template>
 
       <template if:false={hasResults}>
-        <div class="empty">
-          <p class="empty-title">No products match these filters.</p>
-          <fandry-button variant="secondary" onclick={handleClearFilters}>Clear filters</fandry-button>
+        <div class="empty" part="empty">
+          <slot name="empty">
+            <p class="empty-title">{text.noResults}</p>
+            <fandry-button variant="secondary" onclick={handleClearFilters}>{text.clearFilters}</fandry-button>
+          </slot>
         </div>
       </template>
     </section>

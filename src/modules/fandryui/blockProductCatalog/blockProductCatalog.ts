@@ -5,10 +5,13 @@ import type { FdProductFilters } from 'fandry/productCatalogState';
 
 const USAGE = `<fandry-product-catalog
   products={products}
-  currency="USD"
+  card-props={cardProps}
   onfilterchange={handleFilterChange}
   onaddtocart={handleAddToCart}
-></fandry-product-catalog>`;
+></fandry-product-catalog>
+
+// Set on every card: its currency, its words.
+cardProps = { currency: 'EUR', messages: { addToCart: 'Ajouter au panier' } };`;
 
 const FILTERS_CODE = `// Start on a filtered view -- anything left out keeps its default.
 <fandry-product-catalog products={products} filters={initialFilters}></fandry-product-catalog>
@@ -18,21 +21,50 @@ initialFilters = { onSale: true, sort: 'discount' };
 // Or change them later, from your own controls.
 this.template.querySelector('fandry-product-catalog').setFilters({ category: 'Bags' });`;
 
-const EXTEND_CODE = `import FdProductCatalogState from 'fandry/productCatalogState';
+const COMPOSE_CODE = `<!-- A filter of your own beside the built-in ones, and your own empty state -->
+<fandry-product-catalog products={products} sorts={sorts} match-product={matchProduct}>
+  <fandry-switch slot="filters-end" label="In stock" onchange={handleInStock}></fandry-switch>
+  <p slot="empty">Nothing yet. <a href="/new">See what's new</a></p>
+</fandry-product-catalog>
 
-// Your own template renders \`items\` and the filter options; the filtering
-// stays here. Override passesFilters() to add a rule of your own.
-export default class MyCatalog extends FdProductCatalogState {
-  passesFilters(product) {
-    return super.passesFilters(product) && product.inStock !== false;
-  }
+import { DEFAULT_PRODUCT_SORTS } from 'fandry/productCatalogState';
+
+// Built-in sorts by value; your own with a label and compare.
+sorts = [
+  ...DEFAULT_PRODUCT_SORTS,
+  { value: 'newest', label: 'Newest', compare: (a, b) => b.added - a.added }
+];
+
+// Runs after the built-in filters, with every filter key -- yours included.
+matchProduct = (product, filters) => !filters.inStock || product.inStock;
+
+handleInStock(event) {
+  this.template.querySelector('fandry-product-catalog').setFilters({ inStock: event.detail });
 }`;
+
+const EXTEND_CODE = `// Your own card in the grid: the card's state, your template.
+import FdProductCardState from 'fandry/productCardState';
+export default class MyCard extends FdProductCardState {}
+
+// in the page
+import MyCard from 'c/myCard';
+cardComponent = MyCard;
+
+<fandry-product-catalog products={products} card-component={cardComponent}></fandry-product-catalog>
+
+// Or your own catalog: the filtering and sorting, your template.
+import FdProductCatalogState from 'fandry/productCatalogState';
+export default class MyCatalog extends FdProductCatalogState {}`;
 
 const PROPS = [
   { name: 'products', type: 'product[]', default: '[]', description: 'The products, in the order "Featured" shows them. Same shape as fandry-product-card\'s `product`. Never changed.' },
-  { name: 'currency', type: 'string', default: "'USD'", description: 'An ISO 4217 code, passed on to every card.' },
+  { name: 'card-props', type: 'object', default: '{}', description: 'Set on every card: `currency`, `messages`, or any prop of your own card.' },
+  { name: 'card-component', type: 'component', default: 'fandry-product-card', description: 'The card each product is rendered with: a class of yours that extends fandry/productCardState. It gets `card-props`, then `product` and `swatch`. Rendered with lwc:is, so on Salesforce the bundle needs the lightning__dynamicComponent capability, which `fandry add` writes.' },
+  { name: 'sorts', type: '{ value, label?, compare? }[]', default: 'DEFAULT_PRODUCT_SORTS', description: 'The Sort by list, the first one the default. Built-in values (featured, price-asc, price-desc, discount, name) need no label or compare. Ties keep the order of `products`. An empty list hides it.' },
+  { name: 'match-product', type: '(product, filters) => boolean', default: '—', description: 'Your own filter rule, applied after the built-in ones. It gets every filter key, so one you set with setFilters() is read here.' },
   { name: 'filters', type: 'filters', default: 'none set', description: 'Set it to choose where the catalog starts; anything left out keeps its default. The catalog keeps it current as the shopper filters.' },
-  { name: 'setFilters(changes) · clearFilters()', type: 'methods', default: '—', description: 'Change the filters from your own controls. `clearFilters()` keeps the sort order.' }
+  { name: 'messages', type: 'object', default: '{}', description: 'Everything the catalog says, e.g. to translate it: any key of DEFAULT_PRODUCT_CATALOG_MESSAGES, `results(count)` and `sortLabels` included. The cards\' words go in `card-props`.' },
+  { name: 'setFilters(changes) · clearFilters()', type: 'methods', default: '—', description: 'Change the filters from your own controls. `clearFilters()` resets every key, yours too, and keeps the sort order.' }
 ];
 
 const FILTER_KEYS = [
@@ -41,7 +73,28 @@ const FILTER_KEYS = [
   { name: 'colors', type: 'string[]', description: 'Swatch names. A product matches when it comes in any of them, and its card switches to that swatch.' },
   { name: 'minPrice · maxPrice', type: 'number | null', description: 'Bounds on `price`, inclusive.' },
   { name: 'onSale', type: 'boolean', description: 'Only products whose `compareAtPrice` is above their `price`.' },
-  { name: 'sort', type: "'featured' · 'price-asc' · 'price-desc' · 'discount' · 'name'", description: '`featured` is the order of `products`; every other sort falls back to it on a tie.' }
+  { name: 'sort', type: 'string', description: 'A `value` from `sorts`, or empty for the first.' },
+  { name: 'anything else', type: 'any', description: 'Your own keys (`inStock`, `brand`): kept, reported and cleared like the rest, and read by `match-product`.' }
+];
+
+const SLOTS = [
+  { name: 'filters', description: 'Replaces the built-in filters. Your controls call setFilters().' },
+  { name: 'filters-end', description: 'Adds to whichever filters are showing, built-in or yours.' },
+  { name: 'empty', description: 'Replaces the "No products match" message and its Clear filters button.' }
+];
+
+const PARTS = [
+  { name: 'base', description: 'The outermost element.' },
+  { name: 'filters', description: 'The filter panel.' },
+  { name: 'group · group-label', description: 'The Color and Price groups and their headings.' },
+  { name: 'colors', description: 'The color buttons\' wrapper.' },
+  { name: 'option', description: 'One color button; `option selected` when it is on.' },
+  { name: 'swatch', description: 'A color button\'s dot.' },
+  { name: 'price-range', description: 'The two price inputs.' },
+  { name: 'clear-all', description: 'The Clear filters button (a fandry-button\'s `base`).' },
+  { name: 'results · toolbar · status', description: 'The results, the bar above them, and the product count.' },
+  { name: 'list · item', description: 'The grid, and the cell around each card.' },
+  { name: 'empty', description: 'What shows when nothing matches.' }
 ];
 
 const EVENTS = [
@@ -61,9 +114,12 @@ const BUILT_FROM = ['product-card', 'input', 'select', 'switch', 'button'];
 export default class BlockProductCatalog extends LightningElement {
   usageCode = USAGE;
   filtersCode = FILTERS_CODE;
+  composeCode = COMPOSE_CODE;
   extendCode = EXTEND_CODE;
   props = PROPS;
   filterKeys = FILTER_KEYS;
+  slots = SLOTS;
+  parts = PARTS;
   events = EVENTS;
   styleHooks = STYLE_HOOKS;
   builtFrom = BUILT_FROM;

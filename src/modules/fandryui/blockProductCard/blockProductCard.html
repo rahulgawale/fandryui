@@ -162,7 +162,26 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Styling hooks</fandry-heading>
+      <fandry-heading level="3">Parts</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Part</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={parts} for:item="item">
+              <tr key={item.name}>
+                <td><code>{item.name}</code></td>
+                <td>{item.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Tokens</fandry-heading>
       <div class="table-wrap">
         <table class="doc-table">
           <thead>

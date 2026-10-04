@@ -1,17 +1,18 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
-
-export type FdProductFlairVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger';
+import { partList } from 'fandry/parts';
+import type { FdBadgeVariant } from 'fandry/badge';
 
 /** A label over the product image: "Sale", "New", "Buy 2, get 1", "-25%". Rendered as a fandry-badge. */
 export interface FdProductFlair {
   label: string;
   /** A fandry-badge variant. Defaults to `default`. */
-  variant?: FdProductFlairVariant;
+  variant?: FdBadgeVariant;
 }
 
 /** One color (or finish, or pattern) of a product, with the images that show it. */
 export interface FdProductSwatch {
+  /** Names the swatch to the shopper and identifies it: unique within a product. */
   name: string;
   /** Any CSS color. Paints the swatch button. */
   color: string;
@@ -54,15 +55,35 @@ export interface FdProductRenderSwatch {
   selected: boolean;
   ariaPressed: 'true' | 'false';
   classes: string;
+  part: string;
 }
 
 export interface FdProductRenderFlair {
   key: string;
   label: string;
-  variant: FdProductFlairVariant;
+  variant: FdBadgeVariant;
 }
 
-/** `price` as money, in the reader's locale. */
+/**
+ * Everything the card says; see `messages`. All of it, the button's words
+ * included, because a card in fandry-product-catalog can't be given slots:
+ * the catalog passes `messages` on through `cardProps`.
+ */
+export interface FdProductCardMessages {
+  addToCart: string;
+  /** Names the group of swatch buttons. */
+  swatches: string;
+  /** Read in place of the two prices of a discounted product. */
+  discountedPrice: (price: string, compareAtPrice: string) => string;
+}
+
+export const DEFAULT_PRODUCT_CARD_MESSAGES: FdProductCardMessages = {
+  addToCart: 'Add to cart',
+  swatches: 'Colors',
+  discountedPrice: (price, compareAtPrice) => `${price}, was ${compareAtPrice}`
+};
+
+/** `amount` as money, in the reader's locale. */
 export function formatPrice(amount: number, currency = 'USD'): string {
   return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(amount);
 }
@@ -82,7 +103,7 @@ export function discountPercent(product: Pick<FdProduct, 'price' | 'compareAtPri
  */
 export function discountFlair(
   product: Pick<FdProduct, 'price' | 'compareAtPrice'>,
-  variant: FdProductFlairVariant = 'danger'
+  variant: FdBadgeVariant = 'danger'
 ): FdProductFlair | undefined {
   const percent = discountPercent(product);
   return percent ? { label: `-${percent}%`, variant } : undefined;
@@ -104,6 +125,9 @@ export default class FdProductCardState extends Base {
   /** An ISO 4217 code, for `price` and `compareAtPrice`. */
   @api currency = 'USD';
 
+  /** Replaces any of DEFAULT_PRODUCT_CARD_MESSAGES, e.g. to translate them. */
+  @api messages: Partial<FdProductCardMessages> = {};
+
   /**
    * The name of the selected swatch. Set it to choose which one the card
    * starts on (or to move it from outside, as fandry-product-catalog does
@@ -121,6 +145,15 @@ export default class FdProductCardState extends Base {
   @track protected selectedSwatchName = '';
 
   // ---- rendering model
+
+  protected get text(): FdProductCardMessages {
+    return { ...DEFAULT_PRODUCT_CARD_MESSAGES, ...this.messages };
+  }
+
+  /** Both prices go through this. Override it for another locale, no decimals, "From $X", ... */
+  protected formatPrice(amount: number): string {
+    return formatPrice(amount, this.currency);
+  }
 
   get hasProduct(): boolean {
     return !!this.product;
@@ -165,7 +198,8 @@ export default class FdProductCardState extends Base {
         style: `--_fd-swatch-color: ${swatch.color}`,
         selected: isSelected,
         ariaPressed: isSelected ? 'true' : 'false',
-        classes: isSelected ? 'swatch swatch--selected' : 'swatch'
+        classes: isSelected ? 'swatch swatch--selected' : 'swatch',
+        part: partList('option', { selected: isSelected })
       };
     });
   }
@@ -212,7 +246,7 @@ export default class FdProductCardState extends Base {
   }
 
   get priceText(): string {
-    return this.product ? formatPrice(this.product.price, this.currency) : '';
+    return this.product ? this.formatPrice(this.product.price) : '';
   }
 
   get isDiscounted(): boolean {
@@ -220,7 +254,26 @@ export default class FdProductCardState extends Base {
   }
 
   get compareAtPriceText(): string {
-    return this.isDiscounted ? formatPrice(this.product!.compareAtPrice!, this.currency) : '';
+    return this.isDiscounted ? this.formatPrice(this.product!.compareAtPrice!) : '';
+  }
+
+  /* A discounted product's two prices are read as one phrase, so a
+     translation can put them in its own order; the visible ones are hidden
+     from a screen reader. */
+  get discountedPriceText(): string {
+    return this.isDiscounted ? this.text.discountedPrice(this.priceText, this.compareAtPriceText) : '';
+  }
+
+  get currentPriceHidden(): 'true' | undefined {
+    return this.isDiscounted ? 'true' : undefined;
+  }
+
+  get addToCartLabel(): string {
+    return this.text.addToCart;
+  }
+
+  get swatchesLabel(): string {
+    return this.text.swatches;
   }
 
   // ---- actions

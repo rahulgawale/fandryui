@@ -18,8 +18,8 @@
     <section class="section">
       <div class="demo-controls">
         <fandry-text size="sm" variant="muted">
-          Try it: pick <strong>Navy</strong> and watch the matching cards switch color, or turn on
-          <strong>On sale</strong> and sort by <strong>Biggest discount</strong>.
+          Try it: pick <strong>Navy</strong> and watch the matching cards switch color, or turn
+          on <strong>On sale</strong> and sort by <strong>Biggest discount</strong>.
         </fandry-text>
       </div>
 
@@ -135,7 +135,45 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Styling hooks</fandry-heading>
+      <fandry-heading level="3">Slots</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Slot</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={slots} for:item="item">
+              <tr key={item.name}>
+                <td><code>{item.name}</code></td>
+                <td>{item.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Parts</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Part</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={parts} for:item="item">
+              <tr key={item.name}>
+                <td><code>{item.name}</code></td>
+                <td>{item.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Tokens</fandry-heading>
       <div class="table-wrap">
         <table class="doc-table">
           <thead>
@@ -159,11 +197,15 @@
       <fandry-text variant="muted">
         <code>fandry/productCatalogState</code> has the filtering and sorting and no template;
         <code>fandry/productCatalog</code> is that class plus the filter panel and grid you see here. Extend the state
-        class to lay it out your way or to add a filter of your own, or, on Salesforce, edit the copy
+        class to lay it out your way, or, on Salesforce, edit the copy
         <code>fandry add</code> put in your project. Built from:
         <template for:each={builtFrom} for:item="name">
           <fandry-badge key={name} class="chip">{name}</fandry-badge>
         </template>
+      </fandry-text>
+      <pre class="code-block"><code>{composeCode}</code></pre>
+      <fandry-text variant="muted" class="note">
+        For other markup, render your own card in the grid, or extend the state class for a catalog laid out your way.
       </fandry-text>
       <pre class="code-block extend"><code>{extendCode}</code></pre>
     </section>

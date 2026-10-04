@@ -59,6 +59,7 @@ const PRODUCT_PROPS = [
 const PROPS = [
   { name: 'product', type: 'product', default: 'null', description: 'What to show (see the product table below). Never changed by the card.' },
   { name: 'currency', type: 'string', default: "'USD'", description: 'An ISO 4217 code for `price` and `compareAtPrice`.' },
+  { name: 'messages', type: 'object', default: '{}', description: 'Everything the card says, e.g. to translate it: `addToCart`, `swatches` (the swatch group\'s name) and `discountedPrice(price, was)`, read in place of a discounted product\'s two prices.' },
   { name: 'swatch', type: 'string', default: 'the first', description: 'The name of the selected swatch. Set it to choose where the card starts; the card keeps it current as the shopper picks another.' },
   { name: 'addToCart() · selectSwatch(name)', type: 'methods', default: '—', description: 'What the default button and the swatches call. Use them from your own buttons in the `actions` slot.' }
 ];
@@ -79,7 +80,17 @@ const STYLE_HOOKS = [
 const HELPERS = [
   { name: 'discountFlair(product, variant?)', description: 'A `-25%` flair for a discounted product, or `undefined`. Flairs are never added for you; put this in `flairs` if you want one.' },
   { name: 'discountPercent(product)', description: 'How much cheaper `price` is than `compareAtPrice`, as a whole number.' },
-  { name: 'formatPrice(amount, currency?)', description: 'The card\'s own price formatting, for use in your markup.' }
+  { name: 'formatPrice(amount, currency?)', description: 'The card\'s own price formatting, for use in your markup. Inside the card both prices go through a `formatPrice(amount)` method: override it in a subclass for another locale, no decimals, or "From $X".' }
+];
+
+const PARTS = [
+  { name: 'base', description: 'The card.' },
+  { name: 'media · image · hover-image', description: 'The image area, the image, and the one that crossfades in on hover.' },
+  { name: 'flairs · flair', description: 'The flairs\' wrapper, and each flair (a fandry-badge\'s `base`, with its variant: `flair danger`).' },
+  { name: 'actions · button', description: 'The actions slot\'s wrapper, and the Add to cart button (a fandry-button\'s `base`).' },
+  { name: 'body · subtitle · title', description: 'The text under the image, the line above the name, and the name.' },
+  { name: 'price · current-price · compare-at-price', description: 'The prices, the one to pay, and the struck-through one.' },
+  { name: 'swatches · option · selection-label', description: 'The swatch group, each swatch (`option selected` when chosen), and the chosen swatch\'s name.' }
 ];
 
 const BUILT_FROM = ['badge', 'button', 'link'];
@@ -98,6 +109,7 @@ export default class BlockProductCard extends LightningElement {
   slots = SLOTS;
   styleHooks = STYLE_HOOKS;
   helpers = HELPERS;
+  parts = PARTS;
   builtFrom = BUILT_FROM;
 
   installNpm = `npm install fandryui

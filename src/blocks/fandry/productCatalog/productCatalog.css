@@ -127,7 +127,8 @@
   animation: fd-fade-up-in var(--_fd-duration-normal) var(--_fd-ease-standard);
 }
 
-.item fandry-product-card {
+/* Whichever card the catalog renders fills its cell. */
+.item > * {
   height: 100%;
 }
 
