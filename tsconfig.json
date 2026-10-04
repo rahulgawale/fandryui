@@ -38,10 +38,15 @@
       "fandry/formState": ["src/blocks/fandry/formState/formState"],
       "fandry/formField": ["src/blocks/fandry/formField/formField"],
       "fandry/form": ["src/blocks/fandry/form/form"],
+      "fandry/productCardState": ["src/blocks/fandry/productCardState/productCardState"],
+      "fandry/productCard": ["src/blocks/fandry/productCard/productCard"],
+      "fandry/productCatalogState": ["src/blocks/fandry/productCatalogState/productCatalogState"],
+      "fandry/productCatalog": ["src/blocks/fandry/productCatalog/productCatalog"],
       "fandry/*": ["src/core/fandry/*"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
       "fandryui/gettingStartedData": ["src/modules/fandryui/gettingStartedData/gettingStartedData"],
       "fandryui/mockApi": ["src/modules/fandryui/mockApi/mockApi"],
+      "fandryui/productsData": ["src/modules/fandryui/productsData/productsData"],
       "fandryui/*": ["src/modules/fandryui/*"],
       // fandryuidemos/* -- docs-only illustration components (componentDoc's
       // live "Example" for each primitive), kept in their own namespace so

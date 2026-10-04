@@ -1,0 +1,75 @@
+<template>
+  <template if:true={hasProduct}>
+    <article class="card">
+      <div class="media">
+        <template if:true={hasImage}>
+          <img class="image" src={image} alt={imageAlt} loading="lazy" />
+        </template>
+        <!-- The same product from another angle; decorative, the first image already describes it. -->
+        <template if:true={hasHoverImage}>
+          <img class="image image--hover" src={hoverImage} alt="" loading="lazy" />
+        </template>
+
+        <template if:true={hasFlairs}>
+          <div class="flairs">
+            <template for:each={flairs} for:item="flair">
+              <fandry-badge key={flair.key} variant={flair.variant}>{flair.label}</fandry-badge>
+            </template>
+          </div>
+        </template>
+
+        <!--
+          Replaces the default button, which appears when the card is hovered
+          or focused. A button you put here reaches the card through its
+          methods: card.addToCart(), card.selectSwatch(name).
+        -->
+        <div class="actions">
+          <slot name="actions">
+            <fandry-button class="add" onclick={handleAddToCart}>Add to cart</fandry-button>
+          </slot>
+        </div>
+      </div>
+
+      <div class="body">
+        <template if:true={hasSubtitle}>
+          <p class="subtitle">{subtitle}</p>
+        </template>
+
+        <h3 class="name">
+          <template if:true={hasHref}>
+            <fandry-link href={href}>{name}</fandry-link>
+          </template>
+          <template if:false={hasHref}>{name}</template>
+        </h3>
+
+        <p class="price">
+          <span class="current">{priceText}</span>
+          <template if:true={isDiscounted}>
+            <span class="assistive">, was</span>
+            <s class="compare">{compareAtPriceText}</s>
+          </template>
+        </p>
+
+        <template if:true={hasSwatches}>
+          <div class="swatches" role="group" aria-label="Colors">
+            <template for:each={swatches} for:item="swatch">
+              <button
+                key={swatch.name}
+                type="button"
+                class={swatch.classes}
+                style={swatch.style}
+                title={swatch.name}
+                aria-label={swatch.name}
+                aria-pressed={swatch.ariaPressed}
+                data-name={swatch.name}
+                tabindex="0"
+                onclick={handleSwatchClick}
+              ></button>
+            </template>
+            <span class="swatch-label">{selectedSwatchLabel}</span>
+          </div>
+        </template>
+      </div>
+    </article>
+  </template>
+</template>

@@ -45,13 +45,17 @@ src/
   ├── blocks/
   │   └── fandry/              # Blocks: installable patterns built only from primitives
   │       ├── dataTable/, dataTableState/   # search, filters, inline edit, save hooks, ...
-  │       └── form/, formState/, formField/ # fields, validation, read/edit mode, save hook
+  │       ├── form/, formState/, formField/ # fields, validation, read/edit mode, save hook
+  │       ├── productCard/, productCardState/       # swatches, flairs, sale price, hover motion
+  │       └── productCatalog/, productCatalogState/ # product grid with search, filters, sort
   └── modules/
       └── fandryui/             # The site itself: real composites and pages
           ├── home/, heroSection/, featureGrid/, dashboardExample/, ...
           ├── examples/, exampleGallery/    # /examples -- 10 interactive patterns
           ├── componentsIndex/, componentDoc/  # /components -- per-primitive docs
-          ├── blocksIndex/, blockDataTable/, blockForm/    # /blocks -- a working page per block
+          ├── blocksIndex/, blockDataTable/, blockForm/, blockProductCard/, blockProductCatalog/
+          │                                 # /blocks -- a working page per block
+          ├── productsData/                 # sample products for the product blocks (images in src/assets/products)
           └── componentsData/               # Single source of truth for the docs nav/props/code
       └── fandryuidemos/        # Docs-only illustration components (one demoX per
                                   # primitive, rendered live inside componentDoc) --
