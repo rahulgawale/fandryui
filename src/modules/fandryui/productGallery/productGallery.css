@@ -50,9 +50,9 @@
   border-radius: var(--_fd-radius-full);
 }
 
-.arrow svg {
-  width: var(--_fd-size-sm);
-  height: var(--_fd-size-sm);
+/* Outline glyphs: fandry-icon fills a slotted <svg>, these are stroked. */
+.glyph {
+  fill: none;
 }
 
 .arrow--previous {

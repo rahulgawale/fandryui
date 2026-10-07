@@ -6,10 +6,18 @@
         <img class="main-image" src={main.src} alt="" width={main.width} height={main.height} />
       </fandry-button>
       <fandry-button class="arrow arrow--previous" variant="secondary" element-props={previousProps} onclick={handlePrevious}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+        <fandry-icon size="sm">
+          <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+        </fandry-icon>
       </fandry-button>
       <fandry-button class="arrow arrow--next" variant="secondary" element-props={nextProps} onclick={handleNext}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+        <fandry-icon size="sm">
+          <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </fandry-icon>
       </fandry-button>
     </div>
 

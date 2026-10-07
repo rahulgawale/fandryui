@@ -115,7 +115,7 @@ const GAP_OPTIONS = [
   { label: 'Roomy (1.5rem)', value: '1.5rem' }
 ];
 
-const BUILT_FROM = ['dialog', 'button', 'skeleton'];
+const BUILT_FROM = ['dialog', 'button', 'icon', 'text', 'skeleton'];
 
 export default class BlockMediaGallery extends LightningElement {
   usageCode = USAGE;

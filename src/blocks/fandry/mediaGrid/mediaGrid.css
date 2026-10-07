@@ -88,11 +88,10 @@
   scale: 1.03;
 }
 
+/* The words are a fandry-text; this is only where the caption sits. */
 .caption {
   margin-top: var(--_fd-space-2);
-  font-size: var(--_fd-font-size-sm);
   line-height: var(--_fd-line-height-tight);
-  color: hsl(var(--_fd-text-muted));
 }
 
 .placeholder::part(base) {

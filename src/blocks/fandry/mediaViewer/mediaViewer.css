@@ -40,9 +40,7 @@
 }
 
 .indicator {
-  font-size: var(--_fd-font-size-sm);
   font-variant-numeric: tabular-nums;
-  color: hsl(var(--_fd-text-muted));
 }
 
 .body {
@@ -112,9 +110,10 @@
   border-radius: var(--_fd-radius-full);
 }
 
-.icon {
-  width: var(--_fd-size-sm);
-  height: var(--_fd-size-sm);
+/* Outline glyphs: fandry-icon fills a slotted <svg> with currentColor, which
+   suits solid icons; these are drawn with their stroke. */
+.glyph {
+  fill: none;
 }
 
 .nav {
@@ -131,12 +130,10 @@
   right: var(--_fd-space-4);
 }
 
-.caption {
+.caption::part(base) {
   margin: 0;
   padding: var(--_fd-space-3) var(--_fd-space-4) var(--_fd-space-4);
-  font-size: var(--_fd-font-size-sm);
   text-align: center;
-  color: hsl(var(--_fd-text-muted));
 }
 
 @keyframes fd-media-settle-a {

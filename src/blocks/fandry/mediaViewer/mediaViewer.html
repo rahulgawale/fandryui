@@ -10,7 +10,10 @@
     <template lwc:if={hasOpened}>
       <div class="viewer" part="base">
         <div class="toolbar" part="toolbar">
-          <span class="indicator" part="indicator" aria-live="polite" aria-atomic="true">{positionText}</span>
+          <!-- The live region is a plain box: fandry-text's host has no box of its own to announce from. -->
+          <div class="indicator" part="indicator" aria-live="polite" aria-atomic="true">
+            <fandry-text as="span" size="sm" variant="muted">{positionText}</fandry-text>
+          </div>
           <fandry-button
             class="icon-button close"
             variant="ghost"
@@ -18,9 +21,11 @@
             exportparts="base: close-button"
             onclick={handleClose}
           >
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-              <path d="M18 6 6 18M6 6l12 12"></path>
-            </svg>
+            <fandry-icon size="sm">
+              <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12"></path>
+              </svg>
+            </fandry-icon>
           </fandry-button>
         </div>
 
@@ -65,9 +70,11 @@
             exportparts="base: previous, disabled"
             onclick={handlePrevious}
           >
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="m15 18-6-6 6-6"></path>
-            </svg>
+            <fandry-icon size="sm">
+              <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m15 18-6-6 6-6"></path>
+              </svg>
+            </fandry-icon>
           </fandry-button>
           <fandry-button
             class="icon-button nav nav--next"
@@ -77,13 +84,15 @@
             exportparts="base: next, disabled"
             onclick={handleNext}
           >
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="m9 18 6-6-6-6"></path>
-            </svg>
+            <fandry-icon size="sm">
+              <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </fandry-icon>
           </fandry-button>
         </div>
 
-        <p class="caption" part="caption" hidden={noCaption}>{caption}</p>
+        <fandry-text class="caption" size="sm" variant="muted" exportparts="base: caption" hidden={noCaption}>{caption}</fandry-text>
       </div>
     </template>
   </fandry-dialog>
