@@ -12,24 +12,33 @@
         <li key={tile.key} class="item" part="item">
           <figure class="figure">
             <template lwc:if={interactive}>
-              <button type="button" tabindex="0" class={tile.frameClass} part="frame" data-index={tile.index} onclick={handleSelect}>
-                <template lwc:if={tile.isImage}>
-                  <img
-                    class="image"
-                    part="image"
-                    data-id={tile.key}
-                    src={tile.src}
-                    srcset={tile.srcset}
-                    sizes={tile.sizes}
-                    alt={tile.alt}
-                    loading={tile.loading}
-                    decoding="async"
-                    draggable="false"
-                    onload={handleLoad}
-                    onerror={handleLoad}
-                  />
-                </template>
-              </button>
+              <!-- fandry-button, so a tile gets the library's focus ring and tab stop; its <button> is the `button` part. -->
+              <fandry-button
+                class="tile-button"
+                variant="ghost"
+                data-index={tile.index}
+                exportparts="base: button"
+                onclick={handleSelect}
+              >
+                <span class={tile.frameClass} part="frame">
+                  <template lwc:if={tile.isImage}>
+                    <img
+                      class="image"
+                      part="image"
+                      data-id={tile.key}
+                      src={tile.src}
+                      srcset={tile.srcset}
+                      sizes={tile.sizes}
+                      alt={tile.alt}
+                      loading={tile.loading}
+                      decoding="async"
+                      draggable="false"
+                      onload={handleLoad}
+                      onerror={handleLoad}
+                    />
+                  </template>
+                </span>
+              </fandry-button>
             </template>
             <template lwc:else>
               <div class={tile.frameClass} part="frame">

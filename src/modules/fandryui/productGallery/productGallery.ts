@@ -11,14 +11,24 @@ import FdMediaGalleryState from 'fandry/mediaGalleryState';
 export default class ProductGallery extends FdMediaGalleryState {
   get main() {
     const item = this.current;
-    return {
-      src: item?.src ?? '',
-      alt: item?.alt ?? '',
-      width: item?.width,
-      height: item?.height,
-      // The picture's own alt names the button; this says what it does.
-      label: item ? `${item.alt} View full screen.` : ''
-    };
+    return { src: item?.src ?? '', width: item?.width, height: item?.height };
+  }
+
+  /* fandry-button takes its native attributes through elementProps; tabIndex
+     is its own default, which elementProps replaces. The main button's
+     label is the picture's alt plus what pressing it does. */
+  get mainProps(): Record<string, unknown> {
+    const item = this.current;
+    return { tabIndex: 0, ariaLabel: item ? `${item.alt} View full screen.` : '' };
+  }
+
+  // aria-disabled, so an arrow keeps focus at the end of the strip.
+  get previousProps(): Record<string, unknown> {
+    return { tabIndex: 0, ariaLabel: 'Previous picture', ariaDisabled: this.hasPrevious ? null : 'true' };
+  }
+
+  get nextProps(): Record<string, unknown> {
+    return { tabIndex: 0, ariaLabel: 'Next picture', ariaDisabled: this.hasNext ? null : 'true' };
   }
 
   get thumbs() {
@@ -28,20 +38,10 @@ export default class ProductGallery extends FdMediaGalleryState {
         key: item.id,
         index,
         src: item.thumbnail || item.src,
-        label: `Picture ${index + 1} of ${this.count}`,
-        ariaCurrent: current ? 'true' : undefined,
-        className: current ? 'thumb thumb--current' : 'thumb'
+        className: current ? 'thumb thumb--current' : 'thumb',
+        props: { tabIndex: 0, ariaLabel: `Picture ${index + 1} of ${this.count}`, ariaCurrent: current ? 'true' : null }
       };
     });
-  }
-
-  // aria-disabled, so an arrow keeps focus at the end of the strip.
-  get previousDisabled(): string | undefined {
-    return this.hasPrevious ? undefined : 'true';
-  }
-
-  get nextDisabled(): string | undefined {
-    return this.hasNext ? undefined : 'true';
   }
 
   handleThumb(event: Event) {

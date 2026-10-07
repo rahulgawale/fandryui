@@ -26,7 +26,9 @@ const root = (el: Element) => el.shadowRoot!;
 const gridOf = (gallery: Host) => root(gallery).querySelector('fandry-media-grid') as Host;
 const viewerOf = (gallery: Host) => root(gallery).querySelector('fandry-media-viewer') as Host;
 const dialogOf = (viewer: Host) => root(viewer).querySelector('fandry-dialog') as Host;
-const tiles = (grid: Host) => Array.from(root(grid).querySelectorAll('button.frame')) as HTMLButtonElement[];
+// Each tile is a fandry-button; clicking one means clicking its native <button>.
+const tileHosts = (grid: Host) => Array.from(root(grid).querySelectorAll('fandry-button.tile-button')) as Host[];
+const tiles = (grid: Host) => tileHosts(grid).map((host) => root(host).querySelector('button') as HTMLButtonElement);
 const currentImage = (viewer: Host) => root(viewer).querySelector('.slide--current img') as HTMLImageElement | null;
 const navButton = (viewer: Host, which: 'previous' | 'next' | 'close') =>
   root(viewer).querySelector(which === 'close' ? '.close' : `.nav--${which}`) as Host;
@@ -54,7 +56,8 @@ describe('fandry-media-grid', () => {
     await settle();
     const images = Array.from(root(grid).querySelectorAll('img')) as HTMLImageElement[];
     expect(images.map((img) => img.getAttribute('alt'))).toEqual(['A lake', 'A road', 'A peak']);
-    expect(tiles(grid)).toHaveLength(0);
+    expect(tileHosts(grid)).toHaveLength(0);
+    expect(root(grid).querySelectorAll('fandry-button')).toHaveLength(0);
     expect(root(grid).querySelectorAll('figcaption')).toHaveLength(1);
     expect(root(grid).querySelector('figcaption')!.textContent).toBe('The lake');
   });
@@ -106,8 +109,9 @@ describe('fandry-media-grid', () => {
     const onSelect = jest.fn();
     grid.addEventListener('select', onSelect);
     await settle();
-    expect(tiles(grid)).toHaveLength(3);
+    expect(tileHosts(grid)).toHaveLength(3);
     expect(tiles(grid)[0].getAttribute('tabindex')).toBe('0');
+    expect(tiles(grid)[0].getAttribute('part')).toContain('base');
     tiles(grid)[1].click();
     expect(onSelect.mock.calls[0][0].detail).toEqual({ index: 1, item: ITEMS[1] });
   });
@@ -116,7 +120,8 @@ describe('fandry-media-grid', () => {
     const grid = mount('fandry-media-grid', FdMediaGrid, { interactive: true });
     await settle();
     grid.focusItem(2);
-    expect(root(grid).activeElement).toBe(tiles(grid)[2]);
+    expect(root(grid).activeElement).toBe(tileHosts(grid)[2]);
+    expect(root(tileHosts(grid)[2]).activeElement).toBe(tiles(grid)[2]);
   });
 });
 
@@ -306,7 +311,7 @@ describe('fandry-media-gallery', () => {
     await settle();
     nativeButton(navButton(viewerOf(gallery), 'close')).click();
     await settle();
-    expect(root(gridOf(gallery)).activeElement).toBe(tiles(gridOf(gallery))[2]);
+    expect(root(gridOf(gallery)).activeElement).toBe(tileHosts(gridOf(gallery))[2]);
   });
 
   it('can be driven from outside: show(), next(), goTo(), close()', async () => {

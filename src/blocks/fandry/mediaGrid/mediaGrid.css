@@ -54,7 +54,18 @@
   animation: none;
 }
 
-button.frame {
+/* A tile's fandry-button keeps its own focus ring, hover and press; only its
+   size changes, to hug the picture. */
+.tile-button {
+  display: block;
+}
+
+.tile-button::part(base) {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 0;
+  border-radius: var(--_fd-radius-md);
   cursor: zoom-in;
 }
 
@@ -73,7 +84,7 @@ button.frame {
   opacity: 1;
 }
 
-button.frame:hover .image {
+.tile-button:hover .image {
   scale: 1.03;
 }
 

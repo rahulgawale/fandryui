@@ -1,5 +1,6 @@
 /* A site's own layout: it reads the library's tokens (it extends Base through
-   the state class) but owes nothing to the grid's styles. */
+   the state class) and restyles fandry-button through its `base` part, so
+   every button keeps the library's focus ring, hover and press. */
 :host {
   display: block;
 }
@@ -15,11 +16,15 @@
 
 .main {
   display: block;
+}
+
+.main::part(base) {
+  display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 3;
   padding: 0;
   overflow: hidden;
-  border: 0;
   border-radius: var(--_fd-radius-lg);
   background: hsl(var(--_fd-bg-muted));
   cursor: zoom-in;
@@ -36,22 +41,13 @@
   position: absolute;
   top: 50%;
   translate: 0 -50%;
-  display: grid;
-  place-items: center;
+}
+
+.arrow::part(base) {
   width: var(--_fd-control-height-lg);
   height: var(--_fd-control-height-lg);
   padding: 0;
-  border: 0;
   border-radius: var(--_fd-radius-full);
-  background: hsl(var(--_fd-bg) / 0.85);
-  color: hsl(var(--_fd-text));
-  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-subtle));
-  cursor: pointer;
-}
-
-.arrow[aria-disabled='true'] {
-  opacity: var(--_fd-disabled-opacity);
-  cursor: default;
 }
 
 .arrow svg {
@@ -71,31 +67,30 @@
   display: flex;
   gap: var(--_fd-space-2);
   margin: 0;
-  padding: 0;
+  padding: var(--_fd-space-1);
   overflow-x: auto;
   list-style: none;
 }
 
-.thumb {
+.thumb::part(base) {
   display: block;
   width: calc(var(--_fd-control-height-lg) * 1.75);
+  height: auto;
   aspect-ratio: 1;
   padding: 0;
   overflow: hidden;
   border: var(--_fd-border-width-md) solid transparent;
   border-radius: var(--_fd-radius-md);
   background: hsl(var(--_fd-bg-muted));
-  cursor: pointer;
   opacity: 0.7;
-  transition: opacity var(--_fd-duration-fast) var(--_fd-ease-standard), border-color var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
-.thumb:hover,
-.thumb--current {
+.thumb:hover::part(base),
+.thumb--current::part(base) {
   opacity: 1;
 }
 
-.thumb--current {
+.thumb--current::part(base) {
   border-color: hsl(var(--_fd-primary));
 }
 

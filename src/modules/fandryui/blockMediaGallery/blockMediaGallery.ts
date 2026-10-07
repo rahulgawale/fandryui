@@ -33,13 +33,13 @@ export default class ProductGallery extends FdMediaGalleryState {
 }
 
 <!-- productGallery.html -->
-<button data-index={currentIndex} onclick={handleSelect}>
+<fandry-button variant="ghost" data-index={currentIndex} onclick={handleSelect}>
   <img src={current.src} alt={current.alt} />
-</button>
+</fandry-button>
 <ul>
   <template for:each={thumbs} for:item="thumb">
     <li key={thumb.key}>
-      <button data-thumb={thumb.index} onclick={handleThumb}>...</button>
+      <fandry-button variant="ghost" data-thumb={thumb.index} onclick={handleThumb}>...</fandry-button>
     </li>
   </template>
 </ul>
@@ -90,7 +90,7 @@ const TOKENS = [
 
 const PARTS = [
   { name: 'base', description: 'The grid (a <ul>).' },
-  { name: 'item · frame · image · caption', description: 'One tile, its button (or box), its picture, its caption.' },
+  { name: 'item · button · frame · image · caption', description: 'One tile, its fandry-button\'s <button>, the box the picture is cut to, the picture, its caption.' },
   { name: 'placeholder', description: 'A tile\'s placeholder while loading.' },
   { name: 'viewer · backdrop · panel', description: 'The viewer, and the fandry-dialog it is drawn in.' },
   { name: 'toolbar · indicator · close-button', description: 'The bar at the top, the "3 of 12", the close button.' },

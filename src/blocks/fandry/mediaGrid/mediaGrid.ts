@@ -21,8 +21,8 @@ interface FdMediaTile {
  * The media-gallery block's grid: tiles that fit the box they are in, each
  * cut to one shape, with a pulsing placeholder until its picture arrives.
  * It knows nothing of a viewer. On its own it shows the pictures; with
- * `interactive` each tile is a button and choosing one reports `select`,
- * which is how fandry-media-gallery opens its viewer.
+ * `interactive` each tile is a fandry-button and choosing one reports
+ * `select`, which is how fandry-media-gallery opens its viewer.
  *
  * Its size and shape are tokens: --fd-media-columns, --fd-media-min-width,
  * --fd-media-aspect-ratio and --fd-media-fit.
@@ -72,7 +72,7 @@ export default class FdMediaGrid extends Base {
   /** Moves focus to a tile's button, e.g. back to the picture a viewer was closed on. */
   @api
   focusItem(index: number) {
-    const button = this.template.querySelector(`button[data-index="${Number(index)}"]`) as HTMLElement | null;
+    const button = this.template.querySelector(`fandry-button[data-index="${Number(index)}"]`) as HTMLElement | null;
     button?.focus();
   }
 
