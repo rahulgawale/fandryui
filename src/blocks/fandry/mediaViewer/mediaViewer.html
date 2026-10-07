@@ -1,0 +1,90 @@
+<template>
+  <fandry-dialog
+    class="dialog"
+    open={open}
+    aria-label={dialogLabel}
+    exportparts="backdrop, panel"
+    ontoggle={handleDialogToggle}
+    onkeydown={handleKeydown}
+  >
+    <template lwc:if={hasOpened}>
+      <div class="viewer" part="base">
+        <div class="toolbar" part="toolbar">
+          <span class="indicator" part="indicator" aria-live="polite" aria-atomic="true">{positionText}</span>
+          <fandry-button
+            class="icon-button close"
+            variant="ghost"
+            element-props={closeProps}
+            exportparts="base: close-button"
+            onclick={handleClose}
+          >
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </fandry-button>
+        </div>
+
+        <div class="body">
+          <div
+            class="stage"
+            part="stage"
+            onpointerdown={handlePointerDown}
+            onpointermove={handlePointerMove}
+            onpointerup={handlePointerUp}
+            onpointercancel={handlePointerCancel}
+            onwheel={handleWheel}
+          >
+            <div class={trackClass} style={trackStyle}>
+              <template for:each={slides} for:item="slide">
+                <div key={slide.key} class={slide.className} aria-hidden={slide.ariaHidden}>
+                  <template lwc:if={slide.isImage}>
+                    <img
+                      class={slide.mediaClass}
+                      part="image"
+                      style={slide.mediaStyle}
+                      src={slide.src}
+                      srcset={slide.srcset}
+                      sizes={slide.sizes}
+                      alt={slide.alt}
+                      width={slide.width}
+                      height={slide.height}
+                      decoding="async"
+                      draggable="false"
+                    />
+                  </template>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <fandry-button
+            class="icon-button nav nav--previous"
+            variant="secondary"
+            element-props={previousProps}
+            hidden={isSingle}
+            exportparts="base: previous, disabled"
+            onclick={handlePrevious}
+          >
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6"></path>
+            </svg>
+          </fandry-button>
+          <fandry-button
+            class="icon-button nav nav--next"
+            variant="secondary"
+            element-props={nextProps}
+            hidden={isSingle}
+            exportparts="base: next, disabled"
+            onclick={handleNext}
+          >
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m9 18 6-6-6-6"></path>
+            </svg>
+          </fandry-button>
+        </div>
+
+        <p class="caption" part="caption" hidden={noCaption}>{caption}</p>
+      </div>
+    </template>
+  </fandry-dialog>
+</template>

@@ -76,11 +76,14 @@ Blocks are larger, ready-made patterns built from the components above. On LWR /
 ```bash
 npx fandry add data-table          # the block plus everything it is built from
 npx fandry add form
+npx fandry add media-gallery
 ```
 
 `data-table` gives you search, column filters, pagination, selection, row actions, inline editing and `saveRow` / `deleteRow` hooks with success and error toasts, with skeleton loading and a saving state. It is controlled: it never edits your `data`, it reports `rowsave` / `rowdelete` and you put the result back. `--all` does not include blocks; ask for one by name. A live version with the full API is at [/blocks/data-table](https://fandryui.forcetrails.com/blocks/data-table).
 
 `form` is a form that can read first and edit on demand (`mode="read"`). Fields are plain data (`{ name, label, type, required, validate }`), errors show once a field has been left or a save was attempted, a form-level `validate` hook covers rules that span fields or need the server, and a `saveValues` hook is where the request goes. Like `data-table` it is controlled: it reports `save` and you put the result back into `values`. Live at [/blocks/form](https://fandryui.forcetrails.com/blocks/form).
+
+`media-gallery` is a grid of pictures that fits whatever box it is in, with skeleton placeholders while you fetch, and a full-screen viewer with Previous / Next, swipe, pinch to zoom and keyboard control. Items are plain data (`{ id, src, alt, thumbnail, caption }`, with a `type` so video can follow), and columns, tile shape and fit are tokens (`--fd-media-columns`, `--fd-media-aspect-ratio`, `--fd-media-fit`). The grid and the viewer work on their own too, and a different layout (a product page's main picture and thumbnails) extends `fandry/mediaGalleryState`. Live at [/blocks/media-gallery](https://fandryui.forcetrails.com/blocks/media-gallery).
 
 ## Usage
 
@@ -163,7 +166,7 @@ Each step goes further than the one before; go only as far as you need:
 1. **Tokens**: `:root { --fd-primary: ...; --fd-radius-md: 0 }` themes everything, or one section.
 2. **Parts and states**: `fandry-button::part(base secondary) { ... }` restyles one element inside a component, including its `::before` / `::after` and animations: a rainbow border is parts only. The quick win for most visual changes.
 3. **Slots and `messages`**: replace content and text (see Translating), or add to it: a button's loading spinner is just a `fandry-spinner` slotted in while `disabled` is set, and the button page shows it.
-4. **Extend the state class** (`fandry/tableState`, `fandry/searchState`, `fandry/formState`, ...): your own markup on the same behavior.
+4. **Extend the state class** (`fandry/tableState`, `fandry/searchState`, `fandry/formState`, `fandry/mediaGalleryState`, ...): your own markup on the same behavior.
 5. **Copy the component.** When you need what neither CSS nor composition can reach (a different native element, a different internal structure, changed internal behavior), copy its source into your own namespace and change anything. Components are short, plain LWC. Keep `extends Base` and your copy still follows the site's tokens and renders in native shadow DOM:
    - LWR / LWC OSS: copy `node_modules/fandryui/modules/fandry/button/` to e.g. `src/modules/my/myButton/`, then rename the files and the class.
    - Salesforce: `fandry add button` already put `fandryButton` in your project; copy that folder to `myButton` and rename it. `fandry add` doesn't overwrite files you changed unless you pass `--overwrite`.

@@ -1,0 +1,61 @@
+<template>
+  <ul class="grid" part="base" aria-busy={ariaBusy}>
+    <template lwc:if={loading}>
+      <template for:each={placeholders} for:item="placeholder">
+        <li key={placeholder} class="item" aria-hidden="true">
+          <fandry-skeleton class="placeholder" variant="rect" exportparts="base: placeholder"></fandry-skeleton>
+        </li>
+      </template>
+    </template>
+    <template lwc:else>
+      <template for:each={tiles} for:item="tile">
+        <li key={tile.key} class="item" part="item">
+          <figure class="figure">
+            <template lwc:if={interactive}>
+              <button type="button" tabindex="0" class={tile.frameClass} part="frame" data-index={tile.index} onclick={handleSelect}>
+                <template lwc:if={tile.isImage}>
+                  <img
+                    class="image"
+                    part="image"
+                    data-id={tile.key}
+                    src={tile.src}
+                    srcset={tile.srcset}
+                    sizes={tile.sizes}
+                    alt={tile.alt}
+                    loading={tile.loading}
+                    decoding="async"
+                    draggable="false"
+                    onload={handleLoad}
+                    onerror={handleLoad}
+                  />
+                </template>
+              </button>
+            </template>
+            <template lwc:else>
+              <div class={tile.frameClass} part="frame">
+                <template lwc:if={tile.isImage}>
+                  <img
+                    class="image"
+                    part="image"
+                    data-id={tile.key}
+                    src={tile.src}
+                    srcset={tile.srcset}
+                    sizes={tile.sizes}
+                    alt={tile.alt}
+                    loading={tile.loading}
+                    decoding="async"
+                    onload={handleLoad}
+                    onerror={handleLoad}
+                  />
+                </template>
+              </div>
+            </template>
+            <template lwc:if={tile.hasCaption}>
+              <figcaption class="caption" part="caption">{tile.caption}</figcaption>
+            </template>
+          </figure>
+        </li>
+      </template>
+    </template>
+  </ul>
+</template>

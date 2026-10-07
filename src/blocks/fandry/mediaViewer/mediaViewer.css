@@ -1,0 +1,152 @@
+:host {
+  display: contents;
+}
+
+/* fandry-dialog, made full screen. Its surface is the page's own --fd-bg and
+   --fd-text, so a site that wants a dark viewer sets those two on the
+   viewer (or styles ::part(panel)). */
+.dialog::part(backdrop) {
+  padding: 0;
+  background: hsl(var(--_fd-bg));
+}
+
+.dialog::part(panel) {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  max-width: none;
+  max-height: none;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none;
+  background: hsl(var(--_fd-bg));
+}
+
+.viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: hsl(var(--_fd-text));
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_fd-space-3);
+  padding: var(--_fd-space-2) var(--_fd-space-2) var(--_fd-space-2) var(--_fd-space-4);
+}
+
+.indicator {
+  font-size: var(--_fd-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: hsl(var(--_fd-text-muted));
+}
+
+.body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+/* The browser's own panning and zooming would fight the viewer's. */
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+}
+
+/* Two names for one animation; see trackClass in mediaViewer.ts. The start
+   comes from --_fd-slide-x, set by the viewer. */
+.track--settle-a {
+  animation: fd-media-settle-a var(--_fd-duration-normal) var(--_fd-ease-standard);
+}
+
+.track--settle-b {
+  animation: fd-media-settle-b var(--_fd-duration-normal) var(--_fd-ease-standard);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: var(--_fd-space-4);
+}
+
+.slide--previous {
+  translate: -100% 0;
+}
+
+.slide--next {
+  translate: 100% 0;
+}
+
+.media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: translate var(--_fd-duration-normal) var(--_fd-ease-standard),
+    scale var(--_fd-duration-normal) var(--_fd-ease-standard);
+  cursor: zoom-in;
+  -webkit-user-drag: none;
+}
+
+.media--zoomed {
+  cursor: grab;
+}
+
+.icon-button::part(base) {
+  width: var(--_fd-control-height-lg);
+  height: var(--_fd-control-height-lg);
+  padding: 0;
+  border-radius: var(--_fd-radius-full);
+}
+
+.icon {
+  width: var(--_fd-size-sm);
+  height: var(--_fd-size-sm);
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.nav--previous {
+  left: var(--_fd-space-4);
+}
+
+.nav--next {
+  right: var(--_fd-space-4);
+}
+
+.caption {
+  margin: 0;
+  padding: var(--_fd-space-3) var(--_fd-space-4) var(--_fd-space-4);
+  font-size: var(--_fd-font-size-sm);
+  text-align: center;
+  color: hsl(var(--_fd-text-muted));
+}
+
+@keyframes fd-media-settle-a {
+  from {
+    translate: var(--_fd-slide-x, 0) 0;
+  }
+}
+
+@keyframes fd-media-settle-b {
+  from {
+    translate: var(--_fd-slide-x, 0) 0;
+  }
+}

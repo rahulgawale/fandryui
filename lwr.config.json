@@ -293,6 +293,12 @@
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
+            "id": "block-media-gallery",
+            "path": "/blocks/media-gallery",
+            "rootComponent": "fandryui/blockMediaGallery",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
             "id": "examples",
             "path": "/examples",
             "rootComponent": "fandryui/examples",

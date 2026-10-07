@@ -1,0 +1,107 @@
+/* A site's own layout: it reads the library's tokens (it extends Base through
+   the state class) but owes nothing to the grid's styles. */
+:host {
+  display: block;
+}
+
+.product-gallery {
+  display: grid;
+  gap: var(--_fd-space-3);
+}
+
+.stage {
+  position: relative;
+}
+
+.main {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--_fd-radius-lg);
+  background: hsl(var(--_fd-bg-muted));
+  cursor: zoom-in;
+}
+
+.main-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  width: var(--_fd-control-height-lg);
+  height: var(--_fd-control-height-lg);
+  padding: 0;
+  border: 0;
+  border-radius: var(--_fd-radius-full);
+  background: hsl(var(--_fd-bg) / 0.85);
+  color: hsl(var(--_fd-text));
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-subtle));
+  cursor: pointer;
+}
+
+.arrow[aria-disabled='true'] {
+  opacity: var(--_fd-disabled-opacity);
+  cursor: default;
+}
+
+.arrow svg {
+  width: var(--_fd-size-sm);
+  height: var(--_fd-size-sm);
+}
+
+.arrow--previous {
+  left: var(--_fd-space-3);
+}
+
+.arrow--next {
+  right: var(--_fd-space-3);
+}
+
+.thumbs {
+  display: flex;
+  gap: var(--_fd-space-2);
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+}
+
+.thumb {
+  display: block;
+  width: calc(var(--_fd-control-height-lg) * 1.75);
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: var(--_fd-border-width-md) solid transparent;
+  border-radius: var(--_fd-radius-md);
+  background: hsl(var(--_fd-bg-muted));
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity var(--_fd-duration-fast) var(--_fd-ease-standard), border-color var(--_fd-duration-fast) var(--_fd-ease-standard);
+}
+
+.thumb:hover,
+.thumb--current {
+  opacity: 1;
+}
+
+.thumb--current {
+  border-color: hsl(var(--_fd-primary));
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

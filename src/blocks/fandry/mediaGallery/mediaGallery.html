@@ -1,0 +1,23 @@
+<template>
+  <fandry-media-grid
+    items={items}
+    loading={loading}
+    loading-count={loadingCount}
+    interactive
+    exportparts="base, item, frame, image, caption, placeholder"
+    onselect={handleSelect}
+  ></fandry-media-grid>
+  <!--
+    The viewer's parts that share a name with the grid's are renamed, so
+    ::part(image) is a tile's picture and ::part(viewer-image) the big one.
+  -->
+  <fandry-media-viewer
+    items={items}
+    index={currentIndex}
+    open={viewerOpen}
+    messages={messages}
+    exportparts="base: viewer, backdrop, panel, toolbar, indicator, close-button, stage, previous, next, disabled, image: viewer-image, caption: viewer-caption"
+    onchange={handleViewerChange}
+    ontoggle={handleViewerToggle}
+  ></fandry-media-viewer>
+</template>

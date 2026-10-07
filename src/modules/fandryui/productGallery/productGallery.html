@@ -1,0 +1,35 @@
+<template>
+  <div class="product-gallery">
+    <div class="stage">
+      <!-- data-index: where FdMediaGalleryState puts focus back after the viewer. -->
+      <button type="button" tabindex="0" class="main" data-index={currentIndex} aria-label={main.label} onclick={handleSelect}>
+        <img class="main-image" src={main.src} alt="" width={main.width} height={main.height} />
+      </button>
+      <button type="button" tabindex="0" class="arrow arrow--previous" aria-label="Previous picture" aria-disabled={previousDisabled} onclick={handlePrevious}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+      </button>
+      <button type="button" tabindex="0" class="arrow arrow--next" aria-label="Next picture" aria-disabled={nextDisabled} onclick={handleNext}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+      </button>
+    </div>
+
+    <ul class="thumbs">
+      <template for:each={thumbs} for:item="thumb">
+        <li key={thumb.key}>
+          <button type="button" tabindex="0" class={thumb.className} aria-label={thumb.label} aria-current={thumb.ariaCurrent} data-thumb={thumb.index} onclick={handleThumb}>
+            <img src={thumb.src} alt="" loading="lazy" />
+          </button>
+        </li>
+      </template>
+    </ul>
+
+    <fandry-media-viewer
+      items={items}
+      index={currentIndex}
+      open={viewerOpen}
+      messages={messages}
+      onchange={handleViewerChange}
+      ontoggle={handleViewerToggle}
+    ></fandry-media-viewer>
+  </div>
+</template>
