@@ -171,18 +171,20 @@
         A store's product page wants one big picture and a strip of thumbnails, not a grid. This one extends <code>fandry/mediaGalleryState</code> and writes only its own markup: the current picture, focus coming back
         after the viewer, the events and the full-screen viewer with swipe and zoom all come from the block.
       </fandry-text>
-      <div class="product">
-        <fandryui-product-gallery class="product-media" items={productPhotos}></fandryui-product-gallery>
-        <div class="product-info">
-          <fandry-text size="sm" variant="muted">Single origin · Whole bean</fandry-text>
-          <fandry-heading level="2">House Blend</fandry-heading>
-          <fandry-text class="price">₹ 640 · 250 g</fandry-text>
-          <fandry-text variant="muted">
-            A medium roast with notes of cocoa and toasted almond, roasted every Monday and shipped the same week.
-          </fandry-text>
-          <fandry-button>Add to cart</fandry-button>
+      <fandry-card class="demo-frame demo-frame--wide">
+        <div class="product">
+          <fandryui-product-gallery class="product-media" items={productPhotos}></fandryui-product-gallery>
+          <div class="product-info">
+            <fandry-text size="sm" variant="muted">Single origin · Whole bean</fandry-text>
+            <fandry-heading level="2">House Blend</fandry-heading>
+            <fandry-text class="price">₹ 640 · 250 g</fandry-text>
+            <fandry-text variant="muted">
+              A medium roast with notes of cocoa and toasted almond, roasted every Monday and shipped the same week.
+            </fandry-text>
+            <fandry-button>Add to cart</fandry-button>
+          </div>
         </div>
-      </div>
+      </fandry-card>
       <pre class="code-block"><code>{customCode}</code></pre>
     </section>
 
