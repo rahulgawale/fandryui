@@ -1,33 +1,33 @@
 // The media-gallery demo's pictures: photos from Unsplash (free to use under
-// the Unsplash License), saved in src/assets/media at 1280 x 960 with a
-// 400px-wide thumbnail beside each. Nothing here is part of the block.
+// the Unsplash License), saved in src/assets/media 1280px wide with a
+// 400px thumbnail beside each. Nothing here is part of the block.
 
 import type { FdMediaItem } from 'fandry/mediaItem';
 import { delay } from 'fandryui/mockApi';
 
-function photo(id: number, alt: string, caption: string, credit: string): FdMediaItem {
+function photo(name: string | number, alt: string, caption: string, credit: string, width = 1280, height = 960): FdMediaItem {
   return {
-    id: `photo-${id}`,
+    id: `photo-${name}`,
     type: 'image',
-    src: `/assets/media/photo-${id}.jpg`,
-    thumbnail: `/assets/media/photo-${id}-400.jpg`,
-    width: 1280,
-    height: 960,
+    src: `/assets/media/photo-${name}.jpg`,
+    thumbnail: `/assets/media/photo-${name}-400.jpg`,
+    width,
+    height,
     alt,
     caption: `${caption} · ${credit}`
   };
 }
 
 export const LANDSCAPES: FdMediaItem[] = [
-  photo(10, 'A pine forest above a calm bay, with mountains far off.', 'Above the bay', 'Paul Jarvis'),
+  photo('taj-mahal', 'The Taj Mahal at dawn, reflected in the long pool between rows of cypress trees.', 'Taj Mahal, Agra', 'Julian Yu', 1280, 853),
   photo(15, 'A waterfall dropping into a rocky gorge.', 'The falls', 'Paul Jarvis'),
-  photo(16, 'A rocky shore on a blue sound under a clear sky.', 'Low tide', 'Paul Jarvis'),
-  photo(17, 'A gravel path between grass and tall pines.', 'The long path', 'Paul Jarvis'),
-  photo(28, 'A stream running through green forest under a blue sky.', 'Green valley', 'Jerry Adney'),
+  photo('backwaters', 'A houseboat on a wide green canal lined with coconut palms and rice fields.', 'Alappuzha backwaters, Kerala', 'Abhishek Prasad', 1280, 854),
+  photo(10, 'A pine forest above a calm bay, with mountains far off.', 'Above the bay', 'Paul Jarvis'),
+  photo('sea-link', 'The Bandra–Worli Sea Link\'s cable-stayed towers at golden hour, seen from a rocky shore.', 'Bandra–Worli Sea Link, Mumbai', 'Sid Saxena', 1280, 959),
   photo(29, 'A snow-covered Himalayan valley below Everest.', 'Khumbu, after snow', 'Go Wild'),
+  photo(28, 'A stream running through green forest under a blue sky.', 'Green valley', 'Jerry Adney'),
+  photo('hills-fog', 'An orange sunrise over dark hills, with fog filling the valleys between them.', 'Sunrise over the fog', 'Girish Dalvi', 1280, 853),
   photo(54, 'A rocky hilltop under white clouds.', 'Summit', 'Nicholas Swanson'),
-  photo(57, 'An empty street of brick buildings with fire escapes.', 'Early street', 'Nicholas Swanson'),
-  photo(58, 'A lighthouse on a rocky headland, in black and white.', 'The lighthouse', 'Tony Naccarato'),
   photo(106, 'Pink blossoms against a pale sky.', 'Blossom', 'Arvee Marie'),
   photo(152, 'Purple petunias in bloom.', 'Petunias', 'Steven Spassov'),
   photo(200, 'A highland cow on a sandy hillside.', 'Highlander', 'Elias Carlsson')
