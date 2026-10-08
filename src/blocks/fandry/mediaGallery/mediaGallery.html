@@ -4,6 +4,7 @@
     loading={loading}
     loading-count={loadingCount}
     interactive
+    messages={messages}
     exportparts="base, item, button, frame, image, caption, placeholder"
     onselect={handleSelect}
   ></fandry-media-grid>
@@ -16,7 +17,7 @@
     index={currentIndex}
     open={viewerOpen}
     messages={messages}
-    exportparts="base: viewer, backdrop, panel, toolbar, indicator, close-button, stage, previous, next, disabled, image: viewer-image, caption: viewer-caption"
+    exportparts="base: viewer, backdrop, panel, toolbar, status, close-button, stage, previous, next, disabled, image: viewer-image, caption: viewer-caption"
     onchange={handleViewerChange}
     ontoggle={handleViewerToggle}
   ></fandry-media-viewer>

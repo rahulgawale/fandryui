@@ -3,6 +3,19 @@ import Base from 'fandry/base';
 import { isImage } from 'fandry/mediaItem';
 import type { FdMediaItem } from 'fandry/mediaItem';
 
+/** Everything the grid says; see `messages`. */
+export interface FdMediaGridMessages {
+  /**
+   * The name of a tile's button when its picture has no alt text (a
+   * decorative one) and no caption: the button would otherwise have none.
+   */
+  open: (current: number, total: number) => string;
+}
+
+export const DEFAULT_MEDIA_GRID_MESSAGES: FdMediaGridMessages = {
+  open: (current, total) => `Open picture ${current} of ${total}`
+};
+
 interface FdMediaTile {
   key: string;
   index: number;
@@ -15,6 +28,7 @@ interface FdMediaTile {
   hasCaption: boolean;
   loading: 'lazy' | 'eager';
   frameClass: string;
+  buttonProps: Record<string, unknown>;
 }
 
 /**
@@ -37,10 +51,18 @@ export default class FdMediaGrid extends Base {
   /** Each tile is a button that reports `select`. Without it, the tiles are pictures. */
   @api interactive = false;
 
+  /** Replaces any of DEFAULT_MEDIA_GRID_MESSAGES, e.g. to translate them. */
+  @api messages: Partial<FdMediaGridMessages> = {};
+
   // The ids whose picture has arrived (or failed): their placeholder stops.
   private loaded: Record<string, boolean> = {};
 
+  get text(): FdMediaGridMessages {
+    return { ...DEFAULT_MEDIA_GRID_MESSAGES, ...this.messages };
+  }
+
   get tiles(): FdMediaTile[] {
+    const total = this.items?.length ?? 0;
     return (this.items ?? []).map((item, index) => {
       // Without a thumbnail the grid takes the full file, so the browser
       // may as well pick the right size of it.
@@ -56,7 +78,12 @@ export default class FdMediaGrid extends Base {
         caption: item.caption ?? '',
         hasCaption: !!item.caption,
         loading: item.loading ?? 'lazy',
-        frameClass: this.loaded[item.id] ? 'frame frame--loaded' : 'frame'
+        frameClass: this.loaded[item.id] ? 'frame frame--loaded' : 'frame',
+        // A picture's alt text names its button; without one, the caption or `messages.open` does.
+        buttonProps: {
+          tabIndex: 0,
+          ariaLabel: item.alt ? null : item.caption || this.text.open(index + 1, total)
+        }
       };
     });
   }

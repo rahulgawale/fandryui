@@ -11,8 +11,14 @@ export interface FdMediaViewerMessages {
   close: string;
   previous: string;
   next: string;
-  /** Where the viewer is, e.g. "3 of 12". */
+  /** Where the viewer is, shown at the top, e.g. "3 of 12". */
   position: (current: number, total: number) => string;
+  /**
+   * What a screen reader hears on moving to an item: where it is and what
+   * it shows, e.g. "3 of 12: The Taj Mahal at dawn". `label` is the item's
+   * caption, or its alt text when it has none.
+   */
+  announcement: (current: number, total: number, label: string) => string;
 }
 
 export const DEFAULT_MEDIA_VIEWER_MESSAGES: FdMediaViewerMessages = {
@@ -20,7 +26,8 @@ export const DEFAULT_MEDIA_VIEWER_MESSAGES: FdMediaViewerMessages = {
   close: 'Close',
   previous: 'Previous',
   next: 'Next',
-  position: (current, total) => `${current} of ${total}`
+  position: (current, total) => `${current} of ${total}`,
+  announcement: (current, total, label) => (label ? `${current} of ${total}: ${label}` : `${current} of ${total}`)
 };
 
 interface FdMediaSlide {
@@ -41,13 +48,16 @@ interface FdMediaSlide {
 /* How much a drag past the first or last item still moves the stage. */
 const EDGE_RESISTANCE = 0.3;
 const KEY_ZOOM = 1.5;
+/* How far an arrow key moves a zoomed picture, as a share of the stage. */
+const KEY_PAN = 0.1;
 const WHEEL_ZOOM = 0.01;
 
 /**
  * The media-gallery block's viewer: one item at a time, full screen, in a
- * fandry-dialog. Previous / Next, the arrow keys and a swipe move through
- * `items`; a pinch, a double tap, Ctrl + the wheel or + / - zoom. It knows
- * nothing of a grid, and works on its own:
+ * fandry-dialog. Previous / Next, the arrow keys, Page Up / Page Down and a
+ * swipe move through `items`; a pinch, a double tap, Ctrl + the wheel or
+ * + / - zoom, and while zoomed the arrow keys move the picture instead. It
+ * knows nothing of a grid, and works on its own:
  *
  *   <fandry-media-viewer items={photos} open={viewing} onchange={...} ontoggle={...}>
  *
@@ -59,7 +69,23 @@ const WHEEL_ZOOM = 0.01;
  */
 export default class FdMediaViewer extends Base {
   @api items: FdMediaItem[] = [];
-  @api index = 0;
+
+  private _index = 0;
+
+  /** The item shown. Set from outside, it shows that item unzoomed, without a slide. */
+  @api
+  get index(): number {
+    return this._index;
+  }
+
+  set index(value: number) {
+    const next = Number(value) || 0;
+    if (next !== this._index) {
+      this.settleFrom = '';
+      this.gestures.reset();
+    }
+    this._index = next;
+  }
 
   private _open = false;
 
@@ -110,7 +136,7 @@ export default class FdMediaViewer extends Base {
   }
 
   get currentIndex(): number {
-    return Math.min(Math.max(Number(this.index) || 0, 0), Math.max(this.count - 1, 0));
+    return Math.min(Math.max(this._index, 0), Math.max(this.count - 1, 0));
   }
 
   get current(): FdMediaItem | undefined {
@@ -132,6 +158,12 @@ export default class FdMediaViewer extends Base {
 
   get positionText(): string {
     return this.count ? this.text.position(this.currentIndex + 1, this.count) : '';
+  }
+
+  get announcement(): string {
+    const item = this.current;
+    if (!item) return '';
+    return this.text.announcement(this.currentIndex + 1, this.count, item.caption || item.alt || '');
   }
 
   get caption(): string {
@@ -238,7 +270,7 @@ export default class FdMediaViewer extends Base {
     const direction = target > this.currentIndex ? 1 : -1;
     this.settleFrom = `calc(${direction * 100}% + ${dragged}px)`;
     this.settleRun += 1;
-    this.index = target;
+    this._index = target;
     this.gestures.reset();
     this.redraw();
     this.dispatchEvent(
@@ -273,9 +305,17 @@ export default class FdMediaViewer extends Base {
   }
 
   handleKeydown(event: KeyboardEvent) {
+    const step = KEY_PAN * (this.stage?.clientWidth ?? 0);
+    /* While zoomed the arrow keys look around the picture, as a swipe pans
+       it; Page Up / Page Down and the buttons still move between items. */
+    const zoomed = this.gestures.zoomed;
     const actions: Record<string, () => void> = {
-      ArrowLeft: () => this.handlePrevious(),
-      ArrowRight: () => this.handleNext(),
+      ArrowLeft: () => (zoomed ? this.panBy(step, 0) : this.handlePrevious()),
+      ArrowRight: () => (zoomed ? this.panBy(-step, 0) : this.handleNext()),
+      ArrowUp: () => zoomed && this.panBy(0, step),
+      ArrowDown: () => zoomed && this.panBy(0, -step),
+      PageUp: () => this.handlePrevious(),
+      PageDown: () => this.handleNext(),
       Home: () => this.goTo(0),
       End: () => this.goTo(this.count - 1),
       '+': () => this.zoomBy(KEY_ZOOM),
@@ -299,7 +339,7 @@ export default class FdMediaViewer extends Base {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     const stage = this.stage;
     if (!stage) return;
-    if (!this.gestures.active) this.gestures.measure(stage.getBoundingClientRect());
+    if (!this.gestures.active) this.measure();
     stage.setPointerCapture?.(event.pointerId);
     this.gestures.down(event.pointerId, event.clientX, event.clientY, event.timeStamp);
     this.settleFrom = '';
@@ -347,11 +387,32 @@ export default class FdMediaViewer extends Base {
   }
 
   private zoomBy(factor: number, clientX?: number, clientY?: number) {
-    const stage = this.stage;
-    if (!stage) return;
-    this.gestures.measure(stage.getBoundingClientRect());
+    if (!this.measure()) return;
     this.gestures.zoomBy(factor, clientX, clientY);
     this.redraw();
+  }
+
+  private panBy(dx: number, dy: number) {
+    if (!this.measure()) return;
+    this.gestures.panBy(dx, dy);
+    this.redraw();
+  }
+
+  /* The stage's box, and the picture's as drawn: `object-fit: contain`
+     letterboxes it inside its own box (the slide, less its padding), and
+     how far it can pan depends on the picture, not the box. */
+  private measure(): boolean {
+    const stage = this.stage;
+    if (!stage) return false;
+    const rect = stage.getBoundingClientRect();
+    const img = this.template.querySelector('.slide--current img') as HTMLImageElement | null;
+    const boxWidth = img?.clientWidth || rect.width;
+    const boxHeight = img?.clientHeight || rect.height;
+    const naturalWidth = img?.naturalWidth || this.current?.width || 0;
+    const naturalHeight = img?.naturalHeight || this.current?.height || 0;
+    const fit = naturalWidth && naturalHeight ? Math.min(boxWidth / naturalWidth, boxHeight / naturalHeight) : 0;
+    this.gestures.measure(rect, fit ? { width: naturalWidth * fit, height: naturalHeight * fit } : { width: boxWidth, height: boxHeight });
+    return true;
   }
 
   private resetZoom() {

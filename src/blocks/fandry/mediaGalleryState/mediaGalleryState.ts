@@ -1,6 +1,7 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
 import type { FdMediaItem } from 'fandry/mediaItem';
+import type { FdMediaGridMessages } from 'fandry/mediaGrid';
 import type { FdMediaViewerMessages } from 'fandry/mediaViewer';
 
 /**
@@ -32,8 +33,11 @@ export default class FdMediaGalleryState extends Base {
   @api loading = false;
   @api loadingCount = 8;
 
-  /** Passed to fandry-media-viewer: any of DEFAULT_MEDIA_VIEWER_MESSAGES. */
-  @api messages: Partial<FdMediaViewerMessages> = {};
+  /**
+   * Passed to the grid and the viewer: any of DEFAULT_MEDIA_VIEWER_MESSAGES
+   * (fandry/mediaViewer) and DEFAULT_MEDIA_GRID_MESSAGES (fandry/mediaGrid).
+   */
+  @api messages: Partial<FdMediaViewerMessages & FdMediaGridMessages> = {};
 
   viewerOpen = false;
 

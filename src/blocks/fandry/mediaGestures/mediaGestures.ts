@@ -10,9 +10,12 @@
  * - a double tap (or double click) zooms in at that point, or back out
  * - `zoomBy()` zooms around the middle, for the wheel and the keyboard
  *
+ * - `panBy()` moves a zoomed picture, for the keyboard
+ *
  * Positions are measured from the middle of the stage, which is where the
  * picture's own middle is: zoom is `translate(x, y) scale(scale)` around
- * that point. The picture can't be panned past its own edges.
+ * that point. A zoomed picture can't be panned past its own edges, and one
+ * smaller than the stage on a side stays centred on that side.
  */
 export interface FdMediaZoom {
   scale: number;
@@ -55,6 +58,10 @@ export class FdMediaGestures {
 
   private width = 0;
   private height = 0;
+  // The picture as drawn at normal size, which `object-fit: contain` can
+  // make smaller than the stage on one side.
+  private pictureWidth = 0;
+  private pictureHeight = 0;
   private left = 0;
   private top = 0;
   private pointers = new Map<number, Point>();
@@ -62,18 +69,30 @@ export class FdMediaGestures {
   private pinch: { distance: number; middle: Point; zoom: FdMediaZoom } | null = null;
   private axis: 'x' | 'y' | null = null;
   private moved = false;
+  // Two fingers were down at some point in this gesture: what is left of it
+  // is never a tap.
+  private pinched = false;
   private lastTap: { point: Point; time: number } | null = null;
 
   get zoomed(): boolean {
     return this.zoom.scale > 1;
   }
 
-  /** The stage's box, from getBoundingClientRect(), before each gesture. */
-  measure(rect: { width: number; height: number; left: number; top: number }) {
+  /**
+   * The stage's box, from getBoundingClientRect(), before each gesture, and
+   * the size the picture is drawn at inside it (the stage's own size when
+   * left out).
+   */
+  measure(
+    rect: { width: number; height: number; left: number; top: number },
+    picture: { width: number; height: number } = rect
+  ) {
     this.width = rect.width;
     this.height = rect.height;
     this.left = rect.left;
     this.top = rect.top;
+    this.pictureWidth = picture.width;
+    this.pictureHeight = picture.height;
   }
 
   down(id: number, clientX: number, clientY: number, time: number) {
@@ -86,6 +105,8 @@ export class FdMediaGestures {
       this.pinch = { distance: distance(a, b) || 1, middle: this.middle(), zoom: this.zoom };
       this.dragX = 0;
       this.moved = true;
+      this.pinched = true;
+      this.lastTap = null;
     }
   }
 
@@ -131,11 +152,13 @@ export class FdMediaGestures {
     this.active = false;
     this.pinch = null;
     const start = this.start;
+    const pinched = this.pinched;
     this.start = null;
+    this.pinched = false;
     if (this.zoom.scale < SNAP_SCALE) this.zoom = NO_ZOOM;
     if (!start) return null;
 
-    if (!this.moved) {
+    if (!this.moved && !pinched) {
       this.tap(start.point, time);
       return null;
     }
@@ -153,6 +176,7 @@ export class FdMediaGestures {
     if (this.pointers.size) return;
     this.active = false;
     this.pinch = null;
+    this.pinched = false;
     this.start = null;
     this.dragX = 0;
   }
@@ -164,12 +188,19 @@ export class FdMediaGestures {
     this.zoom = zoom.scale < SNAP_SCALE ? NO_ZOOM : zoom;
   }
 
+  /** Moves a zoomed picture by (dx, dy), within its edges. */
+  panBy(dx: number, dy: number) {
+    if (!this.zoomed) return;
+    this.zoom = this.clamp({ scale: this.zoom.scale, x: this.zoom.x + dx, y: this.zoom.y + dy });
+  }
+
   reset() {
     this.zoom = NO_ZOOM;
     this.dragX = 0;
     this.active = false;
     this.pointers.clear();
     this.pinch = null;
+    this.pinched = false;
     this.start = null;
     this.lastTap = null;
   }
@@ -201,10 +232,13 @@ export class FdMediaGestures {
     return this.clamp({ scale: next, x: to.x - spotX * next, y: to.y - spotY * next });
   }
 
+  /* The picture's edges may not come inside the stage's: a side that is
+     bigger than the stage once zoomed can move until its edge meets the
+     stage's; a side that still fits stays in the middle. */
   private clamp(zoom: FdMediaZoom): FdMediaZoom {
     const scale = clampNumber(zoom.scale, 1, MAX_SCALE);
-    const maxX = (this.width * (scale - 1)) / 2;
-    const maxY = (this.height * (scale - 1)) / 2;
+    const maxX = Math.max(0, (this.pictureWidth * scale - this.width) / 2);
+    const maxY = Math.max(0, (this.pictureHeight * scale - this.height) / 2);
     return { scale, x: clampNumber(zoom.x, -maxX, maxX), y: clampNumber(zoom.y, -maxY, maxY) };
   }
 

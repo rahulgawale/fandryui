@@ -127,6 +127,41 @@ describe('FdMediaGestures', () => {
       expect(gestures.zoom.x).toBeCloseTo(x + 20);
     });
 
+    it('keeps a letterboxed picture from being panned past its own edges', () => {
+      // A wide picture drawn 400 x 200 in the 400 x 300 stage.
+      const gestures = new FdMediaGestures();
+      gestures.measure({ width: 400, height: 300, left: 0, top: 0 }, { width: 400, height: 200 });
+      gestures.zoomBy(2);
+      gestures.panBy(1000, 1000);
+      // 800 x 400 at 2x: 200 to spare across, 50 down.
+      expect(gestures.zoom).toEqual({ scale: 2, x: 200, y: 50 });
+      gestures.zoomBy(0.7);
+      // At 1.4x it is 280 tall, inside the stage: centred, not movable up or down.
+      expect(gestures.zoom.y).toBe(0);
+    });
+
+    it('panBy() moves only a zoomed picture', () => {
+      const gestures = stage();
+      gestures.panBy(50, 0);
+      expect(gestures.zoom).toEqual(NO_ZOOM);
+      gestures.zoomBy(2);
+      gestures.panBy(-50, 20);
+      expect(gestures.zoom).toEqual({ scale: 2, x: -50, y: 20 });
+    });
+
+    it('does not take a tap after a pinch for half of a double tap', () => {
+      const gestures = stage();
+      gestures.down(1, 150, 150, 0);
+      gestures.down(2, 250, 150, 0);
+      gestures.move(2, 350, 150);
+      gestures.up(2, 100);
+      gestures.up(1, 120);
+      const zoom = gestures.zoom;
+      expect(zoom.scale).toBeGreaterThan(1);
+      tap(gestures, 150, 150, 200);
+      expect(gestures.zoom).toEqual(zoom);
+    });
+
     it('reset() puts everything back', () => {
       const gestures = stage();
       gestures.zoomBy(3);

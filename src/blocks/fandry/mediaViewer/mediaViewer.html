@@ -10,10 +10,15 @@
     <template lwc:if={hasOpened}>
       <div class="viewer" part="base">
         <div class="toolbar" part="toolbar">
-          <!-- The live region is a plain box: fandry-text's host has no box of its own to announce from. -->
-          <div class="indicator" part="indicator" aria-live="polite" aria-atomic="true">
+          <div class="status" part="status">
             <fandry-text as="span" size="sm" variant="muted">{positionText}</fandry-text>
           </div>
+          <!--
+            What a screen reader hears on moving: where it is and what it shows,
+            which the "3 of 12" above doesn't say. A plain box: fandry-text's host
+            has no box of its own to announce from.
+          -->
+          <div class="visually-hidden" aria-live="polite" aria-atomic="true">{announcement}</div>
           <fandry-button
             class="icon-button close"
             variant="ghost"

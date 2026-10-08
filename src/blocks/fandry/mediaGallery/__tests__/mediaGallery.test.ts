@@ -2,6 +2,7 @@ import { createElement } from 'lwc';
 import FdMediaGallery from '../mediaGallery';
 import FdMediaGrid from 'fandry/mediaGrid';
 import FdMediaViewer from 'fandry/mediaViewer';
+import CustomGalleryHarness from './customGalleryHarness';
 
 const ITEMS = [
   { id: 'a', src: '/a.jpg', thumbnail: '/a-sm.jpg', alt: 'A lake', caption: 'The lake' },
@@ -116,6 +117,24 @@ describe('fandry-media-grid', () => {
     expect(onSelect.mock.calls[0][0].detail).toEqual({ index: 1, item: ITEMS[1] });
   });
 
+  it('names a tile whose picture has no alt text by its caption, or by messages.open', async () => {
+    const items = [
+      { id: 'a', src: '/a.jpg', alt: '', caption: 'The lake' },
+      { id: 'b', src: '/b.jpg', alt: '' },
+      { id: 'c', src: '/c.jpg', alt: 'A peak' }
+    ];
+    const grid = mount('fandry-media-grid', FdMediaGrid, { items, interactive: true });
+    await settle();
+    expect(tiles(grid).map((button) => button.getAttribute('aria-label'))).toEqual([
+      'The lake',
+      'Open picture 2 of 3',
+      null
+    ]);
+    grid.messages = { open: (current: number, total: number) => `Photo ${current}/${total}` };
+    await settle();
+    expect(tiles(grid)[1].getAttribute('aria-label')).toBe('Photo 2/3');
+  });
+
   it('focusItem() focuses a tile', async () => {
     const grid = mount('fandry-media-grid', FdMediaGrid, { interactive: true });
     await settle();
@@ -138,7 +157,7 @@ describe('fandry-media-viewer', () => {
     expect(root(viewer).querySelector('.slide--previous img')!.getAttribute('src')).toBe('/a.jpg');
     expect(root(viewer).querySelector('.slide--next img')!.getAttribute('src')).toBe('/c.jpg');
     expect(root(viewer).querySelector('.slide--next')!.getAttribute('aria-hidden')).toBe('true');
-    expect(root(viewer).querySelector('.indicator')!.textContent).toBe('2 of 3');
+    expect(root(viewer).querySelector('.status')!.textContent).toBe('2 of 3');
   });
 
   it('fetches no picture until it is first opened, and keeps them after it closes', async () => {
@@ -241,9 +260,118 @@ describe('fandry-media-viewer', () => {
     await settle();
     expect(currentImage(viewer)!.hasAttribute('style')).toBe(false);
     key(viewer, '+');
+    key(viewer, 'PageDown');
+    await settle();
+    expect(viewer.index).toBe(1);
+    expect(currentImage(viewer)!.hasAttribute('style')).toBe(false);
+  });
+
+  it('while zoomed, the arrow keys look around the picture and Page Up / Page Down still move', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true, index: 1 });
+    await settle();
+    key(viewer, '+');
+    key(viewer, 'ArrowRight');
+    key(viewer, 'ArrowLeft');
+    key(viewer, 'ArrowUp');
+    expect(viewer.index).toBe(1);
+    key(viewer, 'PageUp');
+    expect(viewer.index).toBe(0);
+  });
+
+  it('shows an item set from outside unzoomed, even while zoomed', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
+    await settle();
+    key(viewer, '+');
+    await settle();
+    expect(currentImage(viewer)!.getAttribute('style')).toContain('scale');
+    viewer.index = 2;
+    await settle();
+    expect(currentImage(viewer)!.getAttribute('src')).toBe('/c.jpg');
+    expect(currentImage(viewer)!.hasAttribute('style')).toBe(false);
+    // Not a slide: nothing to animate from.
+    expect(root(viewer).querySelector('.track')!.className).toBe('track');
+  });
+
+  it('tells a screen reader where it is and what it shows', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
+    await settle();
+    const live = root(viewer).querySelector('[aria-live]') as HTMLElement;
+    // The caption when there is one, the alt text otherwise.
+    expect(live.textContent).toBe('1 of 3: The lake');
     key(viewer, 'ArrowRight');
     await settle();
+    expect(live.textContent).toBe('2 of 3: A road');
+    expect(root(viewer).querySelector('.status')!.hasAttribute('aria-live')).toBe(false);
+  });
+
+  it('slides with alternating animation names, so each move restarts it', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
+    await settle();
+    const track = () => root(viewer).querySelector('.track')!.className;
+    key(viewer, 'ArrowRight');
+    await settle();
+    const first = track();
+    key(viewer, 'ArrowRight');
+    await settle();
+    expect(first).toMatch(/track--settle-[ab]/);
+    expect(track()).toMatch(/track--settle-[ab]/);
+    expect(track()).not.toBe(first);
+  });
+
+  it('slides back with resistance when a drag goes past the last item', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true, index: 2 });
+    await settle();
+    const stage = root(viewer).querySelector('.stage')!;
+    pointer(stage, 'pointerdown', { clientX: 300, time: 0 });
+    pointer(stage, 'pointermove', { clientX: 200 });
+    await settle();
+    // Nothing after the last item: the stage moves less than the finger.
+    expect(root(viewer).querySelector('.track')!.getAttribute('style')).toContain('translate: -30px 0');
+    pointer(stage, 'pointerup', { clientX: 200, time: 200 });
+    await settle();
+    expect(viewer.index).toBe(2);
+    expect(root(viewer).querySelector('.track')!.getAttribute('style')).toContain('--_fd-slide-x: -30px');
+  });
+
+  it('lets go of a drag the browser cancels', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
+    await settle();
+    const stage = root(viewer).querySelector('.stage')!;
+    pointer(stage, 'pointerdown', { clientX: 300, time: 0 });
+    pointer(stage, 'pointermove', { clientX: 200 });
+    pointer(stage, 'pointercancel', { clientX: 200 });
+    await settle();
+    expect(viewer.index).toBe(0);
+    expect(root(viewer).querySelector('.track')!.hasAttribute('style')).toBe(false);
+  });
+
+  it('zooms with Ctrl + the wheel and leaves a plain wheel alone', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
+    await settle();
+    const stage = root(viewer).querySelector('.stage')!;
+    const plain = new WheelEvent('wheel', { deltaY: -100, bubbles: true, cancelable: true });
+    stage.dispatchEvent(plain);
+    await settle();
+    expect(plain.defaultPrevented).toBe(false);
     expect(currentImage(viewer)!.hasAttribute('style')).toBe(false);
+    const pinch = new WheelEvent('wheel', { deltaY: -100, ctrlKey: true, bubbles: true, cancelable: true });
+    stage.dispatchEvent(pinch);
+    await settle();
+    expect(pinch.defaultPrevented).toBe(true);
+    expect(currentImage(viewer)!.getAttribute('style')).toContain('scale');
+  });
+
+  it('keeps working when items are replaced or emptied while open', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true, index: 2 });
+    await settle();
+    viewer.items = ITEMS.slice(0, 2);
+    await settle();
+    expect(currentImage(viewer)!.getAttribute('src')).toBe('/b.jpg');
+    expect(root(viewer).querySelector('.status')!.textContent).toBe('2 of 2');
+    viewer.items = [];
+    await settle();
+    expect(currentImage(viewer)).toBeNull();
+    expect(root(viewer).querySelector('.status')!.textContent).toBe('');
   });
 
   it('says what messages tell it to', async () => {
@@ -254,7 +382,7 @@ describe('fandry-media-viewer', () => {
     await settle();
     expect(nativeButton(navButton(viewer, 'close')).getAttribute('aria-label')).toBe('Fermer');
     expect(nativeButton(navButton(viewer, 'next')).getAttribute('aria-label')).toBe('Next');
-    expect(root(viewer).querySelector('.indicator')!.textContent).toBe('1/3');
+    expect(root(viewer).querySelector('.status')!.textContent).toBe('1/3');
   });
 
   it('shows the caption only for an item that has one', async () => {
@@ -341,6 +469,34 @@ describe('fandry-media-gallery', () => {
     gallery.show(0);
     await settle();
     expect(root(dialogOf(viewerOf(gallery))).querySelector('[role="dialog"]')!.getAttribute('aria-label')).toBe('Photos');
+  });
+
+  it('does not open on show() when there is nothing to show', async () => {
+    const gallery = mount('fandry-media-gallery', FdMediaGallery, { items: [] });
+    const onToggle = jest.fn();
+    gallery.addEventListener('toggle', onToggle);
+    await settle();
+    gallery.show();
+    await settle();
+    expect(viewerOf(gallery).open).toBe(false);
+    expect(onToggle).not.toHaveBeenCalled();
+  });
+
+  it('in a layout of its own, opens from a data-index element and hands focus back to it', async () => {
+    const custom = mount('custom-gallery-harness', CustomGalleryHarness);
+    await settle();
+    const main = root(custom).querySelector('fandry-button.main') as Host;
+    nativeButton(main).click();
+    await settle();
+    const viewer = root(custom).querySelector('fandry-media-viewer') as Host;
+    expect(viewer.open).toBe(true);
+    key(viewer, 'End');
+    await settle();
+    expect(custom.index).toBe(2);
+    expect(main.getAttribute('data-index')).toBe('2');
+    nativeButton(navButton(viewer, 'close')).click();
+    await settle();
+    expect(root(custom).activeElement).toBe(main);
   });
 
   it('never changes items', async () => {

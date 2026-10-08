@@ -150,3 +150,8 @@ code {
 .price {
   font-weight: var(--fd-font-weight-semibold);
 }
+
+/* The demo's Gap control, the way a site sets it: through the grid's part. */
+.demo-gallery::part(base) {
+  gap: var(--demo-gap);
+}

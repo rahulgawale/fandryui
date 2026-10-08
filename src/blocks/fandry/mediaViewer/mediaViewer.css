@@ -39,8 +39,20 @@
   padding: var(--_fd-space-2) var(--_fd-space-2) var(--_fd-space-2) var(--_fd-space-4);
 }
 
-.indicator {
+.status {
   font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .body {
@@ -95,7 +107,7 @@
   object-fit: contain;
   transition: translate var(--_fd-duration-normal) var(--_fd-ease-standard),
     scale var(--_fd-duration-normal) var(--_fd-ease-standard);
-  cursor: zoom-in;
+  /* No zoom-in cursor: a single click doesn't zoom, a double click does. */
   -webkit-user-drag: none;
 }
 
