@@ -6,7 +6,7 @@ import { slotHasContent } from 'fandry/textSlots';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
-// itself controls -- `id` is reserved because fandry-label's `html-for="input"`
+// itself controls -- `id` is reserved because the label's `for="input"`
 // association depends on it staying put (same reasoning as fandry-select's
 // reserved `id`). `aria-describedby` has no plain string IDL property (see
 // select.ts's fuller note) -- only the newer `ariaDescribedByElements`
@@ -60,6 +60,17 @@ export default class Input extends Base {
 
   get hasHelpText(): boolean {
     return !!this.helpText || !!this.textSlots['help-text'];
+  }
+
+  // null and undefined would otherwise show as the words "null"/"undefined".
+  get inputValue(): string {
+    return this.value ?? '';
+  }
+
+  // Only while there is help text: an empty description is still announced
+  // as one by some screen readers.
+  get describedBy(): string | null {
+    return this.hasHelpText ? 'help-text' : null;
   }
 
   get controlClasses() {

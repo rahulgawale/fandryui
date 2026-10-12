@@ -13,7 +13,7 @@ describe('text slots', () => {
   });
 
   it.each([
-    ['input', 'fandry-label'],
+    ['input', '.label'],
     ['input', '.help-text'],
     ['select', '.label'],
     ['select', '.help-text'],

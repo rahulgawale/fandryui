@@ -57,9 +57,13 @@
   color: hsl(var(--_fd-primary-foreground));
 }
 
-.button--default:hover:not(:disabled):not([aria-disabled='true']) {
-  filter: brightness(var(--_fd-hover-brightness));
-  box-shadow: var(--_fd-shadow-sm) hsla(var(--_fd-primary) / 0.3);
+/* Hover styles are for a pointer that can hover: a touch screen leaves
+   :hover on the last button tapped. */
+@media (hover: hover) {
+  .button--default:hover:not(:disabled):not([aria-disabled='true']) {
+    filter: brightness(var(--_fd-hover-brightness));
+    box-shadow: var(--_fd-shadow-sm) hsla(var(--_fd-primary) / 0.3);
+  }
 }
 
 .button--secondary {
@@ -68,9 +72,11 @@
   border-color: hsl(var(--_fd-border));
 }
 
-.button--secondary:hover:not(:disabled):not([aria-disabled='true']) {
-  background: hsl(var(--_fd-bg-muted));
-  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
+@media (hover: hover) {
+  .button--secondary:hover:not(:disabled):not([aria-disabled='true']) {
+    background: hsl(var(--_fd-bg-muted));
+    box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
+  }
 }
 
 .button--ghost {
@@ -79,14 +85,18 @@
   border-color: transparent;
 }
 
-.button--ghost:hover:not(:disabled):not([aria-disabled='true']) {
-  background: hsl(var(--_fd-bg-muted));
-  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-subtle));
+@media (hover: hover) {
+  .button--ghost:hover:not(:disabled):not([aria-disabled='true']) {
+    background: hsl(var(--_fd-bg-muted));
+    box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-subtle));
+  }
 }
 
 /* Focus */
 .button:focus-visible {
-  outline: none;
+  /* Transparent, not none: forced-colors mode drops the box-shadow ring
+     and paints this instead. */
+  outline: var(--_fd-ring-width) solid transparent;
   box-shadow: 0 0 0 var(--_fd-ring-width)
     hsl(var(--_fd-ring-color));
 }

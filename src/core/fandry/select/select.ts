@@ -44,6 +44,9 @@ interface RenderOption extends FlatOption {
 
 const TYPEAHEAD_RESET_MS = 500;
 
+// How far PageUp/PageDown move when the listbox can't be measured.
+const PAGE_SIZE_FALLBACK = 10;
+
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property (or ARIA wiring)
 // the combobox itself depends on to function.
@@ -99,6 +102,15 @@ export default class Select extends Base {
   private typeaheadBuffer = '';
   private typeaheadTimer: ReturnType<typeof setTimeout> | null = null;
 
+  // Set when the keyboard (or opening) moves the active option, so the next
+  // render scrolls it into view. Hovering never scrolls the list.
+  private scrollActiveIntoView = false;
+
+  // Where the pointer last was over the open listbox. See handleListboxMouseMove.
+  private pointerSeen = false;
+  private pointerX = 0;
+  private pointerY = 0;
+
   get hasLabel(): boolean {
     return !!this.label || !!this.textSlots['label'];
   }
@@ -119,6 +131,12 @@ export default class Select extends Base {
     return this.required ? 'true' : 'false';
   }
 
+  // Only while there is help text: an empty description is still announced
+  // as one by some screen readers.
+  get describedBy(): string | null {
+    return this.hasHelpText ? 'help-text' : null;
+  }
+
   get resolvedElementProps(): Record<string, unknown> {
     return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-select');
   }
@@ -136,7 +154,7 @@ export default class Select extends Base {
     this.options.forEach((option, index) => {
       flat.push({
         id: `option-${index}`,
-        value: option.value,
+        value: option.value ?? '',
         label: option.label,
         disabled: !!option.disabled,
         component: option.component,
@@ -148,7 +166,7 @@ export default class Select extends Base {
       group.options.forEach((option, optionIndex) => {
         flat.push({
           id: `option-${groupIndex}-${optionIndex}`,
-          value: option.value,
+          value: option.value ?? '',
           label: option.label,
           disabled: !!option.disabled,
           component: option.component,
@@ -160,8 +178,14 @@ export default class Select extends Base {
     return flat;
   }
 
+  /* No value is '' everywhere: a null `value`, or an option whose value is
+     null ("None"), means the same as '' however it is picked. */
+  private get currentValue(): string {
+    return this.value ?? '';
+  }
+
   private get selectedEntry(): FlatOption | undefined {
-    return this.flatOptions.find((entry) => entry.id !== 'option-placeholder' && entry.value === this.value);
+    return this.flatOptions.find((entry) => entry.id !== 'option-placeholder' && entry.value === this.currentValue);
   }
 
   get selectedLabel(): string {
@@ -186,12 +210,13 @@ export default class Select extends Base {
   private decorateOption(option: FdSelectOption, id: string): RenderOption {
     const disabled = !!option.disabled;
     // Like selectedEntry, the placeholder is never the chosen option, even while value is ''.
-    const selected = id !== 'option-placeholder' && option.value === this.value;
+    const value = option.value ?? '';
+    const selected = id !== 'option-placeholder' && value === this.currentValue;
     const active = id === this.activeOptionId;
 
     return {
       id,
-      value: option.value,
+      value,
       label: option.label,
       disabled,
       component: option.component,
@@ -239,30 +264,70 @@ export default class Select extends Base {
     return entries.length ? entries[entries.length - 1].id : null;
   }
 
-  private activeIdForCurrentValue(): string | null {
-    const match = this.flatOptions.find((option) => !option.disabled && option.value === this.value);
-    return match ? match.id : this.firstEnabledId();
+  private get enabledOptions(): FlatOption[] {
+    return this.flatOptions.filter((option) => !option.disabled);
   }
 
+  /* Opens on the selected option. With nothing selected ArrowUp starts
+     from the last option, everything else from the first. */
+  private show(fallback: 'first' | 'last' = 'first') {
+    const selected = this.enabledOptions.find((option) => option.value === this.currentValue);
+    this.open = true;
+    this.setActive(selected?.id ?? (fallback === 'last' ? this.lastEnabledId() : this.firstEnabledId()));
+  }
+
+  private hide() {
+    this.open = false;
+    this.activeOptionId = null;
+    this.scrollActiveIntoView = false;
+    this.pointerSeen = false;
+  }
+
+  private setActive(id: string | null) {
+    // Only a change renders again; a flag left set would scroll on some later, unrelated render.
+    if (id !== this.activeOptionId) {
+      this.scrollActiveIntoView = true;
+    }
+    this.activeOptionId = id;
+  }
+
+  // Stops at the first and last option rather than wrapping, like a native select.
   private moveActive(delta: number) {
-    const flat = this.flatOptions;
-    if (!flat.length) {
+    const enabled = this.enabledOptions;
+    if (!enabled.length) {
       return;
     }
 
-    let index = flat.findIndex((option) => option.id === this.activeOptionId);
+    const index = enabled.findIndex((option) => option.id === this.activeOptionId);
     if (index === -1) {
-      this.activeOptionId = delta > 0 ? this.firstEnabledId() : this.lastEnabledId();
+      this.setActive(delta > 0 ? this.firstEnabledId() : this.lastEnabledId());
       return;
     }
 
-    for (let step = 0; step < flat.length; step++) {
-      index = (index + delta + flat.length) % flat.length;
-      if (!flat[index].disabled) {
-        this.activeOptionId = flat[index].id;
-        return;
-      }
+    this.setActive(enabled[Math.min(Math.max(index + delta, 0), enabled.length - 1)].id);
+  }
+
+  // How many options fit in the listbox: one PageUp/PageDown.
+  private get pageSize(): number {
+    const listbox = this.template.querySelector('.listbox') as HTMLElement | null;
+    const option = this.template.querySelector('.option') as HTMLElement | null;
+    if (!listbox?.clientHeight || !option?.offsetHeight) {
+      return PAGE_SIZE_FALLBACK;
     }
+
+    return Math.max(1, Math.floor(listbox.clientHeight / option.offsetHeight) - 1);
+  }
+
+  // ArrowLeft/ArrowRight on a closed select: the previous or next option, without opening.
+  private stepValue(delta: number) {
+    const enabled = this.enabledOptions;
+    if (!enabled.length) {
+      return;
+    }
+
+    const index = enabled.findIndex((option) => option.value === this.currentValue);
+    const next = index === -1 ? (delta > 0 ? 0 : enabled.length - 1) : Math.min(Math.max(index + delta, 0), enabled.length - 1);
+    this.selectValue(enabled[next].value);
   }
 
   private commitActive() {
@@ -270,16 +335,14 @@ export default class Select extends Base {
     if (entry && !entry.disabled) {
       this.selectValue(entry.value);
     } else {
-      this.open = false;
-      this.activeOptionId = null;
+      this.hide();
     }
   }
 
   private selectValue(value: string) {
-    const changed = this.value !== value;
+    const changed = this.currentValue !== value;
     this.value = value;
-    this.open = false;
-    this.activeOptionId = null;
+    this.hide();
 
     if (changed) {
       this.dispatchEvent(
@@ -298,16 +361,24 @@ export default class Select extends Base {
 
     this.typeaheadBuffer += char.toLowerCase();
 
+    /* One letter pressed again and again steps through the options that
+       start with it. Anything longer is a word being typed, so the option
+       it already found stays while it still matches. */
+    const search = this.typeaheadBuffer;
+    const repeated = [...search].every((letter) => letter === search[0]);
+    const term = repeated ? search[0] : search;
+
     const flat = this.flatOptions;
     const anchor = this.open
       ? flat.findIndex((option) => option.id === this.activeOptionId)
-      : flat.findIndex((option) => option.value === this.value);
-    const ordered = [...flat.slice(anchor + 1), ...flat.slice(0, anchor + 1)];
-    const match = ordered.find((option) => !option.disabled && option.label.toLowerCase().startsWith(this.typeaheadBuffer));
+      : flat.findIndex((option) => option.value === this.currentValue);
+    const from = repeated ? anchor + 1 : Math.max(anchor, 0);
+    const ordered = [...flat.slice(from), ...flat.slice(0, from)];
+    const match = ordered.find((option) => !option.disabled && option.label.toLowerCase().startsWith(term));
 
     if (match) {
       if (this.open) {
-        this.activeOptionId = match.id;
+        this.setActive(match.id);
       } else {
         this.selectValue(match.value);
       }
@@ -325,20 +396,85 @@ export default class Select extends Base {
     (this.template.querySelector('.trigger') as HTMLElement | null)?.focus();
   }
 
+  renderedCallback() {
+    if (!this.scrollActiveIntoView) {
+      return;
+    }
+
+    this.scrollActiveIntoView = false;
+    const id = this.activeOptionId;
+
+    /* A frame later: when this is the render that opens the listbox, the
+       popover has not put it on screen yet. */
+    requestAnimationFrame(() => {
+      const option = id ? this.template.querySelector(`[data-option-id="${id}"]`) : null;
+      option?.scrollIntoView?.({ block: 'nearest' });
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.typeaheadTimer) {
+      clearTimeout(this.typeaheadTimer);
+    }
+  }
+
   handleToggle = (event: CustomEvent<boolean>) => {
-    this.open = event.detail;
-    this.activeOptionId = this.open ? this.activeIdForCurrentValue() : null;
+    if (!event.detail) {
+      this.hide();
+      return;
+    }
+
+    this.show();
+    // Safari doesn't focus a button it clicks, and the keyboard is handled on the trigger.
+    this.focus();
   };
 
+  /* A label's click presses its button, which would open the listbox.
+     Clicking a label only moves focus to its field. A link or button
+     inside a slotted label keeps working, a fandry-link or fandry-button
+     too: theirs is found on the path, inside their own shadow root. */
+  handleLabelClick(event: MouseEvent) {
+    const path = event.composedPath();
+    const inLabel = path.slice(0, path.indexOf(event.currentTarget as EventTarget));
+    if (inLabel.some((node) => node instanceof HTMLAnchorElement || node instanceof HTMLButtonElement)) {
+      return;
+    }
+
+    event.preventDefault();
+    if (!this.disabled) {
+      this.focus();
+    }
+  }
+
+  // Focus leaving the trigger (Tab, another window) closes the listbox without choosing.
+  handleTriggerBlur() {
+    if (this.open) {
+      this.hide();
+    }
+  }
+
+  // Some browsers press a button on Space's keyup even after its keydown was handled.
+  handleTriggerKeyup(event: KeyboardEvent) {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  }
+
   handleTriggerKeydown = (event: KeyboardEvent) => {
+    // Space is a letter while a search is being typed ("new york").
+    if (event.key === ' ' && this.typeaheadBuffer) {
+      event.preventDefault();
+      this.typeahead(' ');
+      return;
+    }
+
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
         if (this.open) {
           this.moveActive(1);
         } else {
-          this.open = true;
-          this.activeOptionId = this.activeIdForCurrentValue();
+          this.show('first');
         }
         break;
 
@@ -347,22 +483,37 @@ export default class Select extends Base {
         if (this.open) {
           this.moveActive(-1);
         } else {
-          this.open = true;
-          this.activeOptionId = this.activeIdForCurrentValue();
+          this.show('last');
+        }
+        break;
+
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        if (!this.open) {
+          event.preventDefault();
+          this.stepValue(event.key === 'ArrowRight' ? 1 : -1);
         }
         break;
 
       case 'Home':
         if (this.open) {
           event.preventDefault();
-          this.activeOptionId = this.firstEnabledId();
+          this.setActive(this.firstEnabledId());
         }
         break;
 
       case 'End':
         if (this.open) {
           event.preventDefault();
-          this.activeOptionId = this.lastEnabledId();
+          this.setActive(this.lastEnabledId());
+        }
+        break;
+
+      case 'PageUp':
+      case 'PageDown':
+        if (this.open) {
+          event.preventDefault();
+          this.moveActive(event.key === 'PageDown' ? this.pageSize : -this.pageSize);
         }
         break;
 
@@ -372,13 +523,23 @@ export default class Select extends Base {
         if (this.open) {
           this.commitActive();
         } else {
-          this.open = true;
-          this.activeOptionId = this.activeIdForCurrentValue();
+          this.show();
+        }
+        break;
+
+      /* Closed here, and kept from going further, so Escape closes only
+         the listbox and not a dialog the select sits in as well. */
+      case 'Escape':
+        if (this.open) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.hide();
         }
         break;
 
       default:
-        if (event.key.length === 1 && /\S/.test(event.key)) {
+        // Ctrl/Cmd/Alt + a letter is a shortcut, not a search.
+        if (event.key.length === 1 && /\S/.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
           this.typeahead(event.key);
         }
     }
@@ -400,14 +561,25 @@ export default class Select extends Base {
     this.selectValue(target.dataset.value ?? '');
   };
 
-  handleOptionMouseEnter = (event: MouseEvent) => {
-    const target = event.currentTarget as HTMLElement;
-    if (target.getAttribute('aria-disabled') === 'true') {
+  /* The pointer makes an option active only by moving. When the keyboard
+     scrolls the list, another option slides under a pointer that is
+     resting there, and the browser reports that as mouse events too: at
+     the place the pointer already was. Those must not take the active
+     option back from the keyboard. */
+  handleListboxMouseMove(event: MouseEvent) {
+    const moved = this.pointerSeen && (event.clientX !== this.pointerX || event.clientY !== this.pointerY);
+    this.pointerSeen = true;
+    this.pointerX = event.clientX;
+    this.pointerY = event.clientY;
+    if (!moved) {
       return;
     }
 
-    this.activeOptionId = target.dataset.optionId ?? null;
-  };
+    const option = (event.target as Element).closest('[role="option"]') as HTMLElement | null;
+    if (option && option.getAttribute('aria-disabled') !== 'true') {
+      this.activeOptionId = option.dataset.optionId ?? null;
+    }
+  }
 
   get controlPart(): string {
     return partList('control', { disabled: this.disabled });

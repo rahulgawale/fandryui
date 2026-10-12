@@ -53,6 +53,7 @@
       "fandryuidemos/demoOptionRow": ["src/modules/fandryuidemos/demoOptionRow/demoOptionRow"],
       "fandryuidemos/demoComboboxCustom": ["src/modules/fandryuidemos/demoComboboxCustom/demoComboboxCustom"],
       "fandryuidemos/demoSelectCustom": ["src/modules/fandryuidemos/demoSelectCustom/demoSelectCustom"],
+      "fandryuidemos/demoSelectLong": ["src/modules/fandryuidemos/demoSelectLong/demoSelectLong"],
       "fandryuidemos/demoCommandCustom": ["src/modules/fandryuidemos/demoCommandCustom/demoCommandCustom"],
       "fandryuidemos/demoBreadcrumb": ["src/modules/fandryuidemos/demoBreadcrumb/demoBreadcrumb"],
       "fandryuidemos/demoButtonLoading": ["src/modules/fandryuidemos/demoButtonLoading/demoButtonLoading"],

@@ -681,13 +681,13 @@ get saveLabel() {
 }
 
 // aria-disabled, not disabled: disabling the focused button would drop
-// focus to the page. tabIndex: 0 is fandry-button's own default.
+// focus to the page. It keeps focus but ignores clicks, so handleSave
+// can't run twice. tabIndex: 0 is fandry-button's own default.
 get saveButtonProps() {
   return { tabIndex: 0, ariaDisabled: this.saving ? 'true' : null };
 }
 
 async handleSave() {
-  if (this.saving) return; // the button stays clickable while saving
   this.saving = true;
   try {
     await this.save();
@@ -790,7 +790,7 @@ fandry-button.rainbow::part(base)::after {
         type: 'boolean',
         default: 'false',
         description:
-          "Disables the button. A button that must keep focus (one that is saving) takes `element-props={ tabIndex: 0, ariaDisabled: 'true' }` instead: it looks the same and has the same `disabled` state."
+          "Disables the button. A button that must keep focus (one that is saving) takes `element-props={ tabIndex: 0, ariaDisabled: 'true' }` instead: it looks the same, has the same `disabled` state, and its clicks are ignored."
       },
       { name: 'type', type: "'button' | 'submit' | 'reset'", default: "'button'", description: 'Native button type.' }
     ],
@@ -1249,7 +1249,8 @@ fandry-select::part(option selected) {
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected.' },
       { name: 'options', type: '{ label, value, disabled?, component?, componentProps? }[]', default: '[]', description: 'Flat option list. An option\'s `component` (with `componentProps`) draws its own row instead of the label -- see the custom options example.' },
       { name: 'groups', type: '{ label, options }[]', default: '[]', description: 'Grouped option list (used instead of options).' },
-      { name: 'value', type: 'string', default: "''", description: 'Selected value.' },
+      { name: 'value', type: 'string', default: "''", description: 'Selected value. `\'\'` (or null) is no selection and shows the placeholder, unless an option has that value: give one `value: \'\'` to offer "None".' },
+      { name: 'change (event)', type: 'CustomEvent<string>', default: '—', description: 'Fires when the user picks a different value; `event.detail` is the new value. Not fired when `value` is set from code.' },
       { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
     ],
     code: `<fandry-select
@@ -1288,6 +1289,30 @@ planOptions = [
 //
 // On Salesforce this uses lwc:is: fandry-select's .js-meta.xml needs the
 // lightning__dynamicComponent capability (API 55+), which \`fandry add\` writes.`
+      },
+      {
+        title: 'A long list, with the keyboard',
+        demo: 'select-long',
+        code: `<!-- template -->
+<fandry-select label="Country" placeholder="Choose a country"
+  options={countryOptions} value={value} onchange={handleChange}></fandry-select>
+
+// component
+handleChange(event) {
+  this.value = event.detail;
+}
+
+// The list scrolls once it is taller than --fd-listbox-max-height, and
+// the option the keyboard is on is kept in view. Hovering never scrolls.
+//
+// Closed:  Enter, Space, ArrowDown or ArrowUp open the list
+//          ArrowLeft / ArrowRight choose the previous or next option
+//          typing chooses the option that starts with what was typed
+// Open:    ArrowUp / ArrowDown move, and stop at the first and last option
+//          Home / End, Page Up / Page Down move further
+//          typing moves to a match: "new z" finds New Zealand, and "s"
+//          pressed again steps through the options that start with s
+//          Enter or Space choose; Escape or Tab close without choosing`
       }
     ]
   },

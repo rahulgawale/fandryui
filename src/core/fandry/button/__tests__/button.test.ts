@@ -95,6 +95,37 @@ describe('fandry-button', () => {
     expect(button.getAttribute('part')).toBe('base default');
   });
 
+  it('stops the click of an aria-disabled button', () => {
+    const element = createElement('fandry-button', { is: FdButton });
+    element.elementProps = { tabIndex: 0, ariaDisabled: 'true' };
+    document.body.appendChild(element);
+
+    const handler = jest.fn();
+    element.addEventListener('click', handler);
+    element.shadowRoot!.querySelector('button')!.click();
+    expect(handler).not.toHaveBeenCalled();
+
+    element.elementProps = { tabIndex: 0 };
+    element.shadowRoot!.querySelector('button')!.click();
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('stops an onclick passed through elementProps too while aria-disabled', async () => {
+    const onclick = jest.fn();
+    const element = createElement('fandry-button', { is: FdButton });
+    element.elementProps = { tabIndex: 0, onclick };
+    document.body.appendChild(element);
+
+    const button = element.shadowRoot!.querySelector('button')!;
+    button.click();
+    expect(onclick).toHaveBeenCalledTimes(1);
+
+    element.elementProps = { tabIndex: 0, onclick, ariaDisabled: 'true' };
+    await Promise.resolve();
+    button.click();
+    expect(onclick).toHaveBeenCalledTimes(1);
+  });
+
   it('does not let elementProps clobber a library-controlled prop, and warns once about it', () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const element = createElement('fandry-button', { is: FdButton });

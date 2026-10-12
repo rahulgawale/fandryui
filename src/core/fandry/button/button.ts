@@ -45,7 +45,19 @@ export default class FdButton extends Base {
      saving) takes aria-disabled through elementProps instead of `disabled`;
      it looks and parts the same, so ::part(base disabled) reaches both. */
   get basePart(): string {
-    const ariaDisabled = String(this.elementProps?.ariaDisabled) === 'true';
-    return partList('base', { [this.variant || 'default']: true, disabled: this.disabled || ariaDisabled });
+    return partList('base', { [this.variant || 'default']: true, disabled: this.disabled || this.isAriaDisabled });
+  }
+
+  private get isAriaDisabled(): boolean {
+    return String(this.elementProps?.ariaDisabled) === 'true';
+  }
+
+  handleClick(event: MouseEvent) {
+    /* An aria-disabled button still takes focus and clicks, so the click
+       is stopped here, before it reaches a page's onclick. */
+    if (this.isAriaDisabled) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
   }
 }

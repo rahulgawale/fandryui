@@ -1,8 +1,11 @@
 <template>
   <div class="form-control" part="base">
-    <fandry-label exportparts="base: label, required" html-for="input" required={required} hidden={labelHidden}>
+    <label class="label" part="label" for="input" hidden={labelHidden}>
       <slot name="label" onslotchange={handleTextSlotChange}>{label}</slot>
-    </fandry-label>
+      <template if:true={required}>
+        <span class="required" part="required" aria-hidden="true">*</span>
+      </template>
+    </label>
 
     <div class={controlClasses} part={controlPart}>
       <span class="prefix" part="prefix">
@@ -15,12 +18,12 @@
         id="input"
         type={type}
         name={name}
-        value={value}
+        value={inputValue}
         placeholder={placeholder}
         disabled={disabled}
         readonly={readonly}
         required={required}
-        aria-describedby="help-text"
+        aria-describedby={describedBy}
         oninput={handleInput}
         onchange={handleChange}
         onfocus={handleFocus}
