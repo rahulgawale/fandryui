@@ -1,3 +1,10 @@
+## [0.19.7](https://github.com/rahulgawale/fandryui/compare/v0.19.6...v0.19.7) (2026-10-12)
+
+
+### Bug Fixes
+
+* harden button, input and select behavior and accessibility ([#106](https://github.com/rahulgawale/fandryui/issues/106)) ([8006368](https://github.com/rahulgawale/fandryui/commit/8006368f3c4b1bc5bf4fd099577fc31068ac4b0a))
+
 ## [0.19.6](https://github.com/rahulgawale/fandryui/compare/v0.19.5...v0.19.6) (2026-10-03)
 
 
