@@ -137,6 +137,13 @@ alert its `title` slot), with the prop as fallback. A slot must work
 without its prop: keep the wrapper rendered and `hidden` while empty,
 not behind `if:true={prop}`, or a slotted label never appears.
 
+A field's error is text too: an `error-text` prop and slot, on every field
+that has `help-text`. There is no `invalid` prop: a field with error text
+is invalid (`aria-invalid`, the `invalid` state, the error in
+`aria-describedby`), through `fandry/fieldError`. Its wrapper is a polite
+live region, so it is the one text wrapper kept in the page while empty
+instead of `hidden`.
+
 ### Parts
 
 Every element a site might reasonably restyle carries a `part`, named from

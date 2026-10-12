@@ -5,6 +5,7 @@ import type { FdSearchItem } from 'fandry/searchState';
 import { exitFinished } from 'fandry/motion';
 import { resolveElementProps } from 'fandry/elementProps';
 import { slotHasContent } from 'fandry/textSlots';
+import { fieldInvalid, fieldDescribedBy, withoutAriaInvalid } from 'fandry/fieldError';
 
 export interface FdLookupRecord {
   id: string;
@@ -125,6 +126,8 @@ const RESERVED_ELEMENT_PROPS = [
 export default class FdLookup extends FdSearchState {
   @api label = '';
   @api helpText = '';
+  // Shown under the control, and makes the field invalid -- see fandry/fieldError.
+  @api errorText = '';
   @api name = '';
   @api placeholder = '';
 
@@ -346,6 +349,26 @@ export default class FdLookup extends FdSearchState {
     return !!this.helpText || !!this.textSlots['help-text'];
   }
 
+  get hasErrorText(): boolean {
+    return !!this.errorText || !!this.textSlots['error-text'];
+  }
+
+  get errorTextClasses(): string {
+    return this.hasErrorText ? 'error-text' : 'error-text error-text--empty';
+  }
+
+  get invalid(): boolean {
+    return fieldInvalid(this.hasErrorText, this.elementProps);
+  }
+
+  get ariaInvalid(): 'true' | null {
+    return this.invalid ? 'true' : null;
+  }
+
+  get describedBy(): string | null {
+    return fieldDescribedBy(this.hasErrorText, this.hasHelpText);
+  }
+
   // Single mode with a record chosen: the field shows it as its value and
   // the input goes away. Everywhere else the input is there.
   get showSelected(): boolean {
@@ -443,7 +466,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-lookup');
+    return withoutAriaInvalid(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-lookup'));
   }
 
   disconnectedCallback() {
@@ -644,7 +667,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   get controlPart(): string {
-    return partList('control', { disabled: this.disabled });
+    return partList('control', { disabled: this.disabled, invalid: this.invalid });
   }
 
   // Which text slots have content -- see fandry/textSlots.

@@ -1,3 +1,15 @@
+# [0.20.0](https://github.com/rahulgawale/fandryui/compare/v0.19.7...v0.20.0) (2026-10-12)
+
+
+### Bug Fixes
+
+* **textarea:** the label reaches the field, and a null value shows empty ([#107](https://github.com/rahulgawale/fandryui/issues/107)) ([9c4601c](https://github.com/rahulgawale/fandryui/commit/9c4601c34c2fa929f3c6533905b0d944509511f9))
+
+
+### Features
+
+* error-text on input, textarea, select, combobox and lookup ([#108](https://github.com/rahulgawale/fandryui/issues/108)) ([220177e](https://github.com/rahulgawale/fandryui/commit/220177e09731c0ef9930335d610aff50efd2e005))
+
 ## [0.19.7](https://github.com/rahulgawale/fandryui/compare/v0.19.6...v0.19.7) (2026-10-12)
 
 

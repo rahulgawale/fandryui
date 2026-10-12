@@ -86,3 +86,18 @@
   padding: var(--_fd-space-2) var(--_fd-space-3);
   font-size: var(--_fd-font-size-md);
 }
+
+.error-text {
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-danger));
+}
+
+/* Not `hidden` while empty, so it can announce its text (see
+   fandry/fieldError). Out of the flow, so it leaves no gap either. */
+.error-text--empty {
+  position: absolute;
+}
+
+.control[part~='invalid'] {
+  border-color: hsl(var(--_fd-danger));
+}

@@ -1,7 +1,20 @@
 <template>
   <template if:true={isMounted}>
-    <div class={backdropClasses} part="backdrop" inert={backdropInert} onclick={handleBackdropClick}>
-      <div class="panel" part="panel" role="dialog" aria-modal="true" aria-label={accessibleLabel} onmousedown={handlePanelMouseDown}>
+    <!--
+      A native modal dialog (see showModal in command.ts): the browser makes
+      the rest of the page inert, for a screen reader's own cursor as well as
+      for Tab. Not role="dialog" with aria-modal: in a shadow root that hides
+      the palette itself from VoiceOver in Safari, along with the page.
+    -->
+    <dialog
+      class={backdropClasses}
+      part="backdrop"
+      aria-label={accessibleLabel}
+      inert={backdropInert}
+      onclick={handleBackdropClick}
+      oncancel={handleCancel}
+    >
+      <div class="panel" part="panel" onmousedown={handlePanelMouseDown}>
         <div class="search" part="search">
           <input
             id="input"
@@ -56,10 +69,19 @@
           </template>
         </div>
 
-        <template if:false={hasResults}>
-          <div class="empty" part="empty"><slot name="empty">No results found</slot></div>
-        </template>
+        <!--
+          Always here, so what it says is announced as it changes: how many
+          results there are (for a screen reader only), or the empty message.
+        -->
+        <div class="status" role="status">
+          <template if:true={hasResults}>
+            <span class="count">{resultsText}</span>
+          </template>
+          <template if:false={hasResults}>
+            <div class="empty" part="empty"><slot name="empty">No results found</slot></div>
+          </template>
+        </div>
       </div>
-    </div>
+    </dialog>
   </template>
 </template>

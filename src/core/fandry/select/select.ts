@@ -3,6 +3,7 @@ import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
 import { resolveElementProps } from 'fandry/elementProps';
 import { slotHasContent } from 'fandry/textSlots';
+import { fieldInvalid, fieldDescribedBy, withoutAriaInvalid } from 'fandry/fieldError';
 
 export interface FdSelectOption {
   label: string;
@@ -83,6 +84,8 @@ const RESERVED_ELEMENT_PROPS = [
 export default class Select extends Base {
   @api label = '';
   @api helpText = '';
+  // Shown under the control, and makes the field invalid -- see fandry/fieldError.
+  @api errorText = '';
   @api name = '';
   @api value = '';
   @api placeholder = '';
@@ -119,6 +122,22 @@ export default class Select extends Base {
     return !!this.helpText || !!this.textSlots['help-text'];
   }
 
+  get hasErrorText(): boolean {
+    return !!this.errorText || !!this.textSlots['error-text'];
+  }
+
+  get errorTextClasses(): string {
+    return this.hasErrorText ? 'error-text' : 'error-text error-text--empty';
+  }
+
+  get invalid(): boolean {
+    return fieldInvalid(this.hasErrorText, this.elementProps);
+  }
+
+  get ariaInvalid(): 'true' | null {
+    return this.invalid ? 'true' : null;
+  }
+
   get hasPlaceholder(): boolean {
     return !!this.placeholder;
   }
@@ -131,14 +150,14 @@ export default class Select extends Base {
     return this.required ? 'true' : 'false';
   }
 
-  // Only while there is help text: an empty description is still announced
-  // as one by some screen readers.
+  // Only what there is: an empty description is still announced as one by
+  // some screen readers.
   get describedBy(): string | null {
-    return this.hasHelpText ? 'help-text' : null;
+    return fieldDescribedBy(this.hasErrorText, this.hasHelpText);
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-select');
+    return withoutAriaInvalid(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-select'));
   }
 
   // Flattened in render order (placeholder, then flat options, then group
@@ -582,7 +601,7 @@ export default class Select extends Base {
   }
 
   get controlPart(): string {
-    return partList('control', { disabled: this.disabled });
+    return partList('control', { disabled: this.disabled, invalid: this.invalid });
   }
 
   // Which text slots have content -- see fandry/textSlots.
