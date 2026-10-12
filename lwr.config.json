@@ -293,6 +293,18 @@
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
+            "id": "block-product-card",
+            "path": "/blocks/product-card",
+            "rootComponent": "fandryui/blockProductCard",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
+            "id": "block-product-catalog",
+            "path": "/blocks/product-catalog",
+            "rootComponent": "fandryui/blockProductCatalog",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
             "id": "examples",
             "path": "/examples",
             "rootComponent": "fandryui/examples",

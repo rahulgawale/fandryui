@@ -11,6 +11,8 @@ const PAGES = [
   { label: 'Blocks', value: '/blocks' },
   { label: 'Blocks: Data table', value: '/blocks/data-table' },
   { label: 'Blocks: Form', value: '/blocks/form' },
+  { label: 'Blocks: Product card', value: '/blocks/product-card' },
+  { label: 'Blocks: Product catalog', value: '/blocks/product-catalog' },
   { label: 'Examples', value: '/examples' }
 ];
 

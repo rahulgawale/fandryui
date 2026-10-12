@@ -1,0 +1,82 @@
+<template>
+  <template if:true={hasProduct}>
+    <article class="card" part="base">
+      <div class="media" part="media">
+        <template if:true={hasImage}>
+          <img class="image" part="image" src={image} alt={imageAlt} loading="lazy" />
+        </template>
+        <!-- The same product from another angle; decorative, the first image already describes it. -->
+        <template if:true={hasHoverImage}>
+          <img class="image image--hover" part="hover-image" src={hoverImage} alt="" loading="lazy" />
+        </template>
+
+        <template if:true={hasFlairs}>
+          <div class="flairs" part="flairs">
+            <template for:each={flairs} for:item="flair">
+              <fandry-badge
+                key={flair.key}
+                variant={flair.variant}
+                exportparts="base: flair, default, primary, success, warning, danger"
+              >{flair.label}</fandry-badge>
+            </template>
+          </div>
+        </template>
+
+        <!--
+          Replaces the default button, which appears when the card is hovered
+          or focused. A button you put here reaches the card through its
+          methods: card.addToCart(), card.selectSwatch(name).
+        -->
+        <div class="actions" part="actions">
+          <slot name="actions">
+            <fandry-button class="add" exportparts="base: button" onclick={handleAddToCart}>{addToCartLabel}</fandry-button>
+          </slot>
+        </div>
+      </div>
+
+      <div class="body" part="body">
+        <template if:true={hasSubtitle}>
+          <p class="subtitle" part="subtitle">{subtitle}</p>
+        </template>
+
+        <h3 class="name" part="title">
+          <template if:true={hasHref}>
+            <fandry-link href={href}>{name}</fandry-link>
+          </template>
+          <template if:false={hasHref}>{name}</template>
+        </h3>
+
+        <p class="price" part="price">
+          <template if:true={isDiscounted}>
+            <span class="assistive">{discountedPriceText}</span>
+          </template>
+          <span class="current" part="current-price" aria-hidden={currentPriceHidden}>{priceText}</span>
+          <template if:true={isDiscounted}>
+            <s class="compare" part="compare-at-price" aria-hidden="true">{compareAtPriceText}</s>
+          </template>
+        </p>
+
+        <template if:true={hasSwatches}>
+          <div class="swatches" part="swatches" role="group" aria-label={swatchesLabel}>
+            <template for:each={swatches} for:item="swatch">
+              <button
+                key={swatch.name}
+                type="button"
+                class={swatch.classes}
+                part={swatch.part}
+                style={swatch.style}
+                title={swatch.name}
+                aria-label={swatch.name}
+                aria-pressed={swatch.ariaPressed}
+                data-name={swatch.name}
+                tabindex="0"
+                onclick={handleSwatchClick}
+              ></button>
+            </template>
+            <span class="swatch-label" part="selection-label">{selectedSwatchLabel}</span>
+          </div>
+        </template>
+      </div>
+    </article>
+  </template>
+</template>

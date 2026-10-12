@@ -76,11 +76,14 @@ Blocks are larger, ready-made patterns built from the components above. On LWR /
 ```bash
 npx fandry add data-table          # the block plus everything it is built from
 npx fandry add form
+npx fandry add product-catalog     # brings product-card with it
 ```
 
 `data-table` gives you search, column filters, pagination, selection, row actions, inline editing and `saveRow` / `deleteRow` hooks with success and error toasts, with skeleton loading and a saving state. It is controlled: it never edits your `data`, it reports `rowsave` / `rowdelete` and you put the result back. `--all` does not include blocks; ask for one by name. A live version with the full API is at [/blocks/data-table](https://fandryui.forcetrails.com/blocks/data-table).
 
 `form` is a form that can read first and edit on demand (`mode="read"`). Fields are plain data (`{ name, label, type, required, validate }`), errors show once a field has been left or a save was attempted, a form-level `validate` hook covers rules that span fields or need the server, and a `saveValues` hook is where the request goes. Like `data-table` it is controlled: it reports `save` and you put the result back into `values`. Live at [/blocks/form](https://fandryui.forcetrails.com/blocks/form).
+
+`product-card` is a shop card: color swatches that swap the image, flairs over the image for a sale, an offer or a discount (`discountFlair(product)` makes the `-25%` one), a struck-through `compareAtPrice`, and hover motion that lifts the card, crossfades to a second image and brings up an Add to cart button (an `actions` slot replaces it). It reports `change` (a swatch) and `addtocart`. `product-catalog` puts those cards in a grid with search, category, color, price-range and on-sale filters plus sorting, all derived from the products you pass; it reports `filterchange` and passes `addtocart` on. Its sorts are a list you can extend, a `matchProduct` hook and the `filters` / `filters-end` slots add filters of your own, and `cardComponent` renders your own card in the grid. Both are controlled: they never edit your products. Live at [/blocks/product-card](https://fandryui.forcetrails.com/blocks/product-card) and [/blocks/product-catalog](https://fandryui.forcetrails.com/blocks/product-catalog).
 
 ## Usage
 

@@ -1,0 +1,6 @@
+<template>
+  <fandry-product-catalog products={products} match-product={matchProduct}>
+    <button slot="filters-end" class="in-stock" onclick={handleInStock}>In stock</button>
+    <p slot="empty" class="custom-empty">Nothing here</p>
+  </fandry-product-catalog>
+</template>

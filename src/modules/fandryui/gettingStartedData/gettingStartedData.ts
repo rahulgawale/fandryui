@@ -459,7 +459,9 @@ Sizes             --fd-size-xs  --fd-size-sm  --fd-size-md  --fd-size-lg
                   --fd-avatar-size-sm  --fd-avatar-size-md  --fd-avatar-size-lg
                   --fd-switch-width  --fd-switch-padding  --fd-tooltip-arrow-size
                   --fd-sidebar-width  --fd-toast-width  --fd-form-column-min-width
-                  --fd-link-underline-offset
+                  --fd-link-underline-offset  --fd-product-image-ratio
+                  --fd-catalog-card-min-width  --fd-catalog-filters-width
+                  --fd-catalog-results-min-width
 Focus ring        --fd-ring-color  --fd-ring-width  --fd-ring-offset
 Surfaces          --fd-surface-tint  --fd-shadow-sm  --fd-shadow-color-floating
                   --fd-shadow-color-modal  --fd-shadow-color-subtle

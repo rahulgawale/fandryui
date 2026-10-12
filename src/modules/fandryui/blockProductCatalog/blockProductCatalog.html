@@ -1,0 +1,215 @@
+<template>
+  <fandryui-site-header></fandryui-site-header>
+
+  <main class="page">
+    <fandry-breadcrumb>
+      <fandry-breadcrumb-item href="/">Home</fandry-breadcrumb-item>
+      <fandry-breadcrumb-item href="/blocks">Blocks</fandry-breadcrumb-item>
+      <fandry-breadcrumb-item current>Product catalog</fandry-breadcrumb-item>
+    </fandry-breadcrumb>
+
+    <fandry-badge class="kind">Block</fandry-badge>
+    <fandry-heading level="1" class="title">Product catalog</fandry-heading>
+    <fandry-text variant="muted" class="lede">
+      A grid of product cards with the filters a shopper expects: search, category, color, a price range, on sale
+      only, and sorting. Every option comes from the products you pass in, so there is nothing to configure twice.
+    </fandry-text>
+
+    <section class="section">
+      <div class="demo-controls">
+        <fandry-text size="sm" variant="muted">
+          Try it: pick <strong>Navy</strong> and watch the matching cards switch color, or turn
+          on <strong>On sale</strong> and sort by <strong>Biggest discount</strong>.
+        </fandry-text>
+      </div>
+
+      <div class="cart" aria-live="polite">
+        <fandry-text size="sm">{cartLabel}</fandry-text>
+        <template if:true={hasCart}>
+          <div class="cart-items">
+            <template for:each={cart} for:item="item">
+              <fandry-badge key={item.key}>{item.label}</fandry-badge>
+            </template>
+          </div>
+          <fandry-button variant="ghost" size="sm" onclick={handleEmptyCart}>Empty</fandry-button>
+        </template>
+      </div>
+
+      <fandry-card class="demo-frame">
+        <fandry-product-catalog
+          products={products}
+          onfilterchange={handleFilterChange}
+          onaddtocart={handleAddToCart}
+        ></fandry-product-catalog>
+      </fandry-card>
+
+      <template if:true={filtersJson}>
+        <fandry-text size="sm" variant="muted" class="note">Last <code>filterchange</code>:</fandry-text>
+        <pre class="code-block"><code>{filtersJson}</code></pre>
+      </template>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Install</fandry-heading>
+      <div class="two-up">
+        <div>
+          <fandry-text size="sm" variant="muted" class="label">LWR / LWC OSS</fandry-text>
+          <pre class="code-block"><code>{installNpm}</code></pre>
+        </div>
+        <div>
+          <fandry-text size="sm" variant="muted" class="label">Salesforce DX</fandry-text>
+          <pre class="code-block"><code>{installSfdx}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Usage</fandry-heading>
+      <pre class="code-block"><code>{usageCode}</code></pre>
+      <fandry-text size="sm" variant="muted" class="note">
+        The products are the same objects fandry-product-card takes (see its page for their shape). The filters are
+        plain data too:
+      </fandry-text>
+      <pre class="code-block"><code>{filtersCode}</code></pre>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Props</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={props} for:item="prop">
+              <tr key={prop.name}>
+                <td><code>{prop.name}</code></td>
+                <td><code>{prop.type}</code></td>
+                <td><code>{prop.default}</code></td>
+                <td>{prop.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Filters</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Key</th><th>Type</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={filterKeys} for:item="key">
+              <tr key={key.name}>
+                <td><code>{key.name}</code></td>
+                <td><code>{key.type}</code></td>
+                <td>{key.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Events</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Event</th><th>detail</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={events} for:item="event">
+              <tr key={event.name}>
+                <td><code>{event.name}</code></td>
+                <td><code>{event.detail}</code></td>
+                <td>{event.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Slots</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Slot</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={slots} for:item="item">
+              <tr key={item.name}>
+                <td><code>{item.name}</code></td>
+                <td>{item.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Parts</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Part</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={parts} for:item="item">
+              <tr key={item.name}>
+                <td><code>{item.name}</code></td>
+                <td>{item.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Tokens</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Custom property</th><th>Default</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={styleHooks} for:item="hook">
+              <tr key={hook.name}>
+                <td><code>{hook.name}</code></td>
+                <td><code>{hook.default}</code></td>
+                <td>{hook.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Make it yours</fandry-heading>
+      <fandry-text variant="muted">
+        <code>fandry/productCatalogState</code> has the filtering and sorting and no template;
+        <code>fandry/productCatalog</code> is that class plus the filter panel and grid you see here. Extend the state
+        class to lay it out your way, or, on Salesforce, edit the copy
+        <code>fandry add</code> put in your project. Built from:
+        <template for:each={builtFrom} for:item="name">
+          <fandry-badge key={name} class="chip">{name}</fandry-badge>
+        </template>
+      </fandry-text>
+      <pre class="code-block"><code>{composeCode}</code></pre>
+      <fandry-text variant="muted" class="note">
+        For other markup, render your own card in the grid, or extend the state class for a catalog laid out your way.
+      </fandry-text>
+      <pre class="code-block extend"><code>{extendCode}</code></pre>
+    </section>
+  </main>
+
+  <fandryui-site-footer></fandryui-site-footer>
+</template>

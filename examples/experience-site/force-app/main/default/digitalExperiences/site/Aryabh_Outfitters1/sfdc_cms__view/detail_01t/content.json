@@ -1,0 +1,60 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Product",
+  "contentBody" : {
+    "component" : {
+      "children" : [
+        {
+          "children" : [
+            {
+              "attributes" : {
+                "recordId" : "{!Route.recordId}"
+              },
+              "definition" : "c:aryabhProductDetail",
+              "id" : "bbe07640-f78f-48a5-8a17-25f25210c1da",
+              "type" : "component"
+            }
+          ],
+          "id" : "4734d842-7503-4339-9132-0eda29a83200",
+          "name" : "content",
+          "title" : "Content",
+          "type" : "region"
+        },
+        {
+          "children" : [
+            {
+              "attributes" : {
+                "customHeadTags" : "<script type=\"application/ld+json\">\n[{\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"Product\",\n    \"name\": \"{!Record.Name}\",\n    \"description\": \"{!Record._Description}\",\n    \"category\": \"{!Record.ProductCategory.Name}\",\n    \"sku\": \"{!Record.StockKeepingUnit}\",\n    \"offers\": {\n        \"@type\": \"Offer\",\n        \"price\": \"{!Record.Offers.Price}\",\n        \"priceCurrency\": \"{!Record.Offers.Currency}\"\n    },\n    \"image\": \"{!Record.ProductMedia.ProductDetailImages}\"\n},\n{\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"BreadcrumbList\",\n    \"itemListElement\": \"{!Record.BreadcrumbList}\"\n}]\n</script>",
+                "description" : "{!Record._Description}",
+                "pageTitle" : "{!Record._Title}",
+                "recordId" : "{!recordId}"
+              },
+              "definition" : "community_builder:seoAssistant",
+              "id" : "315e50dc-76d7-4939-8e62-b2cd11a04863",
+              "type" : "component"
+            }
+          ],
+          "id" : "1ce24500-1996-4048-948d-28c5b694473b",
+          "name" : "sfdcHiddenRegion",
+          "title" : "sfdcHiddenRegion",
+          "type" : "region"
+        }
+      ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "79a15346-2a79-430e-aec8-201a9aecc30b",
+      "type" : "component"
+    },
+    "dataProviders" : [
+      {
+        "definition" : "sfdc_cms__commerceProductDetailDataProvider",
+        "sfdcExpressionKey" : "Product",
+        "attributes" : {
+          "recordId" : "{!Route.recordId}"
+        }
+      }
+    ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "detail-01t"
+  },
+  "urlName" : "product"
+}

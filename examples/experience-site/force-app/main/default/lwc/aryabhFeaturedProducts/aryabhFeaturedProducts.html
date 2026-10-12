@@ -1,0 +1,33 @@
+<template>
+  <c-fandry-toast-viewport placement="top-right" label="Cart updates">
+    <template for:each={toasts} for:item="toast">
+      <c-fandry-toast key={toast.id} data-id={toast.id} variant={toast.variant} duration="4000" ondismiss={handleToastDismiss}>
+        {toast.message}
+      </c-fandry-toast>
+    </template>
+  </c-fandry-toast-viewport>
+
+  <section class="featured">
+    <template lwc:if={hasHeading}>
+      <h2 class="heading">{heading}</h2>
+    </template>
+    <template lwc:if={loading}>
+      <div class="status"><c-fandry-spinner size="lg" label="Loading products"></c-fandry-spinner></div>
+    </template>
+    <template lwc:elseif={error}>
+      <p class="status" role="alert">{error}</p>
+    </template>
+    <template lwc:else>
+      <template lwc:if={pricingError}>
+        <p class="notice" role="status">Prices aren't available right now: {pricingError}</p>
+      </template>
+      <ul class="grid">
+        <template for:each={products} for:item="product">
+          <li key={product.id}>
+            <c-aryabh-product-card product={product} currency={currency} onaddtocart={handleAddToCart}></c-aryabh-product-card>
+          </li>
+        </template>
+      </ul>
+    </template>
+  </section>
+</template>

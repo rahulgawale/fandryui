@@ -1,0 +1,149 @@
+:host {
+  display: block;
+}
+
+/*
+  The filter panel sits beside the results while there is room for both and
+  wraps above them when there is not, with no breakpoint: the results are
+  allowed to grow far more than the panel, so the panel is what gives way.
+*/
+.catalog {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--_fd-space-5);
+}
+
+.filters {
+  flex: 1 1 var(--_fd-catalog-filters-width);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_fd-space-4);
+}
+
+.results {
+  flex: 999 1 var(--_fd-catalog-results-min-width);
+  min-width: 0;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_fd-space-2);
+}
+
+.group-label {
+  font-size: var(--_fd-font-size-sm);
+  font-weight: var(--_fd-font-weight-medium);
+  color: hsl(var(--_fd-text));
+}
+
+.colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--_fd-space-2);
+}
+
+.color {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--_fd-space-2);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
+  font: inherit;
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-text));
+  background: hsl(var(--_fd-bg));
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-lg);
+  cursor: pointer;
+  transition: border-color var(--_fd-duration-fast) var(--_fd-ease-standard),
+    background-color var(--_fd-duration-fast) var(--_fd-ease-standard);
+}
+
+.color:hover {
+  background: hsl(var(--_fd-bg-muted));
+}
+
+.color--selected {
+  border-color: hsl(var(--_fd-text));
+  background: hsl(var(--_fd-bg-muted));
+}
+
+.color:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
+}
+
+.dot {
+  width: var(--_fd-size-xs);
+  height: var(--_fd-size-xs);
+  border-radius: 50%;
+  background: var(--_fd-swatch-color);
+  box-shadow: inset 0 0 0 var(--_fd-border-width) hsl(var(--_fd-text) / 0.2);
+}
+
+.price-range {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--_fd-space-2);
+}
+
+.clear {
+  align-self: flex-start;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--_fd-space-3);
+  margin-bottom: var(--_fd-space-4);
+}
+
+.count {
+  margin: 0;
+  font-size: var(--_fd-font-size-sm);
+  color: hsl(var(--_fd-text-muted));
+}
+
+.sort {
+  min-width: var(--_fd-overlay-min-width-sm);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--_fd-catalog-card-min-width), 1fr));
+  gap: var(--_fd-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A card that comes into view as the filters change arrives; one that was
+   already there (same key) stays put. */
+.item {
+  animation: fd-fade-up-in var(--_fd-duration-normal) var(--_fd-ease-standard);
+}
+
+/* Whichever card the catalog renders fills its cell. */
+.item > * {
+  height: 100%;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--_fd-space-3);
+  padding: var(--_fd-space-5);
+  text-align: center;
+  border: var(--_fd-border-width) dashed hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-lg);
+}
+
+.empty-title {
+  margin: 0;
+  color: hsl(var(--_fd-text-muted));
+}

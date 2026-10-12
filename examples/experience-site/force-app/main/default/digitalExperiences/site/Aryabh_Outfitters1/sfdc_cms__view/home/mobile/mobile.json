@@ -1,0 +1,10 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Home",
+  "contentBody" : {
+    "component" : {
+      "children" : []
+    }
+  },
+  "urlName" : "home"
+}

@@ -9,3 +9,9 @@ examples/consumer/__lwr_cache__
 examples/consumer/site
 examples/salesforce/fandryui
 examples/salesforce/fandry.json
+examples/experience-site/fandryui
+examples/experience-site/fandry.json
+examples/experience-site/.sf
+examples/experience-site/.sfdx
+# `site` above is the LWR build output; the example's Experience bundle is source.
+!examples/experience-site/force-app/main/default/digitalExperiences/site/

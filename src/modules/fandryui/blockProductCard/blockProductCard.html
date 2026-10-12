@@ -1,0 +1,249 @@
+<template>
+  <fandryui-site-header></fandryui-site-header>
+
+  <main class="page">
+    <fandry-breadcrumb>
+      <fandry-breadcrumb-item href="/">Home</fandry-breadcrumb-item>
+      <fandry-breadcrumb-item href="/blocks">Blocks</fandry-breadcrumb-item>
+      <fandry-breadcrumb-item current>Product card</fandry-breadcrumb-item>
+    </fandry-breadcrumb>
+
+    <fandry-badge class="kind">Block</fandry-badge>
+    <fandry-heading level="1" class="title">Product card</fandry-heading>
+    <fandry-text variant="muted" class="lede">
+      A shop card built from fandry-* primitives: color swatches that swap the image, flairs for a sale, an offer or
+      a discount, a struck-through price, and hover motion that lifts the card, turns the product around and brings
+      up its action. Put several in a grid, or use fandry-product-catalog for a grid with filters.
+    </fandry-text>
+
+    <section class="section">
+      <fandry-text size="sm" variant="muted" class="hint">
+        Try it: hover a card (or Tab into one), pick a color, then Add to cart.
+        <template if:true={lastSwatch}>
+          Last swatch: <strong>{lastSwatch}</strong>.
+        </template>
+      </fandry-text>
+
+      <div class="showcase">
+        <template for:each={showcase} for:item="item">
+          <figure key={item.key} class="example">
+            <fandry-product-card
+              product={item.product}
+              onchange={handleSwatchChange}
+              onaddtocart={handleAddToCart}
+            ></fandry-product-card>
+            <figcaption>{item.caption}</figcaption>
+          </figure>
+        </template>
+
+        <figure class="example">
+          <fandry-product-card
+            class="custom-card"
+            product={customProduct}
+            onchange={handleSwatchChange}
+            onaddtocart={handleAddToCart}
+          >
+            <div slot="actions" class="custom-actions">
+              <fandry-button onclick={handleQuickView}>Quick view</fandry-button>
+              <fandry-button variant="secondary" onclick={handleCustomAdd}>Add</fandry-button>
+            </div>
+          </fandry-product-card>
+          <figcaption>Your own buttons in the <code>actions</code> slot</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Install</fandry-heading>
+      <div class="two-up">
+        <div>
+          <fandry-text size="sm" variant="muted" class="label">LWR / LWC OSS</fandry-text>
+          <pre class="code-block"><code>{installNpm}</code></pre>
+        </div>
+        <div>
+          <fandry-text size="sm" variant="muted" class="label">Salesforce DX</fandry-text>
+          <pre class="code-block"><code>{installSfdx}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Usage</fandry-heading>
+      <pre class="code-block"><code>{usageCode}</code></pre>
+      <fandry-text size="sm" variant="muted" class="note">
+        A product is plain data. Flairs are whatever labels you give it; <code>discountFlair</code> makes the
+        percentage one for you:
+      </fandry-text>
+      <pre class="code-block"><code>{productCode}</code></pre>
+      <fandry-text size="sm" variant="muted" class="note">
+        The <code>actions</code> slot replaces the Add to cart button with your own:
+      </fandry-text>
+      <pre class="code-block"><code>{slotCode}</code></pre>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Props</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={props} for:item="prop">
+              <tr key={prop.name}>
+                <td><code>{prop.name}</code></td>
+                <td><code>{prop.type}</code></td>
+                <td><code>{prop.default}</code></td>
+                <td>{prop.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Product</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Key</th><th>Type</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={productProps} for:item="prop">
+              <tr key={prop.name}>
+                <td><code>{prop.name}</code></td>
+                <td><code>{prop.type}</code></td>
+                <td>{prop.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Events</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Event</th><th>detail</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={events} for:item="event">
+              <tr key={event.name}>
+                <td><code>{event.name}</code></td>
+                <td><code>{event.detail}</code></td>
+                <td>{event.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Slots</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Slot</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={slots} for:item="slot">
+              <tr key={slot.name}>
+                <td><code>{slot.name}</code></td>
+                <td>{slot.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Parts</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Part</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={parts} for:item="item">
+              <tr key={item.name}>
+                <td><code>{item.name}</code></td>
+                <td>{item.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Tokens</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Custom property</th><th>Default</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={styleHooks} for:item="hook">
+              <tr key={hook.name}>
+                <td><code>{hook.name}</code></td>
+                <td><code>{hook.default}</code></td>
+                <td>{hook.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Helpers</fandry-heading>
+      <fandry-text size="sm" variant="muted" class="note">
+        Exported from <code>fandry/productCardState</code>:
+      </fandry-text>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Function</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={helpers} for:item="helper">
+              <tr key={helper.name}>
+                <td><code>{helper.name}</code></td>
+                <td>{helper.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Make it yours</fandry-heading>
+      <fandry-text variant="muted">
+        The block is two pieces on purpose. <code>fandry/productCardState</code> has the behavior (the selected swatch,
+        which images that means, the prices as text, the flairs) and no template; <code>fandry/productCard</code> is
+        that class plus the markup and hover motion you see here. To change the markup, extend the state class and
+        write your own template, or, on Salesforce, just edit the copy <code>fandry add</code> put in your project.
+        Built from:
+        <template for:each={builtFrom} for:item="name">
+          <fandry-badge key={name} class="chip">{name}</fandry-badge>
+        </template>
+      </fandry-text>
+    </section>
+  </main>
+
+  <fandry-toast-viewport placement="bottom-right" label="Notifications">
+    <template for:each={toasts} for:item="toast">
+      <fandry-toast key={toast.id} data-id={toast.id} variant="success" duration="3000" ondismiss={handleToastDismiss}>
+        {toast.message}
+      </fandry-toast>
+    </template>
+  </fandry-toast-viewport>
+
+  <fandryui-site-footer></fandryui-site-footer>
+</template>

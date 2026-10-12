@@ -1,0 +1,27 @@
+<template>
+  <c-fandry-toast-viewport placement="top-right" label="Cart updates">
+    <template for:each={toasts} for:item="toast">
+      <c-fandry-toast key={toast.id} data-id={toast.id} variant={toast.variant} duration="4000" ondismiss={handleToastDismiss}>
+        {toast.message}
+      </c-fandry-toast>
+    </template>
+  </c-fandry-toast-viewport>
+
+  <template lwc:if={loading}>
+    <div class="status"><c-fandry-spinner size="lg" label="Loading products"></c-fandry-spinner></div>
+  </template>
+  <template lwc:elseif={error}>
+    <p class="status" role="alert">{error}</p>
+  </template>
+  <template lwc:else>
+    <template lwc:if={pricingError}>
+      <p class="notice" role="status">Prices aren't available right now: {pricingError}</p>
+    </template>
+    <c-fandry-product-catalog
+      products={products}
+      card-component={cardComponent}
+      card-props={cardProps}
+      onaddtocart={handleAddToCart}
+    ></c-fandry-product-catalog>
+  </template>
+</template>

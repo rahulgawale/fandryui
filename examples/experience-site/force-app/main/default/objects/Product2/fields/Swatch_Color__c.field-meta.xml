@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Swatch_Color__c</fullName>
+    <description>A CSS color (#27415e) that paints this variation's swatch on a product card.</description>
+    <label>Swatch Color</label>
+    <length>32</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

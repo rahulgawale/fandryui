@@ -177,6 +177,14 @@
   --_fd-toast-width: var(--fd-toast-width, 20rem);
   /* The narrowest a fandry-form column gets before the fields wrap. */
   --_fd-form-column-min-width: var(--fd-form-column-min-width, 16rem);
+  /* The product blocks: the shape of a product image, the narrowest a
+     catalog card gets before the grid drops a column, and the catalog's
+     filter panel beside a results area it moves above when there's no
+     room for both. */
+  --_fd-product-image-ratio: var(--fd-product-image-ratio, 4 / 5);
+  --_fd-catalog-card-min-width: var(--fd-catalog-card-min-width, 13rem);
+  --_fd-catalog-filters-width: var(--fd-catalog-filters-width, 14rem);
+  --_fd-catalog-results-min-width: var(--fd-catalog-results-min-width, 28rem);
   /* In em, so the gap under a link's text scales with the text. */
   --_fd-link-underline-offset: var(--fd-link-underline-offset, 0.125em);
 
