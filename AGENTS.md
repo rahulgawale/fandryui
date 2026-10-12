@@ -125,6 +125,12 @@ from one `messages` prop per component, typed `Fd<Name>Messages`, with its
 English in an exported `DEFAULT_<NAME>_MESSAGES` that the prop is merged
 over. One `messages` prop, not a prop per string.
 
+An id never reaches across a shadow root, so a `<label>` and the control
+its `for` names are always in the same template: a field renders its own
+native `<label>` beside its control, never a child component for it.
+`fandry-label` is the text of a label, for a page to put inside its own
+`<label>` (or in a field's `label` slot); it renders no `<label>`.
+
 Text a field shows is overridable the same way on every field: `label`
 and `help-text` slots (toggles take their label in the default slot, an
 alert its `title` slot), with the prop as fallback. A slot must work

@@ -1,3 +1,5 @@
+import { readdirSync, readFileSync, existsSync } from 'fs';
+import { join, resolve } from 'path';
 import { createElement } from 'lwc';
 import FdLabel from '../label';
 import LabelHarness from './labelHarness';
@@ -63,6 +65,24 @@ describe('fandry-label', () => {
 
     const base = element.shadowRoot!.querySelector('[part="base"]') as HTMLElement;
     expect(base.title).toBe('Required field');
+  });
+
+  /* input and textarea once rendered fandry-label for their own label: its
+     <label> was in another shadow root than their control and named
+     nothing. A field renders a native <label> beside its control. */
+  it('is not used by a component to label its own control', () => {
+    const offenders: string[] = [];
+    for (const layer of ['core', 'salesforce', 'blocks']) {
+      const root = resolve(__dirname, '../../../..', layer, 'fandry');
+      for (const name of existsSync(root) ? readdirSync(root) : []) {
+        const template = join(root, name, `${name}.html`);
+        if (existsSync(template) && readFileSync(template, 'utf8').includes('<fandry-label')) {
+          offenders.push(`${layer}/${name}`);
+        }
+      }
+    }
+
+    expect(offenders).toEqual([]);
   });
 
   it('warns that html-for does nothing, once', () => {
