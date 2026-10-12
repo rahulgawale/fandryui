@@ -167,11 +167,10 @@
 
 .note-paragraph {
   display: block;
-  max-width: 44rem;
 }
 
 .note-paragraph + .note-paragraph {
-  margin-top: var(--fd-space-3);
+  margin-top: var(--fd-space-2);
 }
 
 .parts-code {

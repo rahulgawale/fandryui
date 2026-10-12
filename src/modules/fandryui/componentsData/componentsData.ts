@@ -13,8 +13,8 @@ export interface ComponentExample {
   code: string;
 }
 
-// A short explanation shown under the main example: why the component is
-// used the way it is, for the cases where that is not obvious.
+// A short explanation shown in an info alert under the main example: why
+// the component is used the way it is, where that is not obvious.
 export interface ComponentNote {
   title: string;
   paragraphs: string[];
@@ -622,11 +622,9 @@ fandry-label::part(required) {
       {
         title: 'Why you write the <label> yourself',
         paragraphs: [
-          'A label and its control are tied together by an id: the label\'s "for" names the control\'s "id". The browser looks that id up inside one shadow root only, never across its edge. Every fandry component has its own shadow root, so a <label> rendered inside fandry-label could not find a control outside it. It would look right, give the control no name for a screen reader, and do nothing when clicked.',
-          'So the <label> is yours. You write it in the same template as the control, where the id can be found, and fandry-label goes inside it as its text, bringing the look and the required asterisk. The label and its control stay side by side, as siblings, which is how HTML has always written them.',
-          'This is how web components work, not something particular to this library. Where there is no shadow DOM (React, for one), a component can keep the <label> to itself, because everything it renders lands in one document. Here each component is a tree of its own, so two elements that refer to each other have to be in the same one.',
-          'The fields follow the same rule from the inside. fandry-input, fandry-textarea, fandry-select, fandry-combobox and fandry-lookup each render their own <label> next to their own control, in one shadow root, which is why they take the label as a prop or a slot and need no fandry-label. In a field\'s "label" slot, fandry-label is only the text; the field supplies the <label>.',
-          'Use "for" and "id", and keep the control beside the label, not inside it. A label hands every click it gets to the control it wraps, which is fine around one plain input and surprising around anything with parts of its own to click.'
+          'A label finds its control by id, and the browser looks an id up inside one shadow root only. A <label> rendered inside fandry-label could never reach a control outside it: it would look right, give the control no name for a screen reader, and do nothing when clicked.',
+          'So you write the <label>, beside its control, and fandry-label goes inside it as the text. That is how web components work, not something particular to this library: each component is a tree of its own, so two elements that refer to each other have to be in the same one.',
+          'The fields (fandry-input, fandry-textarea, fandry-select, fandry-combobox, fandry-lookup) follow the same rule from the inside. Each renders its own <label> next to its own control, so they take the label as a prop or a slot and need no fandry-label.'
         ]
       }
     ],
@@ -634,18 +632,14 @@ fandry-label::part(required) {
       { name: 'required', type: 'boolean', default: 'false', description: 'Shows a required indicator.' },
       { name: 'html-for', type: 'string', default: '—', description: 'Deprecated: it does nothing. The `for` goes on the `<label>` you wrap this in.' }
     ],
-    code: `<!-- With your own control: the <label> is yours, beside the control it names. -->
+    code: `<!-- with your own control -->
 <label for="username"><fandry-label required>Username</fandry-label></label>
 <input id="username" />
 
-<!-- In a field: the field already has the <label>, and adds the asterisk
-     itself when it is required, so this is only its text. -->
+<!-- in a field's label slot -->
 <fandry-input>
   <fandry-label slot="label">Username</fandry-label>
-</fandry-input>
-
-<!-- fandry-label is not a <label> itself: one inside its shadow root could
-     not reach a control outside it. -->`
+</fandry-input>`
   },
   {
     slug: 'text',
