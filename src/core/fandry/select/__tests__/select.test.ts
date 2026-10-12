@@ -505,6 +505,20 @@ describe('fandry-select', () => {
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
   });
 
+  it('leaves a click on a link inside the label alone', () => {
+    const element = createElement('fandry-select', { is: FdSelect });
+    element.options = OPTIONS;
+    document.body.appendChild(element);
+
+    // Stands in for a link a page slots into the label.
+    const link = document.createElement('a');
+    element.shadowRoot!.querySelector('label')!.appendChild(link);
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true, composed: true });
+    link.dispatchEvent(click);
+
+    expect(click.defaultPrevented).toBe(false);
+  });
+
   it('names the listbox with the label, and describes the trigger only while there is help text', async () => {
     const element = createElement('fandry-select', { is: FdSelect });
     element.label = 'Plan';

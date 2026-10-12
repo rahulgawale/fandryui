@@ -272,8 +272,9 @@ export default class Select extends Base {
   }
 
   private setActive(id: string | null) {
+    // Only a change renders again; a flag left set would scroll on some later, unrelated render.
+    this.scrollActiveIntoView = id !== this.activeOptionId;
     this.activeOptionId = id;
-    this.scrollActiveIntoView = true;
   }
 
   // Stops at the first and last option rather than wrapping, like a native select.
@@ -415,10 +416,13 @@ export default class Select extends Base {
   };
 
   /* A label's click presses its button, which would open the listbox.
-     Clicking a label only moves focus to its field. A link inside a
-     slotted label keeps working. */
+     Clicking a label only moves focus to its field. A link or button
+     inside a slotted label keeps working, a fandry-link or fandry-button
+     too: theirs is found on the path, inside their own shadow root. */
   handleLabelClick(event: MouseEvent) {
-    if ((event.target as Element).closest('a, button')) {
+    const path = event.composedPath();
+    const inLabel = path.slice(0, path.indexOf(event.currentTarget as EventTarget));
+    if (inLabel.some((node) => node instanceof HTMLAnchorElement || node instanceof HTMLButtonElement)) {
       return;
     }
 
