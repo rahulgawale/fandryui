@@ -37,7 +37,7 @@
         <span class="chevron" part="chevron" aria-hidden="true"></span>
       </button>
 
-      <div id="listbox" class="listbox" part="listbox" role="listbox" aria-labelledby="label" onmousedown={handleListboxMouseDown}>
+      <div id="listbox" class="listbox" part="listbox" role="listbox" aria-labelledby="label" onmousedown={handleListboxMouseDown} onmousemove={handleListboxMouseMove}>
         <template if:true={renderPlaceholder}>
           <div
             id={renderPlaceholder.id}
@@ -63,7 +63,6 @@
             aria-selected={option.ariaSelected}
             aria-disabled={option.ariaDisabled}
             onclick={handleOptionClick}
-            onmouseenter={handleOptionMouseEnter}
           ><template if:true={option.component}><lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component></template><template if:false={option.component}>{option.label}</template></div>
         </template>
 
@@ -82,7 +81,6 @@
                 aria-selected={option.ariaSelected}
                 aria-disabled={option.ariaDisabled}
                 onclick={handleOptionClick}
-                onmouseenter={handleOptionMouseEnter}
               ><template if:true={option.component}><lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component></template><template if:false={option.component}>{option.label}</template></div>
             </template>
           </div>

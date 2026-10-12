@@ -106,6 +106,11 @@ export default class Select extends Base {
   // render scrolls it into view. Hovering never scrolls the list.
   private scrollActiveIntoView = false;
 
+  // Where the pointer last was over the open listbox. See handleListboxMouseMove.
+  private pointerSeen = false;
+  private pointerX = 0;
+  private pointerY = 0;
+
   get hasLabel(): boolean {
     return !!this.label || !!this.textSlots['label'];
   }
@@ -275,6 +280,7 @@ export default class Select extends Base {
     this.open = false;
     this.activeOptionId = null;
     this.scrollActiveIntoView = false;
+    this.pointerSeen = false;
   }
 
   private setActive(id: string | null) {
@@ -555,14 +561,25 @@ export default class Select extends Base {
     this.selectValue(target.dataset.value ?? '');
   };
 
-  handleOptionMouseEnter = (event: MouseEvent) => {
-    const target = event.currentTarget as HTMLElement;
-    if (target.getAttribute('aria-disabled') === 'true') {
+  /* The pointer makes an option active only by moving. When the keyboard
+     scrolls the list, another option slides under a pointer that is
+     resting there, and the browser reports that as mouse events too: at
+     the place the pointer already was. Those must not take the active
+     option back from the keyboard. */
+  handleListboxMouseMove(event: MouseEvent) {
+    const moved = this.pointerSeen && (event.clientX !== this.pointerX || event.clientY !== this.pointerY);
+    this.pointerSeen = true;
+    this.pointerX = event.clientX;
+    this.pointerY = event.clientY;
+    if (!moved) {
       return;
     }
 
-    this.activeOptionId = target.dataset.optionId ?? null;
-  };
+    const option = (event.target as Element).closest('[role="option"]') as HTMLElement | null;
+    if (option && option.getAttribute('aria-disabled') !== 'true') {
+      this.activeOptionId = option.dataset.optionId ?? null;
+    }
+  }
 
   get controlPart(): string {
     return partList('control', { disabled: this.disabled });

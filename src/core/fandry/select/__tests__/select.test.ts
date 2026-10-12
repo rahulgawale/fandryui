@@ -488,6 +488,52 @@ describe('fandry-select', () => {
     });
   });
 
+  describe('pointer', () => {
+    const mount = async () => {
+      const element = createElement('fandry-select', { is: FdSelect });
+      element.options = OPTIONS;
+      document.body.appendChild(element);
+      const trigger = await openListbox(element);
+      const option = (value: string) => element.shadowRoot!.querySelector(`[data-value="${value}"]`)!;
+      const move = async (value: string, clientX: number, clientY: number) => {
+        option(value).dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX, clientY }));
+        await flush();
+      };
+      const active = () => element.shadowRoot!.querySelector('.option--active')?.textContent?.trim();
+      return { trigger, move, active };
+    };
+
+    it('makes the option under a moving pointer active', async () => {
+      const { move, active } = await mount();
+      await move('free', 10, 10);
+      await move('pro', 10, 30);
+      expect(active()).toBe('Pro');
+    });
+
+    /* The keyboard scrolled the list: another option is now under the
+       pointer, which has not moved. */
+    it('leaves the active option to the keyboard while the pointer rests', async () => {
+      const { trigger, move, active } = await mount();
+      await move('pro', 10, 30);
+      await move('pro', 10, 31);
+      expect(active()).toBe('Pro');
+
+      trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+      await flush();
+      expect(active()).toBe('Free');
+      await move('pro', 10, 31);
+      expect(active()).toBe('Free');
+    });
+
+    it('does not make a disabled option active', async () => {
+      const { move, active } = await mount();
+      await move('free', 10, 10);
+      await move('free', 10, 11);
+      await move('enterprise', 10, 50);
+      expect(active()).toBe('Free');
+    });
+  });
+
   it('focuses the trigger, without opening, when the label is clicked', async () => {
     const element = createElement('fandry-select', { is: FdSelect });
     element.label = 'Plan';
