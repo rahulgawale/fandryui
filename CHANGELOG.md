@@ -1,3 +1,10 @@
+# [0.22.0](https://github.com/rahulgawale/fandryui/compare/v0.21.0...v0.22.0) (2026-10-12)
+
+
+### Features
+
+* **form:** mark changed fields, revert one, reset all ([#113](https://github.com/rahulgawale/fandryui/issues/113)) ([52866fe](https://github.com/rahulgawale/fandryui/commit/52866fe241f7b13d1d24e343ca979e420d5bf7ba))
+
 # [0.21.0](https://github.com/rahulgawale/fandryui/compare/v0.20.1...v0.21.0) (2026-10-12)
 
 
