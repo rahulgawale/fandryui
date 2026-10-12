@@ -162,6 +162,12 @@ export default class FormField extends Base {
     return !!this.error;
   }
 
+  // Likewise the error: a primitive with a place for it ties it to its
+  // control and announces it, so only the rest get this field's own line.
+  get showOwnError(): boolean {
+    return this.hasError && (this.isRadio || this.isCheckbox || this.isSwitch);
+  }
+
   // `tabIndex` is what every native control needs to be in Safari's Tab
   // order (see the primitives), and it is lost as soon as elementProps is
   // replaced, so it is restated here. The consumer's props go in between,

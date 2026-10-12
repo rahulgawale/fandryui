@@ -1,0 +1,13 @@
+<template>
+  <fandry-input
+    label="Email"
+    type="email"
+    required
+    placeholder="you@company.com"
+    help-text="We'll send the receipt here."
+    error-text={emailError}
+    value={email}
+    oninput={handleInput}
+    onchange={handleChange}
+  ></fandry-input>
+</template>

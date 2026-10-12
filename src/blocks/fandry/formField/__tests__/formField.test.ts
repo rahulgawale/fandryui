@@ -87,14 +87,27 @@ describe('fandry-form-field', () => {
     expect(el.shadowRoot!.querySelector('.help')).toBeNull();
   });
 
-  it('shows an error as an alert and marks the control invalid', async () => {
-    const el = mount({ field: { name: 'n', label: 'N' }, error: 'Required.' });
+  /* A primitive with a place for an error ties it to its control and
+     announces it, so the field hands it over instead of showing its own. */
+  it.each(['text', 'textarea', 'select'])('gives a %s control its error to show', async (type) => {
+    const el = mount({ field: { name: 'n', label: 'N', type, options: [] }, error: 'Required.' });
+    await settle();
+
+    expect((control(el) as any).errorText).toBe('Required.');
+    expect(control(el)!.shadowRoot!.querySelector('[part~="error-text"]')!.textContent).toBe('Required.');
+    expect(el.shadowRoot!.querySelector('.error')).toBeNull();
+  });
+
+  it.each(['checkbox', 'switch', 'radio'])('shows the error of a %s as an alert and marks the control invalid', async (type) => {
+    const el = mount({ field: { name: 'n', label: 'N', type, options: [] }, error: 'Required.' });
     await settle();
 
     const error = el.shadowRoot!.querySelector('.error')!;
     expect(error.textContent).toBe('Required.');
     expect(error.getAttribute('role')).toBe('alert');
-    expect((control(el) as any).elementProps.ariaInvalid).toBe('true');
+    if (type !== 'radio') {
+      expect((control(el) as any).elementProps.ariaInvalid).toBe('true');
+    }
   });
 
   it('keeps the Safari tab stop, and lets the consumer add to the control', async () => {

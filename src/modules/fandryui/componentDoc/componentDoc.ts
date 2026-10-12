@@ -17,6 +17,7 @@ import DemoDividerTheme from 'fandryuidemos/demoDividerTheme';
 import DemoHeadingTheme from 'fandryuidemos/demoHeadingTheme';
 import DemoIconTheme from 'fandryuidemos/demoIconTheme';
 import DemoInputTheme from 'fandryuidemos/demoInputTheme';
+import DemoInputError from 'fandryuidemos/demoInputError';
 import DemoLabelTheme from 'fandryuidemos/demoLabelTheme';
 import DemoLinkTheme from 'fandryuidemos/demoLinkTheme';
 import DemoLookupTheme from 'fandryuidemos/demoLookupTheme';
@@ -144,6 +145,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'heading-theme': DemoHeadingTheme,
   'icon-theme': DemoIconTheme,
   'input-theme': DemoInputTheme,
+  'input-error': DemoInputError,
   'label-theme': DemoLabelTheme,
   'link-theme': DemoLinkTheme,
   'lookup-theme': DemoLookupTheme,

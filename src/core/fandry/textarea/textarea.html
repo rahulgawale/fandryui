@@ -18,11 +18,16 @@
       readonly={readonly}
       required={required}
       aria-describedby={describedBy}
+      aria-invalid={ariaInvalid}
       data-value={value}
       oninput={handleInput}
       onchange={handleChange}
       lwc:spread={resolvedElementProps}
     ></textarea>
+
+    <div id="error-text" class={errorTextClasses} part="error-text" aria-live="polite">
+      <slot name="error-text" onslotchange={handleTextSlotChange}>{errorText}</slot>
+    </div>
 
     <div id="help-text" class="help-text" part="help-text" hidden={helpTextHidden}>
       <slot name="help-text" onslotchange={handleTextSlotChange}>{helpText}</slot>

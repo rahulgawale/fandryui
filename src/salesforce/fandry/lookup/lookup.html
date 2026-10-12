@@ -69,7 +69,8 @@
               aria-expanded={ariaExpanded}
               aria-controls="listbox"
               aria-activedescendant={openActiveDescendant}
-              aria-describedby="help-text"
+              aria-describedby={describedBy}
+              aria-invalid={ariaInvalid}
               aria-required={ariaRequired}
               oninput={handleInput}
               onclick={handleInputClick}
@@ -142,6 +143,10 @@
           </template>
         </div>
       </template>
+    </div>
+
+    <div id="error-text" class={errorTextClasses} part="error-text" aria-live="polite">
+      <slot name="error-text" onslotchange={handleTextSlotChange}>{errorText}</slot>
     </div>
 
     <div id="help-text" class="help-text" part="help-text" hidden={helpTextHidden}>

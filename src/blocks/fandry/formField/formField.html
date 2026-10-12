@@ -16,6 +16,7 @@
             name={field.name}
             label={field.label}
             help-text={field.helpText}
+            error-text={error}
             placeholder={field.placeholder}
             required={field.required}
             disabled={disabled}
@@ -31,6 +32,7 @@
             name={field.name}
             label={field.label}
             help-text={field.helpText}
+            error-text={error}
             placeholder={field.placeholder}
             required={field.required}
             disabled={disabled}
@@ -46,6 +48,7 @@
             name={field.name}
             label={field.label}
             help-text={field.helpText}
+            error-text={error}
             placeholder={field.placeholder}
             required={field.required}
             disabled={disabled}
@@ -101,7 +104,7 @@
         <template if:true={showOwnHelpText}>
           <p class="help">{field.helpText}</p>
         </template>
-        <template if:true={hasError}>
+        <template if:true={showOwnError}>
           <p class="error" role="alert">{error}</p>
         </template>
       </template>
