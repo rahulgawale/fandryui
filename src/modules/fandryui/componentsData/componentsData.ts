@@ -111,7 +111,9 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   chip: 'One chosen record.',
   'chip-label': 'A chosen record\'s name.',
   'chip-remove': 'The button that removes one chosen record.',
-  'clear-all': 'The Clear all button.'
+  'clear-all': 'The Clear all button.',
+  field: 'One field of a form: its label, control, help text and error (a fandry-form-field\'s `base`).',
+  revert: 'The button that puts back a changed field\'s saved value.'
 };
 
 /*
@@ -125,6 +127,7 @@ export const STATE_DESCRIPTIONS: Record<string, string> = {
   indeterminate: 'A checkbox that is neither checked nor unchecked, or a progress bar with no known value.',
   disabled: 'A control, option or item that cannot be used.',
   invalid: 'A field that has error text.',
+  changed: 'A form field whose value differs from the saved one.',
   selected: 'The chosen option, or a selected table row.',
   active: 'The option the keyboard or pointer is on.',
   current: 'The link to the page being viewed.',
@@ -141,6 +144,23 @@ export const STATE_DESCRIPTIONS: Record<string, string> = {
   warning: '`variant="warning"`.',
   danger: '`variant="danger"`.'
 };
+
+/*
+  The parts and states of the blocks, in the same vocabulary. A block has
+  its own page under /blocks rather than an entry in COMPONENTS, so its
+  parts are listed here; parts.test.ts holds every block that has a
+  template to this list (one with no parts needs no entry).
+*/
+export interface BlockParts {
+  tag: string;
+  parts: string[];
+  states?: string[];
+}
+
+export const BLOCKS: BlockParts[] = [
+  { tag: 'fandry-form', parts: ['field', 'revert'], states: ['changed'] },
+  { tag: 'fandry-form-field', parts: ['base', 'revert'], states: ['changed'] }
+];
 
 export const COMPONENTS: ComponentEntry[] = [
   // ---- Layout ----

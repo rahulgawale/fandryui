@@ -21,10 +21,11 @@ import FdSidebarItem from '../../../../core/fandry/sidebarItem/sidebarItem';
 import FdMenuItem from '../../../../core/fandry/menuItem/menuItem';
 import FdTable from '../../../../core/fandry/table/table';
 import FdPagination from '../../../../core/fandry/pagination/pagination';
-import { COMPONENTS, PART_DESCRIPTIONS, STATE_DESCRIPTIONS } from '../componentsData';
+import { BLOCKS, COMPONENTS, PART_DESCRIPTIONS, STATE_DESCRIPTIONS } from '../componentsData';
 
 const ROOT = resolve(__dirname, '../../../../..');
-const SOURCE_DIRS = ['src/core/fandry', 'src/salesforce/fandry'];
+const SOURCE_DIRS = ['src/core/fandry', 'src/salesforce/fandry', 'src/blocks/fandry'];
+const BLOCKS_DIR = join(ROOT, 'src/blocks/fandry');
 
 // fandry-radio-group -> radioGroup
 const folderOf = (tag: string) =>
@@ -96,14 +97,31 @@ describe('component parts', () => {
     expect([...(entry.states ?? [])].sort()).toEqual(states);
   });
 
+  /* Every block that has a template, listed in BLOCKS or not: a part added
+     to a block has to be written down too. */
+  const blockTags = readdirSync(BLOCKS_DIR)
+    .filter((folder) => readdirSync(join(BLOCKS_DIR, folder)).some((name) => name.endsWith('.html')))
+    .map((folder) => 'fandry-' + folder.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`));
+
+  it.each(blockTags)('%s (a block) documents exactly the parts and states it has', (tag) => {
+    const entry = BLOCKS.find((block) => block.tag === tag);
+    const { parts, states } = exposed(tag);
+    expect([...(entry?.parts ?? [])].sort()).toEqual(parts);
+    expect([...(entry?.states ?? [])].sort()).toEqual(states);
+  });
+
+  it('lists no block that does not exist', () => {
+    expect(BLOCKS.map((block) => block.tag).filter((tag) => !blockTags.includes(tag))).toEqual([]);
+  });
+
   it('describes every part name that is used, and nothing else', () => {
-    const used = new Set(COMPONENTS.flatMap((entry) => entry.parts ?? []));
+    const used = new Set([...COMPONENTS, ...BLOCKS].flatMap((entry) => entry.parts ?? []));
     expect([...used].filter((name) => !PART_DESCRIPTIONS[name])).toEqual([]);
     expect(Object.keys(PART_DESCRIPTIONS).filter((name) => !used.has(name))).toEqual([]);
   });
 
   it('describes every state that is used, and nothing else', () => {
-    const used = new Set(COMPONENTS.flatMap((entry) => entry.states ?? []));
+    const used = new Set([...COMPONENTS, ...BLOCKS].flatMap((entry) => entry.states ?? []));
     expect([...used].filter((name) => !STATE_DESCRIPTIONS[name])).toEqual([]);
     expect(Object.keys(STATE_DESCRIPTIONS).filter((name) => !used.has(name))).toEqual([]);
   });
@@ -111,7 +129,7 @@ describe('component parts', () => {
   /* ::part() looks only inside its own host, so a word may be a part on one
      component and a state on another -- but not both on the same one, or
      `::part(selected)` would match the part and every selected option alike. */
-  it.each(COMPONENTS.map((entry) => [entry.tag, entry]))('%s never uses a state word as one of its part names', (_tag, entry) => {
+  it.each([...COMPONENTS, ...BLOCKS].map((entry) => [entry.tag, entry]))('%s never uses a state word as one of its part names', (_tag, entry) => {
     expect((entry.states ?? []).filter((state) => entry.parts?.includes(state))).toEqual([]);
   });
 

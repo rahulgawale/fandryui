@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import { BLOCKS, PART_DESCRIPTIONS, STATE_DESCRIPTIONS } from 'fandryui/componentsData';
 import { createMockApi, PLAN_OPTIONS } from './mockApi';
 import type { Profile } from './mockApi';
 
@@ -58,22 +59,40 @@ const PROPS = [
   { name: 'mode', type: "'read' | 'edit'", default: "'edit'", description: 'Whether the form shows controls or the values as text. Set it to choose where the form starts; the block keeps it current as the user moves between the two.' },
   { name: 'save-values', type: '(values, changes) => Promise', default: '—', description: 'Persists the form. `values` is everything with the edits applied, `changes` only what differs. Resolve with the saved values or nothing; reject to stay in edit mode and show the message.' },
   { name: 'validate', type: '(values) => errors | Promise', default: '—', description: 'Rules that span fields or need the server. Return `{ [field name]: message }`. Runs on save, once every field\'s own rules pass.' },
-  { name: 'messages', type: 'object', default: '{}', description: 'Everything the form says (buttons, statuses, "is required", Yes / No in read mode), e.g. to translate it: any key of DEFAULT_FORM_MESSAGES (fandry/formState). Keys you leave out keep their English default.' },
-  { name: 'edit() · save() · cancel()', type: 'methods', default: '—', description: 'What the default buttons call. Use them from your own buttons in the `actions` slot.' }
+  { name: 'messages', type: 'object', default: '{}', description: 'Everything the form says (buttons, statuses, "is required", the name of the Revert button, Yes / No in read mode), e.g. to translate it: any key of DEFAULT_FORM_MESSAGES (fandry/formState). Keys you leave out keep their English default.' },
+  { name: 'edit() · save() · cancel() · reset()', type: 'methods', default: '—', description: 'What the default buttons call. Use them from your own buttons in the `actions` slot. `reset()` discards every edit and stays in edit mode; `cancel()` also goes back to reading.' }
 ];
 
 const EVENTS = [
-  { name: 'change', detail: '{ name, value, values }', description: 'A field\'s value changed (on every keystroke). `value` is in its saved shape: a number for a number field.' },
+  { name: 'change', detail: '{ name, value, values }', description: 'A field\'s value changed (on every keystroke), or its Revert button put the saved value back. `value` is in its saved shape: a number for a number field.' },
   { name: 'save', detail: '{ values, changes }', description: 'A save succeeded. Put `values` into your data.' },
   { name: 'cancel', detail: '', description: 'The user cancelled; their edits are discarded.' },
+  { name: 'reset', detail: '', description: 'Every edit was discarded and the form is still being edited.' },
   { name: 'modechange', detail: '{ mode }', description: 'The form moved between reading and editing.' }
 ];
 
 const SLOTS = [
-  { name: 'actions', description: 'Replaces the default Edit / Save / Cancel buttons. Wire your own to `edit()`, `save()` and `cancel()`.' }
+  { name: 'actions', description: 'Replaces the default Edit / Save / Cancel / Reset buttons. Wire your own to `edit()`, `save()`, `cancel()` and `reset()`.' }
 ];
 
-const BUILT_FROM = ['input', 'textarea', 'select', 'radio-group', 'checkbox', 'switch', 'button', 'alert', 'spinner', 'text'];
+// From the shared vocabulary, so the page can't drift from the templates
+// (parts.test.ts holds BLOCKS to them).
+const FORM = BLOCKS.find((block) => block.tag === 'fandry-form')!;
+const PARTS = [
+  ...FORM.parts.map((name) => ({ name, description: PART_DESCRIPTIONS[name] })),
+  ...(FORM.states ?? []).map((name) => ({
+    name: `field ${name}`,
+    description: `${STATE_DESCRIPTIONS[name]} The tinted panel behind it, with the bar at its start, is its \`::before\`.`
+  }))
+];
+
+const PARTS_CODE = `/* Your own color for a changed field, and no bar */
+fandry-form::part(field changed)::before {
+  background: hsl(199 89% 48% / 0.12);
+  border-inline-start-width: 0;
+}`;
+
+const BUILT_FROM = ['input', 'textarea', 'select', 'radio-group', 'checkbox', 'switch', 'button', 'icon', 'alert', 'spinner', 'text'];
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 
@@ -85,6 +104,8 @@ export default class BlockForm extends LightningElement {
   props = PROPS;
   events = EVENTS;
   slots = SLOTS;
+  parts = PARTS;
+  partsCode = PARTS_CODE;
   builtFrom = BUILT_FROM;
 
   installNpm = `npm install fandryui

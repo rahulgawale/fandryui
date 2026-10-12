@@ -238,6 +238,43 @@ describe('fandry-form-field', () => {
     });
   });
 
+  describe('changed', () => {
+    it('offers no Revert button until it is changed', async () => {
+      const el = mount({ field: { name: 'n', label: 'Name' } });
+      await settle();
+
+      expect(el.shadowRoot!.querySelector('.revert')).toBeNull();
+      expect(el.shadowRoot!.querySelector('.field')!.getAttribute('part')).toBe('base');
+    });
+
+    it.each(['text', 'textarea', 'select', 'radio', 'checkbox', 'switch'])(
+      'marks a changed %s field and asks to revert it',
+      async (type) => {
+        const el = mount({ field: { name: 'n', label: 'Name', type, options: OPTIONS }, changed: true });
+        const revert = jest.fn();
+        el.addEventListener('revert', revert);
+        await settle();
+
+        expect(el.shadowRoot!.querySelector('.field')!.getAttribute('part')).toBe('base changed');
+        const button = el.shadowRoot!.querySelector('.revert') as HTMLElement;
+        // Only an icon, so the name is on the button.
+        expect(button.querySelector('fandry-icon svg')).not.toBeNull();
+        expect(button.shadowRoot!.querySelector('button')!.getAttribute('aria-label')).toBe('Revert Name');
+
+        button.click();
+        expect(revert).toHaveBeenCalledTimes(1);
+      }
+    );
+
+    it('has nothing to revert while it is read', async () => {
+      const el = mount({ field: { name: 'n', label: 'Name' }, changed: true, mode: 'read' });
+      await settle();
+
+      expect(el.shadowRoot!.querySelector('.revert')).toBeNull();
+      expect(el.shadowRoot!.querySelector('.field')!.getAttribute('part')).toBe('base');
+    });
+  });
+
   it('focuses its control', async () => {
     const el = mount({ field: { name: 'n', label: 'N' } });
     await settle();

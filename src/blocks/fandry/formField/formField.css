@@ -3,9 +3,45 @@
 }
 
 .field {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--_fd-space-1);
+}
+
+/* A changed field: a tinted panel behind it with a bar at its start. The
+   panel is drawn in the gap between fields, so nothing moves when it
+   appears, and the control's own border is left to say "focused" or
+   "invalid".
+
+   It gets behind the field's content by coming first among positioned
+   boxes, not by a negative z-index: that would need the field to be a
+   stacking context, which would hold a select's open list under the
+   fields after it. */
+.field.changed::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--_fd-space-1) * -1.5);
+  border-inline-start: var(--_fd-border-width-lg) solid hsl(var(--_fd-warning));
+  border-radius: var(--_fd-radius-sm);
+  background: hsl(var(--_fd-warning) / 0.14);
+}
+
+.field.changed > * {
+  position: relative;
+}
+
+/* At the end of the label's line, out of the flow for the same reason. */
+.field > .revert {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+
+.revert::part(base) {
+  width: calc(var(--_fd-space-3) * 2);
+  height: calc(var(--_fd-space-3) * 2);
+  padding: 0;
 }
 
 .read {
