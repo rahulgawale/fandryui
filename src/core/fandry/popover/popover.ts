@@ -24,10 +24,7 @@ export default class Popover extends Base {
   // the exit animation after `open` goes false (see fandry/motion).
   @track isMounted = false;
 
-  /*
-   * Where the panel sits (see `updatePosition`), and whether it has flipped
-   * to the side opposite `placement`.
-   */
+  // Where the panel sits, and whether it is on the side opposite `placement`.
   @track panelStyle = '';
   @track flipped = false;
   private positionFrame = 0;
@@ -51,8 +48,7 @@ export default class Popover extends Base {
     this._open = value;
 
     if (value) {
-      // A panel that isn't on the page yet is placed afresh once it has
-      // rendered, not from where it was the last time it was open.
+      // Forget where the panel was the last time it was open.
       if (!this.isMounted) {
         this.panelStyle = '';
         this.flipped = false;
@@ -69,25 +65,13 @@ export default class Popover extends Base {
   }
 
   /*
-   * The panel is `position: fixed` and placed from the trigger's bounding
-   * box, not `position: absolute` inside the popover. An absolutely
-   * positioned panel is clipped by any scrolling ancestor (a table's
-   * horizontal scroll container, a scrollable card), so a menu opening from
-   * the last row of a scrolling table was cut off. A fixed panel is not
-   * clipped by an ancestor's overflow. The cost is that it no longer moves
-   * with the trigger on its own, hence `followTrigger`.
-   *
-   * A fixed box is not always placed from the viewport: inside an ancestor
-   * with a transform, a filter or paint containment it is placed from that
-   * ancestor's box. `.origin` is a fixed box with `inset: 0`, so its
-   * rectangle is whichever box that is, and the panel's offsets are measured
-   * from it. An ancestor that is scaled is not accounted for.
-   *
-   * The trigger's box is the slotted trigger's own, not its wrapper's: the
-   * wrapper is as wide as the host, which a flex or grid container may have
-   * stretched well past the control the panel belongs to.
+   * The panel is `position: fixed`, placed from the trigger's box, so no
+   * scrolling ancestor clips it. Offsets are measured from `.origin`, the
+   * box a fixed element is really placed from: the viewport, or an ancestor
+   * with a transform or filter (a scaled one is not accounted for).
    */
   private updatePosition() {
+    // The slotted trigger, not its wrapper: a stretched host makes that wider.
     const trigger = this.querySelector('[slot="trigger"]') ?? this.template.querySelector('.trigger');
     const panel = this.template.querySelector('.panel') as HTMLElement | null;
     const origin = this.template.querySelector('.origin');
@@ -128,7 +112,6 @@ export default class Popover extends Base {
     this.panelStyle = `top: ${edges.top}; right: ${edges.right}; bottom: ${edges.bottom}; left: ${edges.left}; --_fd-popover-trigger-width: ${rect.width}px;`;
   }
 
-  // The side asked for, and the side of the trigger the panel is on.
   private get preferredSide(): Side {
     return SIDES.includes(this.placement) ? this.placement : 'bottom';
   }
@@ -137,11 +120,7 @@ export default class Popover extends Base {
     return this.flipped ? OPPOSITE[this.preferredSide] : this.preferredSide;
   }
 
-  /*
-   * The panel flips to the opposite side when it doesn't fit on its own and
-   * the opposite side has more room in the viewport. Only the viewport is
-   * measured, since no scrolling ancestor clips a fixed panel.
-   */
+  // Flip when the panel doesn't fit and the opposite side has more room.
   private shouldFlip(rect: DOMRect, panel: HTMLElement): boolean {
     const preferred = this.preferredSide;
     const room = {
@@ -154,7 +133,7 @@ export default class Popover extends Base {
       return false;
     }
 
-    // The panel's size with its gap to the trigger, which is a margin.
+    // The gap to the trigger is a margin.
     const style = getComputedStyle(panel);
     const margin = (edge: string) => parseFloat(style.getPropertyValue(`margin-${edge}`)) || 0;
     const needed =
@@ -166,12 +145,8 @@ export default class Popover extends Base {
   }
 
   /*
-   * While open, measure the trigger every frame and move the panel when it
-   * has moved. Listening for `scroll` is not enough: scroll events neither
-   * bubble nor leave a shadow root, so a listener on the window never hears
-   * a scroll container inside another component's shadow root, and nothing
-   * at all is fired when the trigger moves because the layout around it
-   * changed.
+   * While open, re-place the panel every frame. A scroll listener misses
+   * scroll containers inside a shadow root: scroll events don't leave one.
    */
   private followTrigger = () => {
     cancelAnimationFrame(this.positionFrame);
@@ -202,8 +177,7 @@ export default class Popover extends Base {
   }
 
   renderedCallback() {
-    // The panel has just rendered: until now there was nothing to measure.
-    // From here on `followTrigger` keeps it in place.
+    // First placement, now that the panel exists to measure.
     if (this.open && !this.panelStyle) {
       this.updatePosition();
     }

@@ -52,11 +52,7 @@ describe('fandry-popover', () => {
   });
 
   describe('panel position', () => {
-    /*
-     * jsdom does no layout, so the boxes are supplied: an 800 by 600
-     * viewport, which is also the box a fixed panel is placed from, and the
-     * trigger's own box in `mount`.
-     */
+    // jsdom does no layout: an 800x600 viewport, and the trigger's box in `mount`.
     let layout: jest.SpyInstance[] = [];
 
     beforeEach(() => {
@@ -88,7 +84,7 @@ describe('fandry-popover', () => {
 
     const panelStyle = async (element: HTMLElement & { open: boolean }) => {
       element.open = true;
-      // Once to render the panel, once more to place it: it is measured first.
+      // Render, then place.
       await flush();
       await flush();
       return (element.shadowRoot!.querySelector('.panel') as HTMLElement).style;
@@ -148,10 +144,6 @@ describe('fandry-popover', () => {
 
     const panelOf = (element: HTMLElement) => element.shadowRoot!.querySelector('.panel') as HTMLElement;
 
-    /*
-     * No scroll event is involved: a scroll container inside another
-     * component's shadow root fires none that a popover could hear.
-     */
     it('follows the trigger frame by frame while open', async () => {
       const frame = frames();
       const element = mount({});
@@ -199,7 +191,7 @@ describe('fandry-popover', () => {
       const element = mount({ align: 'end' });
       await panelStyle(element);
 
-      // A transformed ancestor at (50, 20), 400 wide: the panel is placed from it.
+      // A transformed ancestor at (50, 20), 400 wide.
       const origin = element.shadowRoot!.querySelector('.origin') as HTMLElement;
       origin.getBoundingClientRect = () =>
         ({ top: 20, bottom: 320, left: 50, right: 450, width: 400, height: 300 }) as DOMRect;
@@ -210,10 +202,6 @@ describe('fandry-popover', () => {
       frame.restore();
     });
 
-    /*
-     * The wrapper is as wide as the host, which a flex or grid container may
-     * have stretched; the panel belongs to the control inside it.
-     */
     it('measures the slotted trigger, not the wrapper around it', async () => {
       const harness = createElement('fandry-popover-trigger-harness', { is: PopoverTriggerHarness });
       document.body.appendChild(harness);
@@ -290,7 +278,7 @@ describe('fandry-popover', () => {
       });
 
       it('flips a side placement too', async () => {
-        // The trigger ends at 260 of 800: a 700px wide panel has more room on the right.
+        // 200px of room on the left, 540px on the right.
         size[1].mockReturnValue(700);
         const panel = await open(mount({ placement: 'left' }));
         expect(panel.classList).toContain('panel--right');

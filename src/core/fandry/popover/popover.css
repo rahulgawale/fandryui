@@ -3,8 +3,7 @@
   position: relative;
 }
 
-/* A block, so the trigger is as wide as the host: `display: block` on a
-   fandry-popover is all it takes for its trigger to fill a row. */
+/* As wide as the host, so a `display: block` popover fills its row. */
 .trigger {
   display: block;
 }
@@ -26,7 +25,7 @@
      ancestor can clip it. */
   position: fixed;
   z-index: var(--_fd-z-overlay);
-  /* As wide as its content, and never narrower than the trigger. */
+  /* Never narrower than the trigger. */
   width: max-content;
   min-width: var(--_fd-popover-trigger-width, 0);
 
