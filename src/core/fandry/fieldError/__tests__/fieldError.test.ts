@@ -85,6 +85,33 @@ describe('error text', () => {
     });
   });
 
+  /* A lookup with a record chosen has no input. What takes focus then is
+     the clear button, so it is what the error and help text describe. */
+  it('describes the clear button of a lookup that shows its chosen record', async () => {
+    const element = createElement('fandry-lookup', { is: FdLookup }) as unknown as HTMLElement & Record<string, unknown>;
+    Object.assign(element, {
+      label: 'Account',
+      record: { id: '001A', label: 'Acme Corp' },
+      value: '001A',
+      helpText: 'Help.',
+      errorText: 'This account is closed.'
+    });
+    document.body.appendChild(element);
+    await Promise.resolve();
+
+    const root = element.shadowRoot!;
+    expect(root.querySelector('.input')).toBeNull();
+    expect(root.querySelector('.clear')!.getAttribute('aria-describedby')).toBe(
+      `${root.querySelector('.error-text')!.id} ${root.querySelector('.help-text')!.id}`
+    );
+    expect(root.querySelector('.field')!.getAttribute('part')!.split(' ')).toContain('invalid');
+
+    element.errorText = '';
+    element.helpText = '';
+    await Promise.resolve();
+    expect(root.querySelector('.clear')!.hasAttribute('aria-describedby')).toBe(false);
+  });
+
   it('takes the error from a slot, without the prop', async () => {
     const harness = createElement('text-slots-harness', { is: TextSlotsHarness });
     document.body.appendChild(harness);

@@ -15,12 +15,18 @@
         <template if:true={showSelected}>
           <div class="selected" part="selection" role="group" aria-labelledby="label">
             <span class={selectedLabelClasses} part="selection-label">{selectedLabel}</span>
+            <!--
+              With a record chosen there is no input: this button is what
+              takes focus, so it carries the error and help text instead.
+              (aria-invalid is not for a button; the error text says it.)
+            -->
             <button
               type="button"
               class="clear"
               part="clear-button"
               tabindex="0"
               aria-label={clearLabel}
+              aria-describedby={describedBy}
               disabled={disabled}
               onclick={handleClear}
             >
