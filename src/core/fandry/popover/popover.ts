@@ -51,6 +51,13 @@ export default class Popover extends Base {
     this._open = value;
 
     if (value) {
+      // A panel that isn't on the page yet is placed afresh once it has
+      // rendered, not from where it was the last time it was open.
+      if (!this.isMounted) {
+        this.panelStyle = '';
+        this.flipped = false;
+      }
+
       this.isMounted = true;
       this.followTrigger();
     }
@@ -74,10 +81,14 @@ export default class Popover extends Base {
    * with a transform, a filter or paint containment it is placed from that
    * ancestor's box. `.origin` is a fixed box with `inset: 0`, so its
    * rectangle is whichever box that is, and the panel's offsets are measured
-   * from it.
+   * from it. An ancestor that is scaled is not accounted for.
+   *
+   * The trigger's box is the slotted trigger's own, not its wrapper's: the
+   * wrapper is as wide as the host, which a flex or grid container may have
+   * stretched well past the control the panel belongs to.
    */
   private updatePosition() {
-    const trigger = this.template.querySelector('.trigger');
+    const trigger = this.querySelector('[slot="trigger"]') ?? this.template.querySelector('.trigger');
     const panel = this.template.querySelector('.panel') as HTMLElement | null;
     const origin = this.template.querySelector('.origin');
     if (!trigger || !panel || !origin) {
@@ -191,8 +202,9 @@ export default class Popover extends Base {
   }
 
   renderedCallback() {
-    // The panel has just rendered, or its content (and so its size) changed.
-    if (this.open) {
+    // The panel has just rendered: until now there was nothing to measure.
+    // From here on `followTrigger` keeps it in place.
+    if (this.open && !this.panelStyle) {
       this.updatePosition();
     }
 

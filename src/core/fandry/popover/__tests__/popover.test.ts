@@ -210,6 +210,24 @@ describe('fandry-popover', () => {
       frame.restore();
     });
 
+    /*
+     * The wrapper is as wide as the host, which a flex or grid container may
+     * have stretched; the panel belongs to the control inside it.
+     */
+    it('measures the slotted trigger, not the wrapper around it', async () => {
+      const harness = createElement('fandry-popover-trigger-harness', { is: PopoverTriggerHarness });
+      document.body.appendChild(harness);
+      const popover = harness.shadowRoot!.querySelector('fandry-popover') as HTMLElement & { open: boolean };
+      const button = harness.shadowRoot!.querySelector('button') as HTMLElement;
+      button.getBoundingClientRect = () =>
+        ({ top: 10, bottom: 40, left: 300, right: 380, width: 80, height: 30 }) as DOMRect;
+
+      const style = await panelStyle(popover);
+      expect(style.top).toBe('40px');
+      expect(style.left).toBe('300px');
+      expect(style.getPropertyValue('--_fd-popover-trigger-width')).toBe('80px');
+    });
+
     it('tells the panel how wide the trigger is', async () => {
       const style = await panelStyle(mount({}));
       expect(style.getPropertyValue('--_fd-popover-trigger-width')).toBe('60px');
