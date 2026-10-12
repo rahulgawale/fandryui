@@ -37,7 +37,9 @@ const fieldHost = (el: HTMLElement, name: string) =>
   el.shadowRoot!.querySelector(`fandry-form-field[data-name="${name}"]`) as HTMLElement;
 const inner = (el: HTMLElement, name: string) => fieldHost(el, name).shadowRoot!;
 const control = (el: HTMLElement, name: string) => inner(el, name).querySelector('.control') as HTMLElement | null;
-const errorText = (el: HTMLElement, name: string) => inner(el, name).querySelector('.error')?.textContent?.trim() ?? '';
+// Shown by the control itself where it has a place for one, else by the field.
+const errorText = (el: HTMLElement, name: string) =>
+  (control(el, name) as any)?.errorText || (inner(el, name).querySelector('.error')?.textContent?.trim() ?? '');
 const status = (el: HTMLElement) => el.shadowRoot!.querySelector('fandry-alert');
 const button = (el: HTMLElement, label: string) =>
   Array.from(el.shadowRoot!.querySelectorAll('.actions fandry-button')).find((b) =>

@@ -3,6 +3,7 @@ import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
 import { resolveElementProps } from 'fandry/elementProps';
 import { slotHasContent } from 'fandry/textSlots';
+import { fieldInvalid, fieldDescribedBy, withoutAriaInvalid } from 'fandry/fieldError';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -30,6 +31,8 @@ const RESERVED_ELEMENT_PROPS = [
 export default class Textarea extends Base {
   @api label = '';
   @api helpText = '';
+  // Shown under the control, and makes the field invalid -- see fandry/fieldError.
+  @api errorText = '';
   @api value = '';
   @api name = '';
   @api placeholder = '';
@@ -52,10 +55,26 @@ export default class Textarea extends Base {
     return !!this.helpText || !!this.textSlots['help-text'];
   }
 
-  // Only while there is help text: an empty description is still announced
-  // as one by some screen readers.
+  get hasErrorText(): boolean {
+    return !!this.errorText || !!this.textSlots['error-text'];
+  }
+
+  get errorTextClasses(): string {
+    return this.hasErrorText ? 'error-text' : 'error-text error-text--empty';
+  }
+
+  get invalid(): boolean {
+    return fieldInvalid(this.hasErrorText, this.elementProps);
+  }
+
+  get ariaInvalid(): 'true' | null {
+    return this.invalid ? 'true' : null;
+  }
+
+  // Only what there is: an empty description is still announced as one by
+  // some screen readers.
   get describedBy(): string | null {
-    return this.hasHelpText ? 'help-text' : null;
+    return fieldDescribedBy(this.hasErrorText, this.hasHelpText);
   }
 
   renderedCallback() {
@@ -81,7 +100,7 @@ export default class Textarea extends Base {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-textarea');
+    return withoutAriaInvalid(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-textarea'));
   }
 
   // The host isn't itself focusable, only the native control in its shadow
@@ -125,7 +144,7 @@ export default class Textarea extends Base {
   }
 
   get controlPart(): string {
-    return partList('control textarea', { disabled: this.disabled });
+    return partList('control textarea', { disabled: this.disabled, invalid: this.invalid });
   }
 
   // Which text slots have content -- see fandry/textSlots.

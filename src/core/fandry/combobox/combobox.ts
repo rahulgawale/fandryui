@@ -5,6 +5,7 @@ import type { FdSearchItem } from 'fandry/searchState';
 import { exitFinished } from 'fandry/motion';
 import { resolveElementProps } from 'fandry/elementProps';
 import { slotHasContent } from 'fandry/textSlots';
+import { fieldInvalid, fieldDescribedBy, withoutAriaInvalid } from 'fandry/fieldError';
 
 export type FdComboboxOption = FdSearchItem;
 
@@ -54,6 +55,8 @@ const RESERVED_ELEMENT_PROPS = [
 export default class FdCombobox extends FdSearchState {
   @api label = '';
   @api helpText = '';
+  // Shown under the control, and makes the field invalid -- see fandry/fieldError.
+  @api errorText = '';
   @api name = '';
   @api value = '';
   @api placeholder = '';
@@ -110,6 +113,26 @@ export default class FdCombobox extends FdSearchState {
     return !!this.helpText || !!this.textSlots['help-text'];
   }
 
+  get hasErrorText(): boolean {
+    return !!this.errorText || !!this.textSlots['error-text'];
+  }
+
+  get errorTextClasses(): string {
+    return this.hasErrorText ? 'error-text' : 'error-text error-text--empty';
+  }
+
+  get invalid(): boolean {
+    return fieldInvalid(this.hasErrorText, this.elementProps);
+  }
+
+  get ariaInvalid(): 'true' | null {
+    return this.invalid ? 'true' : null;
+  }
+
+  get describedBy(): string | null {
+    return fieldDescribedBy(this.hasErrorText, this.hasHelpText);
+  }
+
   get selectedLabel(): string {
     const selected = this.source.find((option) => option.value === this.value);
     return selected ? selected.label : '';
@@ -143,7 +166,7 @@ export default class FdCombobox extends FdSearchState {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-combobox');
+    return withoutAriaInvalid(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-combobox'));
   }
 
   renderedCallback() {
@@ -231,7 +254,7 @@ export default class FdCombobox extends FdSearchState {
   }
 
   get controlPart(): string {
-    return partList('control input', { disabled: this.disabled });
+    return partList('control input', { disabled: this.disabled, invalid: this.invalid });
   }
 
   // Which text slots have content -- see fandry/textSlots.
