@@ -629,7 +629,7 @@ fandry-label::part(required) {
       }
     ],
     props: [
-      { name: 'required', type: 'boolean', default: 'false', description: 'Shows a required indicator. In a field\'s `label` slot the field shows it instead, from its own `required`.' },
+      { name: 'required', type: 'boolean', default: 'false', description: 'Shows the required asterisk. It is only the mark: set `required` on your control as well. In a field\'s `label` slot the field shows it instead, from its own `required`.' },
       { name: 'html-for', type: 'string', default: '—', description: 'Deprecated: it does nothing. The `for` goes on the `<label>` you wrap this in.' }
     ],
     code: `<!-- with your own control -->

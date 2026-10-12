@@ -24,6 +24,9 @@ let warnedHtmlFor = false;
  * fandry-select, ...), where the field already supplies the `<label>`.
  */
 export default class Label extends Base {
+  /* Shows the asterisk, and nothing more: being required belongs to the
+     control, which the page marks itself. A field with this in its label
+     slot shows its own asterisk and turns this one off (see label.css). */
   @api required = false;
 
   // Spread onto the <span> via `lwc:spread` -- see checkbox.ts for why this
