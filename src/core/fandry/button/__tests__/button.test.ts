@@ -126,6 +126,83 @@ describe('fandry-button', () => {
     expect(onclick).toHaveBeenCalledTimes(1);
   });
 
+  describe('in a form', () => {
+    // The form is acted on a task after the click, once every listener has seen it.
+    beforeEach(() => jest.useFakeTimers());
+    afterEach(() => jest.useRealTimers());
+
+    const mountIn = (type: 'button' | 'submit' | 'reset', elementProps?: Record<string, unknown>) => {
+      const form = document.createElement('form');
+      const element = createElement('fandry-button', { is: FdButton });
+      element.type = type;
+      if (elementProps) {
+        element.elementProps = elementProps;
+      }
+      form.appendChild(element);
+      document.body.appendChild(form);
+
+      // jsdom doesn't implement requestSubmit.
+      form.requestSubmit = jest.fn();
+      form.reset = jest.fn();
+      return { form, button: element.shadowRoot!.querySelector('button')!, element };
+    };
+
+    it('submits the form it sits in when type="submit"', () => {
+      const { form, button } = mountIn('submit');
+      button.click();
+      jest.runAllTimers();
+      expect(form.requestSubmit).toHaveBeenCalledTimes(1);
+      expect(form.reset).not.toHaveBeenCalled();
+    });
+
+    it('resets the form it sits in when type="reset"', () => {
+      const { form, button } = mountIn('reset');
+      button.click();
+      jest.runAllTimers();
+      expect(form.reset).toHaveBeenCalledTimes(1);
+      expect(form.requestSubmit).not.toHaveBeenCalled();
+    });
+
+    it('leaves the form alone when type="button"', () => {
+      const { form, button } = mountIn('button');
+      button.click();
+      jest.runAllTimers();
+      expect(form.requestSubmit).not.toHaveBeenCalled();
+      expect(form.reset).not.toHaveBeenCalled();
+    });
+
+    it('does not submit while aria-disabled', () => {
+      const { form, button } = mountIn('submit', { tabIndex: 0, ariaDisabled: 'true' });
+      button.click();
+      jest.runAllTimers();
+      expect(form.requestSubmit).not.toHaveBeenCalled();
+    });
+
+    it("does not submit when the page's own click handler cancels the click", () => {
+      const { form, button, element } = mountIn('submit');
+      element.addEventListener('click', (event: Event) => event.preventDefault());
+      button.click();
+      jest.runAllTimers();
+      expect(form.requestSubmit).not.toHaveBeenCalled();
+    });
+
+    it('still submits when a handler stops the click from going further', () => {
+      const { form, button, element } = mountIn('submit');
+      element.addEventListener('click', (event: Event) => event.stopPropagation());
+      button.click();
+      jest.runAllTimers();
+      expect(form.requestSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not submit a form the click handler took the button out of', () => {
+      const { form, button, element } = mountIn('submit');
+      element.addEventListener('click', () => document.body.appendChild(element));
+      button.click();
+      jest.runAllTimers();
+      expect(form.requestSubmit).not.toHaveBeenCalled();
+    });
+  });
+
   it('does not let elementProps clobber a library-controlled prop, and warns once about it', () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const element = createElement('fandry-button', { is: FdButton });

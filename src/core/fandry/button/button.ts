@@ -54,10 +54,37 @@ export default class FdButton extends Base {
 
   handleClick(event: MouseEvent) {
     /* An aria-disabled button still takes focus and clicks, so the click
-       is stopped here, before it reaches a page's onclick. */
+       is stopped here: it reaches neither a page's onclick nor a form. */
     if (this.isAriaDisabled) {
       event.preventDefault();
       event.stopImmediatePropagation();
+      return;
     }
+
+    /* A button in a shadow tree belongs to no form, so `type` does nothing
+       on its own: submit or reset the form this component sits in, the way
+       a native button would. */
+    const type = this.type;
+    if (type !== 'submit' && type !== 'reset') {
+      return;
+    }
+
+    /* Once the click has been everywhere, as the browser does for a native
+       button: this handler runs first, before a page's own onclick, which
+       may cancel the click (to ask "are you sure?") or take the button out
+       of the form. A task later, not a microtask: those run between two
+       listeners of the same click. */
+    setTimeout(() => {
+      const form = this.template.host.closest('form');
+      if (!form || event.defaultPrevented) {
+        return;
+      }
+
+      if (type === 'reset') {
+        form.reset();
+      } else {
+        form.requestSubmit();
+      }
+    });
   }
 }
