@@ -1289,6 +1289,30 @@ planOptions = [
 //
 // On Salesforce this uses lwc:is: fandry-select's .js-meta.xml needs the
 // lightning__dynamicComponent capability (API 55+), which \`fandry add\` writes.`
+      },
+      {
+        title: 'A long list, with the keyboard',
+        demo: 'select-long',
+        code: `<!-- template -->
+<fandry-select label="Country" placeholder="Choose a country"
+  options={countryOptions} value={value} onchange={handleChange}></fandry-select>
+
+// component
+handleChange(event) {
+  this.value = event.detail;
+}
+
+// The list scrolls once it is taller than --fd-listbox-max-height, and
+// the option the keyboard is on is kept in view. Hovering never scrolls.
+//
+// Closed:  Enter, Space, ArrowDown or ArrowUp open the list
+//          ArrowLeft / ArrowRight choose the previous or next option
+//          typing chooses the option that starts with what was typed
+// Open:    ArrowUp / ArrowDown move, and stop at the first and last option
+//          Home / End, Page Up / Page Down move further
+//          typing moves to a match: "new z" finds New Zealand, and "s"
+//          pressed again steps through the options that start with s
+//          Enter or Space choose; Escape or Tab close without choosing`
       }
     ]
   },
