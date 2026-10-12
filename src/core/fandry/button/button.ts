@@ -5,7 +5,7 @@ import { resolveElementProps } from 'fandry/elementProps';
 
 // See checkbox.ts for why this list exists: it keeps a consumer's
 // `elementProps` from clobbering a property the component itself controls.
-const RESERVED_ELEMENT_PROPS = ['type', 'class', 'disabled', 'onclick'];
+const RESERVED_ELEMENT_PROPS = ['type', 'class', 'disabled'];
 
 export default class FdButton extends Base {
   @api variant: 'default' | 'secondary' | 'ghost' = 'default';

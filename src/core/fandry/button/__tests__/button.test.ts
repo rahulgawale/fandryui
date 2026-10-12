@@ -110,6 +110,22 @@ describe('fandry-button', () => {
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
+  it('stops an onclick passed through elementProps too while aria-disabled', async () => {
+    const onclick = jest.fn();
+    const element = createElement('fandry-button', { is: FdButton });
+    element.elementProps = { tabIndex: 0, onclick };
+    document.body.appendChild(element);
+
+    const button = element.shadowRoot!.querySelector('button')!;
+    button.click();
+    expect(onclick).toHaveBeenCalledTimes(1);
+
+    element.elementProps = { tabIndex: 0, onclick, ariaDisabled: 'true' };
+    await Promise.resolve();
+    button.click();
+    expect(onclick).toHaveBeenCalledTimes(1);
+  });
+
   describe('in a form', () => {
     const mountIn = (type: 'button' | 'submit' | 'reset', elementProps?: Record<string, unknown>) => {
       const form = document.createElement('form');

@@ -77,9 +77,7 @@ const RESERVED_ELEMENT_PROPS = [
   'ariaDescribedBy',
   'ariaDescribedByElements',
   'ariaRequired',
-  'onkeydown',
-  'onkeyup',
-  'onblur'
+  'onkeydown'
 ];
 
 export default class Select extends Base {
@@ -276,11 +274,14 @@ export default class Select extends Base {
   private hide() {
     this.open = false;
     this.activeOptionId = null;
+    this.scrollActiveIntoView = false;
   }
 
   private setActive(id: string | null) {
     // Only a change renders again; a flag left set would scroll on some later, unrelated render.
-    this.scrollActiveIntoView = id !== this.activeOptionId;
+    if (id !== this.activeOptionId) {
+      this.scrollActiveIntoView = true;
+    }
     this.activeOptionId = id;
   }
 
