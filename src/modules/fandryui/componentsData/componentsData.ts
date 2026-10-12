@@ -1838,6 +1838,7 @@ fandry-command::part(option-description) {
       { name: 'label', type: 'string', default: "''", description: 'Accessible name of the palette.' },
       { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' },
       { name: 'placeholder', type: 'string', default: "''", description: 'Hint shown in the empty search box.' },
+      { name: 'messages', type: '{ results(count) }', default: '{}', description: 'Replaces what a screen reader hears as the list narrows ("3 results"), e.g. to translate it. "No results" is the `empty` slot.' },
       { name: 'items', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The commands. Ungrouped items list first; grouped items sit under their heading.' },
       { name: 'select (event)', type: 'CustomEvent<{ value }>', default: '—', description: 'Fired when an item is picked; the palette then closes itself.' },
       { name: 'empty (slot)', type: 'slot', default: "'No results found'", description: 'Replaces the message shown when nothing matches.' }

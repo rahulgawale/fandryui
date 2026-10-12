@@ -53,12 +53,13 @@ describe('fandry-command', () => {
     expect(element.shadowRoot!.querySelector('.panel')).toBeNull();
   });
 
-  it('renders a modal dialog with a labelled combobox input when open', () => {
+  it('renders a dialog with a labelled combobox input when open', () => {
     const element = create();
 
     const panel = element.shadowRoot!.querySelector('.panel')!;
     expect(panel.getAttribute('role')).toBe('dialog');
-    expect(panel.getAttribute('aria-modal')).toBe('true');
+    // In a shadow root, aria-modal hides the palette itself from VoiceOver.
+    expect(panel.hasAttribute('aria-modal')).toBe(false);
     expect(panel.getAttribute('aria-label')).toBe('Command palette');
     expect(input(element).getAttribute('role')).toBe('combobox');
     expect(input(element).getAttribute('aria-label')).toBe('Command palette');
@@ -119,6 +120,42 @@ describe('fandry-command', () => {
     expect(element.shadowRoot!.querySelector('.empty')).not.toBeNull();
     await type(element, 'abc');
     expect(element.shadowRoot!.querySelector('.empty')).not.toBeNull();
+  });
+
+  /* Safari with VoiceOver reads the option aria-activedescendant points at
+     only when it is aria-selected, and a palette has no other selection. */
+  it('marks the active option, and only it, as aria-selected', async () => {
+    const element = create();
+    const selected = () =>
+      Array.from(element.shadowRoot!.querySelectorAll('[role="option"][aria-selected="true"]')).map((option) => option.id);
+
+    expect(selected()).toEqual([input(element).getAttribute('aria-activedescendant')]);
+
+    input(element).dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    await flush();
+    expect(selected()).toEqual([input(element).getAttribute('aria-activedescendant')]);
+    // Still not the look of a chosen value: that is `selected`, which a palette never has.
+    expect(element.shadowRoot!.querySelector('.option--selected')).toBeNull();
+  });
+
+  it('says how many results there are, in a status a screen reader follows', async () => {
+    const element = create();
+    const status = element.shadowRoot!.querySelector('[role="status"]')!;
+    const total = element.shadowRoot!.querySelectorAll('[role="option"]').length;
+    expect(status.textContent!.trim()).toBe(`${total} results`);
+
+    await type(element, 'zzz');
+    // The same element, so the change is announced.
+    expect(element.shadowRoot!.querySelector('[role="status"]')).toBe(status);
+    expect(status.textContent).toContain('No results');
+  });
+
+  it('takes the result count text from messages', async () => {
+    const element = create();
+    element.messages = { results: (count: number) => `${count} résultats` };
+    await flush();
+
+    expect(element.shadowRoot!.querySelector('[role="status"]')!.textContent).toContain('résultats');
   });
 
   it('shows the empty message when nothing matches', async () => {

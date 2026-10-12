@@ -5,6 +5,16 @@ import { exitFinished } from 'fandry/motion';
 
 export type FdCommandItem = FdSearchItem;
 
+/** Text the palette announces that isn't markup; see `messages`. */
+export interface FdCommandMessages {
+  /** What a screen reader hears as the list narrows: how many results there are. */
+  results: (count: number) => string;
+}
+
+export const DEFAULT_COMMAND_MESSAGES: FdCommandMessages = {
+  results: (count) => (count === 1 ? '1 result' : `${count} results`)
+};
+
 // A stable empty list (the source cache compares by identity).
 const NO_ITEMS: FdSearchItem[] = [];
 
@@ -36,6 +46,7 @@ export default class FdCommand extends FdSearchState {
   @api ariaLabel = '';
   @api placeholder = '';
   @api items: FdCommandItem[] = [];
+  @api messages: Partial<FdCommandMessages> = {};
 
   private _open = false;
 
@@ -79,6 +90,17 @@ export default class FdCommand extends FdSearchState {
   // list, not a render error.
   protected get source(): FdSearchItem[] {
     return this.items ?? NO_ITEMS;
+  }
+
+  // Nothing is "the value" here, so the option the keyboard is on is the
+  // selected one -- see searchState's isAriaSelected.
+  protected isAriaSelected(_selected: boolean, active: boolean): boolean {
+    return active;
+  }
+
+  // Read out as the list narrows; "no results" is the `empty` slot instead.
+  get resultsText(): string {
+    return { ...DEFAULT_COMMAND_MESSAGES, ...this.messages }.results(this.resultCount);
   }
 
   protected commit(item: FdSearchItem) {
