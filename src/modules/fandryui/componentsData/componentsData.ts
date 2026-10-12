@@ -792,12 +792,7 @@ fandry-button.rainbow::part(base)::after {
         description:
           "Disables the button. A button that must keep focus (one that is saving) takes `element-props={ tabIndex: 0, ariaDisabled: 'true' }` instead: it looks the same, has the same `disabled` state, and its clicks are ignored."
       },
-      {
-        name: 'type',
-        type: "'button' | 'submit' | 'reset'",
-        default: "'button'",
-        description: 'Native button type. `submit` and `reset` act on the `<form>` the fandry-button sits in.'
-      }
+      { name: 'type', type: "'button' | 'submit' | 'reset'", default: "'button'", description: 'Native button type.' }
     ],
     code: `<fandry-button variant="secondary" size="lg">Save</fandry-button>`
   },

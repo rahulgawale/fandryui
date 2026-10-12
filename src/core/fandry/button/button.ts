@@ -54,29 +54,10 @@ export default class FdButton extends Base {
 
   handleClick(event: MouseEvent) {
     /* An aria-disabled button still takes focus and clicks, so the click
-       is stopped here: it reaches neither a page's onclick nor a form. */
+       is stopped here, before it reaches a page's onclick. */
     if (this.isAriaDisabled) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      return;
-    }
-
-    /* A button in a shadow tree belongs to no form, so `type` does nothing
-       on its own: submit or reset the form this component sits in, the way
-       a native button would. */
-    if (this.type !== 'submit' && this.type !== 'reset') {
-      return;
-    }
-
-    const form = this.template.host.closest('form');
-    if (!form || event.defaultPrevented) {
-      return;
-    }
-
-    if (this.type === 'reset') {
-      form.reset();
-    } else {
-      form.requestSubmit();
     }
   }
 }
