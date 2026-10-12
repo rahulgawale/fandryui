@@ -85,12 +85,12 @@ describe('fandry-label', () => {
     expect(offenders).toEqual([]);
   });
 
-  /* In a field's label slot it is only the label's text: the field's
-     stylesheet hands it the label's look and turns its asterisk off, so
-     `::part(label)` still styles the text and there is never a second
-     asterisk. jsdom has no cascade to check that with, so this checks every
-     field with its own asterisk carries the rule. */
-  it("takes the look and the asterisk of a field it is slotted into", () => {
+  /* Slotted in as a component's label it is only that label's text: the
+     component's stylesheet hands it the label's look, so `::part(label)`
+     still styles the text, and a field that shows its own asterisk turns
+     this one off, so there is never a second. jsdom has no cascade to check
+     that with, so this checks every component with a label carries the rule. */
+  it('takes the look, and the asterisk, of a component it is the label of', () => {
     const missing: string[] = [];
     for (const layer of ['core', 'salesforce']) {
       const root = resolve(__dirname, '../../../..', layer, 'fandry');
@@ -98,12 +98,16 @@ describe('fandry-label', () => {
         const template = join(root, name, `${name}.html`);
         if (!existsSync(template)) continue;
         const html = readFileSync(template, 'utf8');
-        if (!html.includes('<slot name="label"') || !html.includes('part="required"')) continue;
+        if (!html.includes('part="label"')) continue;
 
         const css = readFileSync(join(root, name, `${name}.css`), 'utf8');
         const rule = css.match(/::slotted\(fandry-label\)\s*\{([^}]*)\}/)?.[1] ?? '';
-        if (!/font:\s*inherit/.test(rule) || !/color:\s*inherit/.test(rule) || !/--_fd-label-asterisk:\s*none/.test(rule)) {
-          missing.push(`${layer}/${name}`);
+        const ownsAsterisk = html.includes('part="required"');
+        if (!/font:\s*inherit/.test(rule) || !/color:\s*inherit/.test(rule)) {
+          missing.push(`${layer}/${name}: look`);
+        }
+        if (ownsAsterisk !== /--_fd-label-asterisk:\s*none/.test(rule)) {
+          missing.push(`${layer}/${name}: asterisk`);
         }
       }
     }
