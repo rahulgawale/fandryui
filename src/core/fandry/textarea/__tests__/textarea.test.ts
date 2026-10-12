@@ -41,17 +41,54 @@ describe('fandry-textarea', () => {
     expect(textarea.value).toBe('hello');
   });
 
-  it('associates fandry-label with the textarea via html-for="textarea"', () => {
-    // Pre-existing bug found during this audit: this pointed at
-    // html-for="input" (copy-paste from fandry-input), which doesn't match
-    // this component's own id="textarea" -- the label was never actually
-    // associated with the textarea at all.
+  /* The label has to be in the same shadow root as the textarea: a `for`
+     can't reach an id across a shadow boundary, and the field then has no
+     name and its label doesn't focus it. */
+  it('labels the native textarea from its own template', () => {
     const element = createElement('fandry-textarea', { is: FdTextarea });
     element.label = 'Notes';
+    element.required = true;
     document.body.appendChild(element);
 
-    const label = element.shadowRoot!.querySelector('fandry-label')! as HTMLElement & { htmlFor: string };
-    expect(label.htmlFor).toBe('textarea');
+    const label = element.shadowRoot!.querySelector('label')!;
+    const textarea = element.shadowRoot!.querySelector('textarea')!;
+    expect(label.textContent).toContain('Notes');
+    expect(label.getAttribute('for')).toBe(textarea.id);
+    expect(textarea.labels).toContain(label);
+    expect(label.querySelector('.required')!.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  // It stays in the DOM, hidden, so a slotted label can still fill it.
+  it('hides the label when none is provided', () => {
+    const element = createElement('fandry-textarea', { is: FdTextarea });
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('label')!.hasAttribute('hidden')).toBe(true);
+  });
+
+  it('describes the textarea with its help text only while there is some', async () => {
+    const element = createElement('fandry-textarea', { is: FdTextarea });
+    document.body.appendChild(element);
+
+    const textarea = element.shadowRoot!.querySelector('textarea')!;
+    expect(textarea.hasAttribute('aria-describedby')).toBe(false);
+
+    element.helpText = 'A few lines.';
+    await Promise.resolve();
+    expect(textarea.getAttribute('aria-describedby')).toBe(element.shadowRoot!.querySelector('.help-text')!.id);
+  });
+
+  it('shows an empty field for a null or undefined value', async () => {
+    const element = createElement('fandry-textarea', { is: FdTextarea });
+    element.value = undefined;
+    document.body.appendChild(element);
+
+    const textarea = element.shadowRoot!.querySelector('textarea')!;
+    expect(textarea.value).toBe('');
+
+    element.value = null;
+    await Promise.resolve();
+    expect(textarea.value).toBe('');
   });
 
   it('spreads arbitrary IDL properties (e.g. spellcheck) via elementProps', () => {

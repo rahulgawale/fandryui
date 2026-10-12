@@ -9,8 +9,17 @@
 }
 
 .label {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--_fd-space-1);
   font-size: var(--_fd-font-size-sm);
+  font-weight: var(--_fd-font-weight-medium);
   color: hsl(var(--_fd-text));
+}
+
+.required {
+  color: hsl(var(--_fd-danger));
 }
 
 .textarea {
@@ -24,7 +33,9 @@
 }
 
 .textarea:focus-visible {
-  outline: none;
+  /* Transparent, not none: forced-colors mode drops the box-shadow ring
+     and paints this instead. */
+  outline: var(--_fd-ring-width) solid transparent;
   border-color: hsl(var(--_fd-border-focus));
   box-shadow: 0 0 0 var(--_fd-ring-offset) hsl(var(--_fd-bg)),
     0 0 0 calc(var(--_fd-ring-width) + var(--_fd-ring-offset))
