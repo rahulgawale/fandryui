@@ -18,7 +18,7 @@ export default class BlocksIndex extends LightningElement {
       name: 'Form',
       description:
         'A form that reads first and edits on demand: fields, validation that speaks up at the right moment, and a save with feedback.',
-      includes: ['Fields', 'Validation', 'Actions', 'Read / edit mode', 'Save hook', 'Server-side rules']
+      includes: ['Fields', 'Validation', 'Actions', 'Read / edit mode', 'Revert and reset', 'Save hook', 'Server-side rules']
     }
   ];
 }

@@ -25,6 +25,7 @@
         ></fandry-switch>
         <fandry-text size="sm" variant="muted">
           Try it: choose <strong>Edit</strong>, clear the name or break the email and leave the field, then Save.
+          A field you change is highlighted and gets a revert button; <strong>Reset</strong> takes back all of them.
           Then use the username <strong>admin</strong>, a rule only the server can check.
         </fandry-text>
       </div>
@@ -147,6 +148,26 @@
           </tbody>
         </table>
       </div>
+    </section>
+
+    <section class="section">
+      <fandry-heading level="3">Parts</fandry-heading>
+      <div class="table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Part</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={parts} for:item="part">
+              <tr key={part.name}>
+                <td><code>{part.name}</code></td>
+                <td>{part.description}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+      <pre class="code-block"><code>{partsCode}</code></pre>
     </section>
 
     <section class="section">

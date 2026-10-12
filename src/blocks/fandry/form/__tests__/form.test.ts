@@ -684,6 +684,171 @@ describe('fandry-form', () => {
     });
   });
 
+  describe('changed fields', () => {
+    const revert = (el: HTMLElement, name: string) => inner(el, name).querySelector('.revert') as HTMLElement | null;
+    const isChanged = (el: HTMLElement, name: string) =>
+      inner(el, name).querySelector('[part~="base"]')!.getAttribute('part') === 'base changed';
+    const resetDisabled = (el: HTMLElement) =>
+      button(el, 'Reset')!.shadowRoot!.querySelector('button')!.getAttribute('aria-disabled') === 'true';
+
+    it('marks only the fields whose value differs from the saved one', async () => {
+      const el = mount();
+      await settle();
+      expect(isChanged(el, 'name')).toBe(false);
+      expect(revert(el, 'name')).toBeNull();
+
+      edit(el, 'name', 'Acme Inc');
+      edit(el, 'newsletter', true);
+      await settle();
+
+      expect(isChanged(el, 'name')).toBe(true);
+      expect(isChanged(el, 'newsletter')).toBe(true);
+      expect(isChanged(el, 'email')).toBe(false);
+      expect(revert(el, 'name')).not.toBeNull();
+    });
+
+    it('does not mark a value that was typed back, in whatever shape', async () => {
+      const el = mount();
+      await settle();
+
+      edit(el, 'seats', '12');
+      await settle();
+      expect(isChanged(el, 'seats')).toBe(true);
+
+      // The saved value is the number 10; the input reports a string.
+      edit(el, 'seats', '10');
+      await settle();
+      expect(isChanged(el, 'seats')).toBe(false);
+    });
+
+    it('lets a site style a changed field and its Revert button from outside', async () => {
+      const el = mount();
+      await settle();
+
+      expect(fieldHost(el, 'name').getAttribute('exportparts')).toBe('base: field, changed, revert');
+    });
+
+    it('reverts one field: its saved value, no error, and the others as they were', async () => {
+      const el = mount();
+      const change = jest.fn();
+      el.addEventListener('change', change);
+      await settle();
+
+      edit(el, 'name', '');
+      leave(el, 'name');
+      edit(el, 'email', 'new@acme.test');
+      await settle();
+      expect(errorText(el, 'name')).toBe('Name is required.');
+
+      revert(el, 'name')!.click();
+      await settle();
+
+      expect((control(el, 'name') as any).value).toBe('Acme');
+      expect(errorText(el, 'name')).toBe('');
+      expect(isChanged(el, 'name')).toBe(false);
+      expect((control(el, 'email') as any).value).toBe('new@acme.test');
+      expect(change.mock.calls.at(-1)![0].detail).toEqual({
+        name: 'name',
+        value: 'Acme',
+        values: { ...VALUES, email: 'new@acme.test' }
+      });
+    });
+
+    it('moves focus to the control when Revert goes away', async () => {
+      const el = mount();
+      await settle();
+
+      edit(el, 'name', 'Acme Inc');
+      await settle();
+      revert(el, 'name')!.focus();
+      revert(el, 'name')!.click();
+      await settle();
+
+      const input = control(el, 'name')!.shadowRoot!;
+      expect(revert(el, 'name')).toBeNull();
+      expect(input.activeElement).toBe(input.querySelector('input'));
+    });
+
+    it('names each Revert button after its field', async () => {
+      const el = mount({ messages: { revert: (label: string) => `${label} zurücksetzen` } });
+      await settle();
+
+      edit(el, 'name', 'Acme Inc');
+      await settle();
+
+      const native = revert(el, 'name')!.shadowRoot!.querySelector('button')!;
+      expect(native.getAttribute('aria-label')).toBe('Name zurücksetzen');
+      expect(native.title).toBe('Name zurücksetzen');
+    });
+
+    it('resets every field, says so, and stays in edit mode', async () => {
+      const el = mount({ mode: 'read' });
+      const reset = jest.fn();
+      const cancel = jest.fn();
+      el.addEventListener('reset', reset);
+      el.addEventListener('cancel', cancel);
+      await settle();
+
+      button(el, 'Edit')!.click();
+      await settle();
+      edit(el, 'name', '');
+      leave(el, 'name');
+      edit(el, 'plan', 'free');
+      await settle();
+
+      button(el, 'Reset')!.click();
+      await settle();
+
+      expect(reset).toHaveBeenCalledTimes(1);
+      expect(cancel).not.toHaveBeenCalled();
+      expect(el.mode).toBe('edit');
+      expect((control(el, 'name') as any).value).toBe('Acme');
+      expect((control(el, 'plan') as any).value).toBe('team');
+      expect(errorText(el, 'name')).toBe('');
+    });
+
+    it('keeps Reset focusable but off while there is nothing to reset', async () => {
+      const el = mount();
+      const reset = jest.fn();
+      el.addEventListener('reset', reset);
+      await settle();
+      expect(resetDisabled(el)).toBe(true);
+
+      button(el, 'Reset')!.shadowRoot!.querySelector('button')!.click();
+      expect(reset).not.toHaveBeenCalled();
+
+      edit(el, 'name', 'Acme Inc');
+      await settle();
+      expect(resetDisabled(el)).toBe(false);
+
+      button(el, 'Reset')!.focus();
+      button(el, 'Reset')!.click();
+      await settle();
+      expect(resetDisabled(el)).toBe(true);
+      expect(el.shadowRoot!.activeElement).toBe(button(el, 'Reset'));
+    });
+
+    it('can be reset from outside, and not while reading', async () => {
+      const el = mount({ mode: 'read' });
+      const reset = jest.fn();
+      el.addEventListener('reset', reset);
+      await settle();
+
+      el.reset();
+      expect(reset).not.toHaveBeenCalled();
+      expect(button(el, 'Reset')).toBeUndefined();
+
+      el.edit();
+      await settle();
+      edit(el, 'name', 'Acme Inc');
+      el.reset();
+      await settle();
+
+      expect(reset).toHaveBeenCalledTimes(1);
+      expect((control(el, 'name') as any).value).toBe('Acme');
+    });
+  });
+
   describe('actions slot', () => {
     it('offers a slot whose default content is the buttons', async () => {
       const el = mount({ mode: 'read' });
