@@ -5,6 +5,16 @@ import { exitFinished } from 'fandry/motion';
 
 export type FdCommandItem = FdSearchItem;
 
+/** Text the palette announces that isn't markup; see `messages`. */
+export interface FdCommandMessages {
+  /** What a screen reader hears as the list narrows: how many results there are. */
+  results: (count: number) => string;
+}
+
+export const DEFAULT_COMMAND_MESSAGES: FdCommandMessages = {
+  results: (count) => (count === 1 ? '1 result' : `${count} results`)
+};
+
 // A stable empty list (the source cache compares by identity).
 const NO_ITEMS: FdSearchItem[] = [];
 
@@ -28,7 +38,8 @@ const NO_ITEMS: FdSearchItem[] = [];
  *   handleToggle(event) { this.isOpen = event.detail; }
  *
  * Its open/close lifecycle (mount through the exit animation, focus
- * hand-off, scroll lock) mirrors fandry-dialog -- see dialog.ts.
+ * hand-off, scroll lock) mirrors fandry-dialog -- see dialog.ts. Unlike it,
+ * the popup is a native <dialog> shown with showModal().
  */
 export default class FdCommand extends FdSearchState {
   @api label = '';
@@ -36,6 +47,7 @@ export default class FdCommand extends FdSearchState {
   @api ariaLabel = '';
   @api placeholder = '';
   @api items: FdCommandItem[] = [];
+  @api messages: Partial<FdCommandMessages> = {};
 
   private _open = false;
 
@@ -70,6 +82,9 @@ export default class FdCommand extends FdSearchState {
       this.focusPending = true;
     } else if (wasOpen && !value) {
       this.unlockBodyScroll();
+      // Before focus goes back: while the dialog is modal the page is inert,
+      // and nothing in it can take focus.
+      this.dialog?.close?.();
       this.previouslyFocused?.focus();
       this.previouslyFocused = null;
     }
@@ -79,6 +94,17 @@ export default class FdCommand extends FdSearchState {
   // list, not a render error.
   protected get source(): FdSearchItem[] {
     return this.items ?? NO_ITEMS;
+  }
+
+  // Nothing is "the value" here, so the option the keyboard is on is the
+  // selected one -- see searchState's isAriaSelected.
+  protected isAriaSelected(_selected: boolean, active: boolean): boolean {
+    return active;
+  }
+
+  // Read out as the list narrows; "no results" is the `empty` slot instead.
+  get resultsText(): string {
+    return { ...DEFAULT_COMMAND_MESSAGES, ...this.messages }.results(this.resultCount);
   }
 
   protected commit(item: FdSearchItem) {
@@ -125,6 +151,7 @@ export default class FdCommand extends FdSearchState {
 
     if (this.focusPending && this.open) {
       this.focusPending = false;
+      this.showModal();
       const input = this.template.querySelector('.input') as HTMLElement | null;
       input?.focus();
     }
@@ -138,6 +165,28 @@ export default class FdCommand extends FdSearchState {
         }
       });
     }
+  }
+
+  private get dialog(): HTMLDialogElement | null {
+    return this.template.querySelector('dialog');
+  }
+
+  /* Modal, so the browser makes everything outside the palette inert: a
+     screen reader's cursor can't wander into the page behind it, in any
+     browser and across shadow roots. Reopened mid-exit, the same element is
+     shown again. Not in every environment (jsdom has no showModal). */
+  private showModal() {
+    const dialog = this.dialog;
+    if (dialog && !dialog.open && typeof dialog.showModal === 'function') {
+      dialog.showModal();
+    }
+  }
+
+  // The browser's own Escape (and Android's back): closed our way instead,
+  // so `toggle` fires and the exit animation runs.
+  handleCancel(event: Event) {
+    event.preventDefault();
+    this.close();
   }
 
   handleBackdropClick(event: MouseEvent) {
