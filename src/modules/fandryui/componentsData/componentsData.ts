@@ -586,7 +586,7 @@ fandry-icon::part(base) {
       demo: 'label-theme',
       code: `<!-- template -->
 <div class="brand stack narrow">
-  <fandry-label html-for="theme-email" required>Email</fandry-label>
+  <label for="theme-email"><fandry-label required>Email</fandry-label></label>
   <input id="theme-email" type="email" class="native-input" placeholder="you@brand.com" />
 </div>
 
@@ -609,13 +609,23 @@ fandry-label::part(required) {
 }`
     },
     category: 'Typography',
-    description: 'A form label, with an optional required indicator.',
+    description: 'The text of a form label, with an optional required indicator. Put it inside your own `<label>`, or in the `label` slot of a field.',
     props: [
-      { name: 'html-for', type: 'string', default: "''", description: 'id of the control this label describes.' },
-      { name: 'required', type: 'boolean', default: 'false', description: 'Shows a required indicator.' }
+      { name: 'required', type: 'boolean', default: 'false', description: 'Shows a required indicator.' },
+      { name: 'html-for', type: 'string', default: '—', description: 'Deprecated: it does nothing. The `for` goes on the `<label>` you wrap this in.' }
     ],
-    code: `<fandry-label html-for="username" required>Username</fandry-label>
-<input id="username" />`
+    code: `<!-- With your own control: the <label> is yours, beside the control it names. -->
+<label for="username"><fandry-label required>Username</fandry-label></label>
+<input id="username" />
+
+<!-- In a field: the field already has the <label>, and adds the asterisk
+     itself when it is required, so this is only its text. -->
+<fandry-input>
+  <fandry-label slot="label">Username</fandry-label>
+</fandry-input>
+
+<!-- fandry-label is not a <label> itself: one inside its shadow root could
+     not reach a control outside it. -->`
   },
   {
     slug: 'text',
