@@ -5,7 +5,7 @@ import { resolveElementProps } from 'fandry/elementProps';
 
 // See checkbox.ts for why this list exists: it keeps a consumer's
 // `elementProps` from clobbering a property the component itself controls.
-const RESERVED_ELEMENT_PROPS = ['type', 'class', 'disabled'];
+const RESERVED_ELEMENT_PROPS = ['type', 'class', 'disabled', 'onclick'];
 
 export default class FdButton extends Base {
   @api variant: 'default' | 'secondary' | 'ghost' = 'default';
@@ -45,7 +45,38 @@ export default class FdButton extends Base {
      saving) takes aria-disabled through elementProps instead of `disabled`;
      it looks and parts the same, so ::part(base disabled) reaches both. */
   get basePart(): string {
-    const ariaDisabled = String(this.elementProps?.ariaDisabled) === 'true';
-    return partList('base', { [this.variant || 'default']: true, disabled: this.disabled || ariaDisabled });
+    return partList('base', { [this.variant || 'default']: true, disabled: this.disabled || this.isAriaDisabled });
+  }
+
+  private get isAriaDisabled(): boolean {
+    return String(this.elementProps?.ariaDisabled) === 'true';
+  }
+
+  handleClick(event: MouseEvent) {
+    /* An aria-disabled button still takes focus and clicks, so the click
+       is stopped here: it reaches neither a page's onclick nor a form. */
+    if (this.isAriaDisabled) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+
+    /* A button in a shadow tree belongs to no form, so `type` does nothing
+       on its own: submit or reset the form this component sits in, the way
+       a native button would. */
+    if (this.type !== 'submit' && this.type !== 'reset') {
+      return;
+    }
+
+    const form = this.template.host.closest('form');
+    if (!form || event.defaultPrevented) {
+      return;
+    }
+
+    if (this.type === 'reset') {
+      form.reset();
+    } else {
+      form.requestSubmit();
+    }
   }
 }

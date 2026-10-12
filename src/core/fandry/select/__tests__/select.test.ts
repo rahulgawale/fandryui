@@ -351,6 +351,176 @@ describe('fandry-select', () => {
     expect(triggerCustom.getAttribute('data-icon')).toBe('💎');
   });
 
+  describe('keyboard', () => {
+    const CITIES = ['Austin', 'Boston', 'Chicago', 'Denver', 'New Delhi', 'New York'].map((label) => ({
+      label,
+      value: label.toLowerCase()
+    }));
+
+    const mount = (props: Record<string, unknown> = {}) => {
+      const element = createElement('fandry-select', { is: FdSelect });
+      Object.assign(element, { options: CITIES, ...props });
+      document.body.appendChild(element);
+      const trigger = element.shadowRoot!.querySelector('.trigger') as HTMLButtonElement;
+      const press = async (key: string, init: KeyboardEventInit = {}) => {
+        const event = new KeyboardEvent('keydown', { key, bubbles: true, composed: true, cancelable: true, ...init });
+        trigger.dispatchEvent(event);
+        await flush();
+        return event;
+      };
+      const active = () => element.shadowRoot!.querySelector('.option--active')?.textContent?.trim();
+      return { element, trigger, press, active };
+    };
+
+    it('opens on the last option with ArrowUp when nothing is selected', async () => {
+      const { press, active } = mount();
+      await press('ArrowUp');
+      expect(active()).toBe('New York');
+    });
+
+    it('stops at the first and last option instead of wrapping', async () => {
+      const { press, active } = mount();
+      await press('ArrowDown');
+      expect(active()).toBe('Austin');
+      await press('ArrowUp');
+      expect(active()).toBe('Austin');
+
+      await press('End');
+      await press('ArrowDown');
+      expect(active()).toBe('New York');
+    });
+
+    it('moves a page at a time with PageDown and PageUp', async () => {
+      const options = Array.from({ length: 30 }, (_, index) => ({ label: `Option ${index}`, value: String(index) }));
+      const { press, active } = mount({ options });
+      await press('ArrowDown');
+      await press('PageDown');
+      expect(active()).toBe('Option 10');
+      await press('PageUp');
+      expect(active()).toBe('Option 0');
+    });
+
+    it('steps the value with ArrowRight and ArrowLeft while closed, skipping disabled options', async () => {
+      const { element, trigger, press } = mount({ options: OPTIONS, value: 'free' });
+      const handler = jest.fn();
+      element.addEventListener('change', handler);
+
+      await press('ArrowRight');
+      expect(element.value).toBe('pro');
+      // Enterprise is disabled, so Pro is the last one.
+      await press('ArrowRight');
+      expect(element.value).toBe('pro');
+      await press('ArrowLeft');
+      expect(element.value).toBe('free');
+
+      expect(handler).toHaveBeenCalledTimes(2);
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    });
+
+    it('closes without choosing when focus leaves the trigger', async () => {
+      const { element, trigger, press } = mount();
+      await press('ArrowDown');
+      await press('ArrowDown');
+      trigger.dispatchEvent(new FocusEvent('blur'));
+      await flush();
+
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(element.value).toBe('');
+    });
+
+    it('closes on Escape and keeps the key from reaching the page', async () => {
+      const { trigger, press } = mount();
+      const pageHandler = jest.fn();
+      document.addEventListener('keydown', pageHandler);
+
+      await press('ArrowDown');
+      pageHandler.mockClear();
+      const escape = await press('Escape');
+
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(pageHandler).not.toHaveBeenCalled();
+      expect(escape.defaultPrevented).toBe(true);
+
+      // Closed, Escape is the page's again.
+      await press('Escape');
+      expect(pageHandler).toHaveBeenCalledTimes(1);
+      document.removeEventListener('keydown', pageHandler);
+    });
+
+    it('keeps the match while a word is typed, and treats Space as part of it', async () => {
+      const { element, press } = mount();
+      for (const key of ['n', 'e', 'w', ' ', 'y']) {
+        await press(key);
+      }
+      expect(element.value).toBe('new york');
+    });
+
+    it('steps through the options that start with a letter pressed again', async () => {
+      const { element, press } = mount();
+      await press('n');
+      expect(element.value).toBe('new delhi');
+      await press('n');
+      expect(element.value).toBe('new york');
+      await press('n');
+      expect(element.value).toBe('new delhi');
+    });
+
+    it('ignores a letter pressed with Ctrl or Cmd', async () => {
+      const { element, press } = mount();
+      await press('c', { ctrlKey: true });
+      await press('c', { metaKey: true });
+      expect(element.value).toBe('');
+    });
+
+    it('scrolls the active option into view when the keyboard moves it', async () => {
+      const frames: FrameRequestCallback[] = [];
+      const raf = jest.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => frames.push(callback));
+      const { element, press } = mount();
+      const boston = element.shadowRoot!.querySelector('[data-value="boston"]') as HTMLElement;
+      boston.scrollIntoView = jest.fn();
+
+      await press('ArrowDown');
+      await press('ArrowDown');
+      frames.forEach((frame) => frame(0));
+
+      expect(boston.scrollIntoView).toHaveBeenCalledWith({ block: 'nearest' });
+      raf.mockRestore();
+    });
+  });
+
+  it('focuses the trigger, without opening, when the label is clicked', async () => {
+    const element = createElement('fandry-select', { is: FdSelect });
+    element.label = 'Plan';
+    element.options = OPTIONS;
+    document.body.appendChild(element);
+
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+    element.shadowRoot!.querySelector('label')!.dispatchEvent(click);
+    await flush();
+
+    const trigger = element.shadowRoot!.querySelector('.trigger')!;
+    // Prevented: the browser would otherwise press the button.
+    expect(click.defaultPrevented).toBe(true);
+    expect(element.shadowRoot!.activeElement).toBe(trigger);
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('names the listbox with the label, and describes the trigger only while there is help text', async () => {
+    const element = createElement('fandry-select', { is: FdSelect });
+    element.label = 'Plan';
+    element.options = OPTIONS;
+    document.body.appendChild(element);
+
+    const trigger = element.shadowRoot!.querySelector('.trigger')!;
+    const listbox = element.shadowRoot!.querySelector('[role="listbox"]')!;
+    expect(listbox.getAttribute('aria-labelledby')).toBe(element.shadowRoot!.querySelector('label')!.id);
+    expect(trigger.hasAttribute('aria-describedby')).toBe(false);
+
+    element.helpText = 'You can change it later.';
+    await flush();
+    expect(trigger.getAttribute('aria-describedby')).toBe(element.shadowRoot!.querySelector('.help-text')!.id);
+  });
+
   it('focuses its native control when the host is focused', () => {
     // The host isn't itself focusable; without focus() this is a no-op.
     const element = createElement('fandry-select', { is: FdSelect });

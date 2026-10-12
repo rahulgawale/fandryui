@@ -681,13 +681,13 @@ get saveLabel() {
 }
 
 // aria-disabled, not disabled: disabling the focused button would drop
-// focus to the page. tabIndex: 0 is fandry-button's own default.
+// focus to the page. It keeps focus but ignores clicks, so handleSave
+// can't run twice. tabIndex: 0 is fandry-button's own default.
 get saveButtonProps() {
   return { tabIndex: 0, ariaDisabled: this.saving ? 'true' : null };
 }
 
 async handleSave() {
-  if (this.saving) return; // the button stays clickable while saving
   this.saving = true;
   try {
     await this.save();
@@ -790,9 +790,14 @@ fandry-button.rainbow::part(base)::after {
         type: 'boolean',
         default: 'false',
         description:
-          "Disables the button. A button that must keep focus (one that is saving) takes `element-props={ tabIndex: 0, ariaDisabled: 'true' }` instead: it looks the same and has the same `disabled` state."
+          "Disables the button. A button that must keep focus (one that is saving) takes `element-props={ tabIndex: 0, ariaDisabled: 'true' }` instead: it looks the same, has the same `disabled` state, and its clicks are ignored."
       },
-      { name: 'type', type: "'button' | 'submit' | 'reset'", default: "'button'", description: 'Native button type.' }
+      {
+        name: 'type',
+        type: "'button' | 'submit' | 'reset'",
+        default: "'button'",
+        description: 'Native button type. `submit` and `reset` act on the `<form>` the fandry-button sits in.'
+      }
     ],
     code: `<fandry-button variant="secondary" size="lg">Save</fandry-button>`
   },

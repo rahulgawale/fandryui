@@ -8,13 +8,46 @@ describe('fandry-input', () => {
     }
   });
 
-  it('renders a child fandry-label when a label is provided', () => {
+  /* The label has to be in the same shadow root as the input: a `for` can't
+     reach an id across a shadow boundary, and the field then has no name
+     and its label doesn't focus it. */
+  it('labels the native input from its own template', () => {
     const element = createElement('fandry-input', { is: FdInput });
     element.label = 'Email';
+    element.required = true;
     document.body.appendChild(element);
 
-    const label = element.shadowRoot!.querySelector('fandry-label');
-    expect(label).not.toBeNull();
+    const label = element.shadowRoot!.querySelector('label')!;
+    const nativeInput = element.shadowRoot!.querySelector('input')!;
+    expect(label.textContent).toContain('Email');
+    expect(label.getAttribute('for')).toBe(nativeInput.id);
+    expect(nativeInput.labels).toContain(label);
+    expect(label.querySelector('.required')!.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('describes the input with its help text only while there is some', async () => {
+    const element = createElement('fandry-input', { is: FdInput });
+    document.body.appendChild(element);
+
+    const nativeInput = element.shadowRoot!.querySelector('input')!;
+    expect(nativeInput.hasAttribute('aria-describedby')).toBe(false);
+
+    element.helpText = 'Work address';
+    await Promise.resolve();
+    expect(nativeInput.getAttribute('aria-describedby')).toBe(element.shadowRoot!.querySelector('.help-text')!.id);
+  });
+
+  it('shows an empty field for a null or undefined value', async () => {
+    const element = createElement('fandry-input', { is: FdInput });
+    element.value = undefined;
+    document.body.appendChild(element);
+
+    const nativeInput = element.shadowRoot!.querySelector('input')!;
+    expect(nativeInput.value).toBe('');
+
+    element.value = null;
+    await Promise.resolve();
+    expect(nativeInput.value).toBe('');
   });
 
   // It stays in the DOM, hidden, so a slotted label can still fill it.
@@ -22,7 +55,7 @@ describe('fandry-input', () => {
     const element = createElement('fandry-input', { is: FdInput });
     document.body.appendChild(element);
 
-    const label = element.shadowRoot!.querySelector('fandry-label')!;
+    const label = element.shadowRoot!.querySelector('label')!;
     expect(label.hasAttribute('hidden')).toBe(true);
   });
 

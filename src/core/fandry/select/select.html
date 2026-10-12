@@ -1,6 +1,6 @@
 <template>
   <div class="form-control" part="base">
-    <label class="label" part="label" for="trigger" hidden={labelHidden}>
+    <label id="label" class="label" part="label" for="trigger" hidden={labelHidden} onclick={handleLabelClick}>
       <slot name="label" onslotchange={handleTextSlotChange}>{label}</slot>
       <template if:true={required}>
         <span class="required" part="required" aria-hidden="true">*</span>
@@ -21,9 +21,11 @@
         aria-expanded={ariaExpanded}
         aria-controls="listbox"
         aria-activedescendant={activeOptionId}
-        aria-describedby="help-text"
+        aria-describedby={describedBy}
         aria-required={ariaRequired}
         onkeydown={handleTriggerKeydown}
+        onkeyup={handleTriggerKeyup}
+        onblur={handleTriggerBlur}
         lwc:spread={resolvedElementProps}
       >
         <span class={valueClasses} part="value">
@@ -35,7 +37,7 @@
         <span class="chevron" part="chevron" aria-hidden="true"></span>
       </button>
 
-      <div id="listbox" class="listbox" part="listbox" role="listbox" onmousedown={handleListboxMouseDown}>
+      <div id="listbox" class="listbox" part="listbox" role="listbox" aria-labelledby="label" onmousedown={handleListboxMouseDown}>
         <template if:true={renderPlaceholder}>
           <div
             id={renderPlaceholder.id}

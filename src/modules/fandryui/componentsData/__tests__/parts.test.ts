@@ -125,10 +125,16 @@ describe('component parts', () => {
     expect(root.querySelector('[part~="input"]')!.tagName).toBe('INPUT');
     expect(root.querySelector('[part~="control"]')).not.toBeNull();
     expect(root.querySelector('[part~="help-text"]')!.textContent).toBe('Work address');
+    expect(root.querySelector('[part~="label"]')!.tagName).toBe('LABEL');
+    expect(root.querySelector('[part~="required"]')).not.toBeNull();
+    document.body.removeChild(element);
+
     /* `part` on a child component is taken as a property and never reaches
        the DOM, so a child's element is exposed through exportparts instead. */
-    expect(root.querySelector('fandry-label')!.getAttribute('exportparts')).toBe('base: label, required');
-    document.body.removeChild(element);
+    const select = createElement('fandry-select', { is: FdSelect });
+    document.body.appendChild(select);
+    expect(select.shadowRoot!.querySelector('fandry-popover')!.getAttribute('exportparts')).toBe('panel');
+    document.body.removeChild(select);
   });
 });
 

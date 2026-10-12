@@ -44,7 +44,9 @@
 }
 
 .trigger:focus-visible {
-  outline: none;
+  /* Transparent, not none: forced-colors mode drops the box-shadow ring
+     and paints this instead. */
+  outline: var(--_fd-ring-width) solid transparent;
   border-color: hsl(var(--_fd-border-focus));
   box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
 }
