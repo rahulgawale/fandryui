@@ -1,3 +1,10 @@
+# [0.23.0](https://github.com/rahulgawale/fandryui/compare/v0.22.0...v0.23.0) (2026-10-12)
+
+
+### Features
+
+* **popover:** follow the trigger everywhere, flip at the viewport edge, fill a row ([#114](https://github.com/rahulgawale/fandryui/issues/114)) ([0215e99](https://github.com/rahulgawale/fandryui/commit/0215e998d3ab49b48da4a4ed234157847c74634a))
+
 # [0.22.0](https://github.com/rahulgawale/fandryui/compare/v0.21.0...v0.22.0) (2026-10-12)
 
 
