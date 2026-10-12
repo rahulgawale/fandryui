@@ -22,6 +22,14 @@
   color: hsl(var(--_fd-danger));
 }
 
+/* A fandry-label in the label slot is only this label's text: it takes the
+   label's look, and leaves the asterisk to `required` on the field. */
+::slotted(fandry-label) {
+  font: inherit;
+  color: inherit;
+  --_fd-label-asterisk: none;
+}
+
 .input {
   flex: 1;
   /* A flex item won't shrink below its content's width unless told to, and a

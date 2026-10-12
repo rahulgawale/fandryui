@@ -85,6 +85,32 @@ describe('fandry-label', () => {
     expect(offenders).toEqual([]);
   });
 
+  /* In a field's label slot it is only the label's text: the field's
+     stylesheet hands it the label's look and turns its asterisk off, so
+     `::part(label)` still styles the text and there is never a second
+     asterisk. jsdom has no cascade to check that with, so this checks every
+     field with its own asterisk carries the rule. */
+  it("takes the look and the asterisk of a field it is slotted into", () => {
+    const missing: string[] = [];
+    for (const layer of ['core', 'salesforce']) {
+      const root = resolve(__dirname, '../../../..', layer, 'fandry');
+      for (const name of existsSync(root) ? readdirSync(root) : []) {
+        const template = join(root, name, `${name}.html`);
+        if (!existsSync(template)) continue;
+        const html = readFileSync(template, 'utf8');
+        if (!html.includes('<slot name="label"') || !html.includes('part="required"')) continue;
+
+        const css = readFileSync(join(root, name, `${name}.css`), 'utf8');
+        const rule = css.match(/::slotted\(fandry-label\)\s*\{([^}]*)\}/)?.[1] ?? '';
+        if (!/font:\s*inherit/.test(rule) || !/color:\s*inherit/.test(rule) || !/--_fd-label-asterisk:\s*none/.test(rule)) {
+          missing.push(`${layer}/${name}`);
+        }
+      }
+    }
+
+    expect(missing).toEqual([]);
+  });
+
   it('warns that html-for does nothing, once', () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     for (const id of ['first', 'second']) {

@@ -629,15 +629,16 @@ fandry-label::part(required) {
       }
     ],
     props: [
-      { name: 'required', type: 'boolean', default: 'false', description: 'Shows a required indicator.' },
+      { name: 'required', type: 'boolean', default: 'false', description: 'Shows a required indicator. In a field\'s `label` slot the field shows it instead, from its own `required`.' },
       { name: 'html-for', type: 'string', default: '—', description: 'Deprecated: it does nothing. The `for` goes on the `<label>` you wrap this in.' }
     ],
     code: `<!-- with your own control -->
 <label for="username"><fandry-label required>Username</fandry-label></label>
 <input id="username" />
 
-<!-- in a field's label slot -->
-<fandry-input>
+<!-- in a field's label slot: it looks like the field's label, and the
+     field shows the asterisk -->
+<fandry-input required>
   <fandry-label slot="label">Username</fandry-label>
 </fandry-input>`
   },

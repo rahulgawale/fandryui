@@ -1,5 +1,11 @@
 :host {
   display: inline-block;
+
+  /* The look is on the host, and the text inherits it, so that a field can
+     hand its own label's look to a fandry-label in its label slot. */
+  font-size: var(--_fd-font-size-sm);
+  font-weight: var(--_fd-font-weight-medium);
+  color: hsl(var(--_fd-text));
 }
 
 .label {
@@ -7,12 +13,13 @@
   align-items: center;
   gap: var(--_fd-space-1);
 
-  font-family: inherit;
-  font-size: var(--_fd-font-size-sm);
-  font-weight: var(--_fd-font-weight-medium);
-  color: hsl(var(--_fd-text));
+  font: inherit;
+  color: inherit;
 }
 
+/* A field with a fandry-label in its label slot shows the asterisk itself,
+   from its own `required`, and turns this one off. */
 .required {
+  display: var(--_fd-label-asterisk, inline);
   color: hsl(var(--_fd-danger));
 }
