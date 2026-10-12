@@ -1,3 +1,10 @@
+## [0.20.1](https://github.com/rahulgawale/fandryui/compare/v0.20.0...v0.20.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* **command:** VoiceOver can reach the palette and hears its options ([#109](https://github.com/rahulgawale/fandryui/issues/109)) ([ad7e704](https://github.com/rahulgawale/fandryui/commit/ad7e704282f1dd96d2c4ad7f51486ca0ce26ce4f))
+
 # [0.20.0](https://github.com/rahulgawale/fandryui/compare/v0.19.7...v0.20.0) (2026-10-12)
 
 
