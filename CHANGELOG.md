@@ -1,3 +1,10 @@
+# [0.21.0](https://github.com/rahulgawale/fandryui/compare/v0.20.1...v0.21.0) (2026-10-12)
+
+
+### Features
+
+* **label:** fandry-label is the text of a label, inside your own <label> ([#111](https://github.com/rahulgawale/fandryui/issues/111)) ([5562c46](https://github.com/rahulgawale/fandryui/commit/5562c46b40b017b4e8a90c0e4df1a2a2fdc4bcda))
+
 ## [0.20.1](https://github.com/rahulgawale/fandryui/compare/v0.20.0...v0.20.1) (2026-10-12)
 
 
