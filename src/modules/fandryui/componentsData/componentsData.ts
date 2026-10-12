@@ -2201,9 +2201,9 @@ fandry-popover::part(panel) {
 }`
     },
     category: 'Overlays & Data',
-    description: 'An anchored floating panel — owns positioning, not the trigger or content.',
+    description: 'An anchored floating panel — owns positioning, not the trigger or content. The panel is never narrower than its trigger; set display: block on the popover for a trigger that fills its row.',
     props: [
-      { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'bottom'", description: 'Panel position relative to the trigger.' },
+      { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'bottom'", description: 'Side of the trigger the panel opens on. It opens on the opposite side instead when it would run off the viewport and that side has more room.' },
       { name: 'align', type: "'start' | 'end'", default: "'start'", description: "Which edge of the trigger the panel aligns to, for 'top'/'bottom' placement." },
       { name: 'open', type: 'boolean', default: 'false', description: 'Open state (consumer-controlled via ontoggle).' }
     ],

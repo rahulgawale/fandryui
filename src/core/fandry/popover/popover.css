@@ -3,9 +3,19 @@
   position: relative;
 }
 
+/* A block, so the trigger is as wide as the host: `display: block` on a
+   fandry-popover is all it takes for its trigger to fill a row. */
 .trigger {
-  display: inline-block;
+  display: block;
   cursor: pointer;
+}
+
+/* The box a fixed panel is placed from (see popover.ts). */
+.origin {
+  position: fixed;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .panel {
@@ -13,7 +23,9 @@
      ancestor can clip it. */
   position: fixed;
   z-index: var(--_fd-z-overlay);
-  min-width: max-content;
+  /* As wide as its content, and never narrower than the trigger. */
+  width: max-content;
+  min-width: var(--_fd-popover-trigger-width, 0);
 
   background: hsl(var(--_fd-bg));
   border: var(--_fd-border-width) solid hsl(var(--_fd-border));
