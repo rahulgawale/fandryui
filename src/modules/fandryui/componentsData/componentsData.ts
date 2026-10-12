@@ -13,8 +13,8 @@ export interface ComponentExample {
   code: string;
 }
 
-// A short explanation shown in an info alert under the main example: why
-// the component is used the way it is, where that is not obvious.
+// A short explanation shown in an info alert under the main code block:
+// why the component is used the way it is, where that is not obvious.
 export interface ComponentNote {
   title: string;
   paragraphs: string[];

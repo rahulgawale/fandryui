@@ -27,16 +27,6 @@
           </fandry-card>
         </section>
 
-        <template for:each={notes} for:item="note">
-          <section key={note.title} class="section">
-            <fandry-alert variant="info" title={note.title}>
-              <template for:each={note.paragraphs} for:item="paragraph">
-                <fandry-text key={paragraph.key} size="sm" class="note-paragraph">{paragraph.text}</fandry-text>
-              </template>
-            </fandry-alert>
-          </section>
-        </template>
-
         <template if:true={customizeDemo}>
           <section class="section">
             <fandry-heading level="3">Example: Custom colors and parts</fandry-heading>
@@ -144,6 +134,16 @@
           <fandry-heading level="3">Code</fandry-heading>
           <pre class="code-block"><code>{entry.code}</code></pre>
         </section>
+
+        <template for:each={notes} for:item="note">
+          <section key={note.title} class="section">
+            <fandry-alert variant="info" title={note.title}>
+              <template for:each={note.paragraphs} for:item="paragraph">
+                <fandry-text key={paragraph.key} size="sm" class="note-paragraph">{paragraph.text}</fandry-text>
+              </template>
+            </fandry-alert>
+          </section>
+        </template>
 
         <template for:each={extraExamples} for:item="example">
           <div key={example.title}>

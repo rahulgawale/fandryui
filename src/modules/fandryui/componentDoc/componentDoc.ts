@@ -193,7 +193,7 @@ export default class ComponentDoc extends LightningElement {
     }));
   }
 
-  // Explanations shown in an info alert under the main example (see
+  // Explanations shown in an info alert under the main code block (see
   // ComponentNote), with a key for each paragraph.
   get notes() {
     return (this.entry?.notes ?? []).map((note) => ({
