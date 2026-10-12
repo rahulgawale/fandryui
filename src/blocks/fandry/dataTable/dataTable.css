@@ -28,8 +28,7 @@
   max-width: var(--_fd-control-max-width-sm);
 }
 
-/* fandry-select sizes to its content, so the slot does too -- a fixed slot
-   would leave uneven gaps between filters. */
+/* Each filter is as wide as its select; a fixed slot would leave uneven gaps. */
 .filter {
   flex: 0 0 auto;
 }

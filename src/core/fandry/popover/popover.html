@@ -15,6 +15,7 @@
     <slot name="trigger"></slot>
   </span>
   <template if:true={isMounted}>
+    <span class="origin" aria-hidden="true"></span>
     <div class={panelClasses} part="panel" style={panelStyle} inert={panelInert}>
       <slot></slot>
     </div>

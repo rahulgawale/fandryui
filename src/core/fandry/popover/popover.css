@@ -3,9 +3,21 @@
   position: relative;
 }
 
+/* As wide as the host, so a `display: block` popover fills its row. */
 .trigger {
-  display: inline-block;
+  display: block;
+}
+
+::slotted([slot='trigger']) {
   cursor: pointer;
+}
+
+/* The box a fixed panel is placed from (see popover.ts). */
+.origin {
+  position: fixed;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .panel {
@@ -13,7 +25,9 @@
      ancestor can clip it. */
   position: fixed;
   z-index: var(--_fd-z-overlay);
-  min-width: max-content;
+  /* Never narrower than the trigger. */
+  width: max-content;
+  min-width: var(--_fd-popover-trigger-width, 0);
 
   background: hsl(var(--_fd-bg));
   border: var(--_fd-border-width) solid hsl(var(--_fd-border));
