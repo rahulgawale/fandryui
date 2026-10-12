@@ -13,6 +13,13 @@ export interface ComponentExample {
   code: string;
 }
 
+// A short explanation shown in an info alert under the main code block:
+// why the component is used the way it is, where that is not obvious.
+export interface ComponentNote {
+  title: string;
+  paragraphs: string[];
+}
+
 export interface ComponentEntry {
   slug: string;
   name: string;
@@ -26,6 +33,7 @@ export interface ComponentEntry {
   states?: string[];
   code: string;
   examples?: ComponentExample[];
+  notes?: ComponentNote[];
   /** A live example of theming this component with tokens and parts, shown under the default example. */
   customize?: ComponentExample;
 }
@@ -588,7 +596,7 @@ fandry-icon::part(base) {
       demo: 'label-theme',
       code: `<!-- template -->
 <div class="brand stack narrow">
-  <fandry-label html-for="theme-email" required>Email</fandry-label>
+  <label for="theme-email"><fandry-label required>Email</fandry-label></label>
   <input id="theme-email" type="email" class="native-input" placeholder="you@brand.com" />
 </div>
 
@@ -611,13 +619,30 @@ fandry-label::part(required) {
 }`
     },
     category: 'Typography',
-    description: 'A form label, with an optional required indicator.',
-    props: [
-      { name: 'html-for', type: 'string', default: "''", description: 'id of the control this label describes.' },
-      { name: 'required', type: 'boolean', default: 'false', description: 'Shows a required indicator.' }
+    description: 'The text of a form label, with an optional required indicator. Put it inside your own `<label>`, or in the `label` slot of a field.',
+    notes: [
+      {
+        title: 'Why you write the <label> yourself',
+        paragraphs: [
+          'A label finds its control by id, and the browser looks an id up inside one shadow root only. A <label> rendered inside fandry-label could never reach a control outside it: it would look right, give the control no name for a screen reader, and do nothing when clicked.',
+          'So you write the <label>, beside its control, and fandry-label goes inside it as the text. That is how web components work, not something particular to this library: each component is a tree of its own, so two elements that refer to each other have to be in the same one.',
+          'The fields (fandry-input, fandry-textarea, fandry-select, fandry-combobox, fandry-lookup) follow the same rule from the inside. Each renders its own <label> next to its own control, so they take the label as a prop or a slot and need no fandry-label.'
+        ]
+      }
     ],
-    code: `<fandry-label html-for="username" required>Username</fandry-label>
-<input id="username" />`
+    props: [
+      { name: 'required', type: 'boolean', default: 'false', description: 'Shows the required asterisk. It is only the mark: set `required` on your control as well. In a field\'s `label` slot the field shows it instead, from its own `required`.' },
+      { name: 'html-for', type: 'string', default: '—', description: 'Deprecated: it does nothing. The `for` goes on the `<label>` you wrap this in.' }
+    ],
+    code: `<!-- with your own control -->
+<label for="username"><fandry-label required>Username</fandry-label></label>
+<input id="username" />
+
+<!-- in a field's label slot: it looks like the field's label, and the
+     field shows the asterisk -->
+<fandry-input required>
+  <fandry-label slot="label">Username</fandry-label>
+</fandry-input>`
   },
   {
     slug: 'text',

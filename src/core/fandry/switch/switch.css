@@ -76,3 +76,10 @@
 .label {
   font-size: var(--_fd-font-size-sm);
 }
+
+/* A fandry-label slotted in as the label is only this label's text: it
+   takes the label's look. */
+::slotted(fandry-label) {
+  font: inherit;
+  color: inherit;
+}
