@@ -56,13 +56,87 @@ describe('fandry-command', () => {
   it('renders a dialog with a labelled combobox input when open', () => {
     const element = create();
 
-    const panel = element.shadowRoot!.querySelector('.panel')!;
-    expect(panel.getAttribute('role')).toBe('dialog');
-    // In a shadow root, aria-modal hides the palette itself from VoiceOver.
-    expect(panel.hasAttribute('aria-modal')).toBe(false);
-    expect(panel.getAttribute('aria-label')).toBe('Command palette');
+    const dialog = element.shadowRoot!.querySelector('dialog')!;
+    // In a shadow root, aria-modal hides the palette itself from VoiceOver;
+    // showModal() is what makes it modal.
+    expect(dialog.hasAttribute('aria-modal')).toBe(false);
+    expect(element.shadowRoot!.querySelector('[role="dialog"]')).toBeNull();
+    expect(dialog.getAttribute('aria-label')).toBe('Command palette');
     expect(input(element).getAttribute('role')).toBe('combobox');
     expect(input(element).getAttribute('aria-label')).toBe('Command palette');
+  });
+
+  describe('as a modal dialog', () => {
+    // jsdom has no showModal/close; these stand in for what the browser does.
+    const proto = HTMLDialogElement.prototype as unknown as Record<string, unknown>;
+
+    beforeEach(() => {
+      proto.showModal = jest.fn(function (this: HTMLDialogElement) {
+        this.setAttribute('open', '');
+      });
+      proto.close = jest.fn(function (this: HTMLDialogElement) {
+        this.removeAttribute('open');
+      });
+    });
+
+    afterEach(() => {
+      delete proto.showModal;
+      delete proto.close;
+    });
+
+    it('is shown modally, so the page behind it is inert', async () => {
+      const element = create();
+      await flush();
+
+      expect(proto.showModal).toHaveBeenCalledTimes(1);
+      expect(element.shadowRoot!.querySelector('dialog')!.open).toBe(true);
+    });
+
+    it('stops being modal before focus goes back to the page', async () => {
+      const trigger = document.createElement('button');
+      document.body.appendChild(trigger);
+      trigger.focus();
+      const element = create();
+      await flush();
+
+      let modalWhenFocused: boolean | null = null;
+      trigger.addEventListener('focus', () => {
+        modalWhenFocused = element.shadowRoot!.querySelector('dialog')!.open;
+      });
+      input(element).focus();
+      element.close();
+
+      expect(modalWhenFocused).toBe(false);
+    });
+
+    it('is shown again when reopened during its exit', async () => {
+      const animations = mockAnimations();
+      const element = create();
+      await flush();
+
+      element.close();
+      await flush();
+      element.open = true;
+      await flush();
+
+      expect(proto.showModal).toHaveBeenCalledTimes(2);
+      expect(element.shadowRoot!.querySelector('dialog')!.open).toBe(true);
+      animations.restore();
+    });
+
+    it("closes its own way on the browser's cancel (Escape, Android back)", async () => {
+      const element = create();
+      const onToggle = jest.fn();
+      element.addEventListener('toggle', onToggle);
+      await flush();
+
+      const cancel = new Event('cancel', { cancelable: true });
+      element.shadowRoot!.querySelector('dialog')!.dispatchEvent(cancel);
+
+      expect(cancel.defaultPrevented).toBe(true);
+      expect(element.open).toBe(false);
+      expect(onToggle).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('lists ungrouped items first, then each group with its heading', () => {
@@ -333,7 +407,7 @@ describe('fandry-command', () => {
     Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
     document.body.appendChild(element);
 
-    for (const selector of ['.panel', 'input', '.listbox']) {
+    for (const selector of ['dialog', 'input', '.listbox']) {
       expect(element.shadowRoot!.querySelector(selector)!.getAttribute('aria-label')).toBe('From aria-label');
     }
   });
