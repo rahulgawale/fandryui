@@ -13,6 +13,13 @@ export interface ComponentExample {
   code: string;
 }
 
+// A short explanation shown under the main example: why the component is
+// used the way it is, for the cases where that is not obvious.
+export interface ComponentNote {
+  title: string;
+  paragraphs: string[];
+}
+
 export interface ComponentEntry {
   slug: string;
   name: string;
@@ -26,6 +33,7 @@ export interface ComponentEntry {
   states?: string[];
   code: string;
   examples?: ComponentExample[];
+  notes?: ComponentNote[];
   /** A live example of theming this component with tokens and parts, shown under the default example. */
   customize?: ComponentExample;
 }
@@ -610,6 +618,18 @@ fandry-label::part(required) {
     },
     category: 'Typography',
     description: 'The text of a form label, with an optional required indicator. Put it inside your own `<label>`, or in the `label` slot of a field.',
+    notes: [
+      {
+        title: 'Why you write the <label> yourself',
+        paragraphs: [
+          'A label and its control are tied together by an id: the label\'s "for" names the control\'s "id". The browser looks that id up inside one shadow root only, never across its edge. Every fandry component has its own shadow root, so a <label> rendered inside fandry-label could not find a control outside it. It would look right, give the control no name for a screen reader, and do nothing when clicked.',
+          'So the <label> is yours. You write it in the same template as the control, where the id can be found, and fandry-label goes inside it as its text, bringing the look and the required asterisk. The label and its control stay side by side, as siblings, which is how HTML has always written them.',
+          'This is how web components work, not something particular to this library. Where there is no shadow DOM (React, for one), a component can keep the <label> to itself, because everything it renders lands in one document. Here each component is a tree of its own, so two elements that refer to each other have to be in the same one.',
+          'The fields follow the same rule from the inside. fandry-input, fandry-textarea, fandry-select, fandry-combobox and fandry-lookup each render their own <label> next to their own control, in one shadow root, which is why they take the label as a prop or a slot and need no fandry-label. In a field\'s "label" slot, fandry-label is only the text; the field supplies the <label>.',
+          'Use "for" and "id", and keep the control beside the label, not inside it. A label hands every click it gets to the control it wraps, which is fine around one plain input and surprising around anything with parts of its own to click.'
+        ]
+      }
+    ],
     props: [
       { name: 'required', type: 'boolean', default: 'false', description: 'Shows a required indicator.' },
       { name: 'html-for', type: 'string', default: '—', description: 'Deprecated: it does nothing. The `for` goes on the `<label>` you wrap this in.' }

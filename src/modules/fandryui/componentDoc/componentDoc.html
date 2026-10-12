@@ -27,6 +27,15 @@
           </fandry-card>
         </section>
 
+        <template for:each={notes} for:item="note">
+          <section key={note.title} class="section">
+            <fandry-heading level="3">{note.title}</fandry-heading>
+            <template for:each={note.paragraphs} for:item="paragraph">
+              <fandry-text key={paragraph.key} class="note-paragraph">{paragraph.text}</fandry-text>
+            </template>
+          </section>
+        </template>
+
         <template if:true={customizeDemo}>
           <section class="section">
             <fandry-heading level="3">Example: Custom colors and parts</fandry-heading>

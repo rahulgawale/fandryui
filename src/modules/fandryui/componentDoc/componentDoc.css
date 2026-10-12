@@ -165,6 +165,15 @@
   margin-bottom: var(--fd-space-3);
 }
 
+.note-paragraph {
+  display: block;
+  max-width: 44rem;
+}
+
+.note-paragraph + .note-paragraph {
+  margin-top: var(--fd-space-3);
+}
+
 .parts-code {
   margin-top: var(--fd-space-3);
 }

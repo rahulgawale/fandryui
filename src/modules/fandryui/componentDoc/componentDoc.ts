@@ -193,6 +193,15 @@ export default class ComponentDoc extends LightningElement {
     }));
   }
 
+  // Explanations shown under the main example (see ComponentNote), with a
+  // key for each paragraph.
+  get notes() {
+    return (this.entry?.notes ?? []).map((note) => ({
+      title: note.title,
+      paragraphs: note.paragraphs.map((text, index) => ({ key: `${note.title}-${index}`, text }))
+    }));
+  }
+
   get hasProps(): boolean {
     return !!this.entry?.props?.length;
   }
