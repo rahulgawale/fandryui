@@ -151,7 +151,7 @@ export default class Select extends Base {
     this.options.forEach((option, index) => {
       flat.push({
         id: `option-${index}`,
-        value: option.value,
+        value: option.value ?? '',
         label: option.label,
         disabled: !!option.disabled,
         component: option.component,
@@ -163,7 +163,7 @@ export default class Select extends Base {
       group.options.forEach((option, optionIndex) => {
         flat.push({
           id: `option-${groupIndex}-${optionIndex}`,
-          value: option.value,
+          value: option.value ?? '',
           label: option.label,
           disabled: !!option.disabled,
           component: option.component,
@@ -175,8 +175,14 @@ export default class Select extends Base {
     return flat;
   }
 
+  /* No value is '' everywhere: a null `value`, or an option whose value is
+     null ("None"), means the same as '' however it is picked. */
+  private get currentValue(): string {
+    return this.value ?? '';
+  }
+
   private get selectedEntry(): FlatOption | undefined {
-    return this.flatOptions.find((entry) => entry.id !== 'option-placeholder' && entry.value === this.value);
+    return this.flatOptions.find((entry) => entry.id !== 'option-placeholder' && entry.value === this.currentValue);
   }
 
   get selectedLabel(): string {
@@ -201,12 +207,13 @@ export default class Select extends Base {
   private decorateOption(option: FdSelectOption, id: string): RenderOption {
     const disabled = !!option.disabled;
     // Like selectedEntry, the placeholder is never the chosen option, even while value is ''.
-    const selected = id !== 'option-placeholder' && option.value === this.value;
+    const value = option.value ?? '';
+    const selected = id !== 'option-placeholder' && value === this.currentValue;
     const active = id === this.activeOptionId;
 
     return {
       id,
-      value: option.value,
+      value,
       label: option.label,
       disabled,
       component: option.component,
@@ -261,7 +268,7 @@ export default class Select extends Base {
   /* Opens on the selected option. With nothing selected ArrowUp starts
      from the last option, everything else from the first. */
   private show(fallback: 'first' | 'last' = 'first') {
-    const selected = this.enabledOptions.find((option) => option.value === this.value);
+    const selected = this.enabledOptions.find((option) => option.value === this.currentValue);
     this.open = true;
     this.setActive(selected?.id ?? (fallback === 'last' ? this.lastEnabledId() : this.firstEnabledId()));
   }
@@ -311,7 +318,7 @@ export default class Select extends Base {
       return;
     }
 
-    const index = enabled.findIndex((option) => option.value === this.value);
+    const index = enabled.findIndex((option) => option.value === this.currentValue);
     const next = index === -1 ? (delta > 0 ? 0 : enabled.length - 1) : Math.min(Math.max(index + delta, 0), enabled.length - 1);
     this.selectValue(enabled[next].value);
   }
@@ -326,7 +333,7 @@ export default class Select extends Base {
   }
 
   private selectValue(value: string) {
-    const changed = this.value !== value;
+    const changed = this.currentValue !== value;
     this.value = value;
     this.hide();
 
@@ -357,7 +364,7 @@ export default class Select extends Base {
     const flat = this.flatOptions;
     const anchor = this.open
       ? flat.findIndex((option) => option.id === this.activeOptionId)
-      : flat.findIndex((option) => option.value === this.value);
+      : flat.findIndex((option) => option.value === this.currentValue);
     const from = repeated ? anchor + 1 : Math.max(anchor, 0);
     const ordered = [...flat.slice(from), ...flat.slice(0, from)];
     const match = ordered.find((option) => !option.disabled && option.label.toLowerCase().startsWith(term));

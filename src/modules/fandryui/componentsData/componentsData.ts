@@ -1254,7 +1254,8 @@ fandry-select::part(option selected) {
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected.' },
       { name: 'options', type: '{ label, value, disabled?, component?, componentProps? }[]', default: '[]', description: 'Flat option list. An option\'s `component` (with `componentProps`) draws its own row instead of the label -- see the custom options example.' },
       { name: 'groups', type: '{ label, options }[]', default: '[]', description: 'Grouped option list (used instead of options).' },
-      { name: 'value', type: 'string', default: "''", description: 'Selected value.' },
+      { name: 'value', type: 'string', default: "''", description: 'Selected value. `\'\'` (or null) is no selection and shows the placeholder, unless an option has that value: give one `value: \'\'` to offer "None".' },
+      { name: 'change (event)', type: 'CustomEvent<string>', default: '—', description: 'Fires when the user picks a different value; `event.detail` is the new value. Not fired when `value` is set from code.' },
       { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
     ],
     code: `<fandry-select

@@ -505,6 +505,43 @@ describe('fandry-select', () => {
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
   });
 
+  /* An option for "no choice" may come with a null value. It is '' by
+     click and by keyboard alike, and shows as selected either way. */
+  it("treats an option's null value as ''", async () => {
+    const element = createElement('fandry-select', { is: FdSelect });
+    element.options = [
+      { label: 'None', value: null },
+      { label: 'Pro', value: 'pro' }
+    ];
+    element.value = 'pro';
+    document.body.appendChild(element);
+
+    const handler = jest.fn();
+    element.addEventListener('change', handler);
+    const trigger = element.shadowRoot!.querySelector('.trigger') as HTMLButtonElement;
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    await flush();
+    expect(handler.mock.calls[0][0].detail).toBe('');
+    expect(trigger.querySelector('.value')!.textContent).toBe('None');
+
+    element.value = 'pro';
+    await openListbox(element);
+    element.shadowRoot!.querySelector('[role="option"]')!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await flush();
+    expect(element.value).toBe('');
+    expect(trigger.querySelector('.value')!.textContent).toBe('None');
+
+    // A null `value` already means that option: picking it changes nothing.
+    element.value = null;
+    await flush();
+    expect(trigger.querySelector('.value')!.textContent).toBe('None');
+    handler.mockClear();
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    await flush();
+    expect(handler).not.toHaveBeenCalled();
+  });
+
   it('leaves a click on a link inside the label alone', () => {
     const element = createElement('fandry-select', { is: FdSelect });
     element.options = OPTIONS;
