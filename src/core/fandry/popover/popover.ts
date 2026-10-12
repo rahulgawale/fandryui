@@ -71,16 +71,20 @@ export default class Popover extends Base {
    * with a transform or filter (a scaled one is not accounted for).
    */
   private updatePosition() {
-    // The slotted trigger, not its wrapper: a stretched host makes that wider.
-    const trigger = this.querySelector('[slot="trigger"]') ?? this.template.querySelector('.trigger');
+    const wrapper = this.template.querySelector('.trigger');
     const panel = this.template.querySelector('.panel') as HTMLElement | null;
-    const origin = this.template.querySelector('.origin');
-    if (!trigger || !panel || !origin) {
+    if (!wrapper || !panel) {
       return;
     }
 
-    const rect = trigger.getBoundingClientRect();
-    const box = origin.getBoundingClientRect();
+    const rect = this.triggerRect(wrapper);
+    // A template of a subclass may have no `.origin`: the viewport then.
+    const box = this.template.querySelector('.origin')?.getBoundingClientRect() ?? {
+      top: 0,
+      left: 0,
+      right: document.documentElement.clientWidth,
+      bottom: document.documentElement.clientHeight
+    };
     this.flipped = this.shouldFlip(rect, panel);
     const side = this.side;
     const edges = { top: 'auto', right: 'auto', bottom: 'auto', left: 'auto' };
@@ -101,7 +105,10 @@ export default class Popover extends Base {
         edges.top = `${rect.bottom - box.top}px`;
     }
 
+    // Above or below, the panel is at least as wide as the trigger.
+    let minWidth = '';
     if (side === 'top' || side === 'bottom') {
+      minWidth = ` --_fd-popover-trigger-width: ${rect.width}px;`;
       if (this.align === 'end') {
         edges.right = `${box.right - rect.right}px`;
       } else {
@@ -109,7 +116,18 @@ export default class Popover extends Base {
       }
     }
 
-    this.panelStyle = `top: ${edges.top}; right: ${edges.right}; bottom: ${edges.bottom}; left: ${edges.left}; --_fd-popover-trigger-width: ${rect.width}px;`;
+    this.panelStyle = `top: ${edges.top}; right: ${edges.right}; bottom: ${edges.bottom}; left: ${edges.left};${minWidth}`;
+  }
+
+  /*
+   * The slotted trigger's box, not its wrapper's: a stretched host makes the
+   * wrapper wider than the control. The wrapper's when the trigger has no
+   * box of its own (`display: contents`).
+   */
+  private triggerRect(wrapper: Element): DOMRect {
+    const slot = wrapper.querySelector('slot') as HTMLSlotElement | null;
+    const rect = slot?.assignedElements({ flatten: true })[0]?.getBoundingClientRect();
+    return rect && (rect.width || rect.height) ? rect : wrapper.getBoundingClientRect();
   }
 
   private get preferredSide(): Side {
