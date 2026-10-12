@@ -6,8 +6,8 @@ import { slotHasContent } from 'fandry/textSlots';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
-// itself controls -- `id` is reserved because fandry-label's
-// `html-for="textarea"` association depends on it staying put.
+// itself controls -- `id` is reserved because the label's
+// `for="textarea"` association depends on it staying put.
 // `aria-describedby` has no plain string IDL property (see select.ts's
 // fuller note) -- only the newer `ariaDescribedByElements`
 // (element-reference), reserved here since this component sets
@@ -52,6 +52,12 @@ export default class Textarea extends Base {
     return !!this.helpText || !!this.textSlots['help-text'];
   }
 
+  // Only while there is help text: an empty description is still announced
+  // as one by some screen readers.
+  get describedBy(): string | null {
+    return this.hasHelpText ? 'help-text' : null;
+  }
+
   renderedCallback() {
     // <textarea value={value}> is not a valid template binding (LWC1057,
     // same class of issue as fandry-select's old native <select> and
@@ -65,9 +71,12 @@ export default class Textarea extends Base {
     // `aria-checked` to reach `indeterminate`: without SOME template read,
     // LWC has no reactive edge for `value` and this would only ever run on
     // first paint, not on a later update to `value` alone.
+    //
+    // null and undefined would otherwise show as the words "null"/"undefined".
+    const value = this.value ?? '';
     const textarea = this.template.querySelector('.textarea') as HTMLTextAreaElement | null;
-    if (textarea && textarea.value !== this.value) {
-      textarea.value = this.value;
+    if (textarea && textarea.value !== value) {
+      textarea.value = value;
     }
   }
 
