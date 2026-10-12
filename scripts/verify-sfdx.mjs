@@ -199,7 +199,7 @@ check(r.code === 1 && /already installed/.test(r.out), 'init moved to a new --di
 const pkg = join(work, 'pkg');
 cpSync(DIST, pkg, { recursive: true });
 const pkgLwc = join(pkg, 'sfdx/lwc');
-writeFileSync(join(pkgLwc, 'fandryLabel/legacy.css'), '/* v1 only */\n');
+writeFileSync(join(pkgLwc, 'fandryTableState/legacy.css'), '/* v1 only */\n');
 const up = join(work, 'up');
 mkdirSync(up);
 writeFileSync(join(up, 'sfdx-project.json'), JSON.stringify({ packageDirectories: [{ path: 'force-app', default: true }], sourceApiVersion: '66.0' }));
@@ -207,20 +207,20 @@ const cli = join(pkg, 'bin/fandry.mjs');
 runCli(cli, up, ['init']);
 runCli(cli, up, ['add', 'input', 'table']);
 const upLwc = join(up, 'fandryui/main/default/lwc');
-check(existsSync(join(upLwc, 'fandryLabel/legacy.css')), 'test setup: v1 file was not installed');
+check(existsSync(join(upLwc, 'fandryTableState/legacy.css')), 'test setup: v1 file was not installed');
 
 // "New release": label changes and drops legacy.css; button and base change too.
-rmSync(join(pkgLwc, 'fandryLabel/legacy.css'));
-for (const b of ['fandryLabel', 'fandryButton', 'fandryBase']) {
+rmSync(join(pkgLwc, 'fandryTableState/legacy.css'));
+for (const b of ['fandryTableState', 'fandryButton', 'fandryBase']) {
   appendFileSync(join(pkgLwc, b, `${b}.js`), '\n// v2\n');
 }
 // The user edited button locally before upgrading.
 appendFileSync(join(upLwc, 'fandryButton/fandryButton.js'), '\n// my edit\n');
 
 r = runCli(cli, up, ['add', 'table']);
-check(/Updated[^\n]*fandryLabel/.test(r.out) && /Updated[^\n]*fandryBase/.test(r.out), `untouched bundles were not upgraded: ${r.out}`);
-check(readFileSync(join(upLwc, 'fandryLabel/fandryLabel.js'), 'utf8').includes('// v2'), 'upgrade did not install the new version');
-check(!existsSync(join(upLwc, 'fandryLabel/legacy.css')), 'upgrade left a file the new version dropped');
+check(/Updated[^\n]*fandryTableState/.test(r.out) && /Updated[^\n]*fandryBase/.test(r.out), `untouched bundles were not upgraded: ${r.out}`);
+check(readFileSync(join(upLwc, 'fandryTableState/fandryTableState.js'), 'utf8').includes('// v2'), 'upgrade did not install the new version');
+check(!existsSync(join(upLwc, 'fandryTableState/legacy.css')), 'upgrade left a file the new version dropped');
 check(/Skipped[^\n]*fandryButton/.test(r.out) && readFileSync(join(upLwc, 'fandryButton/fandryButton.js'), 'utf8').includes('// my edit'), 'an edited bundle was not preserved on upgrade');
 
 // --overwrite is for what you name, not for the dependencies of what you name.

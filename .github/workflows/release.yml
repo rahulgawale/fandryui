@@ -39,6 +39,15 @@ jobs:
       - name: Test
         run: npm test -- --ci
 
+      # The same two checks the npm publish runs. They run here first because
+      # a tag and GitHub Release are permanent: failing after semantic-release
+      # leaves a version that exists on GitHub but can never reach npm.
+      - name: Verify package in an isolated consumer
+        run: npm run verify:npm
+
+      - name: Verify the CLI
+        run: npm run verify:sfdx
+
       - name: Build
         run: npm run build
 

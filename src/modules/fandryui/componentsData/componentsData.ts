@@ -52,6 +52,7 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   prefix: 'The wrapper of the prefix slot.',
   suffix: 'The wrapper of the suffix slot.',
   'help-text': 'The help text under the field.',
+  'error-text': 'The error under the field. In the page even while empty, so style it only for a field that is `invalid`.',
   value: 'The selected value, as shown in the closed field.',
   chevron: 'The dropdown arrow.',
   trigger: 'The wrapper of the trigger slot.',
@@ -115,6 +116,7 @@ export const STATE_DESCRIPTIONS: Record<string, string> = {
   checked: 'The box, circle or track of a checked control.',
   indeterminate: 'A checkbox that is neither checked nor unchecked, or a progress bar with no known value.',
   disabled: 'A control, option or item that cannot be used.',
+  invalid: 'A field that has error text.',
   selected: 'The chosen option, or a selected table row.',
   active: 'The option the keyboard or pointer is on.',
   current: 'The link to the page being viewed.',
@@ -848,8 +850,8 @@ fandry-checkbox::part(control checked) {
     slug: 'combobox',
     name: 'Combobox',
     tag: 'fandry-combobox',
-    parts: ['base', 'label', 'required', 'control', 'input', 'chevron', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty', 'help-text'],
-    states: ['disabled', 'selected', 'active'],
+    parts: ['base', 'label', 'required', 'control', 'input', 'chevron', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty', 'help-text', 'error-text'],
+    states: ['disabled', 'invalid', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'combobox-theme',
@@ -895,6 +897,7 @@ fandry-combobox::part(option-description) {
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected or typed.' },
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
       { name: 'name', type: 'string', default: "''", description: 'Exposed as `data-name` on the input.' },
       { name: 'options', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The options. Search matches label, description, keywords and group; a prefix in the label ranks first.' },
       { name: 'value', type: 'string', default: "''", description: 'Selected value. Listen for `change` (detail is the new value).' },
@@ -902,7 +905,7 @@ fandry-combobox::part(option-description) {
       { name: 'required', type: 'boolean', default: 'false', description: 'Marks the field required (asterisk + aria-required).' },
       { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native input (e.g. `{ tabIndex: 2 }`); keys the component controls are ignored with a warning.' },
       { name: 'empty (slot)', type: 'slot', default: "'No results'", description: 'Replaces the message shown when nothing matches.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<fandry-combobox
   label="Framework"
@@ -991,8 +994,47 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'input',
     name: 'Input',
     tag: 'fandry-input',
-    parts: ['base', 'label', 'control', 'prefix', 'input', 'suffix', 'help-text', 'required'],
-    states: ['disabled'],
+    examples: [
+      {
+        title: 'An error',
+        demo: 'input-error',
+        code: `<!-- template -->
+<fandry-input label="Email" type="email" required
+  help-text="We'll send the receipt here."
+  error-text={emailError} value={email}
+  oninput={handleInput} onchange={handleChange}></fandry-input>
+
+// component
+email = '';
+emailError = '';
+
+// Checked when the field is left: an error while still typing is noise.
+handleChange(event) {
+  this.email = event.detail;
+  this.emailError = this.check(this.email);
+}
+
+// Once there is an error, it goes as soon as the value is right.
+handleInput(event) {
+  this.email = event.detail;
+  if (this.emailError) this.emailError = this.check(this.email);
+}
+
+// A field is invalid while it has error text: there is no separate flag.
+// The control gets aria-invalid and the error as its description, and a
+// screen reader hears the error when it appears. Textarea, select,
+// combobox and lookup take error-text the same way.
+//
+// Markup instead of a string goes in the slot:
+//   <span slot="error-text">Taken. <a href="/login">Sign in?</a></span>
+
+/* css: the field while it is invalid, and the message */
+fandry-input::part(control invalid) { background: hsl(0 80% 98%); }
+fandry-input::part(error-text) { font-weight: 600; }`
+      }
+    ],
+    parts: ['base', 'label', 'control', 'prefix', 'input', 'suffix', 'help-text', 'error-text', 'required'],
+    states: ['disabled', 'invalid'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'input-theme',
@@ -1035,10 +1077,11 @@ fandry-input::part(help-text) {
     props: [
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
       { name: 'type', type: 'string', default: "'text'", description: 'Native input type (email, password, ...).' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Field size.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text (a link, an icon). Shown even without the matching prop.' }
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text (a link, an icon). Shown even without the matching prop.' }
     ],
     code: `<fandry-input label="Email" type="email" placeholder="you@company.com"></fandry-input>`
   },
@@ -1203,8 +1246,8 @@ fandry-radio::part(label) {
     slug: 'select',
     name: 'Select',
     tag: 'fandry-select',
-    parts: ['base', 'label', 'required', 'control', 'value', 'chevron', 'listbox', 'option', 'group', 'group-label', 'help-text', 'panel'],
-    states: ['disabled', 'selected', 'active'],
+    parts: ['base', 'label', 'required', 'control', 'value', 'chevron', 'listbox', 'option', 'group', 'group-label', 'help-text', 'error-text', 'panel'],
+    states: ['disabled', 'invalid', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'select-theme',
@@ -1251,7 +1294,9 @@ fandry-select::part(option selected) {
       { name: 'groups', type: '{ label, options }[]', default: '[]', description: 'Grouped option list (used instead of options).' },
       { name: 'value', type: 'string', default: "''", description: 'Selected value. `\'\'` (or null) is no selection and shows the placeholder, unless an option has that value: give one `value: \'\'` to offer "None".' },
       { name: 'change (event)', type: 'CustomEvent<string>', default: '—', description: 'Fires when the user picks a different value; `event.detail` is the new value. Not fired when `value` is set from code.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
+      { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<fandry-select
   label="Plan"
@@ -1362,8 +1407,8 @@ fandry-switch::part(label) {
     slug: 'textarea',
     name: 'Textarea',
     tag: 'fandry-textarea',
-    parts: ['base', 'label', 'control', 'textarea', 'help-text', 'required'],
-    states: ['disabled'],
+    parts: ['base', 'label', 'control', 'textarea', 'help-text', 'error-text', 'required'],
+    states: ['disabled', 'invalid'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'textarea-theme',
@@ -1396,9 +1441,10 @@ fandry-textarea::part(label) {
     props: [
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
       { name: 'rows', type: 'number', default: '3', description: 'Visible row count.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<fandry-textarea label="Notes" rows="4"></fandry-textarea>`
   },
@@ -2186,8 +2232,8 @@ fandry-table::part(row):hover {
     slug: 'lookup',
     name: 'Lookup',
     tag: 'fandry-lookup',
-    parts: ['base', 'label', 'required', 'control', 'selection', 'selection-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text'],
-    states: ['disabled', 'selected', 'active'],
+    parts: ['base', 'label', 'required', 'control', 'selection', 'selection-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text', 'error-text'],
+    states: ['disabled', 'invalid', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'lookup-theme',
@@ -2234,6 +2280,7 @@ fandry-lookup::part(option-description) {
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown in the empty search box.' },
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
       { name: 'name', type: 'string', default: "''", description: 'Exposed as `data-name` on the input.' },
       { name: 'results', type: '{ id, label, description?, disabled?, … }[]', default: '[]', description: 'Matches for the current search, shown exactly as given (never re-filtered). Extra fields ride along and come back in `change`.' },
       { name: 'loading', type: 'boolean', default: 'false', description: 'Shows a searching indicator while your query is in flight.' },
@@ -2250,7 +2297,7 @@ fandry-lookup::part(option-description) {
       { name: 'empty (slot)', type: 'slot', default: "'No records found'", description: 'Replaces the message shown when a search has no matches.' },
       { name: 'clear-all · searching (slots)', type: 'slot', default: "'Clear all' · 'Searching…'", description: 'Replace the Clear all button\'s text and the searching line.' },
       { name: 'messages', type: '{ searching, clear(name), remove(name) }', default: '{}', description: 'Replaces the accessible names of the spinner and the clear and remove buttons, e.g. to translate them.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<!-- template -->
 <fandry-lookup
