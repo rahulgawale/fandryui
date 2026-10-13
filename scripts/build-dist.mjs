@@ -211,11 +211,15 @@ function buildRegistry(sfdxComponents, version) {
         deps.add(byBundle.get(bundle));
       }
       /* A template renders a tag; a script needs one only when it queries for
-         its slotted children. A tag in a comment is neither. */
+         its slotted children; a stylesheet needs every tag its selectors name
+         (the platform won't deploy it otherwise). A tag in a comment is none. */
+      const css = file.endsWith('.css');
       const tags = file.endsWith('.html')
         ? /<\/?c-fandry-([a-z-]+)/g
-        : /(?:querySelector(?:All)?|closest)\(\s*['"`]c-fandry-([a-z-]+)/g;
-      for (const [, tag] of text.matchAll(tags)) {
+        : css
+          ? /(?<![\w.#-])c-fandry-([a-z-]+)/g
+          : /(?:querySelector(?:All)?|closest)\(\s*['"`]c-fandry-([a-z-]+)/g;
+      for (const [, tag] of (css ? text.replace(/\/\*[\s\S]*?\*\//g, '') : text).matchAll(tags)) {
         deps.add(kebabToCamel(tag));
       }
     }
