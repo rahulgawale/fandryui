@@ -1,3 +1,10 @@
+## [0.23.1](https://github.com/rahulgawale/fandryui/compare/v0.23.0...v0.23.1) (2026-10-13)
+
+
+### Bug Fixes
+
+* **registry:** ignore component tags named only in comments ([#115](https://github.com/rahulgawale/fandryui/issues/115)) ([79e81c4](https://github.com/rahulgawale/fandryui/commit/79e81c4d0906c86889140fa6eb0036d1498e3aba))
+
 # [0.23.0](https://github.com/rahulgawale/fandryui/compare/v0.22.0...v0.23.0) (2026-10-12)
 
 
