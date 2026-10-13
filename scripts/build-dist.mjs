@@ -210,7 +210,12 @@ function buildRegistry(sfdxComponents, version) {
       for (const [, bundle] of text.matchAll(/from\s+['"]c\/(fandry[A-Za-z]+)['"]/g)) {
         deps.add(byBundle.get(bundle));
       }
-      for (const [, tag] of text.matchAll(/<\/?c-fandry-([a-z-]+)/g)) {
+      /* A template renders a tag; a script needs one only when it queries for
+         its slotted children. A tag in a comment is neither. */
+      const tags = file.endsWith('.html')
+        ? /<\/?c-fandry-([a-z-]+)/g
+        : /(?:querySelector(?:All)?|closest)\(\s*['"`]c-fandry-([a-z-]+)/g;
+      for (const [, tag] of text.matchAll(tags)) {
         deps.add(kebabToCamel(tag));
       }
     }
