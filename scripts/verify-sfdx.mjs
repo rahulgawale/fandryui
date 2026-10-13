@@ -88,9 +88,13 @@ function assertSelfContained(installed) {
       for (const [, dep] of text.matchAll(/from\s+['"]c\/(fandry[A-Za-z]+)['"]/g)) {
         check(installed.has(dep), `${bundle}/${file} imports c/${dep}, which was not installed`);
       }
-      for (const [, tag] of text.matchAll(/<\/?c-fandry-([a-z-]+)/g)) {
+      // The registry's own rule: a tag in a comment is not a dependency.
+      const tags = file.endsWith('.html')
+        ? /<\/?c-fandry-([a-z-]+)/g
+        : /(?:querySelector(?:All)?|closest)\(\s*['"`]c-fandry-([a-z-]+)/g;
+      for (const [, tag] of text.matchAll(tags)) {
         const dep = `fandry${kebabToCamel(tag).replace(/^./, (c) => c.toUpperCase())}`;
-        check(installed.has(dep), `${bundle}/${file} renders <c-fandry-${tag}>, which was not installed`);
+        check(installed.has(dep), `${bundle}/${file} uses <c-fandry-${tag}>, which was not installed`);
       }
       check(!/from\s+['"]@/.test(text), `${bundle}/${file} imports an npm package`);
     }
@@ -194,6 +198,16 @@ check(readJson(join(dirProject, 'fandry.json')).dir === 'vendor/fandry', 'a plai
 check(readJson(join(dirProject, 'sfdx-project.json')).packageDirectories.length === 2, 'a re-run of init added a second package directory');
 r = fandry(dirProject, 'init', '--dir', 'elsewhere');
 check(r.code === 1 && /already installed/.test(r.out), 'init moved to a new --dir while components were installed in the old one');
+
+// A component named only in another's comments is not installed with it.
+const menuProject = join(work, 'menu');
+mkdirSync(menuProject);
+writeFileSync(join(menuProject, 'sfdx-project.json'), JSON.stringify({ packageDirectories: [{ path: 'force-app', default: true }], sourceApiVersion: '66.0' }));
+fandry(menuProject, 'init');
+fandry(menuProject, 'add', 'menu');
+const withMenu = readdirSync(join(menuProject, 'fandryui/main/default/lwc'));
+check(withMenu.includes('fandryMenuItem'), 'add menu did not install the menuItem it queries for');
+check(!withMenu.includes('fandryButton') && !withMenu.includes('fandryPopover'), `add menu installed a bundle only its comments name: ${withMenu.join(', ')}`);
 
 // Upgrades vs. edits, against a copy of the package we can "release" a new version of.
 const pkg = join(work, 'pkg');
