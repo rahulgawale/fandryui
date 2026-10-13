@@ -1,3 +1,10 @@
+## [0.23.2](https://github.com/rahulgawale/fandryui/compare/v0.23.1...v0.23.2) (2026-10-13)
+
+
+### Bug Fixes
+
+* **registry:** install components a stylesheet's selectors name ([#116](https://github.com/rahulgawale/fandryui/issues/116)) ([a6a5806](https://github.com/rahulgawale/fandryui/commit/a6a58069d5a10db50ea014a74ce010651d7c1fcf))
+
 ## [0.23.1](https://github.com/rahulgawale/fandryui/compare/v0.23.0...v0.23.1) (2026-10-13)
 
 
