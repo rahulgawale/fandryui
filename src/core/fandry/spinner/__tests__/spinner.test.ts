@@ -64,13 +64,14 @@ describe('fandry-spinner', () => {
     expect(element.shadowRoot!.querySelector('span')!.getAttribute('aria-label')).toBe('From aria-label');
   });
 
-  it('hides the label and keeps the aria-label while there is no text', () => {
+  it('is a status named by aria-label, with a hidden label, while there is no text', () => {
     const element = createElement('fandry-spinner', { is: FdSpinner });
     document.body.appendChild(element);
 
     const root = element.shadowRoot!;
     expect(root.querySelector('[part="label"]')!.hasAttribute('hidden')).toBe(true);
-    expect(root.querySelector('[role="status"]')!.hasAttribute('aria-labelledby')).toBe(false);
+    expect(root.querySelector('[part="base"]')!.getAttribute('role')).toBe('status');
+    expect(root.querySelectorAll('[role="status"]')).toHaveLength(1);
   });
 
   describe('with text in the default slot', () => {
@@ -84,21 +85,28 @@ describe('fandry-spinner', () => {
       return harness.shadowRoot!.querySelector(`.${name}`)!.shadowRoot!;
     };
 
-    it('shows the text and names the status from it, not from label', async () => {
+    it('makes the text the status and the ring decoration, so it is read once', async () => {
       const root = await rootOf('text');
       const label = root.querySelector('[part="label"]')!;
-      const status = root.querySelector('[role="status"]')!;
+      const ring = root.querySelector('[part="base"]')!;
 
       expect(label.hasAttribute('hidden')).toBe(false);
-      expect(status.getAttribute('aria-labelledby')).toBe(label.id);
-      expect(status.hasAttribute('aria-label')).toBe(false);
+      expect(label.getAttribute('role')).toBe('status');
+      expect(ring.getAttribute('aria-hidden')).toBe('true');
+      expect(ring.hasAttribute('role')).toBe(false);
+      expect(ring.hasAttribute('aria-label')).toBe(false);
     });
 
-    it('still lets aria-label name it', async () => {
-      const status = (await rootOf('named')).querySelector('[role="status"]')!;
+    it('still lets aria-label name it: the ring is the status, the text is not read', async () => {
+      const root = await rootOf('named');
+      const label = root.querySelector('[part="label"]')!;
+      const ring = root.querySelector('[part="base"]')!;
 
-      expect(status.getAttribute('aria-label')).toBe('Saving');
-      expect(status.hasAttribute('aria-labelledby')).toBe(false);
+      expect(ring.getAttribute('role')).toBe('status');
+      expect(ring.getAttribute('aria-label')).toBe('Saving');
+      expect(label.hasAttribute('hidden')).toBe(false);
+      expect(label.getAttribute('aria-hidden')).toBe('true');
+      expect(label.hasAttribute('role')).toBe(false);
     });
   });
 });

@@ -1,29 +1,32 @@
 import { createElement } from 'lwc';
-import FdLoadingOverlay from '../loadingOverlay';
+import FdLoadingOverlay, { isBrowserShortcut } from '../loadingOverlay';
 import SlotHarness from './slotHarness';
 import { mockAnimations, AnimationMock } from '../../motion/__tests__/animationMock';
 
 const flush = () => Promise.resolve();
-
-type Overlay = HTMLElement & { open: boolean; contained: boolean };
-
-const create = (props: Partial<Overlay> = {}): Overlay => {
-  const element = createElement('fandry-loading-overlay', { is: FdLoadingOverlay }) as unknown as Overlay;
-  Object.assign(element, props);
-  document.body.appendChild(element);
-  return element;
-};
-const statusOf = (element: HTMLElement) => element.shadowRoot!.querySelector('[role="status"]')!;
-const overlayOf = (element: HTMLElement) => element.shadowRoot!.querySelector('.overlay');
-const cardOf = (element: HTMLElement) => element.shadowRoot!.querySelector('.card');
 const settle = async () => {
   for (let i = 0; i < 4; i++) await Promise.resolve();
 };
-// The label is announced on a timer: the entrance delay, 150ms at the least.
-const announced = async () => {
-  await settle();
-  await new Promise((resolve) => setTimeout(resolve, 170));
-  await settle();
+
+type Overlay = HTMLElement & { open: boolean; contained: boolean };
+
+const create = (props: Partial<Overlay> = {}, parent: Node = document.body): Overlay => {
+  const element = createElement('fandry-loading-overlay', { is: FdLoadingOverlay }) as unknown as Overlay;
+  Object.assign(element, props);
+  parent.appendChild(element);
+  return element;
+};
+const statusOf = (element: HTMLElement) => element.shadowRoot!.querySelector('[role="status"]')!;
+const overlayOf = (element: HTMLElement) => element.shadowRoot!.querySelector('[part="backdrop"]');
+const cardOf = (element: HTMLElement) => element.shadowRoot!.querySelector('[part="card"]');
+
+// An entrance animation at `currentTime`, with a 150ms delay and a 200ms fade.
+const originalGetAnimations = Element.prototype.getAnimations;
+const entranceAt = (currentTime: number, delay = 150) => {
+  Element.prototype.getAnimations = () =>
+    [
+      { currentTime, effect: { getComputedTiming: () => ({ delay, endTime: delay + 200 }) }, finished: new Promise(() => {}) }
+    ] as unknown as Animation[];
 };
 
 describe('fandry-loading-overlay', () => {
@@ -31,6 +34,7 @@ describe('fandry-loading-overlay', () => {
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
     }
+    Element.prototype.getAnimations = originalGetAnimations;
   });
 
   it('keeps an empty live region in the page while closed, and nothing else', () => {
@@ -41,52 +45,107 @@ describe('fandry-loading-overlay', () => {
     expect(overlayOf(element)).toBeNull();
   });
 
-  it('puts the label into that same region as text when it opens', async () => {
-    const element = create();
-    const status = statusOf(element);
-
-    element.open = true;
-    await announced();
-
-    expect(statusOf(element)).toBe(status);
-    expect(status.textContent).toBe('Loading');
-    expect(overlayOf(element)!.className).toBe('overlay overlay--open');
-  });
-
-  it('announces a label the page slots in', async () => {
-    const harness = createElement('slot-harness', { is: SlotHarness });
-    document.body.appendChild(harness);
-    await announced();
-
-    expect(statusOf(harness.shadowRoot!.querySelector('fandry-loading-overlay')!).textContent).toBe('Saving template…');
-  });
-
-  it('empties the region when it closes', async () => {
+  it('hides what it draws from assistive technology: the region speaks for it', () => {
     const element = create({ open: true });
-    await announced();
 
-    element.open = false;
-    await settle();
-
-    expect(statusOf(element).textContent).toBe('');
+    expect(overlayOf(element)!.getAttribute('aria-hidden')).toBe('true');
+    expect(cardOf(element)).not.toBeNull();
+    expect(element.shadowRoot!.querySelector('fandry-spinner')!.getAttribute('exportparts')).toBe('base: spinner');
   });
 
-  it('does not announce at the instant it opens, even with no entrance delay', async () => {
-    const element = create({ open: true });
-    await settle();
-    await new Promise((resolve) => setTimeout(resolve, 20));
+  it('does not take focus', () => {
+    const button = document.createElement('button');
+    document.body.appendChild(button);
+    button.focus();
 
-    expect(statusOf(element).textContent).toBe('');
+    create({ open: true });
+
+    expect(document.activeElement).toBe(button);
   });
 
-  it('says nothing when it closes before it was announced', async () => {
-    const element = create({ open: true });
-    await settle();
+  it('covers the nearest positioned ancestor when contained', () => {
+    expect(overlayOf(create({ contained: true, open: true }))!.classList.contains('overlay--contained')).toBe(true);
+  });
 
-    element.open = false;
-    await announced();
+  describe('announcement', () => {
+    beforeEach(() => {
+      jest.useFakeTimers({ doNotFake: ['queueMicrotask', 'nextTick'] });
+    });
 
-    expect(statusOf(element).textContent).toBe('');
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    const after = async (ms: number) => {
+      await settle();
+      jest.advanceTimersByTime(ms);
+      await settle();
+    };
+
+    it('puts the label into the same region as text, 150ms after it opens', async () => {
+      const element = create();
+      const status = statusOf(element);
+
+      element.open = true;
+      await after(149);
+      expect(status.textContent).toBe('');
+
+      await after(1);
+      expect(statusOf(element)).toBe(status);
+      expect(status.textContent).toBe('Loading');
+    });
+
+    it('waits for a longer entrance delay', async () => {
+      entranceAt(0, 400);
+      const element = create({ open: true });
+
+      await after(399);
+      expect(statusOf(element).textContent).toBe('');
+
+      await after(1);
+      expect(statusOf(element).textContent).toBe('Loading');
+    });
+
+    it('announces a label the page slots in', async () => {
+      const harness = createElement('slot-harness', { is: SlotHarness });
+      document.body.appendChild(harness);
+      await after(150);
+
+      expect(statusOf(harness.shadowRoot!.querySelector('fandry-loading-overlay')!).textContent).toBe('Saving template…');
+    });
+
+    it('empties the region when it closes', async () => {
+      const element = create({ open: true });
+      await after(150);
+
+      element.open = false;
+      await settle();
+
+      expect(statusOf(element).textContent).toBe('');
+    });
+
+    it('says nothing when it closes before it was announced', async () => {
+      const element = create({ open: true });
+      await after(100);
+
+      element.open = false;
+      await after(500);
+
+      expect(statusOf(element).textContent).toBe('');
+    });
+
+    it('announces again where it lands when moved while open', async () => {
+      const element = create({ open: true });
+      await after(150);
+      const panel = document.body.appendChild(document.createElement('div'));
+
+      panel.appendChild(element);
+      await after(149);
+      expect(statusOf(element).textContent).toBe('');
+
+      await after(1);
+      expect(statusOf(element).textContent).toBe('Loading');
+    });
   });
 
   describe('keyboard', () => {
@@ -111,32 +170,72 @@ describe('fandry-loading-overlay', () => {
       expect(press({ key: 'Tab' })).toBe(false);
     });
 
-    it('keeps blocked keys from the page\'s own handlers', async () => {
+    it("keeps blocked keys from the page's own handlers", async () => {
       create({ open: true });
       await settle();
       const handler = jest.fn();
       document.body.addEventListener('keydown', handler);
 
       press({ key: 'Escape' });
+      press({ key: 's', ctrlKey: true });
 
       expect(handler).not.toHaveBeenCalled();
       document.body.removeEventListener('keydown', handler);
     });
 
-    it('lets browser shortcuts through', async () => {
+    it('blocks editing and page shortcuts, and lets the browser keep its own', async () => {
       create({ open: true });
       await settle();
 
+      expect(press({ key: 'v', ctrlKey: true })).toBe(true);
+      expect(press({ key: 'z', metaKey: true })).toBe(true);
+      expect(press({ key: 'Enter', ctrlKey: true })).toBe(true);
+      expect(press({ key: 'Backspace', altKey: true })).toBe(true);
+
       expect(press({ key: 'r', metaKey: true })).toBe(false);
+      expect(press({ key: 'R', ctrlKey: true, shiftKey: true })).toBe(false);
+      expect(press({ key: 'ArrowLeft', altKey: true })).toBe(false);
       expect(press({ key: 'F5' })).toBe(false);
     });
 
-    it('lets Tab leave a contained overlay\'s panel, and blocks the rest', async () => {
-      create({ open: true, contained: true });
-      await settle();
+    it('treats AltGr as typing, not as a shortcut', () => {
+      const altGr = new KeyboardEvent('keydown', { key: '@', ctrlKey: true, altKey: true, modifierAltGraph: true });
 
-      expect(press({ key: 'Tab' })).toBe(false);
-      expect(press({ key: 'Enter' })).toBe(true);
+      expect(isBrowserShortcut(altGr)).toBe(false);
+    });
+
+    describe('contained', () => {
+      const panelWith = async (props: Partial<Overlay>) => {
+        const panel = document.body.appendChild(document.createElement('div'));
+        const inside = panel.appendChild(document.createElement('button'));
+        const outside = document.body.appendChild(document.createElement('button'));
+        const element = create(props, panel);
+        await settle();
+        return { element, inside, outside };
+      };
+
+      it('blocks keys inside the element it is in, and none outside', async () => {
+        const { inside, outside } = await panelWith({ open: true, contained: true });
+
+        expect(press({ key: 'Enter' }, inside)).toBe(true);
+        expect(press({ key: 'Enter' }, outside)).toBe(false);
+      });
+
+      it('lets Tab leave the panel', async () => {
+        const { inside } = await panelWith({ open: true, contained: true });
+
+        expect(press({ key: 'Tab' }, inside)).toBe(false);
+        expect(press({ key: 'Tab', shiftKey: true }, inside)).toBe(false);
+      });
+
+      it('follows `contained` when it changes while open', async () => {
+        const { element, outside } = await panelWith({ open: true, contained: true });
+
+        element.contained = false;
+        await settle();
+
+        expect(press({ key: 'Enter' }, outside)).toBe(true);
+      });
     });
 
     it('stops blocking when it is removed while open', async () => {
@@ -147,28 +246,6 @@ describe('fandry-loading-overlay', () => {
 
       expect(press({ key: 'Tab' })).toBe(false);
     });
-  });
-
-  it('hides what it draws from assistive technology: the region speaks for it', () => {
-    const element = create({ open: true });
-
-    expect(overlayOf(element)!.getAttribute('aria-hidden')).toBe('true');
-    expect(overlayOf(element)!.getAttribute('part')).toBe('backdrop');
-    expect(element.shadowRoot!.querySelector('fandry-spinner')!.getAttribute('exportparts')).toBe('base: spinner');
-  });
-
-  it('does not take focus', () => {
-    const button = document.createElement('button');
-    document.body.appendChild(button);
-    button.focus();
-
-    create({ open: true });
-
-    expect(document.activeElement).toBe(button);
-  });
-
-  it('covers the nearest positioned ancestor when contained', () => {
-    expect(overlayOf(create({ contained: true, open: true }))!.classList.contains('overlay--contained')).toBe(true);
   });
 
   describe('exit lifecycle', () => {
@@ -189,10 +266,10 @@ describe('fandry-loading-overlay', () => {
       await flush();
 
       expect(cardOf(element)).not.toBeNull();
-      expect(overlayOf(element)!.className).toBe('overlay overlay--closing');
+      expect(overlayOf(element)!.classList.contains('overlay--closing')).toBe(true);
     });
 
-    it('removes the card once the exit animation finishes', async () => {
+    it('is removed once the exit animation finishes', async () => {
       const element = create({ open: true });
 
       element.open = false;
@@ -202,7 +279,7 @@ describe('fandry-loading-overlay', () => {
       expect(overlayOf(element)).toBeNull();
     });
 
-    it('reopening during the exit keeps the card', async () => {
+    it('reopening during the exit keeps it', async () => {
       const element = create({ open: true });
 
       element.open = false;
@@ -211,26 +288,20 @@ describe('fandry-loading-overlay', () => {
       await animations.finish();
 
       expect(cardOf(element)).not.toBeNull();
-      expect(overlayOf(element)!.className).toBe('overlay overlay--open');
+      expect(overlayOf(element)!.classList.contains('overlay--closing')).toBe(false);
     });
   });
 
-  /* The delay is the entrance animation's own (--fd-loading-overlay-delay),
-     so "not shown yet" is an entrance that hasn't reached it. */
-  describe('closed within the delay', () => {
-    const original = Element.prototype.getAnimations;
-    const entranceAt = (currentTime: number) => {
-      Element.prototype.getAnimations = () =>
-        [{ currentTime, effect: { getComputedTiming: () => ({ delay: 150 }) }, finished: new Promise(() => {}) }] as unknown as Animation[];
-    };
-
-    afterEach(() => {
-      Element.prototype.getAnimations = original;
-    });
-
-    it('is removed at once, with no exit to play', async () => {
+  /* The delay is the entrance animation's own (--fd-loading-overlay-delay).
+     Closing before the entrance has finished removes the overlay at once:
+     an exit would start from full opacity and flash. */
+  describe('closed before it has appeared', () => {
+    it.each([
+      ['within the delay', 100],
+      ['while it fades in', 250]
+    ])('is removed at once %s', async (_when, currentTime) => {
       const element = create({ open: true });
-      entranceAt(100);
+      entranceAt(currentTime);
 
       element.open = false;
       await flush();
@@ -238,15 +309,34 @@ describe('fandry-loading-overlay', () => {
       expect(overlayOf(element)).toBeNull();
     });
 
-    it('plays its exit once it has appeared', async () => {
+    it('is never drawn when opened and closed before it rendered', async () => {
+      const element = create();
+
+      element.open = true;
+      element.open = false;
+      await settle();
+
+      expect(overlayOf(element)).toBeNull();
+    });
+
+    it('plays its exit once the entrance has finished', async () => {
       const element = create({ open: true });
       entranceAt(400);
 
       element.open = false;
       await flush();
 
-      expect(cardOf(element)).not.toBeNull();
-      expect(overlayOf(element)!.className).toBe('overlay overlay--closing');
+      expect(overlayOf(element)!.classList.contains('overlay--closing')).toBe(true);
+    });
+
+    it('plays its exit when a site removed the entrance animation', async () => {
+      const element = create({ open: true });
+      Element.prototype.getAnimations = () => [];
+
+      element.open = false;
+      await flush();
+
+      expect(overlayOf(element)!.classList.contains('overlay--closing')).toBe(true);
     });
   });
 });

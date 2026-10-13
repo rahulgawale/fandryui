@@ -1,9 +1,5 @@
 <template>
-  <!--
-    A polite live region, in the page before its text is: the label is put
-    here as text once the overlay shows, which is what a screen reader
-    reads out. See fandry/fieldError.
-  -->
+  <!-- A polite live region, in the page before its text is. See fandry/fieldError. -->
   <span class="status" role="status" aria-live="polite" aria-atomic="true">{announcement}</span>
 
   <template if:true={isMounted}>

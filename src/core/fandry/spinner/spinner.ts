@@ -25,17 +25,31 @@ export default class Spinner extends Base {
     return this.ariaLabel || this.label || { ...DEFAULT_SPINNER_MESSAGES, ...this.messages }.label;
   }
 
-  // Visible text in the default slot names the status, so it isn't read twice.
-  get namedByText(): boolean {
+  /* Visible text in the default slot is the status, and the ring is
+     decoration, so the text is read once. An aria-label still wins: then
+     the ring is the status and the text is hidden from assistive technology. */
+  get textIsStatus(): boolean {
     return this.hasText && !this.ariaLabel;
   }
 
-  get ringLabel(): string | null {
-    return this.namedByText ? null : this.accessibleLabel;
+  get ringRole(): string | null {
+    return this.textIsStatus ? null : 'status';
   }
 
-  get ringLabelledBy(): string | null {
-    return this.namedByText ? 'label' : null;
+  get ringLabel(): string | null {
+    return this.textIsStatus ? null : this.accessibleLabel;
+  }
+
+  get ringHidden(): string | null {
+    return this.textIsStatus ? 'true' : null;
+  }
+
+  get labelRole(): string | null {
+    return this.textIsStatus ? 'status' : null;
+  }
+
+  get labelAriaHidden(): string | null {
+    return this.hasText && !this.textIsStatus ? 'true' : null;
   }
 
   // Whether the default slot has content -- see fandry/textSlots.

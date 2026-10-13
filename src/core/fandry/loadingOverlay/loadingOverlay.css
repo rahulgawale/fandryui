@@ -29,16 +29,17 @@
   background: hsl(var(--_fd-backdrop) / var(--_fd-backdrop-opacity));
 }
 
-/* Covers the nearest positioned ancestor. */
+/* Covers the nearest positioned ancestor, and stays under the page's own
+   layers (a sticky header). */
 .overlay--contained {
   position: absolute;
+  z-index: 1;
 }
 
 /* Blocks the pointer at once, and shows after the delay: `both` holds it
    invisible until then, and keeps the finished animation readable by
    loadingOverlay.ts. */
 .overlay--open {
-  cursor: wait;
   animation: fd-fade-in var(--_fd-duration-normal) var(--_fd-ease-standard) var(--_fd-loading-overlay-delay) both;
 }
 

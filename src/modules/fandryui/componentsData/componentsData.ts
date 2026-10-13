@@ -1703,24 +1703,19 @@ fandry-spinner::part(label) {
     description: 'A loading spinner in three sizes, with optional text beside it.',
     props: [
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size. The ring\'s thickness follows it (--fd-spinner-thickness, in em of the ring).' },
-      { name: 'default slot', type: 'slot', default: '—', description: 'Text shown beside the ring, e.g. "Loading fields…". It also names the spinner, in place of label.' },
+      { name: 'default slot', type: 'slot', default: '—', description: 'Text shown beside the ring, e.g. "Loading fields…". It becomes the status a screen reader reads, in place of label.' },
       { name: 'label', type: 'string', default: "''", description: 'Names a spinner that shows no text, e.g. "Saving changes". Not displayed. Overrides messages.label.' },
-      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label and over slotted text.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label, and is read in place of slotted text.' },
       { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Loading") for every instance, e.g. to translate it.' }
     ],
     examples: [
       {
         title: 'With a label',
         demo: 'spinner-label',
-        code: `<!-- Text in the default slot shows beside the ring and names the spinner -->
+        code: `<!-- Text in the default slot shows beside the ring. Style it with ::part(label). -->
 <fandry-spinner size="sm">Loading fields…</fandry-spinner>
 <fandry-spinner size="md">Saving template…</fandry-spinner>
-<fandry-spinner size="lg">Generating PDF…</fandry-spinner>
-
-/* css: the text is the label part */
-fandry-spinner::part(label) {
-  font-weight: 600;
-}`
+<fandry-spinner size="lg">Generating PDF…</fandry-spinner>`
       }
     ],
     code: `<fandry-spinner size="md"></fandry-spinner>`
@@ -1777,16 +1772,17 @@ fandry-loading-overlay::part(label) {
     description: 'Covers the page, or one panel, while it is busy: a backdrop that blocks the pointer and the keyboard, and a card with a spinner and a label.',
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in lwc:if: it stays in the page so its label is announced, and so it can fade out.' },
-      { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport.' },
-      { name: 'default slot', type: 'slot', default: "'Loading'", description: 'The label under the spinner, e.g. "Saving template…".' }
+      { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport, and blocks keys inside its parent element. Put the overlay directly inside the panel it covers.' },
+      { name: 'default slot', type: 'slot', default: "'Loading'", description: 'The label under the spinner, e.g. "Saving template…". Announced once, when the overlay shows.' }
     ],
     notes: [
       {
         title: 'Not a dialog',
         paragraphs: [
-          'It blocks the pointer and the keyboard the moment it opens, but takes no focus, has nothing to close and does not lock scrolling. It only shows after --fd-loading-overlay-delay (150ms), so an operation that finishes sooner never flashes an overlay.',
-          'Focus stays where it was. Over the page, Tab, Enter, Space and typing do nothing until it closes; browser shortcuts still work. A contained overlay blocks keys inside the panel it covers and lets Tab leave it.',
-          'It keeps a polite status region in the page at all times and puts the label\'s text into it once the overlay shows, so a screen reader announces it. A screen reader\'s own click still reaches what is behind: guard the actions that must not run twice.'
+          'It blocks the pointer and the keyboard the moment it opens, but takes no focus and has nothing to close: the page must always set open back to false, on errors and timeouts too. It only shows after --fd-loading-overlay-delay (150ms), so an operation that finishes sooner never flashes an overlay.',
+          'Focus stays where it was. Over the page, keys do nothing until it closes (typing, Tab, Enter, Space, arrow-key scrolling, paste, the page\'s own shortcuts); the browser\'s shortcuts and wheel or touch scrolling still work. A contained overlay blocks keys inside the element it is in and lets Tab leave it.',
+          'It blocks hardware keys, not every input method: text from an IME or an on-screen keyboard, and a screen reader\'s own click, can still reach what is behind it. Guard the actions that must not run twice.',
+          'It keeps a polite status region in the page at all times and puts the label\'s text into it once the overlay shows, so a screen reader announces it. A label edited in place while it is open is not announced again.'
         ]
       }
     ],
@@ -1794,7 +1790,7 @@ fandry-loading-overlay::part(label) {
       {
         title: 'Over one panel',
         demo: 'loading-overlay-contained',
-        code: `<!-- template: the overlay covers its nearest positioned ancestor -->
+        code: `<!-- template: the overlay goes directly inside the panel it covers -->
 <div class="panel">
   <fandry-card>
     ...
@@ -1810,7 +1806,7 @@ fandry-loading-overlay::part(label) {
 
 /* Follow the panel's corners */
 .panel fandry-loading-overlay::part(backdrop) {
-  border-radius: var(--fd-radius-lg);
+  border-radius: var(--fd-radius-lg, 0.5rem);
 }`
       }
     ],
