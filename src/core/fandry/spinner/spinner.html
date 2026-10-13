@@ -1,3 +1,4 @@
 <template>
-  <span class={classes} part="base" role="status" aria-label={accessibleLabel}></span>
+  <span class={classes} part="base" role="status" aria-label={ringLabel} aria-labelledby={ringLabelledBy}></span>
+  <span id="label" class="label" part="label" hidden={labelHidden}><slot onslotchange={handleTextSlotChange}></slot></span>
 </template>

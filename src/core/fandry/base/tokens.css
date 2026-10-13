@@ -173,6 +173,12 @@
   --_fd-switch-padding: var(--fd-switch-padding, 0.125rem);
   --_fd-switch-width: var(--fd-switch-width, calc(var(--_fd-size-sm) * 2 + 2 * var(--_fd-switch-padding)));
   --_fd-tooltip-arrow-size: var(--fd-tooltip-arrow-size, 0.625rem);
+  /* In em of the ring's size, so a small spinner gets a thinner ring. */
+  --_fd-spinner-thickness: var(--fd-spinner-thickness, 0.125em);
+  /* How long fandry-loading-overlay waits before it shows, so a fast
+     operation doesn't flash one. Not a --fd-duration-*: reduced motion
+     leaves it alone. */
+  --_fd-loading-overlay-delay: var(--fd-loading-overlay-delay, 150ms);
   --_fd-sidebar-width: var(--fd-sidebar-width, 16rem);
   --_fd-toast-width: var(--fd-toast-width, 20rem);
   /* The narrowest a fandry-form column gets before the fields wrap. */

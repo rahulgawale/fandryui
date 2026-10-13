@@ -1,0 +1,73 @@
+:host {
+  display: contents;
+}
+
+/* Always in the page (it is the live region): an empty box of no size
+   until it opens. */
+.overlay {
+  position: fixed;
+  pointer-events: none;
+}
+
+/* Covers the nearest positioned ancestor. */
+.overlay--contained {
+  position: absolute;
+}
+
+.overlay--open,
+.overlay--closing {
+  inset: 0;
+  z-index: var(--_fd-z-overlay);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--_fd-space-4);
+
+  background: hsl(var(--_fd-backdrop) / var(--_fd-backdrop-opacity));
+}
+
+/* Blocks the pointer at once, and shows after the delay: `both` holds it
+   invisible until then, and keeps the finished animation readable by
+   loadingOverlay.ts. */
+.overlay--open {
+  pointer-events: auto;
+  cursor: wait;
+  animation: fd-fade-in var(--_fd-duration-normal) var(--_fd-ease-standard) var(--_fd-loading-overlay-delay) both;
+}
+
+.overlay--closing {
+  animation: fd-fade-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--_fd-space-3);
+  max-width: var(--_fd-overlay-max-width-sm);
+  padding: var(--_fd-space-5);
+
+  color: hsl(var(--_fd-text));
+  background: hsl(var(--_fd-bg));
+  border-radius: var(--_fd-radius-lg);
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-modal));
+
+  animation: fd-fade-scale-in var(--_fd-duration-normal) var(--_fd-ease-emphasized) var(--_fd-loading-overlay-delay) both;
+}
+
+.overlay--closing .card {
+  animation: fd-fade-scale-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
+}
+
+.label {
+  font-size: var(--_fd-font-size-sm);
+  text-align: center;
+}
+
+/* A fandry-label slotted in as the label is only this label's text: it
+   takes the label's look. */
+::slotted(fandry-label) {
+  font: inherit;
+  color: inherit;
+}

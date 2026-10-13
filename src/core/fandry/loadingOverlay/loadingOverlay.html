@@ -1,0 +1,14 @@
+<template>
+  <!--
+    A polite live region, in the page before the label is: the label is
+    read out when it appears inside. See fandry/fieldError.
+  -->
+  <div class={overlayClasses} part={backdropPart} role="status">
+    <template if:true={isMounted}>
+      <div class="card" part="card">
+        <fandry-spinner size="lg" exportparts="base: spinner" aria-hidden="true"></fandry-spinner>
+        <span class="label" part="label"><slot>Loading</slot></span>
+      </div>
+    </template>
+  </div>
+</template>
