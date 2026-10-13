@@ -19,6 +19,12 @@ const cardOf = (element: HTMLElement) => element.shadowRoot!.querySelector('.car
 const settle = async () => {
   for (let i = 0; i < 4; i++) await Promise.resolve();
 };
+// The label is announced on a timer (the entrance delay; none in jsdom).
+const announced = async () => {
+  await settle();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  await settle();
+};
 
 describe('fandry-loading-overlay', () => {
   afterEach(() => {
@@ -40,7 +46,7 @@ describe('fandry-loading-overlay', () => {
     const status = statusOf(element);
 
     element.open = true;
-    await settle();
+    await announced();
 
     expect(statusOf(element)).toBe(status);
     expect(status.textContent).toBe('Loading');
@@ -50,19 +56,89 @@ describe('fandry-loading-overlay', () => {
   it('announces a label the page slots in', async () => {
     const harness = createElement('slot-harness', { is: SlotHarness });
     document.body.appendChild(harness);
-    await settle();
+    await announced();
 
     expect(statusOf(harness.shadowRoot!.querySelector('fandry-loading-overlay')!).textContent).toBe('Saving template…');
   });
 
   it('empties the region when it closes', async () => {
     const element = create({ open: true });
-    await settle();
+    await announced();
 
     element.open = false;
     await settle();
 
     expect(statusOf(element).textContent).toBe('');
+  });
+
+  it('says nothing when it closes before it was announced', async () => {
+    const element = create({ open: true });
+    await settle();
+
+    element.open = false;
+    await announced();
+
+    expect(statusOf(element).textContent).toBe('');
+  });
+
+  describe('keyboard', () => {
+    const press = (init: KeyboardEventInit, target: EventTarget = document.body) => {
+      const event = new KeyboardEvent('keydown', { bubbles: true, cancelable: true, composed: true, ...init });
+      target.dispatchEvent(event);
+      return event.defaultPrevented;
+    };
+
+    it('blocks Tab, Enter and Space while open, and nothing once closed', async () => {
+      const element = create();
+      expect(press({ key: 'Tab' })).toBe(false);
+
+      element.open = true;
+      await settle();
+      expect(press({ key: 'Tab' })).toBe(true);
+      expect(press({ key: 'Enter' })).toBe(true);
+      expect(press({ key: ' ' })).toBe(true);
+
+      element.open = false;
+      await settle();
+      expect(press({ key: 'Tab' })).toBe(false);
+    });
+
+    it('keeps blocked keys from the page\'s own handlers', async () => {
+      create({ open: true });
+      await settle();
+      const handler = jest.fn();
+      document.body.addEventListener('keydown', handler);
+
+      press({ key: 'Escape' });
+
+      expect(handler).not.toHaveBeenCalled();
+      document.body.removeEventListener('keydown', handler);
+    });
+
+    it('lets browser shortcuts through', async () => {
+      create({ open: true });
+      await settle();
+
+      expect(press({ key: 'r', metaKey: true })).toBe(false);
+      expect(press({ key: 'F5' })).toBe(false);
+    });
+
+    it('lets Tab leave a contained overlay\'s panel, and blocks the rest', async () => {
+      create({ open: true, contained: true });
+      await settle();
+
+      expect(press({ key: 'Tab' })).toBe(false);
+      expect(press({ key: 'Enter' })).toBe(true);
+    });
+
+    it('stops blocking when it is removed while open', async () => {
+      const element = create({ open: true });
+      await settle();
+
+      document.body.removeChild(element);
+
+      expect(press({ key: 'Tab' })).toBe(false);
+    });
   });
 
   it('hides what it draws from assistive technology: the region speaks for it', () => {

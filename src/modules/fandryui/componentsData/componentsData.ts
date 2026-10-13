@@ -1774,7 +1774,7 @@ fandry-loading-overlay::part(label) {
 }`
     },
     category: 'Feedback',
-    description: 'Covers the page, or one panel, while it is busy: a backdrop that blocks the pointer and a card with a spinner and a label.',
+    description: 'Covers the page, or one panel, while it is busy: a backdrop that blocks the pointer and the keyboard, and a card with a spinner and a label.',
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in lwc:if: it stays in the page so its label is announced, and so it can fade out.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport.' },
@@ -1784,8 +1784,9 @@ fandry-loading-overlay::part(label) {
       {
         title: 'Not a dialog',
         paragraphs: [
-          'It blocks the pointer the moment it opens, but takes no focus, has nothing to close and does not lock scrolling. It only shows after --fd-loading-overlay-delay (150ms), so an operation that finishes sooner never flashes an overlay.',
-          'It keeps a polite status region in the page at all times and puts the label\'s text into it on opening, so a screen reader announces it. The keyboard can still reach what is behind it: disable or guard the controls that must not run twice.'
+          'It blocks the pointer and the keyboard the moment it opens, but takes no focus, has nothing to close and does not lock scrolling. It only shows after --fd-loading-overlay-delay (150ms), so an operation that finishes sooner never flashes an overlay.',
+          'Focus stays where it was. Over the page, Tab, Enter, Space and typing do nothing until it closes; browser shortcuts still work. A contained overlay blocks keys inside the panel it covers and lets Tab leave it.',
+          'It keeps a polite status region in the page at all times and puts the label\'s text into it once the overlay shows, so a screen reader announces it. A screen reader\'s own click still reaches what is behind: guard the actions that must not run twice.'
         ]
       }
     ],
