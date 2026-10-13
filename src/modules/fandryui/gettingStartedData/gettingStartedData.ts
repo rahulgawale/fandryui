@@ -460,7 +460,6 @@ Sizes             --fd-size-xs  --fd-size-sm  --fd-size-md  --fd-size-lg
                   --fd-switch-width  --fd-switch-padding  --fd-tooltip-arrow-size
                   --fd-sidebar-width  --fd-toast-width  --fd-form-column-min-width
                   --fd-link-underline-offset  --fd-spinner-thickness
-                  --fd-loading-overlay-delay
 Focus ring        --fd-ring-color  --fd-ring-width  --fd-ring-offset
 Surfaces          --fd-surface-tint  --fd-shadow-sm  --fd-shadow-color-floating
                   --fd-shadow-color-modal  --fd-shadow-color-subtle
@@ -475,6 +474,7 @@ Type              --fd-font-sans  --fd-font-mono  --fd-font-heading
                   --fd-heading-letter-spacing
 Motion            --fd-duration-fast  --fd-duration-normal  --fd-duration-slow
                   --fd-duration-spin  --fd-duration-slowest
+                  --fd-loading-overlay-delay
                   --fd-ease-standard  --fd-ease-emphasized  --fd-ease-in-out`;
 
 const THEMING: GettingStartedPage = {

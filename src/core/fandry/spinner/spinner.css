@@ -2,7 +2,6 @@
   display: inline-flex;
   align-items: center;
   gap: var(--_fd-space-2);
-  vertical-align: middle;
 }
 
 /* The ring is 1em square, so its thickness (in em by default) follows its size. */

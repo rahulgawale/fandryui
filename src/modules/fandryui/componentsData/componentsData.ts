@@ -1703,7 +1703,7 @@ fandry-spinner::part(label) {
     description: 'A loading spinner in three sizes, with optional text beside it.',
     props: [
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size. The ring\'s thickness follows it (--fd-spinner-thickness, in em of the ring).' },
-      { name: '(default slot)', type: 'slot', default: '—', description: 'Text shown beside the ring, e.g. "Loading fields…". It also names the spinner, in place of label.' },
+      { name: 'default slot', type: 'slot', default: '—', description: 'Text shown beside the ring, e.g. "Loading fields…". It also names the spinner, in place of label.' },
       { name: 'label', type: 'string', default: "''", description: 'Names a spinner that shows no text, e.g. "Saving changes". Not displayed. Overrides messages.label.' },
       { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label and over slotted text.' },
       { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Loading") for every instance, e.g. to translate it.' }
@@ -1764,7 +1764,7 @@ fandry-loading-overlay::part(label) {
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in lwc:if: it stays in the page so its label is announced, and so it can fade out.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport.' },
-      { name: '(default slot)', type: 'slot', default: "'Loading'", description: 'The label under the spinner, e.g. "Saving template…".' }
+      { name: 'default slot', type: 'slot', default: "'Loading'", description: 'The label under the spinner, e.g. "Saving template…".' }
     ],
     notes: [
       {
