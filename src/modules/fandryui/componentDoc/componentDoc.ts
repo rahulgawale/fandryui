@@ -73,6 +73,8 @@ import DemoProgress from 'fandryuidemos/demoProgress';
 import DemoSkeleton from 'fandryuidemos/demoSkeleton';
 import DemoSpinner from 'fandryuidemos/demoSpinner';
 import DemoLoadingOverlay from 'fandryuidemos/demoLoadingOverlay';
+import DemoLoadingOverlayContained from 'fandryuidemos/demoLoadingOverlayContained';
+import DemoSpinnerLabel from 'fandryuidemos/demoSpinnerLabel';
 import DemoToast from 'fandryuidemos/demoToast';
 import DemoToastViewport from 'fandryuidemos/demoToastViewport';
 import DemoTooltip from 'fandryuidemos/demoTooltip';
@@ -124,6 +126,8 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   skeleton: DemoSkeleton,
   spinner: DemoSpinner,
   'loading-overlay': DemoLoadingOverlay,
+  'loading-overlay-contained': DemoLoadingOverlayContained,
+  'spinner-label': DemoSpinnerLabel,
   toast: DemoToast,
   'toast-viewport': DemoToastViewport,
   tooltip: DemoTooltip,

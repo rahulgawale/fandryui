@@ -124,6 +124,8 @@
       "fandryuidemos/demoSkeleton": ["src/modules/fandryuidemos/demoSkeleton/demoSkeleton"],
       "fandryuidemos/demoSpinner": ["src/modules/fandryuidemos/demoSpinner/demoSpinner"],
       "fandryuidemos/demoLoadingOverlay": ["src/modules/fandryuidemos/demoLoadingOverlay/demoLoadingOverlay"],
+      "fandryuidemos/demoLoadingOverlayContained": ["src/modules/fandryuidemos/demoLoadingOverlayContained/demoLoadingOverlayContained"],
+      "fandryuidemos/demoSpinnerLabel": ["src/modules/fandryuidemos/demoSpinnerLabel/demoSpinnerLabel"],
       "fandryuidemos/demoToast": ["src/modules/fandryuidemos/demoToast/demoToast"],
       "fandryuidemos/demoToastViewport": ["src/modules/fandryuidemos/demoToastViewport/demoToastViewport"],
       "fandryuidemos/demoTooltip": ["src/modules/fandryuidemos/demoTooltip/demoTooltip"],

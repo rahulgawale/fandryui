@@ -1708,8 +1708,22 @@ fandry-spinner::part(label) {
       { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label and over slotted text.' },
       { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Loading") for every instance, e.g. to translate it.' }
     ],
-    code: `<fandry-spinner size="md"></fandry-spinner>
-<fandry-spinner size="sm">Loading fields…</fandry-spinner>`
+    examples: [
+      {
+        title: 'With a label',
+        demo: 'spinner-label',
+        code: `<!-- Text in the default slot shows beside the ring and names the spinner -->
+<fandry-spinner size="sm">Loading fields…</fandry-spinner>
+<fandry-spinner size="md">Saving template…</fandry-spinner>
+<fandry-spinner size="lg">Generating PDF…</fandry-spinner>
+
+/* css: the text is the label part */
+fandry-spinner::part(label) {
+  font-weight: 600;
+}`
+      }
+    ],
+    code: `<fandry-spinner size="md"></fandry-spinner>`
   },
   {
     slug: 'loading-overlay',
@@ -1775,14 +1789,32 @@ fandry-loading-overlay::part(label) {
         ]
       }
     ],
-    code: `<!-- The page -->
-<fandry-loading-overlay open={generating}>Generating PDF…</fandry-loading-overlay>
-
-<!-- One panel: the overlay covers its nearest positioned ancestor -->
+    examples: [
+      {
+        title: 'Over one panel',
+        demo: 'loading-overlay-contained',
+        code: `<!-- template: the overlay covers its nearest positioned ancestor -->
 <div class="panel">
-  ...
-  <fandry-loading-overlay open={saving} contained>Saving…</fandry-loading-overlay>
-</div>`
+  <fandry-card>
+    ...
+    <fandry-button variant="secondary" onclick={handleRefresh}>Refresh</fandry-button>
+  </fandry-card>
+  <fandry-loading-overlay open={refreshing} contained>Refreshing…</fandry-loading-overlay>
+</div>
+
+/* css */
+.panel {
+  position: relative;
+}
+
+/* Follow the panel's corners */
+.panel fandry-loading-overlay::part(backdrop) {
+  border-radius: var(--fd-radius-lg);
+}`
+      }
+    ],
+    code: `<fandry-button onclick={handleGenerate}>Generate PDF</fandry-button>
+<fandry-loading-overlay open={generating}>Generating PDF…</fandry-loading-overlay>`
   },
   {
     slug: 'toast',
