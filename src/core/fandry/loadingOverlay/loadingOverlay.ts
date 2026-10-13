@@ -2,6 +2,11 @@ import { api } from 'lwc';
 import Base from 'fandry/base';
 import { exitFinished } from 'fandry/motion';
 
+/* The soonest the label is announced, whatever the visual delay: VoiceOver
+   drops text that lands while it is still speaking the press that opened
+   the overlay. */
+const ANNOUNCE_AFTER_MS = 150;
+
 /*
   "This page, or this panel, is busy": a backdrop that blocks the pointer and
   the keyboard, and a card with a spinner and a label. Not a dialog: it
@@ -71,9 +76,8 @@ export default class LoadingOverlay extends Base {
       this.blockKeys(overlay);
       if (this.announcePending) {
         this.announcePending = false;
-        // With the overlay, after its delay: a fast operation says nothing,
-        // and the text doesn't land on top of the press that started it.
-        this.announceTimer = setTimeout(() => this.announce(), entranceDelay(overlay));
+        // With the overlay, after its delay, so a fast operation says nothing.
+        this.announceTimer = setTimeout(() => this.announce(), Math.max(entranceDelay(overlay), ANNOUNCE_AFTER_MS));
       }
     }
 

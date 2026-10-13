@@ -19,10 +19,10 @@ const cardOf = (element: HTMLElement) => element.shadowRoot!.querySelector('.car
 const settle = async () => {
   for (let i = 0; i < 4; i++) await Promise.resolve();
 };
-// The label is announced on a timer (the entrance delay; none in jsdom).
+// The label is announced on a timer: the entrance delay, 150ms at the least.
 const announced = async () => {
   await settle();
-  await new Promise((resolve) => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 170));
   await settle();
 };
 
@@ -67,6 +67,14 @@ describe('fandry-loading-overlay', () => {
 
     element.open = false;
     await settle();
+
+    expect(statusOf(element).textContent).toBe('');
+  });
+
+  it('does not announce at the instant it opens, even with no entrance delay', async () => {
+    const element = create({ open: true });
+    await settle();
+    await new Promise((resolve) => setTimeout(resolve, 20));
 
     expect(statusOf(element).textContent).toBe('');
   });
