@@ -1,7 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
 import { exitFinished } from 'fandry/motion';
-import { partList } from 'fandry/parts';
 
 /*
   "This page, or this panel, is busy": a backdrop that blocks the pointer and
@@ -14,9 +13,12 @@ export default class LoadingOverlay extends Base {
 
   private _open = false;
 
-  // Whether the card is in the DOM: true while open, and through the exit
+  // Whether the overlay is in the DOM: true while open, and through the exit
   // animation after `open` goes false (see fandry/motion).
   isMounted = false;
+
+  // The label's text while open, for the live region.
+  announcement = '';
 
   @api
   get open(): boolean {
@@ -25,6 +27,9 @@ export default class LoadingOverlay extends Base {
 
   set open(value: boolean) {
     this._open = value;
+    if (!value) {
+      this.announcement = '';
+    }
 
     if (value) {
       this.isMounted = true;
@@ -45,13 +50,11 @@ export default class LoadingOverlay extends Base {
       .join(' ');
   }
 
-  // Only while it shows, so a site's ::part(backdrop) styles (a blur, a
-  // border) don't draw on the closed region.
-  get backdropPart(): string | null {
-    return this.isMounted ? partList('backdrop', {}) : null;
-  }
-
   renderedCallback() {
+    if (this.open) {
+      this.announce();
+    }
+
     if (!this.open && this.isMounted) {
       exitFinished(this.template.querySelector('.overlay')).then(() => {
         // Reopened while it was exiting -- the overlay is live again.
@@ -59,6 +62,24 @@ export default class LoadingOverlay extends Base {
           this.isMounted = false;
         }
       });
+    }
+  }
+
+  handleSlotChange() {
+    if (this.open) {
+      this.announce();
+    }
+  }
+
+  // The slotted label's text, or the slot's fallback while nothing is slotted.
+  private announce() {
+    const slot = this.template.querySelector('slot');
+    const text = (slot?.assignedNodes({ flatten: true }) ?? [])
+      .map((node) => node.textContent)
+      .join('')
+      .trim();
+    if (text !== this.announcement) {
+      this.announcement = text;
     }
   }
 

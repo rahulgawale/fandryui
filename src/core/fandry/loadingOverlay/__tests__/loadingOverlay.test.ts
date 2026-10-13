@@ -14,7 +14,11 @@ const create = (props: Partial<Overlay> = {}): Overlay => {
   return element;
 };
 const statusOf = (element: HTMLElement) => element.shadowRoot!.querySelector('[role="status"]')!;
+const overlayOf = (element: HTMLElement) => element.shadowRoot!.querySelector('.overlay');
 const cardOf = (element: HTMLElement) => element.shadowRoot!.querySelector('.card');
+const settle = async () => {
+  for (let i = 0; i < 4; i++) await Promise.resolve();
+};
 
 describe('fandry-loading-overlay', () => {
   afterEach(() => {
@@ -23,50 +27,50 @@ describe('fandry-loading-overlay', () => {
     }
   });
 
-  it('keeps an empty status region in the page while closed', () => {
+  it('keeps an empty live region in the page while closed, and nothing else', () => {
     const element = create();
 
-    expect(statusOf(element).className).toBe('overlay');
-    expect(cardOf(element)).toBeNull();
+    expect(statusOf(element).textContent).toBe('');
+    expect(statusOf(element).getAttribute('aria-live')).toBe('polite');
+    expect(overlayOf(element)).toBeNull();
   });
 
-  it('is the backdrop part only while it shows', async () => {
-    const element = create();
-    expect(statusOf(element).hasAttribute('part')).toBe(false);
-
-    element.open = true;
-    await flush();
-    expect(statusOf(element).getAttribute('part')).toBe('backdrop');
-  });
-
-  it('puts the card inside that same region when it opens', async () => {
+  it('puts the label into that same region as text when it opens', async () => {
     const element = create();
     const status = statusOf(element);
 
     element.open = true;
-    await flush();
+    await settle();
 
     expect(statusOf(element)).toBe(status);
-    expect(status.classList.contains('overlay--open')).toBe(true);
-    expect(status.contains(cardOf(element))).toBe(true);
+    expect(status.textContent).toBe('Loading');
+    expect(overlayOf(element)!.className).toBe('overlay overlay--open');
   });
 
-  it('says "Loading" until a page slots its own label', () => {
-    const element = create({ open: true });
-
-    expect(element.shadowRoot!.querySelector('[part="label"] slot')!.textContent).toBe('Loading');
-
+  it('announces a label the page slots in', async () => {
     const harness = createElement('slot-harness', { is: SlotHarness });
     document.body.appendChild(harness);
-    const slot = harness.shadowRoot!.querySelector('fandry-loading-overlay')!.shadowRoot!.querySelector('slot')!;
-    expect(slot.assignedNodes()[0].textContent).toBe('Saving template…');
+    await settle();
+
+    expect(statusOf(harness.shadowRoot!.querySelector('fandry-loading-overlay')!).textContent).toBe('Saving template…');
   });
 
-  it('hides its spinner from assistive technology: the region reads the label', () => {
-    const spinner = create({ open: true }).shadowRoot!.querySelector('fandry-spinner')!;
+  it('empties the region when it closes', async () => {
+    const element = create({ open: true });
+    await settle();
 
-    expect(spinner.getAttribute('aria-hidden')).toBe('true');
-    expect(spinner.getAttribute('exportparts')).toBe('base: spinner');
+    element.open = false;
+    await settle();
+
+    expect(statusOf(element).textContent).toBe('');
+  });
+
+  it('hides what it draws from assistive technology: the region speaks for it', () => {
+    const element = create({ open: true });
+
+    expect(overlayOf(element)!.getAttribute('aria-hidden')).toBe('true');
+    expect(overlayOf(element)!.getAttribute('part')).toBe('backdrop');
+    expect(element.shadowRoot!.querySelector('fandry-spinner')!.getAttribute('exportparts')).toBe('base: spinner');
   });
 
   it('does not take focus', () => {
@@ -80,7 +84,7 @@ describe('fandry-loading-overlay', () => {
   });
 
   it('covers the nearest positioned ancestor when contained', () => {
-    expect(statusOf(create({ contained: true })).classList.contains('overlay--contained')).toBe(true);
+    expect(overlayOf(create({ contained: true, open: true }))!.classList.contains('overlay--contained')).toBe(true);
   });
 
   describe('exit lifecycle', () => {
@@ -101,7 +105,7 @@ describe('fandry-loading-overlay', () => {
       await flush();
 
       expect(cardOf(element)).not.toBeNull();
-      expect(statusOf(element).className).toBe('overlay overlay--closing');
+      expect(overlayOf(element)!.className).toBe('overlay overlay--closing');
     });
 
     it('removes the card once the exit animation finishes', async () => {
@@ -111,8 +115,7 @@ describe('fandry-loading-overlay', () => {
       await flush();
       await animations.finish();
 
-      expect(cardOf(element)).toBeNull();
-      expect(statusOf(element).className).toBe('overlay');
+      expect(overlayOf(element)).toBeNull();
     });
 
     it('reopening during the exit keeps the card', async () => {
@@ -124,7 +127,7 @@ describe('fandry-loading-overlay', () => {
       await animations.finish();
 
       expect(cardOf(element)).not.toBeNull();
-      expect(statusOf(element).className).toBe('overlay overlay--open');
+      expect(overlayOf(element)!.className).toBe('overlay overlay--open');
     });
   });
 
@@ -148,8 +151,7 @@ describe('fandry-loading-overlay', () => {
       element.open = false;
       await flush();
 
-      expect(cardOf(element)).toBeNull();
-      expect(statusOf(element).className).toBe('overlay');
+      expect(overlayOf(element)).toBeNull();
     });
 
     it('plays its exit once it has appeared', async () => {
@@ -160,7 +162,7 @@ describe('fandry-loading-overlay', () => {
       await flush();
 
       expect(cardOf(element)).not.toBeNull();
-      expect(statusOf(element).className).toBe('overlay overlay--closing');
+      expect(overlayOf(element)!.className).toBe('overlay overlay--closing');
     });
   });
 });

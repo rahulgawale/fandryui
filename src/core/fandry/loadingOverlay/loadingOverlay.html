@@ -1,14 +1,18 @@
 <template>
   <!--
-    A polite live region, in the page before the label is: the label is
-    read out when it appears inside. See fandry/fieldError.
+    A polite live region, in the page before its text is: the label is put
+    here as text when the overlay opens, which is what a screen reader
+    reads out. See fandry/fieldError.
   -->
-  <div class={overlayClasses} part={backdropPart} role="status">
-    <template if:true={isMounted}>
+  <span class="status" role="status" aria-live="polite">{announcement}</span>
+
+  <template if:true={isMounted}>
+    <!-- Hidden from assistive technology: the region above speaks for it. -->
+    <div class={overlayClasses} part="backdrop" aria-hidden="true">
       <div class="card" part="card">
-        <fandry-spinner size="lg" exportparts="base: spinner" aria-hidden="true"></fandry-spinner>
-        <span class="label" part="label"><slot>Loading</slot></span>
+        <fandry-spinner size="lg" exportparts="base: spinner"></fandry-spinner>
+        <span class="label" part="label"><slot onslotchange={handleSlotChange}>Loading</slot></span>
       </div>
-    </template>
-  </div>
+    </div>
+  </template>
 </template>

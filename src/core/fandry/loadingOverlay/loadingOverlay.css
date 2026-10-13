@@ -2,20 +2,22 @@
   display: contents;
 }
 
-/* Always in the page (it is the live region): an empty box of no size
-   until it opens. */
+/* The live region: visually hidden, never display: none. */
+.status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .overlay {
   position: fixed;
-  pointer-events: none;
-}
-
-/* Covers the nearest positioned ancestor. */
-.overlay--contained {
-  position: absolute;
-}
-
-.overlay--open,
-.overlay--closing {
   inset: 0;
   z-index: var(--_fd-z-overlay);
 
@@ -27,16 +29,21 @@
   background: hsl(var(--_fd-backdrop) / var(--_fd-backdrop-opacity));
 }
 
+/* Covers the nearest positioned ancestor. */
+.overlay--contained {
+  position: absolute;
+}
+
 /* Blocks the pointer at once, and shows after the delay: `both` holds it
    invisible until then, and keeps the finished animation readable by
    loadingOverlay.ts. */
 .overlay--open {
-  pointer-events: auto;
   cursor: wait;
   animation: fd-fade-in var(--_fd-duration-normal) var(--_fd-ease-standard) var(--_fd-loading-overlay-delay) both;
 }
 
 .overlay--closing {
+  pointer-events: none;
   animation: fd-fade-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
 }
 

@@ -1785,7 +1785,7 @@ fandry-loading-overlay::part(label) {
         title: 'Not a dialog',
         paragraphs: [
           'It blocks the pointer the moment it opens, but takes no focus, has nothing to close and does not lock scrolling. It only shows after --fd-loading-overlay-delay (150ms), so an operation that finishes sooner never flashes an overlay.',
-          'Its backdrop is a polite status region that is always in the page, so a screen reader announces the label when it appears. The keyboard can still reach what is behind it: disable or guard the controls that must not run twice.'
+          'It keeps a polite status region in the page at all times and puts the label\'s text into it on opening, so a screen reader announces it. The keyboard can still reach what is behind it: disable or guard the controls that must not run twice.'
         ]
       }
     ],
