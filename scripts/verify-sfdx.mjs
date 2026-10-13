@@ -71,7 +71,8 @@ check(r.code === 0, `add exited ${r.code}: ${r.out}`);
 check(/fandryLookup.*uses? lwc:is/s.test(r.out) && /lightning__dynamicComponent/.test(r.out), `add of a lwc:is component did not explain the capability: ${r.out}`);
 const lwc = join(sf, 'fandryui/main/default/lwc');
 const installed = new Set(readdirSync(lwc));
-for (const b of ['fandryTable', 'fandryTableState', 'fandryTableCore', 'fandryBase', 'fandryLookup', 'fandrySearchState', 'fandryRadioGroup', 'fandryRadio', 'fandryDialog']) {
+// fandryLabel: lookup's stylesheet names it in a selector, which the platform requires.
+for (const b of ['fandryTable', 'fandryTableState', 'fandryTableCore', 'fandryBase', 'fandryLookup', 'fandryLabel', 'fandrySearchState', 'fandryRadioGroup', 'fandryRadio', 'fandryDialog']) {
   check(installed.has(b), `expected bundle ${b} to be installed`);
 }
 check(!installed.has('fandryCarousel') && !installed.has('fandryMenu'), 'installed a bundle nobody asked for or depends on');
@@ -88,11 +89,15 @@ function assertSelfContained(installed) {
       for (const [, dep] of text.matchAll(/from\s+['"]c\/(fandry[A-Za-z]+)['"]/g)) {
         check(installed.has(dep), `${bundle}/${file} imports c/${dep}, which was not installed`);
       }
-      // The registry's own rule: a tag in a comment is not a dependency.
+      /* The registry's own rule: a tag in a comment is not a dependency,
+         a tag in a stylesheet's selector is. */
+      const css = file.endsWith('.css');
       const tags = file.endsWith('.html')
         ? /<\/?c-fandry-([a-z-]+)/g
-        : /(?:querySelector(?:All)?|closest)\(\s*['"`]c-fandry-([a-z-]+)/g;
-      for (const [, tag] of text.matchAll(tags)) {
+        : css
+          ? /(?<![\w.#-])c-fandry-([a-z-]+)/g
+          : /(?:querySelector(?:All)?|closest)\(\s*['"`]c-fandry-([a-z-]+)/g;
+      for (const [, tag] of (css ? text.replace(/\/\*[\s\S]*?\*\//g, '') : text).matchAll(tags)) {
         const dep = `fandry${kebabToCamel(tag).replace(/^./, (c) => c.toUpperCase())}`;
         check(installed.has(dep), `${bundle}/${file} uses <c-fandry-${tag}>, which was not installed`);
       }
