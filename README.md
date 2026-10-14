@@ -159,7 +159,7 @@ Fandry's motion is CSS-first, small, and lives inside each component. There
 is no animation library, no `<fandry-motion>`/`<fandry-transition>` wrapper,
 and no `animation`/`duration`/`easing` props: the transient primitives
 (`fandry-popover`, `fandry-menu` inside it, `fandry-dialog`, `fandry-tooltip`,
-`fandry-toast`) already know how to enter and exit, so this is all a
+`fandry-toast`, `fandry-loading-overlay`) already know how to enter and exit, so this is all a
 consumer writes:
 
 ```html

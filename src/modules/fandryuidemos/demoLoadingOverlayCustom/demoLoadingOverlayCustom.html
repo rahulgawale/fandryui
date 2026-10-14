@@ -1,0 +1,11 @@
+<template>
+  <div class="row">
+    <fandry-button onclick={handleImport}>Import contacts</fandry-button>
+    <fandry-text variant="muted">{result}</fandry-text>
+    <fandry-loading-overlay open={importing}>
+      <fandry-progress value={percent} label="Import progress"></fandry-progress>
+      <fandry-text>Importing contacts…</fandry-text>
+      <fandry-button variant="secondary" onclick={handleCancel}>Cancel</fandry-button>
+    </fandry-loading-overlay>
+  </div>
+</template>

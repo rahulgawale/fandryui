@@ -64,8 +64,9 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   value: 'The selected value, as shown in the closed field.',
   chevron: 'The dropdown arrow.',
   trigger: 'The wrapper of the trigger slot.',
-  panel: 'The surface that opens: a dropdown\'s list, a popover, a tooltip, a dialog.',
-  backdrop: 'The dimmed layer behind a modal panel.',
+  panel: 'The surface that opens: a dropdown\'s list, a popover, a tooltip, a dialog, a loading overlay\'s box.',
+  backdrop: 'The dimmed layer behind a modal panel, or a loading overlay\'s cover.',
+  spinner: 'A loading overlay\'s spinner (a fandry-spinner\'s `base`).',
   arrow: 'The arrow that points at the trigger.',
   search: 'The wrapper of the search input.',
   listbox: 'The list of options.',
@@ -1662,7 +1663,7 @@ fandry-skeleton::part(base) {
     slug: 'spinner',
     name: 'Spinner',
     tag: 'fandry-spinner',
-    parts: ['base'],
+    parts: ['base', 'label'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'spinner-theme',
@@ -1671,6 +1672,7 @@ fandry-skeleton::part(base) {
   <fandry-spinner size="sm" label="Loading"></fandry-spinner>
   <fandry-spinner size="md" label="Loading"></fandry-spinner>
   <fandry-spinner size="lg" label="Loading"></fandry-spinner>
+  <fandry-spinner size="sm">Saving record…</fandry-spinner>
 </div>
 
 /* css */
@@ -1678,23 +1680,157 @@ fandry-skeleton::part(base) {
    every fandry-* component on the site. */
 .brand {
   --fd-primary: 160 84% 26%;
-  --fd-border: 160 30% 90%;
-  --fd-border-width-lg: 4px;
+  --fd-spinner-thickness: 0.2em;
+}
+
+/* The track is the border color. Set on the spinner alone, it is a tint
+   of the primary color here and the border color everywhere else. */
+fandry-spinner {
+  --fd-border: 160 84% 26% / 0.2;
 }
 
 fandry-spinner::part(base) {
   border-right-color: hsl(45 90% 50%);
+}
+
+fandry-spinner::part(label) {
+  color: hsl(160 84% 26%);
+  font-weight: 600;
 }`
     },
     category: 'Feedback',
-    description: 'A loading spinner in three sizes.',
+    description: 'A loading spinner in three sizes, with optional text beside it.',
     props: [
-      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size.' },
-      { name: 'label', type: 'string', default: "''", description: 'Names this spinner, e.g. "Saving changes". Overrides messages.label.' },
-      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size. The ring\'s thickness follows it (--fd-spinner-thickness, in em of the ring).' },
+      { name: 'default slot', type: 'slot', default: '—', description: 'Text shown beside the ring, e.g. "Loading fields…". It becomes the status a screen reader reads, in place of label.' },
+      { name: 'label', type: 'string', default: "''", description: 'Names a spinner that shows no text, e.g. "Saving changes". Not displayed. Overrides messages.label.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label, and is read in place of slotted text.' },
       { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Loading") for every instance, e.g. to translate it.' }
     ],
+    examples: [
+      {
+        title: 'With a label',
+        demo: 'spinner-label',
+        code: `<!-- Text in the default slot shows beside the ring. Style it with ::part(label). -->
+<fandry-spinner size="sm">Loading fields…</fandry-spinner>
+<fandry-spinner size="md">Saving record…</fandry-spinner>
+<fandry-spinner size="lg">Converting lead…</fandry-spinner>`
+      }
+    ],
     code: `<fandry-spinner size="md"></fandry-spinner>`
+  },
+  {
+    slug: 'loading-overlay',
+    name: 'Loading Overlay',
+    tag: 'fandry-loading-overlay',
+    parts: ['backdrop', 'panel', 'spinner', 'label'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'loading-overlay-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-button onclick={handleSave}>Save record</fandry-button>
+  <fandry-loading-overlay open={saving} label="Saving record…"></fandry-loading-overlay>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-backdrop: 160 40% 10%;
+  --fd-backdrop-opacity: 0.4;
+  --fd-loading-overlay-delay: 0ms;
+}
+
+/* The spinner's track is the border color: a tint of the primary here. */
+fandry-loading-overlay {
+  --fd-border: 160 84% 26% / 0.2;
+}
+
+fandry-loading-overlay::part(backdrop) {
+  backdrop-filter: blur(4px);
+}
+
+fandry-loading-overlay::part(panel) {
+  flex-direction: row;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+}
+
+/* The ring is 1em square: its font-size is its size. */
+fandry-loading-overlay::part(spinner) {
+  font-size: 1.25rem;
+}
+
+fandry-loading-overlay::part(label) {
+  font-weight: 600;
+}`
+    },
+    category: 'Feedback',
+    description: 'Covers the page, or one panel, while it is busy: a backdrop that blocks the pointer and the keyboard, and a panel with a spinner and a label.',
+    props: [
+      { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in lwc:if: it stays in the page so its label is announced, and so it can fade out.' },
+      { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport, and blocks keys inside its parent element. Put the overlay directly inside the panel it covers.' },
+      { name: 'label', type: 'string', default: "''", description: 'The text under the spinner, e.g. "Saving record…". Wins over messages.label. To restyle it (bold, color), use ::part(label), not the slot.' },
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default label ("Loading") for every instance, e.g. to translate it.' },
+      { name: 'default slot', type: 'slot', default: 'spinner and label', description: 'The whole content of the panel, spinner included: your own indicator, markup in the text, a progress bar, a Cancel button. Its text (minus anything aria-hidden) is what is announced, or the label when it has none.' }
+    ],
+    notes: [
+      {
+        title: 'Not a dialog',
+        paragraphs: [
+          'It blocks the pointer and the keyboard the moment it opens, but takes no focus and has nothing to close: the page must always set open back to false, on errors and timeouts too. It only shows after --fd-loading-overlay-delay (150ms), so an operation that finishes sooner never flashes an overlay.',
+          'Focus stays where it was. Over the page, keys do nothing until it closes (typing, Tab, Enter, Space, arrow-key scrolling, paste, the page\'s own shortcuts); the browser\'s shortcuts and wheel or touch scrolling still work. A contained overlay blocks keys inside the element it is in and lets Tab leave it. Keys still reach content in the overlay once it has focus: focus a Cancel button you put there yourself.',
+          'It blocks hardware keys, not every input method: text from an IME or an on-screen keyboard, and a screen reader\'s own click, can still reach what is behind it. Guard the actions that must not run twice.',
+          'It keeps a polite status region in the page at all times and puts the content\'s text into it once the overlay shows, so a screen reader announces it. A label edited in place while it is open is not announced again. Mark a slotted spinner aria-hidden="true": the region already says what is happening.'
+        ]
+      }
+    ],
+    examples: [
+      {
+        title: 'Your own content',
+        demo: 'loading-overlay-custom',
+        code: `<!-- template: the default slot replaces the spinner and label, so bring your own indicator -->
+<fandry-button onclick={handleImport}>Import contacts</fandry-button>
+<fandry-loading-overlay open={importing}>
+  <fandry-progress value={percent} label="Import progress"></fandry-progress>
+  <fandry-text>Importing contacts…</fandry-text>
+  <fandry-button variant="secondary" onclick={handleCancel}>Cancel</fandry-button>
+</fandry-loading-overlay>
+
+// js: keys are blocked outside the overlay, so put focus on the action
+async handleImport() {
+  this.importing = true;
+  await Promise.resolve();
+  this.template.querySelector('fandry-loading-overlay fandry-button').focus();
+}`
+      },
+      {
+        title: 'Over one panel',
+        demo: 'loading-overlay-contained',
+        code: `<!-- template: the overlay goes directly inside the panel it covers -->
+<div class="panel">
+  <fandry-card>
+    ...
+    <fandry-button variant="secondary" onclick={handleRefresh}>Refresh</fandry-button>
+  </fandry-card>
+  <fandry-loading-overlay open={refreshing} contained label="Refreshing…"></fandry-loading-overlay>
+</div>
+
+/* css */
+.panel {
+  position: relative;
+}
+
+/* Follow the panel's corners */
+.panel fandry-loading-overlay::part(backdrop) {
+  border-radius: var(--fd-radius-lg, 0.5rem);
+}`
+      }
+    ],
+    code: `<fandry-button onclick={handleConvert}>Convert lead</fandry-button>
+<fandry-loading-overlay open={converting} label="Converting lead…"></fandry-loading-overlay>`
   },
   {
     slug: 'toast',

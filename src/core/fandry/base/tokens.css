@@ -88,6 +88,8 @@
      the thousands) can lift every fandry-* overlay above it by overriding
      this single value, instead of chasing per-component z-indexes. ---- */
   --_fd-z-overlay: var(--fd-z-overlay, 50);
+  /* A contained fandry-loading-overlay: over its panel, under the page's own layers (a sticky header). */
+  --_fd-z-overlay-contained: var(--fd-z-overlay-contained, 1);
 
   /* ---- Overlay backdrop (fandry-dialog's scrim behind the modal panel) ---- */
   --_fd-backdrop: var(--fd-backdrop, 222 47% 11%);
@@ -173,6 +175,8 @@
   --_fd-switch-padding: var(--fd-switch-padding, 0.125rem);
   --_fd-switch-width: var(--fd-switch-width, calc(var(--_fd-size-sm) * 2 + 2 * var(--_fd-switch-padding)));
   --_fd-tooltip-arrow-size: var(--fd-tooltip-arrow-size, 0.625rem);
+  /* In em of the ring's size, so a small spinner gets a thinner ring. */
+  --_fd-spinner-thickness: var(--fd-spinner-thickness, 0.125em);
   --_fd-sidebar-width: var(--fd-sidebar-width, 16rem);
   --_fd-toast-width: var(--fd-toast-width, 20rem);
   /* The narrowest a fandry-form column gets before the fields wrap. */
@@ -203,6 +207,11 @@
      them running. */
   --_fd-duration-spin: var(--fd-duration-spin, 0.6s);
   --_fd-duration-slowest: var(--fd-duration-slowest, 1.5s);
+
+  /* How long fandry-loading-overlay waits before it shows, so a fast
+     operation doesn't flash one. Not a --fd-duration-*: reduced motion
+     leaves it alone. */
+  --_fd-loading-overlay-delay: var(--fd-loading-overlay-delay, 150ms);
 
   /* standard: symmetric UI movement and everything that exits.
      emphasized: a large surface arriving (e.g. fandry-dialog's panel) --

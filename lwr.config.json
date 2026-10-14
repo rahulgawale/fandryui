@@ -203,6 +203,12 @@
             "layoutTemplate": "$layoutsDir/index.html"
         },
         {
+            "id": "component-loading-overlay",
+            "path": "/components/loading-overlay",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html"
+        },
+        {
             "id": "component-toast",
             "path": "/components/toast",
             "rootComponent": "fandryui/componentDoc",

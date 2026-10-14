@@ -30,6 +30,7 @@ import DemoSelectTheme from 'fandryuidemos/demoSelectTheme';
 import DemoSidebarTheme from 'fandryuidemos/demoSidebarTheme';
 import DemoSkeletonTheme from 'fandryuidemos/demoSkeletonTheme';
 import DemoSpinnerTheme from 'fandryuidemos/demoSpinnerTheme';
+import DemoLoadingOverlayTheme from 'fandryuidemos/demoLoadingOverlayTheme';
 import DemoSwitchTheme from 'fandryuidemos/demoSwitchTheme';
 import DemoTableTheme from 'fandryuidemos/demoTableTheme';
 import DemoTextTheme from 'fandryuidemos/demoTextTheme';
@@ -71,6 +72,10 @@ import DemoBadge from 'fandryuidemos/demoBadge';
 import DemoProgress from 'fandryuidemos/demoProgress';
 import DemoSkeleton from 'fandryuidemos/demoSkeleton';
 import DemoSpinner from 'fandryuidemos/demoSpinner';
+import DemoLoadingOverlay from 'fandryuidemos/demoLoadingOverlay';
+import DemoLoadingOverlayContained from 'fandryuidemos/demoLoadingOverlayContained';
+import DemoLoadingOverlayCustom from 'fandryuidemos/demoLoadingOverlayCustom';
+import DemoSpinnerLabel from 'fandryuidemos/demoSpinnerLabel';
 import DemoToast from 'fandryuidemos/demoToast';
 import DemoToastViewport from 'fandryuidemos/demoToastViewport';
 import DemoTooltip from 'fandryuidemos/demoTooltip';
@@ -121,6 +126,10 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   progress: DemoProgress,
   skeleton: DemoSkeleton,
   spinner: DemoSpinner,
+  'loading-overlay': DemoLoadingOverlay,
+  'loading-overlay-contained': DemoLoadingOverlayContained,
+  'loading-overlay-custom': DemoLoadingOverlayCustom,
+  'spinner-label': DemoSpinnerLabel,
   toast: DemoToast,
   'toast-viewport': DemoToastViewport,
   tooltip: DemoTooltip,
@@ -148,6 +157,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'input-error': DemoInputError,
   'label-theme': DemoLabelTheme,
   'link-theme': DemoLinkTheme,
+  'loading-overlay-theme': DemoLoadingOverlayTheme,
   'lookup-theme': DemoLookupTheme,
   'menu-theme': DemoMenuTheme,
   'pagination-theme': DemoPaginationTheme,

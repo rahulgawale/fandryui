@@ -1,0 +1,16 @@
+<template>
+  <!-- A polite live region, in the page before its text is. See fandry/fieldError. -->
+  <span class="status" role="status" aria-live="polite" aria-atomic="true">{announcement}</span>
+
+  <template if:true={isMounted}>
+    <div class={overlayClasses} part="backdrop">
+      <div class="panel" part="panel">
+        <!-- Replaced as a whole by the page's own content, spinner included. -->
+        <slot onslotchange={handleSlotChange}>
+          <fandry-spinner size="lg" exportparts="base: spinner" aria-hidden="true"></fandry-spinner>
+          <span class="label" part="label">{labelText}</span>
+        </slot>
+      </div>
+    </div>
+  </template>
+</template>

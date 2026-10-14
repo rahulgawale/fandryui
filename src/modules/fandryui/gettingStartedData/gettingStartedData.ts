@@ -459,12 +459,13 @@ Sizes             --fd-size-xs  --fd-size-sm  --fd-size-md  --fd-size-lg
                   --fd-avatar-size-sm  --fd-avatar-size-md  --fd-avatar-size-lg
                   --fd-switch-width  --fd-switch-padding  --fd-tooltip-arrow-size
                   --fd-sidebar-width  --fd-toast-width  --fd-form-column-min-width
-                  --fd-link-underline-offset
+                  --fd-link-underline-offset  --fd-spinner-thickness
 Focus ring        --fd-ring-color  --fd-ring-width  --fd-ring-offset
 Surfaces          --fd-surface-tint  --fd-shadow-sm  --fd-shadow-color-floating
                   --fd-shadow-color-modal  --fd-shadow-color-subtle
                   --fd-hover-brightness  --fd-disabled-opacity  --fd-pulse-opacity
                   --fd-backdrop  --fd-backdrop-opacity  --fd-z-overlay
+                  --fd-z-overlay-contained
 Type              --fd-font-sans  --fd-font-mono  --fd-font-heading
                   --fd-font-size-xs  --fd-font-size-sm  --fd-font-size-md
                   --fd-font-size-lg  --fd-font-size-xl  --fd-font-size-2xl
@@ -474,6 +475,7 @@ Type              --fd-font-sans  --fd-font-mono  --fd-font-heading
                   --fd-heading-letter-spacing
 Motion            --fd-duration-fast  --fd-duration-normal  --fd-duration-slow
                   --fd-duration-spin  --fd-duration-slowest
+                  --fd-loading-overlay-delay
                   --fd-ease-standard  --fd-ease-emphasized  --fd-ease-in-out`;
 
 const THEMING: GettingStartedPage = {
