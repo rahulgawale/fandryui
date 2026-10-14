@@ -1,3 +1,10 @@
+# [0.24.0](https://github.com/rahulgawale/fandryui/compare/v0.23.2...v0.24.0) (2026-10-14)
+
+
+### Features
+
+* **spinner:** show a label; add fandry-loading-overlay ([#117](https://github.com/rahulgawale/fandryui/issues/117)) ([cfb9daf](https://github.com/rahulgawale/fandryui/commit/cfb9dafab0cd51b10f3d85d7ac4bba6383c8b11e))
+
 ## [0.23.2](https://github.com/rahulgawale/fandryui/compare/v0.23.1...v0.23.2) (2026-10-13)
 
 
