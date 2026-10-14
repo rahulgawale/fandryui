@@ -34,6 +34,9 @@
      so a site that set only accent (or --brand-accent) keeps that color. */
   --_fd-info: var(--fd-info, var(--fd-accent, var(--brand-accent, 199 89% 36%)));
 
+  /* The -foreground tokens below are the text on a solid fill of that
+     status. No component draws one since badges went soft; they're kept
+     for components that extend Base and for a site's own CSS. */
   --_fd-success: var(--fd-success, 142 71% 30%);
   --_fd-success-foreground: var(--fd-success-foreground, 0 0% 100%);
 

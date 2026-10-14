@@ -732,6 +732,63 @@ fandry-checkbox::part(control checked) {
           variant: 'warning',
           title: 'Deprecated component hooks',
           text: '`--fd-button-radius`, `--fd-button-padding-x`, `--fd-button-border-width`, `--fd-card-bg`, `--fd-card-height` and `--fd-icon-size` still work but will be removed. Use a token set on the element, or its base part: `.round::part(base) { border-radius: 999px }`.'
+        },
+        {
+          type: 'text',
+          text: '`--fd-success-foreground`, `--fd-warning-foreground` and `--fd-danger-foreground` are the text color on a solid fill of that status. Badges are soft tints now, so no fandry component draws one; they are there for your own CSS (see Upgrading below) and for components that extend `fandry/base`.'
+        }
+      ]
+    },
+    {
+      id: 'upgrading',
+      title: 'Upgrading from 0.25',
+      blocks: [
+        {
+          type: 'text',
+          text: 'No token was removed or renamed, so a themed site keeps working. These changed how components look; each comes with the CSS that keeps the old look.'
+        },
+        {
+          type: 'list',
+          items: [
+            'Default colors: `--fd-primary` is cobalt and `--fd-accent` mint. A site that sets its own sees no change.',
+            'Info alerts and toasts read `--fd-info`, and `--fd-accent` when only that is set, so a site that colored them through accent keeps its color. Set `--fd-info` to color them apart from accent.',
+            'Colored badges are soft tints of their color instead of solid fills, and every badge has a border. They still follow `--fd-success`, `--fd-warning`, `--fd-danger` and `--fd-primary`, and dark themes through `--fd-bg` and `--fd-text`; the `-foreground` tokens no longer color them.',
+            'Focus: buttons, links and other controls draw their ring with a soft halo, and still follow `--fd-ring-width`. Text fields draw it on their own border, so they no longer follow `--fd-ring-width`, and the textarea no longer uses `--fd-ring-offset`.',
+            'The data table marks the row being edited with `--fd-primary` instead of `--fd-accent`.'
+          ]
+        },
+        {
+          type: 'code',
+          label: 'Keep the old default colors',
+          code: `:root {
+  --fd-primary: 330 81% 48%;
+  --fd-accent: 199 89% 36%;
+  --fd-accent-foreground: 0 0% 100%;
+  --fd-link-visited: 271 55% 40%;
+}`
+        },
+        {
+          type: 'code',
+          label: 'Solid badges (the same for warning, danger and primary)',
+          code: `fandry-badge::part(base success) {
+  background: hsl(var(--fd-success, 142 71% 30%));
+  color: hsl(var(--fd-success-foreground, 0 0% 100%));
+  border-color: transparent;
+}
+
+/* No border on any badge */
+fandry-badge::part(base) {
+  border-width: 0;
+}`
+        },
+        {
+          type: 'code',
+          label: 'A flat focus ring, as before',
+          code: `:root {
+  --fd-ring-halo-opacity: 0;
+  /* your ring color */
+  --fd-ring-field: 0 0 0 2px hsl(222 89% 56%);
+}`
         }
       ]
     }
