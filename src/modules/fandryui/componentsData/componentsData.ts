@@ -11,8 +11,6 @@ export interface ComponentExample {
   title: string;
   demo: string;
   code: string;
-  // Anything the example changes besides tokens and parts.
-  note?: string;
 }
 
 // A short explanation shown in an info alert under the main code block:
@@ -2284,13 +2282,12 @@ fandry-table::part(row):hover {
     customize: {
       title: 'Custom colors and parts',
       demo: 'lookup-theme',
-      note: 'It also sets `debounce="300"`, so `search` fires 300ms after typing pauses instead of the default 250ms.',
       code: `<!-- template -->
 <div class="brand narrow">
   <fandry-lookup
     label="Account"
     placeholder="Search accounts"
-    debounce="300"
+    debounce-ms="300"
     results={results}
     loading={loading}
     record={account}
@@ -2334,7 +2331,7 @@ fandry-lookup::part(option-description) {
       { name: 'results', type: '{ id, label, description?, disabled?, … }[]', default: '[]', description: 'Matches for the current search, shown exactly as given (never re-filtered). Extra fields ride along and come back in `change`.' },
       { name: 'loading', type: 'boolean', default: 'false', description: 'Shows a searching indicator while your query is in flight.' },
       { name: 'multiple', type: 'boolean', default: 'false', description: 'Allow any number of records, shown as removable chips with a “Clear all”. The list stays open after each pick, already-chosen records are not offered again, and Backspace in an empty field removes the last chip.' },
-      { name: 'debounce', type: 'number', default: '250', description: 'Milliseconds typing must pause before `search` fires. Opening the list still searches at once.' },
+      { name: 'debounce-ms', type: 'number', default: '250', description: 'Milliseconds typing must pause before `search` fires; 0 searches on every keystroke. Opening the list still searches at once.' },
       { name: 'value', type: 'string | string[]', default: "''", description: 'The selected id (an array of ids with `multiple`). Set it to render existing data; it updates when the user picks or clears. The lookup names each id from `record`/`records` or `results`; for any it can\'t, it fires `resolve` and shows the raw id (muted) until you supply the record.' },
       { name: 'record', type: '{ id, label, … } | null', default: 'null', description: 'Single mode: the selected record, shown as the field\'s value with a clear button. On its own it preselects; once `value` has been set it only supplies the name for that id.' },
       { name: 'records', type: '{ id, label, … }[]', default: '[]', description: 'Multiple mode: the selected records. On its own it preselects; once `value` has been set it only supplies names for those ids (any subset is fine).' },

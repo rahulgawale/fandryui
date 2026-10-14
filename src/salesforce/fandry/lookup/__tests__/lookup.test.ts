@@ -92,23 +92,37 @@ describe('fandry-lookup', () => {
       expect(handler.mock.calls[0][0].detail).toEqual({ query: 'acm' });
     });
 
-    it('waits as long as `debounce` says', async () => {
+    it('waits as long as `debounceMs` says', async () => {
       jest.useFakeTimers();
-      const element = create({ debounce: '400' });
+      const element = create({ debounceMs: '400' });
       const handler = jest.fn();
       element.addEventListener('search', handler);
 
       await type(element, 'ac');
-      jest.advanceTimersByTime(300);
+      jest.advanceTimersByTime(399);
       expect(handler).not.toHaveBeenCalled();
 
-      jest.advanceTimersByTime(100);
+      jest.advanceTimersByTime(1);
       expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('falls back to 250ms for a debounce that is not a delay', async () => {
+    it('searches on every keystroke with a debounceMs of 0', async () => {
       jest.useFakeTimers();
-      const element = create({ debounce: 'soon' });
+      const element = create({ debounceMs: 0 });
+      const handler = jest.fn();
+      element.addEventListener('search', handler);
+
+      await type(element, 'a');
+      await type(element, 'ac');
+
+      expect(handler).toHaveBeenCalledTimes(2);
+      expect(handler.mock.calls[1][0].detail).toEqual({ query: 'ac' });
+      expect(element.shadowRoot.querySelector('[aria-busy="true"]')).toBeNull();
+    });
+
+    it.each([null, '', '  ', true, 'soon'])('uses the default delay for a debounceMs of %p', async (debounceMs) => {
+      jest.useFakeTimers();
+      const element = create({ debounceMs });
       const handler = jest.fn();
       element.addEventListener('search', handler);
 
@@ -118,6 +132,18 @@ describe('fandry-lookup', () => {
 
       jest.advanceTimersByTime(1);
       expect(handler).toHaveBeenCalledTimes(1);
+    });
+
+    it('caps a debounceMs too long for setTimeout instead of firing at once', async () => {
+      jest.useFakeTimers();
+      const element = create({ debounceMs: 1e10 });
+      const handler = jest.fn();
+      element.addEventListener('search', handler);
+
+      await type(element, 'ac');
+      jest.advanceTimersByTime(60_000);
+
+      expect(handler).not.toHaveBeenCalled();
     });
 
     it('drops a pending search when the list closes', async () => {

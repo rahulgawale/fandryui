@@ -232,10 +232,6 @@ export default class ComponentDoc extends LightningElement {
     return demo ? DEMO_COMPONENTS[demo] : undefined;
   }
 
-  get customizeNote(): string {
-    return this.entry?.customize?.note ?? '';
-  }
-
   get customizeCode(): string {
     return this.entry?.customize?.code ?? '';
   }
