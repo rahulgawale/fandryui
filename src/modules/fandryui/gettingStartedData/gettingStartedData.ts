@@ -723,7 +723,7 @@ fandry-checkbox::part(control checked) {
       blocks: [
         {
           type: 'text',
-          text: 'The defaults are in `fandry/base/tokens.css` (`node_modules/fandryui/modules/fandry/base/` on LWR, `fandryBase/` on Salesforce). `--brand-primary` and `--brand-accent` still work as the older names for `--fd-primary` and `--fd-accent`.'
+          text: 'The defaults are in `fandry/base/tokens.css` (`node_modules/fandryui/modules/fandry/base/` on LWR, `fandryBase/` on Salesforce). `--brand-primary` and `--brand-accent` still work as the older names for `--fd-primary` and `--fd-accent`. Info alerts and toasts use `--fd-info`, or `--fd-accent` when only that is set.'
         },
         {
           type: 'code',

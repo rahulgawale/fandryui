@@ -30,7 +30,9 @@
   --_fd-accent: var(--fd-accent, var(--brand-accent, 162 72% 42%));
   --_fd-accent-foreground: var(--fd-accent-foreground, 160 40% 12%);
 
-  --_fd-info: var(--fd-info, 199 89% 36%);
+  /* Info alerts and toasts. They read --fd-accent before --fd-info existed,
+     so a site that set only accent (or --brand-accent) keeps that color. */
+  --_fd-info: var(--fd-info, var(--fd-accent, var(--brand-accent, 199 89% 36%)));
 
   --_fd-success: var(--fd-success, 142 71% 30%);
   --_fd-success-foreground: var(--fd-success-foreground, 0 0% 100%);
