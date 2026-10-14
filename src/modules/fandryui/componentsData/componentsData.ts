@@ -2287,6 +2287,7 @@ fandry-table::part(row):hover {
   <fandry-lookup
     label="Account"
     placeholder="Search accounts"
+    debounce="300"
     results={results}
     loading={loading}
     record={account}
