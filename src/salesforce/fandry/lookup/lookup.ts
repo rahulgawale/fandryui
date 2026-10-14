@@ -40,9 +40,12 @@ function toIds(value: string | string[] | null | undefined): string[] {
   return list.filter((id) => typeof id === 'string' && id !== '');
 }
 
-// How long typing must pause before `search` fires. Fixed, not a prop: a
-// consumer that wants something different can debounce on their side.
+// How long typing must pause before `search` fires, unless `debounceMs` says
+// otherwise. A prop because a consumer's own debounce can only add to it.
 const SEARCH_DEBOUNCE_MS = 250;
+
+// The longest delay setTimeout honors; a longer one fires at once.
+const MAX_TIMEOUT_MS = 2 ** 31 - 1;
 
 /** Text the lookup announces that isn't markup; see `messages`. */
 export interface FdLookupMessages {
@@ -160,6 +163,21 @@ export default class FdLookup extends FdSearchState {
    * the same as the native `multiple` attribute.
    */
   @api multiple = false;
+
+  /**
+   * Milliseconds typing must pause before `search` fires; 0 searches on
+   * every keystroke, as fandry-table's `globalFilterDebounceMs` does.
+   * Opening the list still searches at once.
+   */
+  @api debounceMs: number | string = SEARCH_DEBOUNCE_MS;
+
+  // An attribute arrives as a string. Blank or not a number means the
+  // default; null, '' and true must not read as 0.
+  private get searchDelay(): number {
+    const raw = this.debounceMs;
+    const ms = typeof raw === 'number' || (typeof raw === 'string' && raw.trim() !== '') ? Number(raw) : NaN;
+    return Number.isNaN(ms) ? SEARCH_DEBOUNCE_MS : Math.min(Math.max(ms, 0), MAX_TIMEOUT_MS);
+  }
 
   // The one source of truth for what's selected. `value`, `record` and
   // `records` are three ways in and out of it. Until `value` is set,
@@ -533,9 +551,15 @@ export default class FdLookup extends FdSearchState {
   }
 
   private scheduleSearch() {
+    const delay = this.searchDelay;
+    if (delay === 0) {
+      this.dispatchSearch();
+      return;
+    }
+
     this.clearSearchTimer();
     this.searchPending = true;
-    this.searchTimer = setTimeout(() => this.dispatchSearch(), SEARCH_DEBOUNCE_MS);
+    this.searchTimer = setTimeout(() => this.dispatchSearch(), delay);
   }
 
   // Stops the timer only. `searchPending` is left alone on purpose: see
