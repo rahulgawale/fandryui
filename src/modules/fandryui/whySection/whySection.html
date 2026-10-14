@@ -1,0 +1,83 @@
+<template>
+  <section class="section">
+    <div class="container">
+      <fandry-badge variant="primary">Why Fandry UI</fandry-badge>
+      <fandry-heading level="2" class="title">
+        Build Salesforce apps that look like your product, not the platform.
+      </fandry-heading>
+      <fandry-text variant="muted" class="lede">
+        A modern, composable UI library for Salesforce LWC. Get design freedom, extensibility and
+        control over your UI without adding another frontend framework.
+      </fandry-text>
+
+      <div class="bento">
+        <fandry-card class="tile tile-tokens">
+          <div class="tokens-layout">
+            <div class="copy">
+              <fandry-heading level="3">Token-driven from the core</fandry-heading>
+              <fandry-text variant="muted">
+                Set <code>--fd-*</code> tokens on <code>:root</code> to theme the whole site, or on one
+                section to theme just that. They reach inside every component's shadow root.
+              </fandry-text>
+              <fandry-radio-group
+                name="why-theme"
+                label="Theme this section"
+                value={presetValue}
+                onchange={handlePresetChange}
+                class="presets"
+              >
+                <template for:each={presets} for:item="preset">
+                  <fandry-radio key={preset.key} name="why-theme" value={preset.key} label={preset.name} checked={preset.checked}></fandry-radio>
+                </template>
+              </fandry-radio-group>
+              <fandryui-code-block code={tokenCode} class="token-code"></fandryui-code-block>
+            </div>
+
+            <div class="preview" style={previewStyle}>
+              <fandry-card class="order">
+                <div class="order-head">
+                  <fandry-heading level="4">Order #1042</fandry-heading>
+                  <fandry-badge variant="primary">Paid</fandry-badge>
+                </div>
+                <fandry-text variant="muted" size="sm">3 items · ships Friday</fandry-text>
+                <fandry-switch label="Gift wrap" checked></fandry-switch>
+                <div class="order-actions">
+                  <fandry-button>Track order</fandry-button>
+                  <fandry-button variant="secondary">Invoice</fandry-button>
+                </div>
+              </fandry-card>
+            </div>
+          </div>
+        </fandry-card>
+
+        <fandry-card class="tile tile-compose">
+          <fandry-heading level="3">Slots, not another prop</fandry-heading>
+          <fandry-text variant="muted">
+            There is no <code>loading</code> flag: the spinner is markup you put in the slot, and you can put anything else there too. <code>--fd-*</code> tokens style the spinner and
+            &nbsp;<code>::part()</code> restyles any element inside.
+          </fandry-text>
+          <fandryui-code-block code={composeCode} class="compose-code"></fandryui-code-block>
+        </fandry-card>
+
+        <fandry-card class="tile tile-lwc">
+          <div class="lwc-layout">
+            <div class="copy">
+              <fandry-heading level="3">Zero framework overhead</fandry-heading>
+              <fandry-text variant="muted">
+                Plain Lightning Web Components in native shadow DOM. Nothing to learn, bundle or ship on
+                top of LWC.
+              </fandry-text>
+            </div>
+            <ul class="traits">
+              <template for:each={traits} for:item="trait">
+                <li key={trait}><fandry-badge>{trait}</fandry-badge></li>
+              </template>
+            </ul>
+          </div>
+        </fandry-card>
+      </div>
+
+      <fandry-link href="/why-fandry" class="more">Read why Fandry UI exists →</fandry-link>
+    </div>
+  </section>
+</template>

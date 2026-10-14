@@ -9,8 +9,8 @@
 
   padding: var(--_fd-space-3);
   border-radius: var(--_fd-radius-md);
-  border-left: var(--_fd-border-width-lg) solid hsl(var(--_fd-accent));
-  background: color-mix(in srgb, hsl(var(--_fd-accent)) var(--_fd-surface-tint), transparent);
+  border-left: var(--_fd-border-width-lg) solid hsl(var(--_fd-info));
+  background: color-mix(in srgb, hsl(var(--_fd-info)) var(--_fd-surface-tint), transparent);
 
   font-size: var(--_fd-font-size-sm);
 }

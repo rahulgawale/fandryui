@@ -26,10 +26,14 @@
 
   transition: background-color var(--_fd-duration-fast) ease,
     border-color var(--_fd-duration-fast) ease,
-    box-shadow var(--_fd-duration-fast) ease, color var(--_fd-duration-fast) ease;
+    box-shadow var(--_fd-duration-fast) var(--_fd-ease-standard), color var(--_fd-duration-fast) ease;
 
   background: hsl(var(--_fd-primary));
   color: hsl(var(--_fd-primary-foreground));
+
+  /* Hover sets the lift, not box-shadow, so focus can draw its ring over it. */
+  --_fd-button-lift: 0 0 transparent;
+  box-shadow: var(--_fd-button-lift);
 }
 
 /* Sizes. --fd-button-padding-x is deprecated; see the note above. */
@@ -62,7 +66,7 @@
 @media (hover: hover) {
   .button--default:hover:not(:disabled):not([aria-disabled='true']) {
     filter: brightness(var(--_fd-hover-brightness));
-    box-shadow: var(--_fd-shadow-sm) hsla(var(--_fd-primary) / 0.3);
+    --_fd-button-lift: var(--_fd-shadow-sm) hsla(var(--_fd-primary) / 0.3);
   }
 }
 
@@ -75,7 +79,7 @@
 @media (hover: hover) {
   .button--secondary:hover:not(:disabled):not([aria-disabled='true']) {
     background: hsl(var(--_fd-bg-muted));
-    box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
+    --_fd-button-lift: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
   }
 }
 
@@ -88,7 +92,7 @@
 @media (hover: hover) {
   .button--ghost:hover:not(:disabled):not([aria-disabled='true']) {
     background: hsl(var(--_fd-bg-muted));
-    box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-subtle));
+    --_fd-button-lift: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-subtle));
   }
 }
 
@@ -97,8 +101,7 @@
   /* Transparent, not none: forced-colors mode drops the box-shadow ring
      and paints this instead. */
   outline: var(--_fd-ring-width) solid transparent;
-  box-shadow: 0 0 0 var(--_fd-ring-width)
-    hsl(var(--_fd-ring-color));
+  box-shadow: var(--_fd-ring-control), var(--_fd-button-lift);
 }
 
 /* Disabled. aria-disabled is a disabled button that keeps focus. */
@@ -111,5 +114,5 @@
 /* Active (pressed) */
 .button:active:not(:disabled):not([aria-disabled='true']) {
   transform: translateY(1px);
-  box-shadow: none;
+  --_fd-button-lift: 0 0 transparent;
 }

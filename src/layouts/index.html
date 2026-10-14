@@ -2,17 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Fandry Ui</title>
-
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <meta charset="utf-8" />
+    <!-- Per page: each route's "properties" in lwr.config.json
+         (routeMeta.test.ts keeps them complete). -->
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}" />
+    <link rel="canonical" href="https://fandryui.forcetrails.com{{path}}" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Fandry UI" />
+    <meta property="og:title" content="{{title}}" />
+    <meta property="og:description" content="{{description}}" />
+    <meta property="og:url" content="https://fandryui.forcetrails.com{{path}}" />
+    <meta property="og:image" content="https://fandryui.forcetrails.com/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Fandry UI: the flexibility of modern UI development, the simplicity of LWC." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://fandryui.forcetrails.com/assets/og-image.png" />
+    <meta name="twitter:image:alt" content="Fandry UI: the flexibility of modern UI development, the simplicity of LWC." />
+
     <meta name="author" content="Rahul Gawale" />
-    <meta name="description" content="Fandry Ui" />
-    <meta name="apple-mobile-web-app-title" content="Fandry Ui" />
-    <link rel="icon" href="/favicon.ico" />
+    <meta name="application-name" content="Fandry UI" />
+    <meta name="apple-mobile-web-app-title" content="Fandry UI" />
+    <meta name="theme-color" content="#0d42f2" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/assets/site.webmanifest" />
-    <meta name="application-name" content="Fandry Ui" />
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Fandry UI", "url": "https://fandryui.forcetrails.com/", "description": "A composable, themeable UI component library for Salesforce LWC."}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

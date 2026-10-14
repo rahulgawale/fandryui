@@ -13,7 +13,7 @@
      reads as a quiet section wash, not a second hero. */
   background: linear-gradient(
     180deg,
-    hsl(var(--brand-accent, 199 89% 36%) / 0.06),
+    hsl(var(--brand-accent, 162 72% 42%) / 0.06),
     transparent 60%
   );
 }
@@ -76,6 +76,15 @@
   height: 100%;
 }
 
+/* Same padding and rhythm as whyFandry's .start-card. */
+.card-wrap fandry-card::part(base) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fd-space-3);
+  padding: var(--fd-space-6);
+}
+
 /* hover: hover excludes touch devices -- see componentsIndex.css's
    identical rule for why this matters (a tap otherwise leaves the lift/
    shadow stuck on, with no mouseout event to clear it). */
@@ -86,16 +95,9 @@
   }
 }
 
-/* fandry-card's shadow tree has no gap of its own between slotted
-   children (see heroDemoGrid.css's identical note), so the heading -> text
-   gap is spaced directly here. fandry-text also needs display: block
-   forced back on -- its :host defaults to display: contents so an
-   as="span" usage doesn't force a line break, which as a side effect means
-   margin-top on the host is otherwise ignored (a display: contents box
-   generates no margin area of its own). */
-.card-wrap fandry-heading + fandry-text {
+/* fandry-text is display: contents by default; block keeps it one flex item. */
+.card-wrap fandry-text {
   display: block;
-  margin-top: calc(var(--fd-space-3) * 2);
 }
 
 .icon-chip {
@@ -105,7 +107,6 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: var(--fd-radius-lg);
-  margin-bottom: var(--fd-space-3);
 }
 
 /* Primary/accent chips read --brand-* (default hues as fallback) so "Apply
@@ -114,13 +115,13 @@
    primitive's shadow root, not out here (see heroSection.css on the home
    page for the fuller version of this note). */
 .tint-primary {
-  background: hsl(var(--brand-primary, 330 81% 48%) / 0.12);
-  color: hsl(var(--brand-primary-dark, 330 81% 40%));
+  background: hsl(var(--brand-primary, 226 90% 50%) / 0.12);
+  color: hsl(var(--brand-primary-dark, 226 80% 36%));
 }
 
 .tint-accent {
-  background: hsl(var(--brand-accent, 199 89% 36%) / 0.12);
-  color: hsl(var(--brand-accent-dark, 199 89% 30%));
+  background: hsl(var(--brand-accent, 162 72% 42%) / 0.12);
+  color: hsl(var(--brand-accent-dark, 162 72% 28%));
 }
 
 .tint-success {

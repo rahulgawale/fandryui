@@ -47,8 +47,8 @@
   border-radius: var(--_fd-radius-md);
   padding: var(--_fd-space-1) var(--_fd-space-3) var(--_fd-space-1) var(--_fd-space-2);
   cursor: pointer;
-  transition: border-color var(--_fd-duration-fast) ease,
-    box-shadow var(--_fd-duration-fast) ease;
+  transition: border-color var(--_fd-duration-fast) var(--_fd-ease-standard),
+    box-shadow var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
 .trigger:focus-visible {
@@ -56,7 +56,7 @@
      and paints this instead. */
   outline: var(--_fd-ring-width) solid transparent;
   border-color: hsl(var(--_fd-border-focus));
-  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
+  box-shadow: var(--_fd-ring-field);
 }
 
 .trigger:disabled {

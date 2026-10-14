@@ -1,6 +1,6 @@
 {
   "name": "fandryui",
-  "description": "Fandry UI: source-level Lightning Web Components for LWC OSS / LWR projects. Small, extensible primitives you own and can read.",
+  "description": "Fandry UI: a modern, composable UI component library for Salesforce LWC, LWR and LWC OSS. Build distinctive, customizable UIs with components you own and can read.",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -23,15 +23,21 @@
      (measured: primary 3.56:1, accent 2.85:1, success 2.30:1, warning
      2.14:1). Same hue/saturation, lightness only, each now clears 4.5:1
      with a small margin (~4.7-4.9:1). --fd-danger was already compliant
-     (4.80:1) and is unchanged. */
+     (4.80:1) and is unchanged. Primary is cobalt (6.8:1), clearly apart
+     from --fd-danger for every kind of color blindness, unlike a pink or
+     red one. Accent is mint, for fills and highlights: too light for white
+     text, so its foreground is dark. Info has its own blue so an info alert
+     never reads as danger. */
   /* --brand-primary / --brand-accent are the older way to set these two, and
      still work when --fd-primary / --fd-accent are not set (heroDemoGrid.ts's
      "Apply theme" sets them on <html> at runtime). */
-  --_fd-primary: var(--fd-primary, var(--brand-primary, 330 81% 48%));
+  --_fd-primary: var(--fd-primary, var(--brand-primary, 226 90% 50%));
   --_fd-primary-foreground: var(--fd-primary-foreground, 0 0% 100%);
 
-  --_fd-accent: var(--fd-accent, var(--brand-accent, 199 89% 36%));
-  --_fd-accent-foreground: var(--fd-accent-foreground, 0 0% 100%);
+  --_fd-accent: var(--fd-accent, var(--brand-accent, 162 72% 42%));
+  --_fd-accent-foreground: var(--fd-accent-foreground, 160 40% 12%);
+
+  --_fd-info: var(--fd-info, 199 89% 36%);
 
   --_fd-success: var(--fd-success, 142 71% 30%);
   --_fd-success-foreground: var(--fd-success-foreground, 0 0% 100%);
@@ -42,10 +48,23 @@
   --_fd-danger: var(--fd-danger, 0 72% 51%);
   --_fd-danger-foreground: var(--fd-danger-foreground, 0 0% 100%);
 
-  /* Distinct hue from --fd-primary, lightness picked the same way (see
-     block comment above): clears 8.5:1 against a white background, well
-     past WCAG AA's 4.5:1 floor. */
-  --_fd-link-visited: var(--fd-link-visited, 271 55% 40%);
+  /* Soft status surfaces (badges): a light fill, a mid border and dark text
+     for each status, each text clearing AA on its surface (6.9, 4.5, 6.9:1).
+     Success is a cooler forest green, apart from the mint accent. Set all
+     three when you change a status color. */
+  --_fd-success-surface: var(--fd-success-surface, 138 76% 97%);
+  --_fd-success-border: var(--fd-success-border, 141 79% 85%);
+  --_fd-success-text: var(--fd-success-text, 143 64% 24%);
+  --_fd-warning-surface: var(--fd-warning-surface, 48 96% 89%);
+  --_fd-warning-border: var(--fd-warning-border, 48 97% 77%);
+  --_fd-warning-text: var(--fd-warning-text, 26 90% 37%);
+  --_fd-danger-surface: var(--fd-danger-surface, 0 93% 94%);
+  --_fd-danger-border: var(--fd-danger-border, 0 94% 82%);
+  --_fd-danger-text: var(--fd-danger-text, 0 70% 35%);
+
+  /* Deep indigo beside the cobalt primary: the familiar visited purple, on
+     theme, and 8.9:1 on white. */
+  --_fd-link-visited: var(--fd-link-visited, 252 56% 44%);
 
   --_fd-bg: var(--fd-bg, 0 0% 100%);
   --_fd-bg-muted: var(--fd-bg-muted, 220 14% 96%);
@@ -140,6 +159,21 @@
   --_fd-ring-color: var(--fd-ring-color, 222 89% 56%);
   --_fd-ring-width: var(--fd-ring-width, 2px);
   --_fd-ring-offset: var(--fd-ring-offset, 0px);
+  /* Two-tone rings: a crisp stroke, then a soft, blurred halo of the same
+     color outside it. A field's stroke sits on its border, inside; a
+     control's (button, link, checkbox, ...) outside, like the solid ring.
+     Nothing moves: both are shadows. */
+  --_fd-ring-halo-width: var(--fd-ring-halo-width, 3px);
+  --_fd-ring-halo-blur: var(--fd-ring-halo-blur, 4px);
+  --_fd-ring-halo-opacity: var(--fd-ring-halo-opacity, 0.3);
+  --_fd-ring-field: var(--fd-ring-field, inset 0 0 0 var(--_fd-border-width) hsl(var(--_fd-ring-color)),
+    0 0 var(--_fd-ring-halo-blur) var(--_fd-ring-halo-width)
+      hsl(var(--_fd-ring-color) / var(--_fd-ring-halo-opacity))
+  );
+  --_fd-ring-control: var(--fd-ring-control, 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color)),
+    0 0 var(--_fd-ring-halo-blur) calc(var(--_fd-ring-width) + var(--_fd-ring-halo-width))
+      hsl(var(--_fd-ring-color) / var(--_fd-ring-halo-opacity))
+  );
 
   /* ---- Radius ---- */
   --_fd-radius-sm: var(--fd-radius-sm, 0.25rem);

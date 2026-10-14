@@ -10,7 +10,7 @@
 
   padding: var(--_fd-space-3) var(--_fd-space-4);
   border-radius: var(--_fd-radius-md);
-  border-left: var(--_fd-border-width-lg) solid hsl(var(--_fd-accent));
+  border-left: var(--_fd-border-width-lg) solid hsl(var(--_fd-info));
   background: hsl(var(--_fd-bg));
   box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
 

@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import { toAnchor } from 'fandryui/docHeading';
 import { COMPONENTS, CATEGORY_ORDER, PART_DESCRIPTIONS, STATE_DESCRIPTIONS, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
 
 import DemoBreadcrumb from 'fandryuidemos/demoBreadcrumb';
@@ -201,6 +202,8 @@ export default class ComponentDoc extends LightningElement {
   get extraExamples() {
     return (this.entry?.examples ?? []).map((example) => ({
       ...example,
+      heading: `Example: ${example.title}`,
+      anchor: toAnchor(example.title),
       demoComponent: DEMO_COMPONENTS[example.demo]
     }));
   }
@@ -212,6 +215,18 @@ export default class ComponentDoc extends LightningElement {
       title: note.title,
       paragraphs: note.paragraphs.map((text, index) => ({ key: `${note.title}-${index}`, text }))
     }));
+  }
+
+  // Mirrors the section headings in the template, in order.
+  get tocItems() {
+    return [
+      { anchor: 'example', text: 'Example' },
+      ...(this.customizeDemo ? [{ anchor: 'customize', text: 'Custom colors and parts' }] : []),
+      { anchor: 'props', text: 'Props' },
+      ...(this.hasParts ? [{ anchor: 'parts', text: 'Parts' }] : []),
+      { anchor: 'code', text: 'Code' },
+      ...this.extraExamples.map((example) => ({ anchor: example.anchor, text: example.title }))
+    ];
   }
 
   get hasProps(): boolean {

@@ -2,15 +2,14 @@
   <header class="header">
     <div class="container">
       <a class="logo" href="/">
-        <span class="logo-mark">F</span>
+        <img class="logo-mark" src="/assets/logo.png" alt="" width="32" height="32" />
         Fandry UI
       </a>
 
       <nav class="nav" aria-label="Primary">
-        <fandry-link href="/getting-started">Get started</fandry-link>
-        <fandry-link href="/examples">Examples</fandry-link>
-        <fandry-link href="/components">Components</fandry-link>
-        <fandry-link href="/blocks">Blocks</fandry-link>
+        <template for:each={navItems} for:item="item">
+          <fandry-link key={item.href} href={item.href} class={item.className}>{item.label}</fandry-link>
+        </template>
       </nav>
 
       <div class="actions">

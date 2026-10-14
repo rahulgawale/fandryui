@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+.figure {
+  margin: 0;
+}
+
+.label {
+  display: block;
+  margin-bottom: var(--fd-space-1);
+  font-family: var(--font-code, "Geist Mono", monospace);
+  font-weight: var(--fd-font-weight-medium);
+}
+
+/* The hero's primary -> accent gradient, with both stops darkened until the
+   light text clears WCAG AA (9.2:1 / 4.8:1). */
+.code-block {
+  margin: 0;
+  padding: var(--fd-space-4);
+  background: linear-gradient(
+    135deg,
+    hsl(var(--brand-primary-dark, 226 80% 36%)),
+    hsl(var(--brand-accent-dark, 162 72% 28%))
+  );
+  color: hsl(220 14% 96%);
+  border-radius: var(--fd-radius-md);
+  overflow-x: auto;
+  font-size: var(--fd-font-size-sm);
+  line-height: var(--fd-line-height-normal, 1.5);
+}
+
+.code-block code {
+  font-family: var(--font-code, "Geist Mono", monospace);
+  font-size: inherit;
+  white-space: pre;
+}
+
+.code-block:focus-visible {
+  outline: 2px solid hsl(var(--brand-primary, 226 90% 50%));
+  outline-offset: 2px;
+}
+
+/* Directory trees are reference, not something to copy: a quieter surface. */
+.code-block.tree {
+  background: var(--fd-color-surface, transparent);
+  color: var(--fd-color-text);
+  border: 1px solid var(--fd-color-border);
+}
+
+.selection-stop {
+  height: 0;
+  overflow: hidden;
+}

@@ -20,289 +20,540 @@
             "id": "home",
             "path": "/",
             "rootComponent": "fandryui/home",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Fandry UI: composable UI components for Salesforce LWC",
+                "description": "The flexibility of modern UI development with the simplicity of LWC. A themeable, composable component library for Salesforce LWC, LWR and Experience Cloud.",
+                "path": "/"
+            }
+        },
+        {
+            "id": "why-fandry",
+            "path": "/why-fandry",
+            "rootComponent": "fandryui/whyFandry",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Why Fandry UI exists | Fandry UI",
+                "description": "What Fandry UI is for, what it trades away, and how it differs from Lightning Base Components: your own design system, composition, and components you control.",
+                "path": "/why-fandry/"
+            }
         },
         {
             "id": "getting-started",
             "path": "/getting-started",
             "rootComponent": "fandryui/gettingStarted",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Getting started | Fandry UI",
+                "description": "One source, one npm package, two platforms. Pick the one you build on; the components are the same.",
+                "path": "/getting-started/"
+            }
         },
         {
             "id": "getting-started-lwr-oss",
             "path": "/getting-started/lwr-oss",
             "rootComponent": "fandryui/gettingStarted",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Getting started with LWR / LWC OSS | Fandry UI",
+                "description": "Install one npm package, point your project at it, and use <fandry-*> components. Your bundler ships only the ones you use.",
+                "path": "/getting-started/lwr-oss/"
+            }
         },
         {
             "id": "getting-started-salesforce",
             "path": "/getting-started/salesforce",
             "rootComponent": "fandryui/gettingStarted",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Getting started on Salesforce | Fandry UI",
+                "description": "The platform has no bundler and cannot import npm packages, so the CLI copies components into your project as source you own, with everything they depend on.",
+                "path": "/getting-started/salesforce/"
+            }
         },
         {
             "id": "getting-started-theming",
             "path": "/getting-started/theming",
             "rootComponent": "fandryui/gettingStarted",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Theming | Fandry UI",
+                "description": "Set --fd-* tokens to change colors, type, spacing, radius and motion for the whole site, one section or one component. Use ::part() to restyle one element inside a component.",
+                "path": "/getting-started/theming/"
+            }
         },
         {
             "id": "components",
             "path": "/components",
             "rootComponent": "fandryui/componentsIndex",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Components | Fandry UI",
+                "description": "Every Fandry UI component for Salesforce LWC, with a live example, its props, parts and the code to use it.",
+                "path": "/components/"
+            }
         },
         {
             "id": "component-breadcrumb",
             "path": "/components/breadcrumb",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Breadcrumb component for LWC | Fandry UI",
+                "description": "A navigation trail of ancestor pages \u2014 pair with fandry-breadcrumb-item for each crumb. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/breadcrumb/"
+            }
         },
         {
             "id": "component-breadcrumb-item",
             "path": "/components/breadcrumb-item",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Breadcrumb Item component for LWC | Fandry UI",
+                "description": "A single crumb inside fandry-breadcrumb, with a current-page state. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/breadcrumb-item/"
+            }
         },
         {
             "id": "component-card",
             "path": "/components/card",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Card component for LWC | Fandry UI",
+                "description": "A bordered, padded surface for grouping related content. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/card/"
+            }
         },
         {
             "id": "component-divider",
             "path": "/components/divider",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Divider component for LWC | Fandry UI",
+                "description": "A horizontal or vertical rule for separating content. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/divider/"
+            }
         },
         {
             "id": "component-pagination",
             "path": "/components/pagination",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Pagination component for LWC | Fandry UI",
+                "description": "Previous/next navigation \u2014 as links between two adjacent pages, or as Previous / Page N of M / Next buttons for paging a collection. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/pagination/"
+            }
         },
         {
             "id": "component-sidebar",
             "path": "/components/sidebar",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Sidebar component for LWC | Fandry UI",
+                "description": "A vertical navigation rail \u2014 pair with fandry-sidebar-item for links. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/sidebar/"
+            }
         },
         {
             "id": "component-sidebar-item",
             "path": "/components/sidebar-item",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Sidebar Item component for LWC | Fandry UI",
+                "description": "A single navigation row for fandry-sidebar, with an active/current-page state. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/sidebar-item/"
+            }
         },
         {
             "id": "component-heading",
             "path": "/components/heading",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Heading component for LWC | Fandry UI",
+                "description": "A semantically-leveled heading, sized off the shared type scale. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/heading/"
+            }
         },
         {
             "id": "component-icon",
             "path": "/components/icon",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Icon component for LWC | Fandry UI",
+                "description": "A sizing/color frame around a slotted glyph \u2014 brings no icon set of its own. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/icon/"
+            }
         },
         {
             "id": "component-label",
             "path": "/components/label",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Label component for LWC | Fandry UI",
+                "description": "The text of a form label, with an optional required indicator. Put it inside your own <label>, or in the label slot of a field. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/label/"
+            }
         },
         {
             "id": "component-text",
             "path": "/components/text",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Text component for LWC | Fandry UI",
+                "description": "Body text \u2014 pick the rendered tag and size independently. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/text/"
+            }
         },
         {
             "id": "component-button",
             "path": "/components/button",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Button component for LWC | Fandry UI",
+                "description": "A native button with default/secondary/ghost variants and three sizes. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/button/"
+            }
         },
         {
             "id": "component-checkbox",
             "path": "/components/checkbox",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Checkbox component for LWC | Fandry UI",
+                "description": "A checkbox with a built-in label and indeterminate support. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/checkbox/"
+            }
         },
         {
             "id": "component-input",
             "path": "/components/input",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Input component for LWC | Fandry UI",
+                "description": "A text input with a label, help text, and prefix/suffix slots. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/input/"
+            }
         },
         {
             "id": "component-link",
             "path": "/components/link",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Link component for LWC | Fandry UI",
+                "description": "Anchor styling with default/muted variants and a disabled state. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/link/"
+            }
         },
         {
             "id": "component-radio",
             "path": "/components/radio",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Radio component for LWC | Fandry UI",
+                "description": "A single radio input \u2014 pair with fandry-radio-group for the roving-tabindex group. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/radio/"
+            }
         },
         {
             "id": "component-radio-group",
             "path": "/components/radio-group",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Radio Group component for LWC | Fandry UI",
+                "description": "A roving-tabindex container for a set of fandry-radio buttons. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/radio-group/"
+            }
         },
         {
             "id": "component-select",
             "path": "/components/select",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Select component for LWC | Fandry UI",
+                "description": "A custom listbox-style select, with optional grouped options. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/select/"
+            }
         },
         {
             "id": "component-switch",
             "path": "/components/switch",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Switch component for LWC | Fandry UI",
+                "description": "A toggle switch with a built-in label. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/switch/"
+            }
         },
         {
             "id": "component-textarea",
             "path": "/components/textarea",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Textarea component for LWC | Fandry UI",
+                "description": "A multi-line text input with a label and help text. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/textarea/"
+            }
         },
         {
             "id": "component-alert",
             "path": "/components/alert",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Alert component for LWC | Fandry UI",
+                "description": "An inline banner for a status message, with an optional title. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/alert/"
+            }
         },
         {
             "id": "component-badge",
             "path": "/components/badge",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Badge component for LWC | Fandry UI",
+                "description": "A small status/label pill. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/badge/"
+            }
         },
         {
             "id": "component-progress",
             "path": "/components/progress",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Progress component for LWC | Fandry UI",
+                "description": "A determinate or indeterminate progress bar. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/progress/"
+            }
         },
         {
             "id": "component-skeleton",
             "path": "/components/skeleton",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Skeleton component for LWC | Fandry UI",
+                "description": "A loading placeholder shaped like the content it stands in for. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/skeleton/"
+            }
         },
         {
             "id": "component-spinner",
             "path": "/components/spinner",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Spinner component for LWC | Fandry UI",
+                "description": "A loading spinner in three sizes, with optional text beside it. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/spinner/"
+            }
         },
         {
             "id": "component-loading-overlay",
             "path": "/components/loading-overlay",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Loading Overlay component for LWC | Fandry UI",
+                "description": "Covers the page, or one panel, while it is busy: a backdrop that blocks the pointer and the keyboard, and a panel with a spinner and a label. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/loading-overlay/"
+            }
         },
         {
             "id": "component-toast",
             "path": "/components/toast",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Toast component for LWC | Fandry UI",
+                "description": "An auto-dismissing notification \u2014 pair with fandry-toast-viewport for placement. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/toast/"
+            }
         },
         {
             "id": "component-toast-viewport",
             "path": "/components/toast-viewport",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Toast Viewport component for LWC | Fandry UI",
+                "description": "A fixed or contained stacking region that positions fandry-toast. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/toast-viewport/"
+            }
         },
         {
             "id": "component-tooltip",
             "path": "/components/tooltip",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Tooltip component for LWC | Fandry UI",
+                "description": "A hover/focus description bubble for a slotted trigger. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/tooltip/"
+            }
         },
         {
             "id": "component-avatar",
             "path": "/components/avatar",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Avatar component for LWC | Fandry UI",
+                "description": "A circular avatar with an image and initials fallback. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/avatar/"
+            }
         },
         {
             "id": "component-dialog",
             "path": "/components/dialog",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Dialog component for LWC | Fandry UI",
+                "description": "A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/dialog/"
+            }
         },
         {
             "id": "component-menu",
             "path": "/components/menu",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Menu component for LWC | Fandry UI",
+                "description": "A listbox-style menu \u2014 composes with fandry-popover for its own trigger and positioning. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/menu/"
+            }
         },
         {
             "id": "component-menu-item",
             "path": "/components/menu-item",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Menu Item component for LWC | Fandry UI",
+                "description": "A single selectable row inside fandry-menu. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/menu-item/"
+            }
         },
         {
             "id": "component-popover",
             "path": "/components/popover",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Popover component for LWC | Fandry UI",
+                "description": "An anchored floating panel \u2014 owns positioning, not the trigger or content. The panel is never narrower than its trigger; set display: block on the popover for a trigger that fills its row. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/popover/"
+            }
         },
         {
             "id": "component-table",
             "path": "/components/table",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Table component for LWC | Fandry UI",
+                "description": "A data table with sorting, pagination, selection, and filtering \u2014 wraps @tanstack/table-core. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/table/"
+            }
         },
         {
             "id": "component-combobox",
             "path": "/components/combobox",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Combobox component for LWC | Fandry UI",
+                "description": "A searchable select \u2014 type to narrow the options, then pick one. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/combobox/"
+            }
         },
         {
             "id": "component-command",
             "path": "/components/command",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Command component for LWC | Fandry UI",
+                "description": "A command palette \u2014 a modal search box over a list of actions. Generic: it reports the chosen value and leaves what it does (and the Cmd+K shortcut) to you. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/command/"
+            }
         },
         {
             "id": "component-lookup",
             "path": "/components/lookup",
             "rootComponent": "fandryui/componentDoc",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Lookup component for LWC | Fandry UI",
+                "description": "Find and pick a record \u2014 one by default, or several with multiple. It fetches nothing itself: it reports what was typed, you run the query and hand the records back. A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.",
+                "path": "/components/lookup/"
+            }
         },
         {
             "id": "blocks",
             "path": "/blocks",
             "rootComponent": "fandryui/blocksIndex",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Blocks | Fandry UI",
+                "description": "Working pages and patterns built from Fandry UI components, live on their pages and installable with the same command as any component.",
+                "path": "/blocks/"
+            }
         },
         {
             "id": "block-data-table",
             "path": "/blocks/data-table",
             "rootComponent": "fandryui/blockDataTable",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Data table block | Fandry UI",
+                "description": "A data table for Salesforce LWC with search, filters, pagination, selection, inline and multi-record editing, and save hooks, built from Fandry UI components.",
+                "path": "/blocks/data-table/"
+            }
         },
         {
             "id": "block-form",
             "path": "/blocks/form",
             "rootComponent": "fandryui/blockForm",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Form block | Fandry UI",
+                "description": "A form for Salesforce LWC with validation, read and edit modes, and a save with feedback, built from Fandry UI components.",
+                "path": "/blocks/form/"
+            }
         },
         {
             "id": "examples",
             "path": "/examples",
             "rootComponent": "fandryui/examples",
-            "layoutTemplate": "$layoutsDir/index.html"
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Examples | Fandry UI",
+                "description": "Real, interactive UI patterns built entirely from Fandry UI components: dashboards, forms, tables and more, ready to retheme with tokens.",
+                "path": "/examples/"
+            }
         }
     ],
     "assets": [
@@ -315,6 +566,16 @@
             "alias": "favicon",
             "file": "$rootDir/src/assets/favicon.ico",
             "urlPath": "/favicon.ico"
+        },
+        {
+            "alias": "robots",
+            "file": "$rootDir/src/assets/robots.txt",
+            "urlPath": "/robots.txt"
+        },
+        {
+            "alias": "sitemap",
+            "file": "$rootDir/src/assets/sitemap.xml",
+            "urlPath": "/sitemap.xml"
         }
     ]
 }

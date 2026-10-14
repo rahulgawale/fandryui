@@ -1515,7 +1515,7 @@ fandry-textarea::part(label) {
 /* Scoped to this demo. Set the same --fd-* tokens on :root to theme
    every fandry-* component on the site. */
 .brand {
-  --fd-accent: 45 90% 40%;
+  --fd-info: 45 90% 40%;
   --fd-success: 160 84% 26%;
   --fd-radius-md: 0.75rem;
   --fd-surface-tint: 10%;
@@ -1576,7 +1576,7 @@ fandry-badge::part(base) {
     },
     category: 'Feedback',
     description: 'A small status/label pill.',
-    props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant.' }],
+    props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant. The colored ones are soft, not solid, so a column of badges stays quieter than the data beside it. Status variants use `--fd-{success,warning,danger}-{surface,border,text}`; primary derives its tints from `--fd-primary`.' }],
     code: `<fandry-badge variant="primary">New</fandry-badge>`
   },
   {

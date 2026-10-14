@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import { toAnchor } from 'fandryui/docHeading';
 import {
   GETTING_STARTED_PAGES,
   PLATFORM_PAGES,
@@ -42,6 +43,10 @@ export default class GettingStarted extends LightningElement {
       href: `/getting-started/${page.slug}`,
       description: page.description
     }));
+  }
+
+  get tocItems() {
+    return this.page.sections.map((section) => ({ anchor: toAnchor(section.title), text: section.title }));
   }
 
   // The template can't switch on a block's `type`, so each block carries one

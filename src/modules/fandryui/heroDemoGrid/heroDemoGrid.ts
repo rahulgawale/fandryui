@@ -1,12 +1,11 @@
 import { LightningElement } from 'lwc';
 
-const DEFAULT_PRIMARY_COLOR = '#DB1B6F';
-const DEFAULT_ACCENT_COLOR = '#0A7AAE';
+const DEFAULT_PRIMARY_COLOR = '#0D42F2';
+const DEFAULT_ACCENT_COLOR = '#1EB88A';
 
 // heroDemoGrid.css's .bar gradient is deliberately darker than the raw
 // brand tokens -- same hue/saturation, lightness reduced by this many
-// percentage points. Matches the gap already baked into that rule's own
-// fallback values (primary 48% -> 40%, accent 36% -> 28%).
+// percentage points when a theme is applied.
 const CHART_DARKEN_PERCENT = 8;
 
 interface Hsl {

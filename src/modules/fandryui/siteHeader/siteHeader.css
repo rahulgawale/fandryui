@@ -44,16 +44,11 @@
   white-space: nowrap;
 }
 
+/* Decorative (alt=""): the link's text already names the site. */
 .logo-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: var(--fd-radius-md);
-  background: linear-gradient(135deg, hsl(var(--brand-primary, 330 81% 48%)), hsl(var(--brand-accent, 199 89% 36%)));
-  color: var(--fd-color-on-primary);
-  font-size: 0.9rem;
+  display: block;
+  width: 2rem;
+  height: 2rem;
 }
 
 .nav {
@@ -61,6 +56,23 @@
   display: flex;
   align-items: center;
   gap: var(--fd-space-5);
+}
+
+/* Quiet slate by default (no underline, no visited color); cobalt on hover
+   and for the current section. Mint is too light for text. */
+.nav-link::part(link) {
+  color: #334155;
+  text-decoration: none;
+  font-weight: var(--fd-font-weight-medium);
+}
+
+.nav-link::part(link):hover,
+.nav-link--current::part(link) {
+  color: hsl(var(--brand-primary, 226 90% 50%));
+}
+
+.nav-link--current::part(link) {
+  font-weight: var(--fd-font-weight-semibold);
 }
 
 .actions {
@@ -83,8 +95,9 @@
   .nav {
     order: 3;
     flex-basis: 100%;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: var(--fd-space-4);
+    gap: var(--fd-space-2) var(--fd-space-4);
   }
 }
 

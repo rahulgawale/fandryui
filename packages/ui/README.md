@@ -1,6 +1,6 @@
 # fandry
 
-Small, extensible [Lightning Web Components](https://lwc.dev) you own and can read. Fandry UI ships as **plain LWC source** (HTML, CSS and JavaScript), not a compiled runtime, so there is nothing to reverse-engineer: open `node_modules/fandryui/modules/fandry/button/` and read it.
+Build Salesforce apps that look like your product, not the platform. Small, extensible [Lightning Web Components](https://lwc.dev) you own and can read. Fandry UI ships as **plain LWC source** (HTML, CSS and JavaScript), not a compiled runtime, so there is nothing to reverse-engineer: open `node_modules/fandryui/modules/fandry/button/` and read it.
 
 Docs and live examples: <https://fandryui.forcetrails.com>
 

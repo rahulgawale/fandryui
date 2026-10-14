@@ -1,0 +1,91 @@
+/* Shared docs prose styles. A docs page imports this from its own CSS:
+   @import 'fandryui/docStyles'; */
+
+/* fandry-text sets its own size inside, so the lede's goes through its part. */
+.lede {
+  display: block;
+  margin-top: var(--fd-space-3);
+  max-width: 38rem;
+}
+
+.lede::part(base) {
+  font-size: var(--fd-font-size-lg);
+}
+
+/* Inline code in prose, notes and tables. */
+:not(pre) > code {
+  font-family: var(--font-code, "Geist Mono", monospace);
+  font-size: 0.875em;
+  padding: 0.1em 0.35em;
+  border-radius: var(--fd-radius-sm);
+  background: color-mix(in srgb, var(--fd-color-text) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--fd-color-text) 10%, transparent);
+  overflow-wrap: anywhere;
+}
+
+.list {
+  margin: 0;
+  padding-left: var(--fd-space-5);
+}
+
+.list li + li {
+  margin-top: var(--fd-space-2);
+}
+
+.props-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+}
+
+.props-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fd-font-size-sm);
+}
+
+.props-table th,
+.props-table td {
+  text-align: left;
+  padding: var(--fd-space-2) var(--fd-space-3);
+  border-bottom: 1px solid var(--fd-color-border);
+  vertical-align: top;
+}
+
+.props-table thead th {
+  color: var(--fd-color-muted);
+  font-weight: var(--fd-font-weight-semibold);
+  font-size: var(--fd-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.props-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Name/type/default columns are all code: no chip on each. */
+.props-table td > code {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.85em;
+  overflow-wrap: normal;
+}
+
+/* Sidebar + content + "On this page" rail, used by docs pages that have a
+   sidebar. The rail only shows where there is room for it. */
+.toc {
+  display: none;
+}
+
+@media (min-width: 72rem) {
+  .toc {
+    display: block;
+    flex: none;
+    width: 11rem;
+    position: sticky;
+    top: 4rem;
+    padding: var(--fd-space-6) 0;
+  }
+}

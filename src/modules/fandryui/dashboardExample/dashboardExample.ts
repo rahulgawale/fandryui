@@ -177,6 +177,19 @@ const VIEWS: Record<string, ViewDef> = {
 };
 
 export default class DashboardExample extends LightningElement {
+  primitivesUsed = [
+    'fandry-input',
+    'fandry-popover',
+    'fandry-menu',
+    'fandry-avatar',
+    'fandry-button',
+    'fandry-card',
+    'fandry-badge',
+    'fandry-heading',
+    'fandry-text',
+    'fandry-link'
+  ];
+
   navItems = [
     { key: 'overview', label: 'Overview' },
     { key: 'orders', label: 'Orders' },
