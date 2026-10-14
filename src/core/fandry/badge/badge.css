@@ -23,11 +23,12 @@
 /* Colored variants are soft, not solid, so a column of them doesn't
    outweigh the data beside it. Status variants read their surface, border
    and text tokens; primary derives the same three tiers from --fd-primary,
-   with its text darkened toward --fd-text until it clears AA. */
+   its text mixed toward --fd-text (7.3:1 with the default colors). The
+   min/max keep a large --fd-surface-tint a valid color-mix. */
 .badge--primary {
   background: color-mix(in srgb, hsl(var(--_fd-primary)) var(--_fd-surface-tint), hsl(var(--_fd-bg)));
-  border-color: color-mix(in srgb, hsl(var(--_fd-primary)) calc(var(--_fd-surface-tint) * 3), hsl(var(--_fd-bg)));
-  color: color-mix(in srgb, hsl(var(--_fd-primary)) calc(100% - var(--_fd-surface-tint) * 2), hsl(var(--_fd-text)));
+  border-color: color-mix(in srgb, hsl(var(--_fd-primary)) min(var(--_fd-surface-tint) * 3, 100%), hsl(var(--_fd-bg)));
+  color: color-mix(in srgb, hsl(var(--_fd-primary)) max(100% - var(--_fd-surface-tint) * 2, 0%), hsl(var(--_fd-text)));
 }
 
 .badge--success {

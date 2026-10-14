@@ -16,18 +16,11 @@
 
 :host {
   /* ---- Colors (HSL, no commas) ----
-     Lightness on primary/accent/success/warning is darkened from the
-     original palette -- at the original values, white text on these
-     backgrounds (fandry-button's default variant, fandry-badge's colored variants)
-     fell well short of WCAG AA's 4.5:1 contrast minimum for normal text
-     (measured: primary 3.56:1, accent 2.85:1, success 2.30:1, warning
-     2.14:1). Same hue/saturation, lightness only, each now clears 4.5:1
-     with a small margin (~4.7-4.9:1). --fd-danger was already compliant
-     (4.80:1) and is unchanged. Primary is cobalt (6.8:1), clearly apart
-     from --fd-danger for every kind of color blindness, unlike a pink or
-     red one. Accent is mint, for fills and highlights: too light for white
-     text, so its foreground is dark. Info has its own blue so an info alert
-     never reads as danger. */
+     Each fill clears WCAG AA (4.5:1) under its foreground: primary (cobalt,
+     apart from danger for every kind of color blindness) 6.8:1, success,
+     warning and danger ~4.7-4.9:1. Accent (mint) is for fills and
+     highlights, too light for white text, so its foreground is dark. Info
+     has its own blue so an info alert never reads as danger. */
   /* --brand-primary / --brand-accent are the older way to set these two, and
      still work when --fd-primary / --fd-accent are not set (heroDemoGrid.ts's
      "Apply theme" sets them on <html> at runtime). */
@@ -162,7 +155,8 @@
   /* Two-tone rings: a crisp stroke, then a soft, blurred halo of the same
      color outside it. A field's stroke sits on its border, inside; a
      control's (button, link, checkbox, ...) outside, like the solid ring.
-     Nothing moves: both are shadows. */
+     Nothing moves: both are shadows. A field's stroke is its border's
+     width, not --fd-ring-width; set --fd-ring-field to replace it. */
   --_fd-ring-halo-width: var(--fd-ring-halo-width, 3px);
   --_fd-ring-halo-blur: var(--fd-ring-halo-blur, 4px);
   --_fd-ring-halo-opacity: var(--fd-ring-halo-opacity, 0.3);
