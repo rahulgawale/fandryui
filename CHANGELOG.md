@@ -1,3 +1,10 @@
+# [0.25.0](https://github.com/rahulgawale/fandryui/compare/v0.24.0...v0.25.0) (2026-10-14)
+
+
+### Features
+
+* **lookup:** add a debounceMs prop for the search delay ([#118](https://github.com/rahulgawale/fandryui/issues/118)) ([c7776b7](https://github.com/rahulgawale/fandryui/commit/c7776b749016daed520369e6408d073260985ddf))
+
 # [0.24.0](https://github.com/rahulgawale/fandryui/compare/v0.23.2...v0.24.0) (2026-10-14)
 
 
