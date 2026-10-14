@@ -34,6 +34,10 @@ export default class FdToast extends Base {
   private dismissNotified = false;
 
   connectedCallback() {
+    // Rendered on a server (SSR): there is no document yet, and the browser runs this again.
+    if (typeof document === 'undefined') {
+      return;
+    }
     this.scheduleAutoDismiss();
   }
 
