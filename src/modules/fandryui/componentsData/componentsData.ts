@@ -1673,7 +1673,7 @@ fandry-skeleton::part(base) {
   <fandry-spinner size="sm" label="Loading"></fandry-spinner>
   <fandry-spinner size="md" label="Loading"></fandry-spinner>
   <fandry-spinner size="lg" label="Loading"></fandry-spinner>
-  <fandry-spinner size="sm">Saving template…</fandry-spinner>
+  <fandry-spinner size="sm">Saving record…</fandry-spinner>
 </div>
 
 /* css */
@@ -1714,8 +1714,8 @@ fandry-spinner::part(label) {
         demo: 'spinner-label',
         code: `<!-- Text in the default slot shows beside the ring. Style it with ::part(label). -->
 <fandry-spinner size="sm">Loading fields…</fandry-spinner>
-<fandry-spinner size="md">Saving template…</fandry-spinner>
-<fandry-spinner size="lg">Generating PDF…</fandry-spinner>`
+<fandry-spinner size="md">Saving record…</fandry-spinner>
+<fandry-spinner size="lg">Converting lead…</fandry-spinner>`
       }
     ],
     code: `<fandry-spinner size="md"></fandry-spinner>`
@@ -1730,8 +1730,8 @@ fandry-spinner::part(label) {
       demo: 'loading-overlay-theme',
       code: `<!-- template -->
 <div class="brand row">
-  <fandry-button onclick={handleSave}>Save template</fandry-button>
-  <fandry-loading-overlay open={saving}>Saving template…</fandry-loading-overlay>
+  <fandry-button onclick={handleSave}>Save record</fandry-button>
+  <fandry-loading-overlay open={saving}>Saving record…</fandry-loading-overlay>
 </div>
 
 /* css */
@@ -1773,7 +1773,7 @@ fandry-loading-overlay::part(label) {
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in lwc:if: it stays in the page so its label is announced, and so it can fade out.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport, and blocks keys inside its parent element. Put the overlay directly inside the panel it covers.' },
-      { name: 'default slot', type: 'slot', default: "'Loading'", description: 'The label under the spinner, e.g. "Saving template…". Announced once, when the overlay shows.' }
+      { name: 'default slot', type: 'slot', default: "'Loading'", description: 'The label under the spinner, e.g. "Saving record…". Announced once, when the overlay shows.' }
     ],
     notes: [
       {
@@ -1810,8 +1810,8 @@ fandry-loading-overlay::part(label) {
 }`
       }
     ],
-    code: `<fandry-button onclick={handleGenerate}>Generate PDF</fandry-button>
-<fandry-loading-overlay open={generating}>Generating PDF…</fandry-loading-overlay>`
+    code: `<fandry-button onclick={handleConvert}>Convert lead</fandry-button>
+<fandry-loading-overlay open={converting}>Converting lead…</fandry-loading-overlay>`
   },
   {
     slug: 'toast',

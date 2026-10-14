@@ -3,12 +3,12 @@ import { LightningElement } from 'lwc';
 const BUSY_MS = 2000;
 
 export default class DemoLoadingOverlay extends LightningElement {
-  generating = false;
+  converting = false;
 
-  handleGenerate() {
-    this.generating = true;
+  handleConvert() {
+    this.converting = true;
     setTimeout(() => {
-      this.generating = false;
+      this.converting = false;
     }, BUSY_MS);
   }
 }
