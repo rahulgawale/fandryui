@@ -30,6 +30,7 @@
       "fandry/textSlots": ["src/core/fandry/textSlots/textSlots"],
       "fandry/fieldError": ["src/core/fandry/fieldError/fieldError"],
       "fandry/searchState": ["src/core/fandry/searchState/searchState"],
+      "fandry/loadingOverlayState": ["src/core/fandry/loadingOverlayState/loadingOverlayState"],
       // Record-aware components live in src/salesforce (same `fandry` namespace).
       "fandry/lookup": ["src/salesforce/fandry/lookup/lookup"],
       "fandry/tableState": ["src/core/fandry/tableState/tableState"],
@@ -125,6 +126,7 @@
       "fandryuidemos/demoSpinner": ["src/modules/fandryuidemos/demoSpinner/demoSpinner"],
       "fandryuidemos/demoLoadingOverlay": ["src/modules/fandryuidemos/demoLoadingOverlay/demoLoadingOverlay"],
       "fandryuidemos/demoLoadingOverlayContained": ["src/modules/fandryuidemos/demoLoadingOverlayContained/demoLoadingOverlayContained"],
+      "fandryuidemos/demoLoadingOverlayCustom": ["src/modules/fandryuidemos/demoLoadingOverlayCustom/demoLoadingOverlayCustom"],
       "fandryuidemos/demoSpinnerLabel": ["src/modules/fandryuidemos/demoSpinnerLabel/demoSpinnerLabel"],
       "fandryuidemos/demoToast": ["src/modules/fandryuidemos/demoToast/demoToast"],
       "fandryuidemos/demoToastViewport": ["src/modules/fandryuidemos/demoToastViewport/demoToastViewport"],

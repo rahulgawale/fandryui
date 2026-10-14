@@ -27,7 +27,7 @@ fandry-loading-overlay::part(backdrop) {
   backdrop-filter: blur(4px);
 }
 
-fandry-loading-overlay::part(card) {
+fandry-loading-overlay::part(panel) {
   flex-direction: row;
   padding: 1rem 1.5rem;
   border-radius: 999px;

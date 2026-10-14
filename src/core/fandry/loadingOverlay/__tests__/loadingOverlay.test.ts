@@ -1,6 +1,10 @@
 import { createElement } from 'lwc';
-import FdLoadingOverlay, { isBrowserShortcut } from '../loadingOverlay';
+import FdLoadingOverlay from '../loadingOverlay';
+import { isBrowserShortcut } from 'fandry/loadingOverlayState';
 import SlotHarness from './slotHarness';
+import LabelHarness from './labelHarness';
+import ContentHarness from './contentHarness';
+import QuietHarness from './quietHarness';
 import { mockAnimations, AnimationMock } from '../../motion/__tests__/animationMock';
 
 const flush = () => Promise.resolve();
@@ -8,7 +12,7 @@ const settle = async () => {
   for (let i = 0; i < 4; i++) await Promise.resolve();
 };
 
-type Overlay = HTMLElement & { open: boolean; contained: boolean };
+type Overlay = HTMLElement & { open: boolean; contained: boolean; messages: { label?: string } };
 
 const create = (props: Partial<Overlay> = {}, parent: Node = document.body): Overlay => {
   const element = createElement('fandry-loading-overlay', { is: FdLoadingOverlay }) as unknown as Overlay;
@@ -18,7 +22,7 @@ const create = (props: Partial<Overlay> = {}, parent: Node = document.body): Ove
 };
 const statusOf = (element: HTMLElement) => element.shadowRoot!.querySelector('[role="status"]')!;
 const overlayOf = (element: HTMLElement) => element.shadowRoot!.querySelector('[part="backdrop"]');
-const cardOf = (element: HTMLElement) => element.shadowRoot!.querySelector('[part="card"]');
+const panelOf = (element: HTMLElement) => element.shadowRoot!.querySelector('[part="panel"]');
 
 // An entrance animation at `currentTime`, with a 150ms delay and a 200ms fade.
 const originalGetAnimations = Element.prototype.getAnimations;
@@ -45,12 +49,21 @@ describe('fandry-loading-overlay', () => {
     expect(overlayOf(element)).toBeNull();
   });
 
-  it('hides what it draws from assistive technology: the region speaks for it', () => {
+  it('shows a spinner and the default label, the spinner hidden from assistive technology', () => {
     const element = create({ open: true });
+    const spinner = element.shadowRoot!.querySelector('fandry-spinner')!;
 
-    expect(overlayOf(element)!.getAttribute('aria-hidden')).toBe('true');
-    expect(cardOf(element)).not.toBeNull();
-    expect(element.shadowRoot!.querySelector('fandry-spinner')!.getAttribute('exportparts')).toBe('base: spinner');
+    expect(overlayOf(element)!.hasAttribute('aria-hidden')).toBe(false);
+    expect(panelOf(element)).not.toBeNull();
+    expect(spinner.getAttribute('exportparts')).toBe('base: spinner');
+    expect(spinner.getAttribute('aria-hidden')).toBe('true');
+    expect(element.shadowRoot!.querySelector('[part="label"]')!.textContent).toBe('Loading');
+  });
+
+  it('shows messages.label as the default label', () => {
+    const element = create({ open: true, messages: { label: 'Chargement' } });
+
+    expect(element.shadowRoot!.querySelector('[part="label"]')!.textContent).toBe('Chargement');
   });
 
   it('does not take focus', () => {
@@ -106,12 +119,31 @@ describe('fandry-loading-overlay', () => {
       expect(statusOf(element).textContent).toBe('Loading');
     });
 
-    it('announces a label the page slots in', async () => {
-      const harness = createElement('slot-harness', { is: SlotHarness });
+    const overlayIn = async (harness: Element) => {
       document.body.appendChild(harness);
       await after(150);
+      return harness.shadowRoot!.querySelector<HTMLElement>('fandry-loading-overlay')!;
+    };
 
-      expect(statusOf(harness.shadowRoot!.querySelector('fandry-loading-overlay')!).textContent).toBe('Saving template…');
+    it('announces content the page slots in', async () => {
+      expect(statusOf(await overlayIn(createElement('slot-harness', { is: SlotHarness }))).textContent).toBe('Saving template…');
+    });
+
+    it('announces a label slotted into the label slot', async () => {
+      expect(statusOf(await overlayIn(createElement('label-harness', { is: LabelHarness }))).textContent).toBe('Saving template…');
+    });
+
+    it('announces slotted content without what is aria-hidden', async () => {
+      const harness = createElement('content-harness', { is: ContentHarness }) as HTMLElement & { open: boolean };
+      harness.open = true;
+
+      expect(statusOf(await overlayIn(harness)).textContent).toBe('Importing Cancel');
+    });
+
+    it('announces messages.label when the content has no text', async () => {
+      const harness = createElement('quiet-harness', { is: QuietHarness });
+
+      expect(statusOf(await overlayIn(harness)).textContent).toBe('Loading');
     });
 
     it('empties the region when it closes', async () => {
@@ -198,6 +230,30 @@ describe('fandry-loading-overlay', () => {
       expect(press({ key: 'F5' })).toBe(false);
     });
 
+    it("lets the Mac's history and tab shortcuts through", async () => {
+      create({ open: true });
+      await settle();
+
+      expect(press({ key: '[', metaKey: true })).toBe(false);
+      expect(press({ key: ']', metaKey: true })).toBe(false);
+      expect(press({ key: 'ArrowLeft', metaKey: true })).toBe(false);
+      expect(press({ key: '}', metaKey: true, shiftKey: true })).toBe(false);
+      expect(press({ key: 'PageDown', ctrlKey: true })).toBe(false);
+    });
+
+    it('lets keys reach content in the overlay once it has focus', async () => {
+      const harness = createElement('content-harness', { is: ContentHarness }) as HTMLElement & { open: boolean };
+      harness.open = true;
+      document.body.appendChild(harness);
+      await settle();
+      const cancel = harness.shadowRoot!.querySelector('button')!;
+      expect(press({ key: 'Enter' }, cancel)).toBe(true);
+
+      cancel.focus();
+
+      expect(press({ key: 'Enter' }, cancel)).toBe(false);
+    });
+
     it('treats AltGr as typing, not as a shortcut', () => {
       const altGr = new KeyboardEvent('keydown', { key: '@', ctrlKey: true, altKey: true, modifierAltGraph: true });
 
@@ -265,7 +321,7 @@ describe('fandry-loading-overlay', () => {
       element.open = false;
       await flush();
 
-      expect(cardOf(element)).not.toBeNull();
+      expect(panelOf(element)).not.toBeNull();
       expect(overlayOf(element)!.classList.contains('overlay--closing')).toBe(true);
     });
 
@@ -287,7 +343,7 @@ describe('fandry-loading-overlay', () => {
       element.open = true;
       await animations.finish();
 
-      expect(cardOf(element)).not.toBeNull();
+      expect(panelOf(element)).not.toBeNull();
       expect(overlayOf(element)!.classList.contains('overlay--closing')).toBe(false);
     });
   });

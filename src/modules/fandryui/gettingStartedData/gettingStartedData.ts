@@ -465,6 +465,7 @@ Surfaces          --fd-surface-tint  --fd-shadow-sm  --fd-shadow-color-floating
                   --fd-shadow-color-modal  --fd-shadow-color-subtle
                   --fd-hover-brightness  --fd-disabled-opacity  --fd-pulse-opacity
                   --fd-backdrop  --fd-backdrop-opacity  --fd-z-overlay
+                  --fd-z-overlay-contained
 Type              --fd-font-sans  --fd-font-mono  --fd-font-heading
                   --fd-font-size-xs  --fd-font-size-sm  --fd-font-size-md
                   --fd-font-size-lg  --fd-font-size-xl  --fd-font-size-2xl

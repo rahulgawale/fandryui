@@ -3,11 +3,13 @@
   <span class="status" role="status" aria-live="polite" aria-atomic="true">{announcement}</span>
 
   <template if:true={isMounted}>
-    <!-- Hidden from assistive technology: the region above speaks for it. -->
-    <div class={overlayClasses} part="backdrop" aria-hidden="true">
-      <div class="card" part="card">
-        <fandry-spinner size="lg" exportparts="base: spinner"></fandry-spinner>
-        <span class="label" part="label"><slot onslotchange={handleSlotChange}>Loading</slot></span>
+    <div class={overlayClasses} part="backdrop">
+      <div class="panel" part="panel">
+        <!-- Replaced as a whole by the page's own content; the label slot changes only the text. -->
+        <slot onslotchange={handleSlotChange}>
+          <fandry-spinner size="lg" exportparts="base: spinner" aria-hidden="true"></fandry-spinner>
+          <span class="label" part="label"><slot name="label" onslotchange={handleSlotChange}>{labelText}</slot></span>
+        </slot>
       </div>
     </div>
   </template>

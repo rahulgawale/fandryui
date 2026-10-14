@@ -64,9 +64,8 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   value: 'The selected value, as shown in the closed field.',
   chevron: 'The dropdown arrow.',
   trigger: 'The wrapper of the trigger slot.',
-  panel: 'The surface that opens: a dropdown\'s list, a popover, a tooltip, a dialog.',
+  panel: 'The surface that opens: a dropdown\'s list, a popover, a tooltip, a dialog, a loading overlay\'s box.',
   backdrop: 'The dimmed layer behind a modal panel, or a loading overlay\'s cover.',
-  card: 'The box in the middle of a loading overlay.',
   spinner: 'A loading overlay\'s spinner (a fandry-spinner\'s `base`).',
   arrow: 'The arrow that points at the trigger.',
   search: 'The wrapper of the search input.',
@@ -1724,14 +1723,16 @@ fandry-spinner::part(label) {
     slug: 'loading-overlay',
     name: 'Loading Overlay',
     tag: 'fandry-loading-overlay',
-    parts: ['backdrop', 'card', 'spinner', 'label'],
+    parts: ['backdrop', 'panel', 'spinner', 'label'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'loading-overlay-theme',
       code: `<!-- template -->
 <div class="brand row">
   <fandry-button onclick={handleSave}>Save record</fandry-button>
-  <fandry-loading-overlay open={saving}>Saving record…</fandry-loading-overlay>
+  <fandry-loading-overlay open={saving}>
+    <span slot="label">Saving record…</span>
+  </fandry-loading-overlay>
 </div>
 
 /* css */
@@ -1753,7 +1754,7 @@ fandry-loading-overlay::part(backdrop) {
   backdrop-filter: blur(4px);
 }
 
-fandry-loading-overlay::part(card) {
+fandry-loading-overlay::part(panel) {
   flex-direction: row;
   padding: 1rem 1.5rem;
   border-radius: 999px;
@@ -1769,24 +1770,44 @@ fandry-loading-overlay::part(label) {
 }`
     },
     category: 'Feedback',
-    description: 'Covers the page, or one panel, while it is busy: a backdrop that blocks the pointer and the keyboard, and a card with a spinner and a label.',
+    description: 'Covers the page, or one panel, while it is busy: a backdrop that blocks the pointer and the keyboard, and a panel with a spinner and a label.',
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in lwc:if: it stays in the page so its label is announced, and so it can fade out.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport, and blocks keys inside its parent element. Put the overlay directly inside the panel it covers.' },
-      { name: 'default slot', type: 'slot', default: "'Loading'", description: 'The label under the spinner, e.g. "Saving record…". Announced once, when the overlay shows.' }
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default label ("Loading") for every instance, e.g. to translate it. Also what is announced when the content has no text.' },
+      { name: 'label slot', type: 'slot', default: 'messages.label', description: 'The text under the spinner, e.g. "Saving record…".' },
+      { name: 'default slot', type: 'slot', default: 'spinner and label', description: 'The whole content of the panel, in place of the spinner and label: your own indicator, text, a progress bar, a Cancel button. Its text (minus anything aria-hidden) is what is announced.' }
     ],
     notes: [
       {
         title: 'Not a dialog',
         paragraphs: [
           'It blocks the pointer and the keyboard the moment it opens, but takes no focus and has nothing to close: the page must always set open back to false, on errors and timeouts too. It only shows after --fd-loading-overlay-delay (150ms), so an operation that finishes sooner never flashes an overlay.',
-          'Focus stays where it was. Over the page, keys do nothing until it closes (typing, Tab, Enter, Space, arrow-key scrolling, paste, the page\'s own shortcuts); the browser\'s shortcuts and wheel or touch scrolling still work. A contained overlay blocks keys inside the element it is in and lets Tab leave it.',
+          'Focus stays where it was. Over the page, keys do nothing until it closes (typing, Tab, Enter, Space, arrow-key scrolling, paste, the page\'s own shortcuts); the browser\'s shortcuts and wheel or touch scrolling still work. A contained overlay blocks keys inside the element it is in and lets Tab leave it. Keys still reach content in the overlay once it has focus: focus a Cancel button you put there yourself.',
           'It blocks hardware keys, not every input method: text from an IME or an on-screen keyboard, and a screen reader\'s own click, can still reach what is behind it. Guard the actions that must not run twice.',
-          'It keeps a polite status region in the page at all times and puts the label\'s text into it once the overlay shows, so a screen reader announces it. A label edited in place while it is open is not announced again.'
+          'It keeps a polite status region in the page at all times and puts the content\'s text into it once the overlay shows, so a screen reader announces it. A label edited in place while it is open is not announced again. Mark a slotted spinner aria-hidden="true": the region already says what is happening.'
         ]
       }
     ],
     examples: [
+      {
+        title: 'Your own content',
+        demo: 'loading-overlay-custom',
+        code: `<!-- template: the default slot replaces the spinner and label -->
+<fandry-button onclick={handleImport}>Import contacts</fandry-button>
+<fandry-loading-overlay open={importing}>
+  <fandry-progress value={percent} label="Import progress"></fandry-progress>
+  <fandry-text>Importing contacts…</fandry-text>
+  <fandry-button variant="secondary" onclick={handleCancel}>Cancel</fandry-button>
+</fandry-loading-overlay>
+
+// js: keys are blocked outside the overlay, so put focus on the action
+async handleImport() {
+  this.importing = true;
+  await Promise.resolve();
+  this.template.querySelector('fandry-loading-overlay fandry-button').focus();
+}`
+      },
       {
         title: 'Over one panel',
         demo: 'loading-overlay-contained',
@@ -1796,7 +1817,9 @@ fandry-loading-overlay::part(label) {
     ...
     <fandry-button variant="secondary" onclick={handleRefresh}>Refresh</fandry-button>
   </fandry-card>
-  <fandry-loading-overlay open={refreshing} contained>Refreshing…</fandry-loading-overlay>
+  <fandry-loading-overlay open={refreshing} contained>
+    <span slot="label">Refreshing…</span>
+  </fandry-loading-overlay>
 </div>
 
 /* css */
@@ -1811,7 +1834,9 @@ fandry-loading-overlay::part(label) {
       }
     ],
     code: `<fandry-button onclick={handleConvert}>Convert lead</fandry-button>
-<fandry-loading-overlay open={converting}>Converting lead…</fandry-loading-overlay>`
+<fandry-loading-overlay open={converting}>
+  <span slot="label">Converting lead…</span>
+</fandry-loading-overlay>`
   },
   {
     slug: 'toast',

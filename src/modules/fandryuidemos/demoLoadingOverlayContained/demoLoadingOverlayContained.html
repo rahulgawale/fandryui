@@ -6,6 +6,8 @@
       <fandry-text variant="muted">Total $184.00, paid by card.</fandry-text>
       <fandry-button variant="secondary" onclick={handleRefresh}>Refresh</fandry-button>
     </fandry-card>
-    <fandry-loading-overlay open={refreshing} contained>Refreshing…</fandry-loading-overlay>
+    <fandry-loading-overlay open={refreshing} contained>
+      <span slot="label">Refreshing…</span>
+    </fandry-loading-overlay>
   </div>
 </template>

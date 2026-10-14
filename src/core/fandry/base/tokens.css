@@ -88,6 +88,8 @@
      the thousands) can lift every fandry-* overlay above it by overriding
      this single value, instead of chasing per-component z-indexes. ---- */
   --_fd-z-overlay: var(--fd-z-overlay, 50);
+  /* A contained fandry-loading-overlay: over its panel, under the page's own layers (a sticky header). */
+  --_fd-z-overlay-contained: var(--fd-z-overlay-contained, 1);
 
   /* ---- Overlay backdrop (fandry-dialog's scrim behind the modal panel) ---- */
   --_fd-backdrop: var(--fd-backdrop, 222 47% 11%);

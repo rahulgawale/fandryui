@@ -29,11 +29,10 @@
   background: hsl(var(--_fd-backdrop) / var(--_fd-backdrop-opacity));
 }
 
-/* Covers the nearest positioned ancestor, and stays under the page's own
-   layers (a sticky header). */
+/* Covers the nearest positioned ancestor. */
 .overlay--contained {
   position: absolute;
-  z-index: 1;
+  z-index: var(--_fd-z-overlay-contained);
 }
 
 /* Blocks the pointer at once, and shows after the delay: `both` holds it
@@ -48,7 +47,7 @@
   animation: fd-fade-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
 }
 
-.card {
+.panel {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,7 +63,7 @@
   animation: fd-fade-scale-in var(--_fd-duration-normal) var(--_fd-ease-emphasized) var(--_fd-loading-overlay-delay) both;
 }
 
-.overlay--closing .card {
+.overlay--closing .panel {
   animation: fd-fade-scale-out var(--_fd-duration-fast) var(--_fd-ease-standard) forwards;
 }
 
@@ -75,7 +74,7 @@
 
 /* A fandry-label slotted in as the label is only this label's text: it
    takes the label's look. */
-::slotted(fandry-label) {
+.label ::slotted(fandry-label) {
   font: inherit;
   color: inherit;
 }
