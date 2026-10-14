@@ -43,20 +43,6 @@
   --_fd-danger: var(--fd-danger, 0 72% 51%);
   --_fd-danger-foreground: var(--fd-danger-foreground, 0 0% 100%);
 
-  /* Soft status surfaces (badges): a light fill, a mid border and dark text
-     for each status, each text clearing AA on its surface (6.9, 4.5, 6.9:1).
-     Success is a cooler forest green, apart from the mint accent. Set all
-     three when you change a status color. */
-  --_fd-success-surface: var(--fd-success-surface, 138 76% 97%);
-  --_fd-success-border: var(--fd-success-border, 141 79% 85%);
-  --_fd-success-text: var(--fd-success-text, 143 64% 24%);
-  --_fd-warning-surface: var(--fd-warning-surface, 48 96% 89%);
-  --_fd-warning-border: var(--fd-warning-border, 48 97% 77%);
-  --_fd-warning-text: var(--fd-warning-text, 26 90% 37%);
-  --_fd-danger-surface: var(--fd-danger-surface, 0 93% 94%);
-  --_fd-danger-border: var(--fd-danger-border, 0 94% 82%);
-  --_fd-danger-text: var(--fd-danger-text, 0 70% 35%);
-
   /* Deep indigo beside the cobalt primary: the familiar visited purple, on
      theme, and 8.9:1 on white. */
   --_fd-link-visited: var(--fd-link-visited, 252 56% 44%);

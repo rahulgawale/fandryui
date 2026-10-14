@@ -21,30 +21,32 @@
 }
 
 /* Colored variants are soft, not solid, so a column of them doesn't
-   outweigh the data beside it. Status variants read their surface, border
-   and text tokens; primary derives the same three tiers from --fd-primary,
-   its text mixed toward --fd-text (7.3:1 with the default colors). The
-   min/max keep a large --fd-surface-tint a valid color-mix. */
+   outweigh the data beside it. Each derives its fill, border and text from
+   its own color, so a site's --fd-success (or any of the four) and its
+   --fd-bg / --fd-text theme it, dark themes included. The text is mixed
+   toward --fd-text to clear AA on the fill. The min/max keep a large
+   --fd-surface-tint a valid color-mix. */
 .badge--primary {
-  background: color-mix(in srgb, hsl(var(--_fd-primary)) var(--_fd-surface-tint), hsl(var(--_fd-bg)));
-  border-color: color-mix(in srgb, hsl(var(--_fd-primary)) min(var(--_fd-surface-tint) * 3, 100%), hsl(var(--_fd-bg)));
-  color: color-mix(in srgb, hsl(var(--_fd-primary)) max(100% - var(--_fd-surface-tint) * 2, 0%), hsl(var(--_fd-text)));
+  --_fd-badge-color: var(--_fd-primary);
 }
 
 .badge--success {
-  background: hsl(var(--_fd-success-surface));
-  border-color: hsl(var(--_fd-success-border));
-  color: hsl(var(--_fd-success-text));
+  --_fd-badge-color: var(--_fd-success);
 }
 
 .badge--warning {
-  background: hsl(var(--_fd-warning-surface));
-  border-color: hsl(var(--_fd-warning-border));
-  color: hsl(var(--_fd-warning-text));
+  --_fd-badge-color: var(--_fd-warning);
 }
 
 .badge--danger {
-  background: hsl(var(--_fd-danger-surface));
-  border-color: hsl(var(--_fd-danger-border));
-  color: hsl(var(--_fd-danger-text));
+  --_fd-badge-color: var(--_fd-danger);
+}
+
+.badge--primary,
+.badge--success,
+.badge--warning,
+.badge--danger {
+  background: color-mix(in srgb, hsl(var(--_fd-badge-color)) var(--_fd-surface-tint), hsl(var(--_fd-bg)));
+  border-color: color-mix(in srgb, hsl(var(--_fd-badge-color)) min(var(--_fd-surface-tint) * 3, 100%), hsl(var(--_fd-bg)));
+  color: color-mix(in srgb, hsl(var(--_fd-badge-color)) max(100% - var(--_fd-surface-tint) * 3, 0%), hsl(var(--_fd-text)));
 }

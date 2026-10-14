@@ -445,9 +445,6 @@ export const THEMING_TOKENS = `Color (H S% L%)   --fd-primary  --fd-primary-fore
                   --fd-success  --fd-success-foreground
                   --fd-warning  --fd-warning-foreground
                   --fd-danger  --fd-danger-foreground
-                  --fd-success-surface  --fd-success-border  --fd-success-text
-                  --fd-warning-surface  --fd-warning-border  --fd-warning-text
-                  --fd-danger-surface  --fd-danger-border  --fd-danger-text
                   --fd-bg  --fd-bg-muted  --fd-text  --fd-text-muted
                   --fd-border  --fd-border-focus  --fd-link-visited
 Borders           --fd-border-width  --fd-border-width-md  --fd-border-width-lg
