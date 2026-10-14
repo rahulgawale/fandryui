@@ -41,8 +41,8 @@
   padding: var(--fd-space-6);
   border-radius: calc(var(--fd-radius-lg) * 2);
   background:
-    radial-gradient(circle at 15% 0%, hsl(var(--brand-primary, 226 90% 50%) / 0.18), transparent 55%),
-    radial-gradient(circle at 85% 100%, hsl(var(--brand-accent, 162 72% 42%) / 0.18), transparent 55%),
+    radial-gradient(circle at 15% 0%, hsl(var(--site-primary) / 0.18), transparent 55%),
+    radial-gradient(circle at 85% 100%, hsl(var(--site-accent) / 0.18), transparent 55%),
     color-mix(in srgb, var(--fd-color-text) 3%, transparent);
 }
 
@@ -152,48 +152,16 @@
 }
 
 .sidebar {
-  width: 12rem;
+  --fd-sidebar-width: 12rem;
   flex-shrink: 0;
   border-right: 1px solid var(--fd-color-border);
-  padding: var(--fd-space-3);
-  display: flex;
-  flex-direction: column;
-  gap: var(--fd-space-1);
+  padding: var(--fd-space-2);
 }
 
-.nav-item {
-  padding: var(--fd-space-2) var(--fd-space-3);
-  border-radius: var(--fd-radius-md);
-  font-size: var(--fd-font-size-sm);
-  color: var(--fd-color-muted);
-  cursor: pointer;
-  user-select: none;
-}
-
-/* hover: hover excludes touch devices -- see componentsIndex.css's
-   identical rule for why (a tap otherwise leaves this stuck on). */
-@media (hover: hover) {
-  .nav-item:hover {
-    background: color-mix(in srgb, var(--fd-color-text) 4%, transparent);
-  }
-}
-
-.nav-item:focus-visible {
-  outline: 2px solid hsl(var(--brand-primary, 226 90% 50%));
-  outline-offset: 2px;
-}
-
-.nav-item--active,
-.nav-item--active:hover {
-  /* --brand-primary, not --fd-color-primary or --fd-primary -- the former
-     is a legacy global token, a different blue from the cobalt this
-     page actually renders with; the latter is
-     :host-scoped inside each fandry-* primitive's own shadow root and
-     isn't visible out here. --brand-primary is a plain custom property set
-     on <html> by heroDemoGrid.ts's "Apply theme" handler, with the same
-     literal default this always had, so this stays in sync with the rest
-     of the page's retheming. */
-  background: hsl(var(--brand-primary, 226 90% 50%));
+/* The current item is a solid brand fill, through fandry-sidebar-item's
+   `link current` part. --site-primary follows the hero's "Apply theme". */
+.sidebar fandry-sidebar-item::part(link current) {
+  background: hsl(var(--site-primary));
   color: var(--fd-color-on-primary);
 }
 
@@ -219,16 +187,16 @@
 .stat-card:nth-child(1)::part(base) {
   background: linear-gradient(
     135deg,
-    hsl(var(--brand-primary, 226 90% 50%) / 0.14),
-    hsl(var(--brand-primary, 226 90% 50%) / 0.02)
+    hsl(var(--site-primary) / 0.14),
+    hsl(var(--site-primary) / 0.02)
   );
 }
 
 .stat-card:nth-child(2)::part(base) {
   background: linear-gradient(
     135deg,
-    hsl(var(--brand-accent, 162 72% 42%) / 0.14),
-    hsl(var(--brand-accent, 162 72% 42%) / 0.02)
+    hsl(var(--site-accent) / 0.14),
+    hsl(var(--site-accent) / 0.02)
   );
 }
 
@@ -277,8 +245,8 @@
   border-bottom: none;
 }
 
-/* hover: hover excludes touch devices -- see .nav-item's identical rule
-   above for why (a tap otherwise leaves this stuck on). */
+/* hover: hover excludes touch devices -- see componentsIndex.css's
+   identical rule for why (a tap otherwise leaves this stuck on). */
 @media (hover: hover) {
   .order-row:hover {
     background: color-mix(in srgb, var(--fd-color-text) 3%, transparent);
@@ -286,7 +254,7 @@
 }
 
 .order-row:focus-visible {
-  outline: 2px solid hsl(var(--brand-primary, 226 90% 50%));
+  outline: 2px solid hsl(var(--site-primary));
   outline-offset: -2px;
 }
 
@@ -301,7 +269,7 @@
 }
 
 .status-filter:focus-visible {
-  outline: 2px solid hsl(var(--brand-primary, 226 90% 50%));
+  outline: 2px solid hsl(var(--site-primary));
   outline-offset: 2px;
 }
 

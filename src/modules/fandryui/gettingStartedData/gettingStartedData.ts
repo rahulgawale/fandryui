@@ -489,7 +489,7 @@ const THEMING: GettingStartedPage = {
   badge: 'css',
   title: 'Theming',
   description:
-    'Set `--fd-*` tokens to change colors, type, spacing, radius and motion for the whole site, one section or one component. Use `::part()` to restyle one element inside a component.',
+    'Set `--fd-*` tokens to theme colors, type, spacing, radius and motion for a site, a section or one component, and `::part()` to restyle one element.',
   sections: [
     {
       id: 'how',

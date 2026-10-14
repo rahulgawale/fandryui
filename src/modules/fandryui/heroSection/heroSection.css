@@ -9,12 +9,12 @@
      everything else instead of staying pinned to the default brand hues. */
   background: radial-gradient(
       circle at 15% 0%,
-      hsl(var(--brand-primary, 226 90% 50%) / 0.12),
+      hsl(var(--site-primary) / 0.12),
       transparent 55%
     ),
     radial-gradient(
       circle at 85% 10%,
-      hsl(var(--brand-accent, 162 72% 42%) / 0.12),
+      hsl(var(--site-accent) / 0.12),
       transparent 55%
     );
 }
@@ -40,8 +40,8 @@
 .gradient-text {
   background: linear-gradient(
     90deg,
-    hsl(var(--brand-primary, 226 90% 50%)),
-    color-mix(in srgb, hsl(var(--brand-accent, 162 72% 42%)) 82%, black)
+    hsl(var(--site-primary)),
+    color-mix(in srgb, hsl(var(--site-accent)) 82%, black)
   );
   -webkit-background-clip: text;
   background-clip: text;

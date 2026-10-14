@@ -393,7 +393,7 @@ fandry-pagination::part(status) {
 }`
     },
     category: 'Layout',
-    description: 'Previous/next navigation — as links between two adjacent pages, or as Previous / Page N of M / Next buttons for paging a collection.',
+    description: 'Previous/next navigation between pages. Links between two adjacent pages, or Previous / Page N of M / Next buttons for paging a collection.',
     props: [
       { name: 'previous-href', type: 'string', default: "''", description: 'Omit to hide the previous link (e.g. on the first page).' },
       { name: 'previous-label', type: 'string', default: "''", description: 'Title of the previous page.' },
@@ -1136,7 +1136,7 @@ fandry-input::part(help-text) {
     name: 'Link',
     tag: 'fandry-link',
     parts: ['base', 'link'],
-    states: ['default', 'muted', 'disabled'],
+    states: ['default', 'muted', 'disabled', 'current'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'link-theme',
@@ -1165,7 +1165,8 @@ fandry-link::part(link):hover {
       { name: 'href', type: 'string', default: "''", description: 'Link target.' },
       { name: 'target', type: "'_self' | '_blank' | '_parent' | '_top'", default: "'_self'", description: 'Native anchor target.' },
       { name: 'variant', type: "'default' | 'muted'", default: "'default'", description: 'Visual style.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Renders with no href, removing it from tab order.' }
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Renders with no href, removing it from tab order.' },
+      { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native `<a>` (e.g. `{ title: \'Docs\' }`). `{ ariaCurrent: \'page\' }` marks a nav\'s current page for assistive tech and adds the `current` state.' }
     ],
     code: `<fandry-link href="https://github.com/rahulgawale/fandryui" target="_blank">GitHub</fandry-link>`
   },
@@ -1768,7 +1769,7 @@ fandry-loading-overlay::part(label) {
 }`
     },
     category: 'Feedback',
-    description: 'Covers the page, or one panel, while it is busy: a backdrop that blocks the pointer and the keyboard, and a panel with a spinner and a label.',
+    description: 'Covers the page, or one panel, while it is busy. A backdrop blocks the pointer and the keyboard, and a panel shows a spinner and a label.',
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in lwc:if: it stays in the page so its label is announced, and so it can fade out.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport, and blocks keys inside its parent element. Put the overlay directly inside the panel it covers.' },

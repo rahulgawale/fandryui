@@ -85,8 +85,8 @@
      darker on each end) when nothing has been applied yet. */
   background: linear-gradient(
     90deg,
-    hsl(var(--brand-primary-dark, 226 80% 36%)),
-    hsl(var(--brand-accent-dark, 162 72% 28%))
+    hsl(var(--site-primary-dark)),
+    hsl(var(--site-accent-dark))
   );
 }
 

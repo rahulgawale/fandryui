@@ -161,7 +161,7 @@
         </fandry-text>
         <div class="start-grid">
           <template for:each={platforms} for:item="platform">
-            <fandry-card key={platform.slug} class="start-card" data-href={platform.href} onclick={handleStartCardClick}>
+            <fandry-card key={platform.slug} class="start-card">
               <fandry-badge>{platform.badge}</fandry-badge>
               <fandry-heading level="3">{platform.name}</fandry-heading>
               <fandry-text variant="muted" size="sm"><fandryui-doc-text text={platform.description}></fandryui-doc-text></fandry-text>
@@ -171,8 +171,8 @@
           </template>
         </div>
         <fandry-text variant="muted" size="sm" class="next">
-          Then make it your own with the <fandry-link href="/getting-started/theming">theming guide</fandry-link>,
-          or see more in <fandry-link href="/examples">Examples</fandry-link>.
+          Then make it your own with the <fandry-link href="/getting-started/theming/">theming guide</fandry-link>,
+          or see more in <fandry-link href="/examples/">Examples</fandry-link>.
         </fandry-text>
       </div>
     </section>

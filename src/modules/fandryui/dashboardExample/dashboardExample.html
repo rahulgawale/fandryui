@@ -22,6 +22,7 @@
                 <fandry-input
                   class="search-input"
                   placeholder="Search…"
+                  element-props={searchProps}
                   value={searchQuery}
                   oninput={handleSearchInput}
                 ></fandry-input>
@@ -44,23 +45,16 @@
             </div>
 
             <div class="body">
-              <aside class="sidebar">
-                <template for:each={navItemClasses} for:item="item">
-                  <div
-                    key={item.key}
-                    class={item.className}
-                    data-key={item.key}
-                    role="button"
-                    tabindex="0"
-                    onclick={handleNavClick}
-                    onkeydown={handleNavKeydown}
-                  >
+              <fandry-sidebar class="sidebar" aria-label="Portal">
+                <template for:each={navItemStates} for:item="item">
+                  <fandry-sidebar-item key={item.key} href="#" active={item.active} data-key={item.key} onclick={handleNavClick}>
                     {item.label}
-                  </div>
+                  </fandry-sidebar-item>
                 </template>
-              </aside>
+              </fandry-sidebar>
 
-              <main class="main">
+              <!-- A div: the page around this demo already has the one <main>. -->
+              <div class="main">
                 <template if:true={showDetail}>
                   <fandry-link variant="muted" href="#" class="back-link" onclick={handleBackFromDetail}>← Back</fandry-link>
 
@@ -156,7 +150,7 @@
                     </template>
                   </div>
                 </template>
-              </main>
+              </div>
             </div>
           </div>
         </div>

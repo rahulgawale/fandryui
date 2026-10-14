@@ -61,17 +61,18 @@
 /* Quiet slate by default (no underline, no visited color); cobalt on hover
    and for the current section. Mint is too light for text. */
 .nav-link::part(link) {
-  color: #334155;
+  color: hsl(var(--site-text-quiet));
   text-decoration: none;
   font-weight: var(--fd-font-weight-medium);
 }
 
+/* `current` is the state fandry-link adds for aria-current. */
 .nav-link::part(link):hover,
-.nav-link--current::part(link) {
-  color: hsl(var(--brand-primary, 226 90% 50%));
+.nav-link::part(link current) {
+  color: hsl(var(--site-primary));
 }
 
-.nav-link--current::part(link) {
+.nav-link::part(link current) {
   font-weight: var(--fd-font-weight-semibold);
 }
 

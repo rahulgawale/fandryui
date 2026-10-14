@@ -47,7 +47,7 @@ export default class WhyFandry extends LightningElement {
     name: page.name,
     badge: page.badge,
     description: page.description,
-    href: `/getting-started/${page.slug}`,
+    href: `/getting-started/${page.slug}/`,
     ...PLATFORM_START[page.slug]
   }));
 
@@ -110,23 +110,6 @@ export default class WhyFandry extends LightningElement {
       text: 'Fandry is a component library. It has no router, state store or rendering model of its own; your application stays plain LWC.'
     }
   ];
-
-  /* The whole card follows its link; the link stays the one focusable,
-     named target. Clicks on the link itself or the code (to select a
-     command) are left alone. */
-  handleStartCardClick(event: MouseEvent) {
-    const path = event.composedPath() as Element[];
-    const onLinkOrCode = path.some((el) => el.tagName === 'FANDRY-LINK' || el.tagName === 'FANDRYUI-CODE-BLOCK');
-    if (onLinkOrCode || window.getSelection()?.toString()) {
-      return;
-    }
-    const href = (event.currentTarget as HTMLElement).dataset.href ?? '';
-    if (event.metaKey || event.ctrlKey) {
-      window.open(href, '_blank', 'noopener');
-    } else {
-      window.location.assign(href);
-    }
-  }
 
   themes = THEME_PRESETS.map((preset) => ({ ...preset, style: themeStyle(preset) }));
 }

@@ -267,7 +267,7 @@ export default class ComponentDoc extends LightningElement {
       items: COMPONENTS.filter((component) => component.category === category).map((component) => ({
         slug: component.slug,
         name: component.name,
-        href: `/components/${component.slug}`,
+        href: `/components/${component.slug}/`,
         active: component.slug === this.slug
       }))
     }));
@@ -279,7 +279,7 @@ export default class ComponentDoc extends LightningElement {
 
   get previousHref(): string {
     const previous = this.adjacent.previous;
-    return previous ? `/components/${previous.slug}` : '';
+    return previous ? `/components/${previous.slug}/` : '';
   }
 
   get previousLabel(): string {
@@ -288,7 +288,7 @@ export default class ComponentDoc extends LightningElement {
 
   get nextHref(): string {
     const next = this.adjacent.next;
-    return next ? `/components/${next.slug}` : '';
+    return next ? `/components/${next.slug}/` : '';
   }
 
   get nextLabel(): string {

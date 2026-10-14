@@ -8,12 +8,12 @@
 main {
   background: radial-gradient(
       circle at 15% 0%,
-      hsl(var(--brand-primary, 226 90% 50%) / 0.12),
+      hsl(var(--site-primary) / 0.12),
       transparent 55%
     ),
     radial-gradient(
       circle at 85% 10%,
-      hsl(var(--brand-accent, 162 72% 42%) / 0.12),
+      hsl(var(--site-accent) / 0.12),
       transparent 55%
     );
 }

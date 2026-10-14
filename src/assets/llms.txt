@@ -1,0 +1,71 @@
+# Fandry UI
+
+> Fandry UI is a modern, composable UI component library for Salesforce Lightning Web Components (LWC). It runs on LWR, Experience Cloud and LWC OSS sites and in Salesforce orgs, and is built for custom, branded UI rather than the standard Salesforce look.
+
+Key facts:
+
+- Components are plain Lightning Web Components in native shadow DOM, shipped as readable LWC source (npm package `fandryui`), not a compiled runtime or a managed package. There is no second framework.
+- Theming: every component reads one token scale. Set public `--fd-*` CSS custom properties on `:root`, a section or one element.
+- Customization, from quickest to deepest: tokens; CSS parts and states (`::part(control checked)`); slots and a `messages` prop for text; extending a component's template-less state class; copying the component's source.
+- Components do not render `lightning-*` base components or depend on SLDS, so Salesforce changing those doesn't change a site's look. Fandry still depends on LWC, LWR and Lightning Web Security.
+- Install on LWR / LWC OSS: `npm install fandryui` then `npx fandry init`. On Salesforce DX: `npm install --save-dev fandryui`, `npx fandry init`, then `npx fandry add <component>`, which copies `c`-namespace source into the project.
+- Trade-offs: fewer components than Lightning Base Components; it does not look like Lightning Experience; customization goes through composition rather than many props. MIT licensed.
+- Source: https://github.com/rahulgawale/fandryui
+
+## Docs
+
+- [Fandry UI: composable UI components for Salesforce LWC](https://fandryui.forcetrails.com/): The flexibility of modern UI development with the simplicity of LWC. A themeable, composable component library for Salesforce LWC, LWR and Experience Cloud.
+- [Why Fandry UI exists](https://fandryui.forcetrails.com/why-fandry/): What Fandry UI is for, what it trades away, and how it differs from Lightning Base Components: your own design system, composition, and components you control.
+- [Getting started](https://fandryui.forcetrails.com/getting-started/): One source, one npm package, two platforms. Pick the one you build on; the components are the same.
+- [Getting started with LWR / LWC OSS](https://fandryui.forcetrails.com/getting-started/lwr-oss/): Install one npm package, point your project at it, and use <fandry-*> components. Your bundler ships only the ones you use.
+- [Getting started on Salesforce](https://fandryui.forcetrails.com/getting-started/salesforce/): The platform has no bundler and cannot import npm packages, so the CLI copies components into your project as source you own, with everything they depend on.
+- [Theming](https://fandryui.forcetrails.com/getting-started/theming/): Set --fd-* tokens to theme colors, type, spacing, radius and motion for a site, a section or one component, and ::part() to restyle one element.
+
+## Components
+
+- [Components](https://fandryui.forcetrails.com/components/): Every Fandry UI component for Salesforce LWC, with a live example, its props, parts and the code to use it.
+- [Breadcrumb component for LWC](https://fandryui.forcetrails.com/components/breadcrumb/): A navigation trail of ancestor pages — pair with fandry-breadcrumb-item for each crumb. A Fandry UI component for Salesforce LWC.
+- [Breadcrumb Item component for LWC](https://fandryui.forcetrails.com/components/breadcrumb-item/): A single crumb inside fandry-breadcrumb, with a current-page state. A Fandry UI component for Salesforce LWC.
+- [Card component for LWC](https://fandryui.forcetrails.com/components/card/): A bordered, padded surface for grouping related content. A Fandry UI component for Salesforce LWC.
+- [Divider component for LWC](https://fandryui.forcetrails.com/components/divider/): A horizontal or vertical rule for separating content. A Fandry UI component for Salesforce LWC.
+- [Pagination component for LWC](https://fandryui.forcetrails.com/components/pagination/): Previous/next navigation between pages. A Fandry UI component for Salesforce LWC.
+- [Sidebar component for LWC](https://fandryui.forcetrails.com/components/sidebar/): A vertical navigation rail — pair with fandry-sidebar-item for links. A Fandry UI component for Salesforce LWC.
+- [Sidebar Item component for LWC](https://fandryui.forcetrails.com/components/sidebar-item/): A single navigation row for fandry-sidebar, with an active/current-page state. A Fandry UI component for Salesforce LWC.
+- [Heading component for LWC](https://fandryui.forcetrails.com/components/heading/): A semantically-leveled heading, sized off the shared type scale. A Fandry UI component for Salesforce LWC.
+- [Icon component for LWC](https://fandryui.forcetrails.com/components/icon/): A sizing/color frame around a slotted glyph — brings no icon set of its own. A Fandry UI component for Salesforce LWC.
+- [Label component for LWC](https://fandryui.forcetrails.com/components/label/): The text of a form label, with an optional required indicator. A Fandry UI component for Salesforce LWC.
+- [Text component for LWC](https://fandryui.forcetrails.com/components/text/): Body text — pick the rendered tag and size independently. A Fandry UI component for Salesforce LWC.
+- [Button component for LWC](https://fandryui.forcetrails.com/components/button/): A native button with default/secondary/ghost variants and three sizes. A Fandry UI component for Salesforce LWC.
+- [Checkbox component for LWC](https://fandryui.forcetrails.com/components/checkbox/): A checkbox with a built-in label and indeterminate support. A Fandry UI component for Salesforce LWC.
+- [Input component for LWC](https://fandryui.forcetrails.com/components/input/): A text input with a label, help text, and prefix/suffix slots. A Fandry UI component for Salesforce LWC.
+- [Link component for LWC](https://fandryui.forcetrails.com/components/link/): Anchor styling with default/muted variants and a disabled state. A Fandry UI component for Salesforce LWC.
+- [Radio component for LWC](https://fandryui.forcetrails.com/components/radio/): A single radio input — pair with fandry-radio-group for the roving-tabindex group. A Fandry UI component for Salesforce LWC.
+- [Radio Group component for LWC](https://fandryui.forcetrails.com/components/radio-group/): A roving-tabindex container for a set of fandry-radio buttons. A Fandry UI component for Salesforce LWC.
+- [Select component for LWC](https://fandryui.forcetrails.com/components/select/): A custom listbox-style select, with optional grouped options. A Fandry UI component for Salesforce LWC.
+- [Switch component for LWC](https://fandryui.forcetrails.com/components/switch/): A toggle switch with a built-in label. A Fandry UI component for Salesforce LWC.
+- [Textarea component for LWC](https://fandryui.forcetrails.com/components/textarea/): A multi-line text input with a label and help text. A Fandry UI component for Salesforce LWC.
+- [Alert component for LWC](https://fandryui.forcetrails.com/components/alert/): An inline banner for a status message, with an optional title. A Fandry UI component for Salesforce LWC.
+- [Badge component for LWC](https://fandryui.forcetrails.com/components/badge/): A small status/label pill. A Fandry UI component for Salesforce LWC.
+- [Progress component for LWC](https://fandryui.forcetrails.com/components/progress/): A determinate or indeterminate progress bar. A Fandry UI component for Salesforce LWC.
+- [Skeleton component for LWC](https://fandryui.forcetrails.com/components/skeleton/): A loading placeholder shaped like the content it stands in for. A Fandry UI component for Salesforce LWC.
+- [Spinner component for LWC](https://fandryui.forcetrails.com/components/spinner/): A loading spinner in three sizes, with optional text beside it. A Fandry UI component for Salesforce LWC.
+- [Loading Overlay component for LWC](https://fandryui.forcetrails.com/components/loading-overlay/): Covers the page, or one panel, while it is busy. A Fandry UI component for Salesforce LWC.
+- [Toast component for LWC](https://fandryui.forcetrails.com/components/toast/): An auto-dismissing notification — pair with fandry-toast-viewport for placement. A Fandry UI component for Salesforce LWC.
+- [Toast Viewport component for LWC](https://fandryui.forcetrails.com/components/toast-viewport/): A fixed or contained stacking region that positions fandry-toast. A Fandry UI component for Salesforce LWC.
+- [Tooltip component for LWC](https://fandryui.forcetrails.com/components/tooltip/): A hover/focus description bubble for a slotted trigger. A Fandry UI component for Salesforce LWC.
+- [Avatar component for LWC](https://fandryui.forcetrails.com/components/avatar/): A circular avatar with an image and initials fallback. A Fandry UI component for Salesforce LWC.
+- [Dialog component for LWC](https://fandryui.forcetrails.com/components/dialog/): A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger. A Fandry UI component for Salesforce LWC.
+- [Menu component for LWC](https://fandryui.forcetrails.com/components/menu/): A listbox-style menu — composes with fandry-popover for its own trigger and positioning. A Fandry UI component for Salesforce LWC.
+- [Menu Item component for LWC](https://fandryui.forcetrails.com/components/menu-item/): A single selectable row inside fandry-menu. A Fandry UI component for Salesforce LWC.
+- [Popover component for LWC](https://fandryui.forcetrails.com/components/popover/): An anchored floating panel — owns positioning, not the trigger or content. A Fandry UI component for Salesforce LWC.
+- [Table component for LWC](https://fandryui.forcetrails.com/components/table/): A data table with sorting, pagination, selection, and filtering — wraps @tanstack/table-core. A Fandry UI component for Salesforce LWC.
+- [Combobox component for LWC](https://fandryui.forcetrails.com/components/combobox/): A searchable select — type to narrow the options, then pick one. A Fandry UI component for Salesforce LWC.
+- [Command component for LWC](https://fandryui.forcetrails.com/components/command/): A command palette — a modal search box over a list of actions. A Fandry UI component for Salesforce LWC.
+- [Lookup component for LWC](https://fandryui.forcetrails.com/components/lookup/): Find and pick a record — one by default, or several with multiple. A Fandry UI component for Salesforce LWC.
+
+## Blocks and examples
+
+- [Blocks](https://fandryui.forcetrails.com/blocks/): Working pages and patterns built from Fandry UI components, live on their pages and installable with the same command as any component.
+- [Data table block](https://fandryui.forcetrails.com/blocks/data-table/): A data table for Salesforce LWC with search, filters, pagination, selection, inline and multi-record editing, and save hooks, built from Fandry UI components.
+- [Form block](https://fandryui.forcetrails.com/blocks/form/): A form for Salesforce LWC with validation, read and edit modes, and a save with feedback, built from Fandry UI components.
+- [Examples](https://fandryui.forcetrails.com/examples/): Real, interactive UI patterns built entirely from Fandry UI components: dashboards, forms, tables and more, ready to retheme with tokens.

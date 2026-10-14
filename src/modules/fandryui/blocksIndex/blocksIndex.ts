@@ -6,7 +6,7 @@ export default class BlocksIndex extends LightningElement {
   blocks = [
     {
       slug: 'data-table',
-      href: '/blocks/data-table',
+      href: '/blocks/data-table/',
       name: 'Data table',
       description:
         'A complete table screen: find, filter, page, select, act on rows, edit them in place, and save with feedback.',
@@ -14,7 +14,7 @@ export default class BlocksIndex extends LightningElement {
     },
     {
       slug: 'form',
-      href: '/blocks/form',
+      href: '/blocks/form/',
       name: 'Form',
       description:
         'A form that reads first and edits on demand: fields, validation that speaks up at the right moment, and a save with feedback.',

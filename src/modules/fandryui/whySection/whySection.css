@@ -99,7 +99,7 @@
   padding: var(--fd-space-5);
   border-radius: var(--fd-radius-lg);
   /* The default surface; an identity's own surface comes in as inline style. */
-  background: hsl(var(--brand-primary, 226 90% 50%) / 0.06);
+  background: hsl(var(--site-primary) / 0.06);
   transition: background-color var(--fd-duration-normal, 200ms) ease;
 }
 
@@ -187,8 +187,8 @@
 
 @media (hover: hover) {
   .more:hover::part(link) {
-    background: hsl(var(--brand-primary, 226 90% 50%) / 0.06);
-    border-color: hsl(var(--brand-primary, 226 90% 50%));
+    background: hsl(var(--site-primary) / 0.06);
+    border-color: hsl(var(--site-primary));
     transform: translateY(-1px);
   }
 }

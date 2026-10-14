@@ -143,6 +143,16 @@ code {
 
   --fd-color-focus: #2563eb;
 
+  /* The site's brand colors (H S% L%), for its own CSS. They follow
+     --brand-*, which heroDemoGrid's "Apply theme" sets on <html>; --brand-*
+     itself isn't declared here, since every fandry component reads it. */
+  --site-primary: var(--brand-primary, 226 90% 50%);
+  --site-primary-dark: var(--brand-primary-dark, 226 80% 36%);
+  --site-accent: var(--brand-accent, 162 72% 42%);
+  --site-accent-dark: var(--brand-accent-dark, 162 72% 28%);
+  /* Nav and other quiet UI text on the light site surface. */
+  --site-text-quiet: 215 25% 27%;
+
   --fd-radius-sm: 4px;
   --fd-radius-md: 6px;
   --fd-radius-lg: 8px;

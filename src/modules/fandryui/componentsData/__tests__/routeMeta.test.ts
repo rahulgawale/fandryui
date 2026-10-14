@@ -18,6 +18,8 @@ interface Route {
 const config = JSON.parse(readFileSync(resolve(ROOT, 'lwr.config.json'), 'utf8')) as { routes: Route[] };
 const routes = config.routes;
 const plain = (text: string) => text.replace(/`/g, '');
+// A component's first sentence: its page has the rest.
+const firstSentence = (text: string) => text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;
 
 describe('route metadata', () => {
   it.each(routes.map((route) => [route.path, route]))('%s has a title, description and canonical path', (_, route) => {
@@ -26,6 +28,8 @@ describe('route metadata', () => {
     expect(title!.length).toBeLessThanOrEqual(60);
     expect(description).toBeTruthy();
     expect(description).not.toMatch(/`/);
+    // Past ~160 characters a search result cuts the description off.
+    expect(description!.length).toBeLessThanOrEqual(160);
     // The live site redirects /x to /x/, so the canonical URL ends in a slash.
     expect(path).toBe((route as Route).path === '/' ? '/' : `${(route as Route).path}/`);
   });
@@ -42,7 +46,7 @@ describe('route metadata', () => {
       const route = routes.find((r) => r.path === `/components/${component.slug}`);
       expect(route?.properties).toEqual({
         title: `${component.name} component for LWC | Fandry UI`,
-        description: `${plain(component.description)} A Fandry UI component for Salesforce LWC, with a live example, props, parts and code.`,
+        description: `${firstSentence(plain(component.description))} A Fandry UI component for Salesforce LWC.`,
         path: `/components/${component.slug}/`
       });
     }
@@ -61,5 +65,25 @@ describe('sitemap.xml', () => {
     const sitemap = readFileSync(resolve(ROOT, 'src/assets/sitemap.xml'), 'utf8');
     const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, url]) => url);
     expect(listed).toEqual(routes.map((route) => `${SITE}${route.properties?.path}`));
+  });
+});
+
+describe('llms.txt', () => {
+  /* The plain-text index AI crawlers read, since they don't run the
+     site's JavaScript. Every page, with its own description. */
+  it('lists every route with its canonical URL and description', () => {
+    const llms = readFileSync(resolve(ROOT, 'src/assets/llms.txt'), 'utf8');
+    for (const route of routes) {
+      expect(llms).toContain(`](${SITE}${route.properties?.path}): ${route.properties?.description}\n`);
+    }
+  });
+});
+
+describe('structured data', () => {
+  it('is valid JSON-LD in the layout', () => {
+    const layout = readFileSync(resolve(ROOT, 'src/layouts/index.html'), 'utf8');
+    const [, json] = layout.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)!;
+    const data = JSON.parse(json);
+    expect(data['@graph'].map((node: { '@type': string }) => node['@type'])).toEqual(['WebSite', 'SoftwareSourceCode', 'Person']);
   });
 });

@@ -20,8 +20,8 @@
   padding: var(--fd-space-4);
   background: linear-gradient(
     135deg,
-    hsl(var(--brand-primary-dark, 226 80% 36%)),
-    hsl(var(--brand-accent-dark, 162 72% 28%))
+    hsl(var(--site-primary-dark)),
+    hsl(var(--site-accent-dark))
   );
   color: hsl(220 14% 96%);
   border-radius: var(--fd-radius-md);
@@ -37,7 +37,7 @@
 }
 
 .code-block:focus-visible {
-  outline: 2px solid hsl(var(--brand-primary, 226 90% 50%));
+  outline: 2px solid hsl(var(--site-primary));
   outline-offset: 2px;
 }
 

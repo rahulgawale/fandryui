@@ -61,8 +61,8 @@
   height: 2rem;
   border-radius: 50%;
   font-weight: 600;
-  background: hsl(var(--brand-primary, 226 90% 50%) / 0.12);
-  color: hsl(var(--brand-primary-dark, 226 80% 36%));
+  background: hsl(var(--site-primary) / 0.12);
+  color: hsl(var(--site-primary-dark));
 }
 
 .rung-title {
@@ -166,7 +166,7 @@
 .start {
   padding: calc(var(--fd-space-6) * 1.5) 0 calc(var(--fd-space-6) * 2);
   border-top: 1px solid var(--fd-color-border);
-  background: radial-gradient(circle at 50% 0%, hsl(var(--brand-primary, 226 90% 50%) / 0.06), transparent 60%);
+  background: radial-gradient(circle at 50% 0%, hsl(var(--site-primary) / 0.06), transparent 60%);
 }
 
 .start-inner {
@@ -190,11 +190,8 @@
 }
 
 /* The whole card is clickable (handleStartCardClick). */
-.start-card {
-  cursor: pointer;
-}
-
 .start-card::part(base) {
+  position: relative;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
@@ -223,14 +220,30 @@
 }
 
 .start-code {
+  position: relative;
+  z-index: 1;
   align-self: stretch;
   margin-top: auto;
-  cursor: text;
 }
 
 .start-cta::part(link) {
   font-weight: var(--fd-font-weight-semibold);
   text-decoration: none;
+}
+
+/* The whole card follows its link, with no script: the link's box is
+   stretched over the card. The code sits above it, so a command can still
+   be selected. */
+.start-cta::part(link)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* fandry-link's hover filter would make the <a> the box its ::after fills,
+   shrinking it to the link mid-click. The card's lift is the hover cue. */
+.start-cta::part(link):hover {
+  filter: none;
 }
 
 .next {

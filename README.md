@@ -32,7 +32,7 @@ This is infrastructure, not a component zoo — the docs site around it exists t
 - Not a React replacement, and not React pretending to be LWC
 - Not independent of the platform: it runs on LWC, LWR and Lightning Web Security like any other component
 
-Why it exists, and what it trades away: [/why-fandry](https://fandryui.forcetrails.com/why-fandry).
+Why it exists, and what it trades away: [/why-fandry](https://fandryui.forcetrails.com/why-fandry/).
 
 The primitives themselves are deliberately small and un-flashy — see `src/core/CORE_BOUNDARIES.md`. The marketing site is where flashy is allowed, since its whole job is showing what the primitives can compose into.
 

@@ -60,11 +60,11 @@ fandryui-layout-patterns-example {
 .lp-stage {
   padding: var(--fd-space-6);
   border-radius: calc(var(--fd-radius-lg) * 2);
-  border: 1px dashed color-mix(in srgb, hsl(var(--brand-primary, 226 90% 50%)) 35%, transparent);
-  background-color: hsl(var(--brand-primary, 226 90% 50%) / 0.04);
+  border: 1px dashed color-mix(in srgb, hsl(var(--site-primary)) 35%, transparent);
+  background-color: hsl(var(--site-primary) / 0.04);
   background-image:
-    linear-gradient(hsl(var(--brand-primary, 226 90% 50%) / 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(var(--brand-primary, 226 90% 50%) / 0.08) 1px, transparent 1px);
+    linear-gradient(hsl(var(--site-primary) / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--site-primary) / 0.08) 1px, transparent 1px);
   background-size: var(--fd-space-6) var(--fd-space-6);
 }
 

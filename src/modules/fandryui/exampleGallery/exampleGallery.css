@@ -146,8 +146,8 @@
   width: 3rem;
   height: 3rem;
   border-radius: var(--fd-radius-lg);
-  background: hsl(var(--brand-primary, 226 90% 50%) / 0.1);
-  color: hsl(var(--brand-primary-dark, 226 80% 36%));
+  background: hsl(var(--site-primary) / 0.1);
+  color: hsl(var(--site-primary-dark));
 }
 
 /* -------- Notification list -------- */
