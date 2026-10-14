@@ -92,6 +92,34 @@ describe('fandry-lookup', () => {
       expect(handler.mock.calls[0][0].detail).toEqual({ query: 'acm' });
     });
 
+    it('waits as long as `debounce` says', async () => {
+      jest.useFakeTimers();
+      const element = create({ debounce: '400' });
+      const handler = jest.fn();
+      element.addEventListener('search', handler);
+
+      await type(element, 'ac');
+      jest.advanceTimersByTime(300);
+      expect(handler).not.toHaveBeenCalled();
+
+      jest.advanceTimersByTime(100);
+      expect(handler).toHaveBeenCalledTimes(1);
+    });
+
+    it('falls back to 250ms for a debounce that is not a delay', async () => {
+      jest.useFakeTimers();
+      const element = create({ debounce: 'soon' });
+      const handler = jest.fn();
+      element.addEventListener('search', handler);
+
+      await type(element, 'ac');
+      jest.advanceTimersByTime(249);
+      expect(handler).not.toHaveBeenCalled();
+
+      jest.advanceTimersByTime(1);
+      expect(handler).toHaveBeenCalledTimes(1);
+    });
+
     it('drops a pending search when the list closes', async () => {
       jest.useFakeTimers();
       const element = create();

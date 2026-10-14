@@ -40,8 +40,7 @@ function toIds(value: string | string[] | null | undefined): string[] {
   return list.filter((id) => typeof id === 'string' && id !== '');
 }
 
-// How long typing must pause before `search` fires. Fixed, not a prop: a
-// consumer that wants something different can debounce on their side.
+// How long typing must pause before `search` fires, unless `debounce` says otherwise.
 const SEARCH_DEBOUNCE_MS = 250;
 
 /** Text the lookup announces that isn't markup; see `messages`. */
@@ -160,6 +159,19 @@ export default class FdLookup extends FdSearchState {
    * the same as the native `multiple` attribute.
    */
   @api multiple = false;
+
+  /**
+   * Milliseconds typing must pause before `search` fires. Opening the list
+   * still searches at once.
+   */
+  @api debounce = SEARCH_DEBOUNCE_MS;
+
+  // An attribute arrives as a string; anything that isn't a delay of 0 or
+  // more falls back to the default.
+  private get debounceMs(): number {
+    const ms = Number(this.debounce);
+    return Number.isFinite(ms) && ms >= 0 ? ms : SEARCH_DEBOUNCE_MS;
+  }
 
   // The one source of truth for what's selected. `value`, `record` and
   // `records` are three ways in and out of it. Until `value` is set,
@@ -535,7 +547,7 @@ export default class FdLookup extends FdSearchState {
   private scheduleSearch() {
     this.clearSearchTimer();
     this.searchPending = true;
-    this.searchTimer = setTimeout(() => this.dispatchSearch(), SEARCH_DEBOUNCE_MS);
+    this.searchTimer = setTimeout(() => this.dispatchSearch(), this.debounceMs);
   }
 
   // Stops the timer only. `searchPending` is left alone on purpose: see
