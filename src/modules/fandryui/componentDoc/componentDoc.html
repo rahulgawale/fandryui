@@ -34,6 +34,9 @@
               The same component with a few <code>--fd-*</code> tokens set around it and its parts restyled. The code is
               under Parts below.
             </fandry-text>
+            <template if:true={customizeNote}>
+              <fandry-text variant="muted" size="sm" class="section-note">{customizeNote}</fandry-text>
+            </template>
             <fandry-card class="demo-frame">
               <lwc:component lwc:is={customizeDemo}></lwc:component>
             </fandry-card>

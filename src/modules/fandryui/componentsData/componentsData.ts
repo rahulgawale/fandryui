@@ -11,6 +11,8 @@ export interface ComponentExample {
   title: string;
   demo: string;
   code: string;
+  // Anything the example changes besides tokens and parts.
+  note?: string;
 }
 
 // A short explanation shown in an info alert under the main code block:
@@ -2282,6 +2284,7 @@ fandry-table::part(row):hover {
     customize: {
       title: 'Custom colors and parts',
       demo: 'lookup-theme',
+      note: 'It also sets `debounce="300"`, so `search` fires 300ms after typing pauses instead of the default 250ms.',
       code: `<!-- template -->
 <div class="brand narrow">
   <fandry-lookup
