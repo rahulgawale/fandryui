@@ -17,20 +17,20 @@
    "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/home/module/esm/v/0_24_1/s/sha256--cnWxDfWkzU6pMncUvqRjIMHq8uQEnM5Cna7l9Q2kDQ/bundle_@lwrjs_app-service_home_module_esm.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_23_2/s/sha256-Cp1Sf2qAvsKjuhJObR50iy4k5Z_ademjRxzXYcU6DQI/bundle_fandryui_home.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_24_0/s/sha256-vE2FGTj79jT-QNCsITob79UAZJIecIIbO1nRRdJdQsc/bundle_fandryui_home.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fhome%2Fv%2F0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_23_2/s/sha256-Cp1Sf2qAvsKjuhJObR50iy4k5Z_ademjRxzXYcU6DQI/bundle_fandryui_home.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fhome%2Fv%2F0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_24_0/s/sha256-vE2FGTj79jT-QNCsITob79UAZJIecIIbO1nRRdJdQsc/bundle_fandryui_home.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_23_2/s/sha256-Cp1Sf2qAvsKjuhJObR50iy4k5Z_ademjRxzXYcU6DQI/bundle_fandryui_home.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_24_0/s/sha256-vE2FGTj79jT-QNCsITob79UAZJIecIIbO1nRRdJdQsc/bundle_fandryui_home.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fhome",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_23_2/s/sha256-Cp1Sf2qAvsKjuhJObR50iy4k5Z_ademjRxzXYcU6DQI/bundle_fandryui_home.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/home/v/0_24_0/s/sha256-vE2FGTj79jT-QNCsITob79UAZJIecIIbO1nRRdJdQsc/bundle_fandryui_home.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/lwr/esmLoader/v/0_24_1",
@@ -93,20 +93,20 @@
    "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/getting-started/module/esm/v/0_24_1/s/sha256-7Eyzyt_NV7EYCjWr3SWl-gbXXjrx7jyJqeN5izcV0Dc/bundle_@lwrjs_app-service_getting-started_module_esm.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_23_2/s/sha256-IrB3fM_zJaAFdG-DO1fx3mV4K5sOyGqakXG5TjBtheM/bundle_fandryui_gettingStarted.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_24_0/s/sha256-6e0DcptxwQMjKVcD2Z5eTYh-At-7bw-U-ojzpnkMe0I/bundle_fandryui_gettingStarted.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FgettingStarted%2Fv%2F0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_23_2/s/sha256-IrB3fM_zJaAFdG-DO1fx3mV4K5sOyGqakXG5TjBtheM/bundle_fandryui_gettingStarted.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FgettingStarted%2Fv%2F0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_24_0/s/sha256-6e0DcptxwQMjKVcD2Z5eTYh-At-7bw-U-ojzpnkMe0I/bundle_fandryui_gettingStarted.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_23_2/s/sha256-IrB3fM_zJaAFdG-DO1fx3mV4K5sOyGqakXG5TjBtheM/bundle_fandryui_gettingStarted.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_24_0/s/sha256-6e0DcptxwQMjKVcD2Z5eTYh-At-7bw-U-ojzpnkMe0I/bundle_fandryui_gettingStarted.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FgettingStarted",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_23_2/s/sha256-IrB3fM_zJaAFdG-DO1fx3mV4K5sOyGqakXG5TjBtheM/bundle_fandryui_gettingStarted.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/gettingStarted/v/0_24_0/s/sha256-6e0DcptxwQMjKVcD2Z5eTYh-At-7bw-U-ojzpnkMe0I/bundle_fandryui_gettingStarted.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/getting-started-lwr-oss/module/esm/v/0_24_1",
@@ -173,20 +173,20 @@
    "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/components/module/esm/v/0_24_1/s/sha256-a38jKeIxW0ysjxQ8ZntRdbQNiIadWQexBKwI8LX7Cps/bundle_@lwrjs_app-service_components_module_esm.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_23_2/s/sha256-3vXKUC3TBXyFym4bit4aWSqzqlRjEu5KB5O-tz43W_k/bundle_fandryui_componentsIndex.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_24_0/s/sha256-psG720nRwHHhO9HnaG9_My3mxJCaXhJskWSWTG5ttxM/bundle_fandryui_componentsIndex.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentsIndex%2Fv%2F0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_23_2/s/sha256-3vXKUC3TBXyFym4bit4aWSqzqlRjEu5KB5O-tz43W_k/bundle_fandryui_componentsIndex.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentsIndex%2Fv%2F0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_24_0/s/sha256-psG720nRwHHhO9HnaG9_My3mxJCaXhJskWSWTG5ttxM/bundle_fandryui_componentsIndex.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_23_2/s/sha256-3vXKUC3TBXyFym4bit4aWSqzqlRjEu5KB5O-tz43W_k/bundle_fandryui_componentsIndex.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_24_0/s/sha256-psG720nRwHHhO9HnaG9_My3mxJCaXhJskWSWTG5ttxM/bundle_fandryui_componentsIndex.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentsIndex",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_23_2/s/sha256-3vXKUC3TBXyFym4bit4aWSqzqlRjEu5KB5O-tz43W_k/bundle_fandryui_componentsIndex.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentsIndex/v/0_24_0/s/sha256-psG720nRwHHhO9HnaG9_My3mxJCaXhJskWSWTG5ttxM/bundle_fandryui_componentsIndex.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/component-breadcrumb/module/esm/v/0_24_1",
@@ -205,20 +205,20 @@
    "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/component-breadcrumb/module/esm/v/0_24_1/s/sha256-r-BQ0LJyaVRd0Z43NhZdMarIQIzuSU09MVv_3v63kC0/bundle_@lwrjs_app-service_component-breadcrumb_module_esm.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_23_2/s/sha256-b4ssETKH_b-YtEkoYN9cH5hD9Um0TL9Tgz62TAmXwNc/bundle_fandryui_componentDoc.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_24_0/s/sha256--bfah6C80iA56PQio3DSOFS65nUPxyLWo_fkcgmwV84/bundle_fandryui_componentDoc.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_23_2/s/sha256-b4ssETKH_b-YtEkoYN9cH5hD9Um0TL9Tgz62TAmXwNc/bundle_fandryui_componentDoc.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_24_0/s/sha256--bfah6C80iA56PQio3DSOFS65nUPxyLWo_fkcgmwV84/bundle_fandryui_componentDoc.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_23_2/s/sha256-b4ssETKH_b-YtEkoYN9cH5hD9Um0TL9Tgz62TAmXwNc/bundle_fandryui_componentDoc.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_24_0/s/sha256--bfah6C80iA56PQio3DSOFS65nUPxyLWo_fkcgmwV84/bundle_fandryui_componentDoc.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_23_2/s/sha256-b4ssETKH_b-YtEkoYN9cH5hD9Um0TL9Tgz62TAmXwNc/bundle_fandryui_componentDoc.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/componentDoc/v/0_24_0/s/sha256--bfah6C80iA56PQio3DSOFS65nUPxyLWo_fkcgmwV84/bundle_fandryui_componentDoc.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/component-breadcrumb-item/module/esm/v/0_24_1",
@@ -829,20 +829,20 @@
    "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/blocks/module/esm/v/0_24_1/s/sha256-eNrg3Fk1XhtX8Qc42hGyi7lISOjn8JXtzVQh8RyWxSg/bundle_@lwrjs_app-service_blocks_module_esm.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_23_2/s/sha256-FSycwx4QLQUY8lBrB0WZ2lP2szfeWAOAnawbVnpCCac/bundle_fandryui_blocksIndex.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_24_0/s/sha256-visBvZRH-A3Fy_FkEVFshLU_ctazvy5YO2oRp4P2uJo/bundle_fandryui_blocksIndex.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblocksIndex%2Fv%2F0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_23_2/s/sha256-FSycwx4QLQUY8lBrB0WZ2lP2szfeWAOAnawbVnpCCac/bundle_fandryui_blocksIndex.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblocksIndex%2Fv%2F0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_24_0/s/sha256-visBvZRH-A3Fy_FkEVFshLU_ctazvy5YO2oRp4P2uJo/bundle_fandryui_blocksIndex.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_23_2/s/sha256-FSycwx4QLQUY8lBrB0WZ2lP2szfeWAOAnawbVnpCCac/bundle_fandryui_blocksIndex.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_24_0/s/sha256-visBvZRH-A3Fy_FkEVFshLU_ctazvy5YO2oRp4P2uJo/bundle_fandryui_blocksIndex.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblocksIndex",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_23_2/s/sha256-FSycwx4QLQUY8lBrB0WZ2lP2szfeWAOAnawbVnpCCac/bundle_fandryui_blocksIndex.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blocksIndex/v/0_24_0/s/sha256-visBvZRH-A3Fy_FkEVFshLU_ctazvy5YO2oRp4P2uJo/bundle_fandryui_blocksIndex.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/block-data-table/module/esm/v/0_24_1",
@@ -861,20 +861,20 @@
    "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/block-data-table/module/esm/v/0_24_1/s/sha256-trmtQpHcerH2c5mE2K2cUfNgR48Ch6w8X7Omikw5bIw/bundle_@lwrjs_app-service_block-data-table_module_esm.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_23_2/s/sha256-0pX9KzOH1EotbwPiI4MOPxaEW88lr2tOsVoD9M_UFM8/bundle_fandryui_blockDataTable.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_24_0/s/sha256-8DrLnglHeeaqDdxQ47CGdvLN4QeLKGSqPN63mQ9XpvA/bundle_fandryui_blockDataTable.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockDataTable%2Fv%2F0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_23_2/s/sha256-0pX9KzOH1EotbwPiI4MOPxaEW88lr2tOsVoD9M_UFM8/bundle_fandryui_blockDataTable.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockDataTable%2Fv%2F0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_24_0/s/sha256-8DrLnglHeeaqDdxQ47CGdvLN4QeLKGSqPN63mQ9XpvA/bundle_fandryui_blockDataTable.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_23_2/s/sha256-0pX9KzOH1EotbwPiI4MOPxaEW88lr2tOsVoD9M_UFM8/bundle_fandryui_blockDataTable.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_24_0/s/sha256-8DrLnglHeeaqDdxQ47CGdvLN4QeLKGSqPN63mQ9XpvA/bundle_fandryui_blockDataTable.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockDataTable",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_23_2/s/sha256-0pX9KzOH1EotbwPiI4MOPxaEW88lr2tOsVoD9M_UFM8/bundle_fandryui_blockDataTable.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockDataTable/v/0_24_0/s/sha256-8DrLnglHeeaqDdxQ47CGdvLN4QeLKGSqPN63mQ9XpvA/bundle_fandryui_blockDataTable.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/block-form/module/esm/v/0_24_1",
@@ -893,20 +893,20 @@
    "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/block-form/module/esm/v/0_24_1/s/sha256-ZIDkun3RClOI58Y-RtLIV54XHukkkqSmt5saBzNni_I/bundle_@lwrjs_app-service_block-form_module_esm.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_23_2/s/sha256-gp8fYBLOT0JjpkCmOZ32K8qLzqusUSMUAT5Cqpe3fGk/bundle_fandryui_blockForm.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_24_0/s/sha256-NA81BYECdvdY2pFF4_3ay240l6PmzDDClkaqEOkwXRE/bundle_fandryui_blockForm.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockForm%2Fv%2F0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_23_2/s/sha256-gp8fYBLOT0JjpkCmOZ32K8qLzqusUSMUAT5Cqpe3fGk/bundle_fandryui_blockForm.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockForm%2Fv%2F0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_24_0/s/sha256-NA81BYECdvdY2pFF4_3ay240l6PmzDDClkaqEOkwXRE/bundle_fandryui_blockForm.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_23_2/s/sha256-gp8fYBLOT0JjpkCmOZ32K8qLzqusUSMUAT5Cqpe3fGk/bundle_fandryui_blockForm.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_24_0/s/sha256-NA81BYECdvdY2pFF4_3ay240l6PmzDDClkaqEOkwXRE/bundle_fandryui_blockForm.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockForm",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_23_2/s/sha256-gp8fYBLOT0JjpkCmOZ32K8qLzqusUSMUAT5Cqpe3fGk/bundle_fandryui_blockForm.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/blockForm/v/0_24_0/s/sha256-NA81BYECdvdY2pFF4_3ay240l6PmzDDClkaqEOkwXRE/bundle_fandryui_blockForm.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/examples/module/esm/v/0_24_1",
@@ -925,20 +925,20 @@
    "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/@lwrjs/app-service/examples/module/esm/v/0_24_1/s/sha256-IGIOJeXniDc0MHVKx_bYoGmmNkFLn-RJQ7j9ko1rZp0/bundle_@lwrjs_app-service_examples_module_esm.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_23_2/s/sha256-7LHuu2w_N-NaQ_QjvZQxhR2_EvMSPwo0OEPOA3V3Qwo/bundle_fandryui_examples.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_24_0/s/sha256-V3Nk3kCElJiuNm2hhuiA75jVx59KYsUABcNn86Pisto/bundle_fandryui_examples.js"
   },
   {
-   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fexamples%2Fv%2F0_23_2",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_23_2/s/sha256-7LHuu2w_N-NaQ_QjvZQxhR2_EvMSPwo0OEPOA3V3Qwo/bundle_fandryui_examples.js"
+   "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fexamples%2Fv%2F0_24_0",
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_24_0/s/sha256-V3Nk3kCElJiuNm2hhuiA75jVx59KYsUABcNn86Pisto/bundle_fandryui_examples.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_23_2/s/sha256-7LHuu2w_N-NaQ_QjvZQxhR2_EvMSPwo0OEPOA3V3Qwo/bundle_fandryui_examples.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_24_0/s/sha256-V3Nk3kCElJiuNm2hhuiA75jVx59KYsUABcNn86Pisto/bundle_fandryui_examples.js"
   },
   {
    "source": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fexamples",
-   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_23_2/s/sha256-7LHuu2w_N-NaQ_QjvZQxhR2_EvMSPwo0OEPOA3V3Qwo/bundle_fandryui_examples.js"
+   "destination": "/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui/examples/v/0_24_0/s/sha256-V3Nk3kCElJiuNm2hhuiA75jVx59KYsUABcNn86Pisto/bundle_fandryui_examples.js"
   }
  ],
  "directoryListing": false,
