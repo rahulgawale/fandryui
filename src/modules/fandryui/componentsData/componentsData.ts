@@ -1730,9 +1730,7 @@ fandry-spinner::part(label) {
       code: `<!-- template -->
 <div class="brand row">
   <fandry-button onclick={handleSave}>Save record</fandry-button>
-  <fandry-loading-overlay open={saving}>
-    <span slot="label">Saving record…</span>
-  </fandry-loading-overlay>
+  <fandry-loading-overlay open={saving} label="Saving record…"></fandry-loading-overlay>
 </div>
 
 /* css */
@@ -1774,9 +1772,9 @@ fandry-loading-overlay::part(label) {
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in lwc:if: it stays in the page so its label is announced, and so it can fade out.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport, and blocks keys inside its parent element. Put the overlay directly inside the panel it covers.' },
-      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default label ("Loading") for every instance, e.g. to translate it. Also what is announced when the content has no text.' },
-      { name: 'label slot', type: 'slot', default: 'messages.label', description: 'The text under the spinner, e.g. "Saving record…".' },
-      { name: 'default slot', type: 'slot', default: 'spinner and label', description: 'The whole content of the panel, in place of the spinner and label: your own indicator, text, a progress bar, a Cancel button. Its text (minus anything aria-hidden) is what is announced.' }
+      { name: 'label', type: 'string', default: "''", description: 'The text under the spinner, e.g. "Saving record…". Wins over messages.label. To restyle it (bold, color), use ::part(label), not the slot.' },
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default label ("Loading") for every instance, e.g. to translate it.' },
+      { name: 'default slot', type: 'slot', default: 'spinner and label', description: 'The whole content of the panel, spinner included: your own indicator, markup in the text, a progress bar, a Cancel button. Its text (minus anything aria-hidden) is what is announced, or the label when it has none.' }
     ],
     notes: [
       {
@@ -1793,7 +1791,7 @@ fandry-loading-overlay::part(label) {
       {
         title: 'Your own content',
         demo: 'loading-overlay-custom',
-        code: `<!-- template: the default slot replaces the spinner and label -->
+        code: `<!-- template: the default slot replaces the spinner and label, so bring your own indicator -->
 <fandry-button onclick={handleImport}>Import contacts</fandry-button>
 <fandry-loading-overlay open={importing}>
   <fandry-progress value={percent} label="Import progress"></fandry-progress>
@@ -1817,9 +1815,7 @@ async handleImport() {
     ...
     <fandry-button variant="secondary" onclick={handleRefresh}>Refresh</fandry-button>
   </fandry-card>
-  <fandry-loading-overlay open={refreshing} contained>
-    <span slot="label">Refreshing…</span>
-  </fandry-loading-overlay>
+  <fandry-loading-overlay open={refreshing} contained label="Refreshing…"></fandry-loading-overlay>
 </div>
 
 /* css */
@@ -1834,9 +1830,7 @@ async handleImport() {
       }
     ],
     code: `<fandry-button onclick={handleConvert}>Convert lead</fandry-button>
-<fandry-loading-overlay open={converting}>
-  <span slot="label">Converting lead…</span>
-</fandry-loading-overlay>`
+<fandry-loading-overlay open={converting} label="Converting lead…"></fandry-loading-overlay>`
   },
   {
     slug: 'toast',

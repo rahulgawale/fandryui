@@ -2,7 +2,6 @@ import { createElement } from 'lwc';
 import FdLoadingOverlay from '../loadingOverlay';
 import { isBrowserShortcut } from 'fandry/loadingOverlayState';
 import SlotHarness from './slotHarness';
-import LabelHarness from './labelHarness';
 import ContentHarness from './contentHarness';
 import QuietHarness from './quietHarness';
 import { mockAnimations, AnimationMock } from '../../motion/__tests__/animationMock';
@@ -12,7 +11,7 @@ const settle = async () => {
   for (let i = 0; i < 4; i++) await Promise.resolve();
 };
 
-type Overlay = HTMLElement & { open: boolean; contained: boolean; messages: { label?: string } };
+type Overlay = HTMLElement & { open: boolean; contained: boolean; label: string; messages: { label?: string } };
 
 const create = (props: Partial<Overlay> = {}, parent: Node = document.body): Overlay => {
   const element = createElement('fandry-loading-overlay', { is: FdLoadingOverlay }) as unknown as Overlay;
@@ -64,6 +63,13 @@ describe('fandry-loading-overlay', () => {
     const element = create({ open: true, messages: { label: 'Chargement' } });
 
     expect(element.shadowRoot!.querySelector('[part="label"]')!.textContent).toBe('Chargement');
+  });
+
+  it('shows the label prop over messages.label, with the spinner', () => {
+    const element = create({ open: true, label: 'Saving template…', messages: { label: 'Chargement' } });
+
+    expect(element.shadowRoot!.querySelector('[part="label"]')!.textContent).toBe('Saving template…');
+    expect(element.shadowRoot!.querySelector('fandry-spinner')).not.toBeNull();
   });
 
   it('does not take focus', () => {
@@ -129,8 +135,11 @@ describe('fandry-loading-overlay', () => {
       expect(statusOf(await overlayIn(createElement('slot-harness', { is: SlotHarness }))).textContent).toBe('Saving template…');
     });
 
-    it('announces a label slotted into the label slot', async () => {
-      expect(statusOf(await overlayIn(createElement('label-harness', { is: LabelHarness }))).textContent).toBe('Saving template…');
+    it('announces the label prop', async () => {
+      const element = create({ open: true, label: 'Saving template…' });
+      await after(150);
+
+      expect(statusOf(element).textContent).toBe('Saving template…');
     });
 
     it('announces slotted content without what is aria-hidden', async () => {

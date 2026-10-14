@@ -1,8 +1,6 @@
 <template>
   <div class="row">
     <fandry-button onclick={handleConvert}>Convert lead</fandry-button>
-    <fandry-loading-overlay open={converting}>
-      <span slot="label">Converting lead…</span>
-    </fandry-loading-overlay>
+    <fandry-loading-overlay open={converting} label="Converting lead…"></fandry-loading-overlay>
   </div>
 </template>

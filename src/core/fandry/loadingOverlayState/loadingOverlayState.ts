@@ -4,7 +4,7 @@ import { exitFinished } from 'fandry/motion';
 
 /** Text the overlay shows or announces; see `messages`. */
 export interface FdLoadingOverlayMessages {
-  /** The default label, and what is announced when the overlay's content has no text. */
+  /** The default label, and what is announced when slotted content has no text. */
   label: string;
 }
 
@@ -51,6 +51,8 @@ export function isBrowserShortcut(event: KeyboardEvent): boolean {
 export default class FdLoadingOverlayState extends Base {
   /** Covers the nearest positioned ancestor instead of the viewport. Put the overlay directly inside it. */
   @api contained = false;
+  /** The text under the spinner. Wins over `messages.label`. */
+  @api label = '';
   /** Replaces any of DEFAULT_LOADING_OVERLAY_MESSAGES, e.g. to translate them. */
   @api messages: Partial<FdLoadingOverlayMessages> = {};
 
@@ -91,7 +93,7 @@ export default class FdLoadingOverlayState extends Base {
   }
 
   get labelText(): string {
-    return { ...DEFAULT_LOADING_OVERLAY_MESSAGES, ...this.messages }.label;
+    return this.label || { ...DEFAULT_LOADING_OVERLAY_MESSAGES, ...this.messages }.label;
   }
 
   disconnectedCallback() {
@@ -147,7 +149,7 @@ export default class FdLoadingOverlayState extends Base {
     this.announcement = '';
   }
 
-  // What the overlay shows as text, or the default label when that is nothing.
+  // What the overlay shows as text, or the label when slotted content has none.
   private announce() {
     const slot = this.template.querySelector('slot');
     const text = (slot ? readableText(slot) : '').replace(/\s+/g, ' ').trim() || this.labelText;

@@ -72,9 +72,9 @@
   text-align: center;
 }
 
-/* A fandry-label slotted in as the label is only this label's text: it
-   takes the label's look. */
-.label ::slotted(fandry-label) {
+/* A fandry-label slotted in as the overlay's text is only text: it takes
+   the panel's look. */
+::slotted(fandry-label) {
   font: inherit;
   color: inherit;
 }
