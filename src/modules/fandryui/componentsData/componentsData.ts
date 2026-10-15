@@ -777,7 +777,12 @@ fandry-button::part(base) {
 
 fandry-button.cta::part(base) {
   padding-inline: 1.5rem;
-  box-shadow: 0 6px 16px hsl(160 84% 26% / 0.35);
+}
+
+/* The glow goes on the element, not the part: a box-shadow on the part
+   would replace the button's focus ring. */
+fandry-button.cta {
+  filter: drop-shadow(0 6px 12px hsl(160 84% 26% / 0.35));
 }
 
 /* A variant is a state too: only secondary buttons. */
@@ -876,9 +881,10 @@ fandry-checkbox::part(label) {
   font-weight: 600;
 }
 
-/* A state: only the checked box. */
+/* A state: only the checked box. A glow, as a filter: the box draws
+   its focus ring with box-shadow. */
 fandry-checkbox::part(control checked) {
-  box-shadow: 0 0 0 3px hsl(160 84% 26% / 0.2);
+  filter: drop-shadow(0 0 3px hsl(160 84% 26% / 0.45));
 }`
     },
     category: 'Forms',

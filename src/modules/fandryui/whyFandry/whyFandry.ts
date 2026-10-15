@@ -24,7 +24,7 @@ const COMPOSE_CODE = `<fandry-input label="Email">
 
 const PARTS_CODE = `/* One element inside a component, in one state */
 .checkout fandry-switch::part(control checked) {
-  box-shadow: 0 0 0 4px hsl(160 84% 30% / 0.25);
+  background: hsl(160 84% 30%);
 }`;
 
 const EXTEND_CODE = `// Same sorting, paging and selection, your own template

@@ -672,6 +672,12 @@ fandry-checkbox::part(control checked) {
         {
           type: 'text',
           text: 'Parts need native shadow DOM, which every fandry component uses, on LWR and on Salesforce alike. Tokens work everywhere.'
+        },
+        {
+          type: 'note',
+          variant: 'warning',
+          title: 'Keep box-shadow off a control\'s part',
+          text: 'A control draws its focus ring as a `box-shadow`, and a `::part()` rule from outside wins over the component\'s own, in every state. So `fandry-button::part(base) { box-shadow: ... }` leaves a focused button with no ring. Put a shadow on the element instead, `fandry-button.cta { filter: drop-shadow(0 6px 12px hsl(160 84% 26% / 0.35)) }`, or change the ring with `--fd-ring-control`.'
         }
       ]
     },
