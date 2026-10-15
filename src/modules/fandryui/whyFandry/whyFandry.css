@@ -1,0 +1,230 @@
+@import 'fandryui/docStyles';
+@import 'fandryui/infoCard';
+
+:host {
+  display: block;
+}
+
+.article {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6) var(--fd-space-6);
+}
+
+.section {
+  margin-top: calc(var(--fd-space-6) * 2);
+}
+
+.section-title {
+  display: block;
+  margin-bottom: var(--fd-space-3);
+}
+
+/* fandry-text is display: contents by default; see featureGrid.css. */
+.para {
+  display: block;
+  margin-bottom: var(--fd-space-4);
+}
+
+.article fandryui-code-block {
+  margin-bottom: var(--fd-space-4);
+}
+
+.list {
+  margin: 0;
+}
+
+.list li + li {
+  margin-top: var(--fd-space-1);
+}
+
+.ladder {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.rung {
+  display: flex;
+  gap: var(--fd-space-3);
+  align-items: flex-start;
+}
+
+.step {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  font-weight: 600;
+  background: hsl(var(--site-primary) / 0.12);
+  color: hsl(var(--site-primary-dark));
+}
+
+.rung-title {
+  display: block;
+  margin-bottom: var(--fd-space-1);
+}
+
+.rung-title::part(base) {
+  font-size: var(--fd-font-size-md);
+}
+
+.compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--fd-space-4);
+}
+
+@media (max-width: 40rem) {
+  .compare {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tradeoffs {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-4);
+}
+
+.tradeoff dd {
+  margin: var(--fd-space-1) 0 0;
+}
+
+.tradeoff-title {
+  font-weight: 600;
+}
+
+.demo {
+  margin-top: calc(var(--fd-space-6) * 1.5);
+  padding: calc(var(--fd-space-6) * 1.5) 0 calc(var(--fd-space-6) * 2);
+  border-top: 1px solid var(--fd-color-border);
+}
+
+.demo-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+}
+
+.themes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--fd-space-5);
+  margin-top: var(--fd-space-4);
+}
+
+@media (max-width: 56rem) {
+  .themes {
+    grid-template-columns: 1fr;
+  }
+}
+
+.theme {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-2);
+  padding: var(--fd-space-4);
+  border-radius: var(--fd-radius-lg);
+  border: 1px solid var(--fd-color-border);
+}
+
+.theme-name {
+  display: block;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.theme-card::part(base) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+  align-items: flex-start;
+}
+
+.theme-card fandry-input {
+  align-self: stretch;
+}
+
+.start {
+  padding: calc(var(--fd-space-6) * 1.5) 0 calc(var(--fd-space-6) * 2);
+  border-top: 1px solid var(--fd-color-border);
+  background: radial-gradient(circle at 50% 0%, hsl(var(--site-primary) / 0.06), transparent 60%);
+}
+
+.start-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+}
+
+.start-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--fd-space-5);
+  margin-top: var(--fd-space-4);
+  align-items: stretch;
+}
+
+@media (max-width: 48rem) {
+  .start-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The whole card is clickable (handleStartCardClick). */
+.start-card::part(base) {
+  position: relative;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+@media (hover: hover) {
+  .start-card:hover::part(base) {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
+  }
+}
+
+.start-code {
+  position: relative;
+  z-index: 1;
+  align-self: stretch;
+  margin-top: auto;
+}
+
+.start-cta::part(link) {
+  font-weight: var(--fd-font-weight-semibold);
+  text-decoration: none;
+}
+
+/* The whole card follows its link, with no script: the link's box is
+   stretched over the card. The code sits above it, so a command can still
+   be selected. */
+.start-cta::part(link)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* fandry-link's hover filter would make the <a> the box its ::after fills,
+   shrinking it to the link mid-click. The card's lift is the hover cue. */
+.start-cta::part(link):hover {
+  filter: none;
+}
+
+.next {
+  display: block;
+  margin-top: var(--fd-space-5);
+}
+
+.compare-card fandry-heading::part(base) {
+  font-size: var(--fd-font-size-lg);
+}

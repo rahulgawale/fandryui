@@ -167,6 +167,10 @@ export default class Popover extends Base {
    * scroll containers inside a shadow root: scroll events don't leave one.
    */
   private followTrigger = () => {
+    // Nothing to measure in a server render (SSR); the browser opens it again.
+    if (typeof document === 'undefined') {
+      return;
+    }
     cancelAnimationFrame(this.positionFrame);
     if (!this._open || !this.isConnected) {
       return;
@@ -220,6 +224,10 @@ export default class Popover extends Base {
     // own template on the wrapping <span> doesn't reliably see events that
     // originate inside a *nested* shadow tree.
     this.addEventListener('click', this.handleHostClick);
+    // Rendered on a server (SSR): there is no document yet, and the browser runs this again.
+    if (typeof document === 'undefined') {
+      return;
+    }
     document.addEventListener('click', this.handleDocumentClick);
     document.addEventListener('keydown', this.handleDocumentKeydown);
     this.followTrigger();

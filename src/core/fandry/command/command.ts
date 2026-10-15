@@ -74,6 +74,12 @@ export default class FdCommand extends FdSearchState {
       this.isMounted = true;
     }
 
+    // A server render (SSR) only needs the open markup; the browser sets
+    // `open` again and locks scrolling and moves focus then.
+    if (typeof document === 'undefined') {
+      return;
+    }
+
     if (!wasOpen && value) {
       // Every opening starts from an empty search.
       this.setQuery('');
@@ -118,6 +124,10 @@ export default class FdCommand extends FdSearchState {
   }
 
   connectedCallback() {
+    // Rendered on a server (SSR): there is no document yet, and the browser runs this again.
+    if (typeof document === 'undefined') {
+      return;
+    }
     document.addEventListener('keydown', this.handleDocumentKeydown);
   }
 

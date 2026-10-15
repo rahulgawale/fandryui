@@ -9,7 +9,8 @@
   text-decoration: underline;
   text-underline-offset: var(--_fd-link-underline-offset);
   cursor: pointer;
-  transition: color var(--_fd-duration-fast) ease;
+  transition: color var(--_fd-duration-fast) ease,
+    box-shadow var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
 .link:hover {
@@ -47,14 +48,17 @@
   filter: none;
 }
 
-/* The ring goes on the wrapper, which holds the tab stop (see
-   Base.activateAnchorOnEnter), and on the <a> for the rarer cases where it
-   gets focus itself (Safari's Option-Tab, programmatic focus). */
-.tab-stop:focus-visible,
+/* The wrapper holds the tab stop (see fandry/anchorTabStop), but the ring
+   is drawn on the <a>, so it follows a box a site gives ::part(link). */
+.tab-stop:focus-visible {
+  outline: none;
+}
+
+.tab-stop:focus-visible .link,
 .link:focus-visible {
   outline: none;
   border-radius: var(--_fd-radius-sm);
-  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
+  box-shadow: var(--_fd-ring-control);
 }
 
 .link--disabled {

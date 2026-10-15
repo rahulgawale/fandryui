@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+
+.label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: var(--fd-font-weight-semibold);
+  margin-bottom: var(--fd-space-2);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 var(--fd-space-3);
+  border-left: 1px solid var(--fd-color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-2);
+}
+
+.item::part(link) {
+  font-size: var(--fd-font-size-sm);
+  text-decoration: none;
+}
+
+.item::part(link):hover {
+  text-decoration: underline;
+}

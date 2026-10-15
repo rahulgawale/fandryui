@@ -55,8 +55,8 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   required: 'The required-field asterisk.',
   control: 'The box the field draws: a text field\'s border, a select\'s button, a checkbox\'s box, a radio\'s circle, a switch\'s track.',
   indicator: 'The mark that shows the state or value: a checkbox\'s check, a radio\'s dot, a switch\'s thumb, a progress bar\'s fill.',
-  input: 'The native <input>.',
-  textarea: 'The native <textarea>.',
+  input: 'The native `<input>`.',
+  textarea: 'The native `<textarea>`.',
   prefix: 'The wrapper of the prefix slot.',
   suffix: 'The wrapper of the suffix slot.',
   'help-text': 'The help text under the field.',
@@ -77,12 +77,12 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   'option-description': 'An option\'s second line.',
   empty: 'What shows when there is nothing to list.',
   status: 'A status line (a page count, "Searching…").',
-  link: 'The native <a>.',
+  link: 'The native `<a>`.',
   list: 'The element holding the items.',
   separator: 'The separator before the item.',
   title: 'The title line.',
   body: 'The content below the title.',
-  image: 'The <img>.',
+  image: 'The `<img>`.',
   initials: 'The initials shown when there is no image.',
   previous: 'The link to the previous page (also a `link`).',
   next: 'The link to the next page (also a `link`).',
@@ -90,8 +90,8 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   button: 'The Previous and Next buttons (a fandry-button\'s `base`).',
   toolbar: 'The bar above the table that holds the search box.',
   container: 'The scrolling box around the table.',
-  table: 'The native <table>.',
-  caption: 'The <caption>.',
+  table: 'The native `<table>`.',
+  caption: 'The `<caption>`.',
   'header-row': 'The header row.',
   'header-cell': 'A header cell.',
   'sort-button': 'The button in a sortable header cell.',
@@ -393,7 +393,7 @@ fandry-pagination::part(status) {
 }`
     },
     category: 'Layout',
-    description: 'Previous/next navigation — as links between two adjacent pages, or as Previous / Page N of M / Next buttons for paging a collection.',
+    description: 'Previous/next navigation between pages. Links between two adjacent pages, or Previous / Page N of M / Next buttons for paging a collection.',
     props: [
       { name: 'previous-href', type: 'string', default: "''", description: 'Omit to hide the previous link (e.g. on the first page).' },
       { name: 'previous-label', type: 'string', default: "''", description: 'Title of the previous page.' },
@@ -645,9 +645,9 @@ fandry-label::part(required) {
       {
         title: 'Why you write the <label> yourself',
         paragraphs: [
-          'A label finds its control by id, and the browser looks an id up inside one shadow root only. A <label> rendered inside fandry-label could never reach a control outside it: it would look right, give the control no name for a screen reader, and do nothing when clicked.',
-          'So you write the <label>, beside its control, and fandry-label goes inside it as the text. That is how web components work, not something particular to this library: each component is a tree of its own, so two elements that refer to each other have to be in the same one.',
-          'The fields (fandry-input, fandry-textarea, fandry-select, fandry-combobox, fandry-lookup) follow the same rule from the inside. Each renders its own <label> next to its own control, so they take the label as a prop or a slot and need no fandry-label.'
+          'A label finds its control by id, and the browser looks an id up inside one shadow root only. A `<label>` rendered inside `fandry-label` could never reach a control outside it: it would look right, give the control no name for a screen reader, and do nothing when clicked.',
+          'So you write the `<label>`, beside its control, and `fandry-label` goes inside it as the text. That is how web components work, not something particular to this library: each component is a tree of its own, so two elements that refer to each other have to be in the same one.',
+          'The fields (`fandry-input`, `fandry-textarea`, `fandry-select`, `fandry-combobox`, `fandry-lookup`) follow the same rule from the inside. Each renders its own `<label>` next to its own control, so they take the label as a prop or a slot and need no `fandry-label`.'
         ]
       }
     ],
@@ -777,7 +777,12 @@ fandry-button::part(base) {
 
 fandry-button.cta::part(base) {
   padding-inline: 1.5rem;
-  box-shadow: 0 6px 16px hsl(160 84% 26% / 0.35);
+}
+
+/* The glow goes on the element, not the part: a box-shadow on the part
+   would replace the button's focus ring. */
+fandry-button.cta {
+  filter: drop-shadow(0 6px 12px hsl(160 84% 26% / 0.35));
 }
 
 /* A variant is a state too: only secondary buttons. */
@@ -829,7 +834,7 @@ fandry-button.rainbow::part(base)::after {
 }`
     },
     category: 'Forms',
-    description: 'A native button with default/secondary/ghost variants and three sizes.',
+    description: 'A native button with `default`/`secondary`/`ghost` variants and three sizes.',
     props: [
       { name: 'variant', type: "'default' | 'secondary' | 'ghost'", default: "'default'", description: 'Visual style.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size.' },
@@ -876,9 +881,10 @@ fandry-checkbox::part(label) {
   font-weight: 600;
 }
 
-/* A state: only the checked box. */
+/* A state: only the checked box. A glow, as a filter: the box draws
+   its focus ring with box-shadow. */
 fandry-checkbox::part(control checked) {
-  box-shadow: 0 0 0 3px hsl(160 84% 26% / 0.2);
+  filter: drop-shadow(0 0 3px hsl(160 84% 26% / 0.45));
 }`
     },
     category: 'Forms',
@@ -1136,7 +1142,7 @@ fandry-input::part(help-text) {
     name: 'Link',
     tag: 'fandry-link',
     parts: ['base', 'link'],
-    states: ['default', 'muted', 'disabled'],
+    states: ['default', 'muted', 'disabled', 'current'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'link-theme',
@@ -1165,7 +1171,8 @@ fandry-link::part(link):hover {
       { name: 'href', type: 'string', default: "''", description: 'Link target.' },
       { name: 'target', type: "'_self' | '_blank' | '_parent' | '_top'", default: "'_self'", description: 'Native anchor target.' },
       { name: 'variant', type: "'default' | 'muted'", default: "'default'", description: 'Visual style.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Renders with no href, removing it from tab order.' }
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Renders with no href, removing it from tab order.' },
+      { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native `<a>` (e.g. `{ title: \'Docs\' }`). `{ ariaCurrent: \'page\' }` marks a nav\'s current page for assistive tech and adds the `current` state.' }
     ],
     code: `<fandry-link href="https://github.com/rahulgawale/fandryui" target="_blank">GitHub</fandry-link>`
   },
@@ -1515,7 +1522,7 @@ fandry-textarea::part(label) {
 /* Scoped to this demo. Set the same --fd-* tokens on :root to theme
    every fandry-* component on the site. */
 .brand {
-  --fd-accent: 45 90% 40%;
+  --fd-info: 45 90% 40%;
   --fd-success: 160 84% 26%;
   --fd-radius-md: 0.75rem;
   --fd-surface-tint: 10%;
@@ -1576,7 +1583,7 @@ fandry-badge::part(base) {
     },
     category: 'Feedback',
     description: 'A small status/label pill.',
-    props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant.' }],
+    props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant. The colored ones are soft, not solid, so a column of badges stays quieter than the data beside it. Each derives its fill, border and text from its own color (`--fd-primary`, `--fd-success`, `--fd-warning`, `--fd-danger`) with `--fd-bg`, `--fd-text` and `--fd-surface-tint`, so it follows a rebrand and dark themes.' }],
     code: `<fandry-badge variant="primary">New</fandry-badge>`
   },
   {
@@ -1701,7 +1708,7 @@ fandry-spinner::part(label) {
     category: 'Feedback',
     description: 'A loading spinner in three sizes, with optional text beside it.',
     props: [
-      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size. The ring\'s thickness follows it (--fd-spinner-thickness, in em of the ring).' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size. The ring\'s thickness follows it (`--fd-spinner-thickness`, in em of the ring).' },
       { name: 'default slot', type: 'slot', default: '—', description: 'Text shown beside the ring, e.g. "Loading fields…". It becomes the status a screen reader reads, in place of label.' },
       { name: 'label', type: 'string', default: "''", description: 'Names a spinner that shows no text, e.g. "Saving changes". Not displayed. Overrides messages.label.' },
       { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label, and is read in place of slotted text.' },
@@ -1768,22 +1775,22 @@ fandry-loading-overlay::part(label) {
 }`
     },
     category: 'Feedback',
-    description: 'Covers the page, or one panel, while it is busy: a backdrop that blocks the pointer and the keyboard, and a panel with a spinner and a label.',
+    description: 'Covers the page, or one panel, while it is busy. A backdrop blocks the pointer and the keyboard, and a panel shows a spinner and a label.',
     props: [
-      { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in lwc:if: it stays in the page so its label is announced, and so it can fade out.' },
+      { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in `lwc:if`: it stays in the page so its label is announced, and so it can fade out.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport, and blocks keys inside its parent element. Put the overlay directly inside the panel it covers.' },
-      { name: 'label', type: 'string', default: "''", description: 'The text under the spinner, e.g. "Saving record…". Wins over messages.label. To restyle it (bold, color), use ::part(label), not the slot.' },
+      { name: 'label', type: 'string', default: "''", description: 'The text under the spinner, e.g. "Saving record…". Wins over messages.label. To restyle it (bold, color), use `::part(label)`, not the slot.' },
       { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default label ("Loading") for every instance, e.g. to translate it.' },
-      { name: 'default slot', type: 'slot', default: 'spinner and label', description: 'The whole content of the panel, spinner included: your own indicator, markup in the text, a progress bar, a Cancel button. Its text (minus anything aria-hidden) is what is announced, or the label when it has none.' }
+      { name: 'default slot', type: 'slot', default: 'spinner and label', description: 'The whole content of the panel, spinner included: your own indicator, markup in the text, a progress bar, a Cancel button. Its text (minus anything `aria-hidden`) is what is announced, or the label when it has none.' }
     ],
     notes: [
       {
         title: 'Not a dialog',
         paragraphs: [
-          'It blocks the pointer and the keyboard the moment it opens, but takes no focus and has nothing to close: the page must always set open back to false, on errors and timeouts too. It only shows after --fd-loading-overlay-delay (150ms), so an operation that finishes sooner never flashes an overlay.',
+          'It blocks the pointer and the keyboard the moment it opens, but takes no focus and has nothing to close: the page must always set open back to false, on errors and timeouts too. It only shows after `--fd-loading-overlay-delay` (`150ms`), so an operation that finishes sooner never flashes an overlay.',
           'Focus stays where it was. Over the page, keys do nothing until it closes (typing, Tab, Enter, Space, arrow-key scrolling, paste, the page\'s own shortcuts); the browser\'s shortcuts and wheel or touch scrolling still work. A contained overlay blocks keys inside the element it is in and lets Tab leave it. Keys still reach content in the overlay once it has focus: focus a Cancel button you put there yourself.',
           'It blocks hardware keys, not every input method: text from an IME or an on-screen keyboard, and a screen reader\'s own click, can still reach what is behind it. Guard the actions that must not run twice.',
-          'It keeps a polite status region in the page at all times and puts the content\'s text into it once the overlay shows, so a screen reader announces it. A label edited in place while it is open is not announced again. Mark a slotted spinner aria-hidden="true": the region already says what is happening.'
+          'It keeps a polite status region in the page at all times and puts the content\'s text into it once the overlay shows, so a screen reader announces it. A label edited in place while it is open is not announced again. Mark a slotted spinner `aria-hidden="true"`: the region already says what is happening.'
         ]
       }
     ],
@@ -1872,7 +1879,7 @@ fandry-toast-viewport::part(base) {
 }`
     },
     category: 'Feedback',
-    description: 'An auto-dismissing notification — pair with fandry-toast-viewport for placement.',
+    description: 'An auto-dismissing notification — pair with `fandry-toast-viewport` for placement.',
     props: [
       { name: 'variant', type: "'info' | 'success' | 'warning' | 'danger'", default: "'info'", description: 'Status color.' },
       { name: 'duration', type: 'number', default: '4000', description: 'Milliseconds before auto-dismiss.' }
@@ -1920,7 +1927,7 @@ fandry-toast-viewport::part(base) {
 }`
     },
     category: 'Feedback',
-    description: 'A fixed or contained stacking region that positions fandry-toast.',
+    description: 'A fixed or contained stacking region that positions `fandry-toast`.',
     props: [
       { name: 'placement', type: "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'", default: "'bottom-right'", description: 'Corner to stack from.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'position: absolute against the nearest positioned ancestor instead of the viewport.' },
@@ -2059,7 +2066,7 @@ fandry-command::part(option-description) {
 }`
     },
     category: 'Overlays & Data',
-    description: 'A command palette — a modal search box over a list of actions. Generic: it reports the chosen value and leaves what it does (and the Cmd+K shortcut) to you.',
+    description: 'A command palette — a modal search box over a list of actions. Generic: it reports the chosen value and leaves what it does (and the `Cmd+K`/`Ctrl+K` shortcut) to you.',
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the palette is shown. Listen for `toggle` (detail is the new state) and update it.' },
       { name: 'label', type: 'string', default: "''", description: 'Accessible name of the palette.' },
@@ -2299,7 +2306,7 @@ fandry-menu-item.danger::part(base) {
 }`
     },
     category: 'Overlays & Data',
-    description: 'A single selectable row inside fandry-menu.',
+    description: 'A single selectable row inside `fandry-menu`.',
     props: [
       { name: 'value', type: 'string', default: "''", description: 'Value reported to onselect.' },
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
@@ -2337,7 +2344,7 @@ fandry-popover::part(panel) {
 }`
     },
     category: 'Overlays & Data',
-    description: 'An anchored floating panel — owns positioning, not the trigger or content. The panel is never narrower than its trigger; set display: block on the popover for a trigger that fills its row.',
+    description: 'An anchored floating panel — owns positioning, not the trigger or content. The panel is never narrower than its trigger; set `display: block` on the popover for a trigger that fills its row.',
     props: [
       { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'bottom'", description: 'Side of the trigger the panel opens on. It opens on the opposite side instead when it would run off the viewport and that side has more room.' },
       { name: 'align', type: "'start' | 'end'", default: "'start'", description: "Which edge of the trigger the panel aligns to, for 'top'/'bottom' placement." },
@@ -2392,7 +2399,7 @@ fandry-table::part(row):hover {
 }`
     },
     category: 'Overlays & Data',
-    description: 'A data table with sorting, pagination, selection, and filtering — wraps @tanstack/table-core.',
+    description: 'A data table with sorting, pagination, selection, and filtering — wraps `@tanstack/table-core`.',
     props: [
       { name: 'columns', type: 'ColumnDef[]', default: '[]', description: 'Column definitions.' },
       { name: 'data', type: 'RowData[]', default: '[]', description: 'Row data.' },

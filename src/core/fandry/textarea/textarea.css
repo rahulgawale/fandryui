@@ -38,6 +38,8 @@
   resize: vertical;
   background: hsl(var(--_fd-bg));
   color: hsl(var(--_fd-text));
+  transition: border-color var(--_fd-duration-fast) var(--_fd-ease-standard),
+    box-shadow var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
 .textarea:focus-visible {
@@ -45,9 +47,7 @@
      and paints this instead. */
   outline: var(--_fd-ring-width) solid transparent;
   border-color: hsl(var(--_fd-border-focus));
-  box-shadow: 0 0 0 var(--_fd-ring-offset) hsl(var(--_fd-bg)),
-    0 0 0 calc(var(--_fd-ring-width) + var(--_fd-ring-offset))
-      hsl(var(--_fd-ring-color));
+  box-shadow: var(--_fd-ring-field);
 }
 
 .help-text {

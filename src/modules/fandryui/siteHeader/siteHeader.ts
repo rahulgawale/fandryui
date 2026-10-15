@@ -3,15 +3,24 @@ import { COMPONENTS, CATEGORY_ORDER } from 'fandryui/componentsData';
 
 const PAGES = [
   { label: 'Home', value: '/' },
-  { label: 'Getting started', value: '/getting-started' },
-  { label: 'Getting started: LWR / LWC OSS', value: '/getting-started/lwr-oss' },
-  { label: 'Getting started: Salesforce DX', value: '/getting-started/salesforce' },
-  { label: 'Theming', value: '/getting-started/theming' },
-  { label: 'Components', value: '/components' },
-  { label: 'Blocks', value: '/blocks' },
-  { label: 'Blocks: Data table', value: '/blocks/data-table' },
-  { label: 'Blocks: Form', value: '/blocks/form' },
-  { label: 'Examples', value: '/examples' }
+  { label: 'Why Fandry UI', value: '/why-fandry/' },
+  { label: 'Getting started', value: '/getting-started/' },
+  { label: 'Getting started: LWR / LWC OSS', value: '/getting-started/lwr-oss/' },
+  { label: 'Getting started: Salesforce DX', value: '/getting-started/salesforce/' },
+  { label: 'Theming', value: '/getting-started/theming/' },
+  { label: 'Components', value: '/components/' },
+  { label: 'Blocks', value: '/blocks/' },
+  { label: 'Blocks: Data table', value: '/blocks/data-table/' },
+  { label: 'Blocks: Form', value: '/blocks/form/' },
+  { label: 'Examples', value: '/examples/' }
+];
+
+const NAV = [
+  { label: 'Why Fandry', href: '/why-fandry/' },
+  { label: 'Get started', href: '/getting-started/' },
+  { label: 'Examples', href: '/examples/' },
+  { label: 'Components', href: '/components/' },
+  { label: 'Blocks', href: '/blocks/' }
 ];
 
 const IS_APPLE = /Mac|iPhone|iPad/.test(navigator.platform);
@@ -28,13 +37,22 @@ export default class SiteHeader extends LightningElement {
     ...CATEGORY_ORDER.flatMap((category) =>
       COMPONENTS.filter((component) => component.category === category).map((component) => ({
         label: component.name,
-        value: `/components/${component.slug}`,
+        value: `/components/${component.slug}/`,
         group: category,
         description: component.tag,
         keywords: [component.slug]
       }))
     )
   ];
+
+  // The section the current page belongs to is its nav link's aria-current.
+  get navItems() {
+    const path = window.location.pathname.replace(/\/?$/, '/');
+    return NAV.map((item) => ({
+      ...item,
+      elementProps: path.startsWith(item.href) ? { ariaCurrent: 'page' } : {}
+    }));
+  }
 
   get shortcutHint(): string {
     return IS_APPLE ? '⌘K' : 'Ctrl K';

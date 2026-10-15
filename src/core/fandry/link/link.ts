@@ -68,7 +68,14 @@ export default class FdLink extends Base {
     return withoutTabIndex(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-link'));
   }
 
+  // The <a> is hidden from assistive tech, so an elementProps.ariaCurrent
+  // (a nav's current page) is mirrored onto the tab stop that has the role.
+  get ariaCurrent(): string | undefined {
+    const value = this.elementProps?.ariaCurrent;
+    return value && value !== 'false' ? String(value) : undefined;
+  }
+
   get linkPart(): string {
-    return partList('link', { [this.variant || 'default']: true, disabled: this.disabled });
+    return partList('link', { [this.variant || 'default']: true, disabled: this.disabled, current: !!this.ariaCurrent });
   }
 }

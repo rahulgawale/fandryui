@@ -42,8 +42,11 @@
       "fandry/form": ["src/blocks/fandry/form/form"],
       "fandry/*": ["src/core/fandry/*"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
+      "fandryui/docHeading": ["src/modules/fandryui/docHeading/docHeading"],
+      "fandryui/docText": ["src/modules/fandryui/docText/docText"],
       "fandryui/gettingStartedData": ["src/modules/fandryui/gettingStartedData/gettingStartedData"],
       "fandryui/mockApi": ["src/modules/fandryui/mockApi/mockApi"],
+      "fandryui/themePresets": ["src/modules/fandryui/themePresets/themePresets"],
       "fandryui/*": ["src/modules/fandryui/*"],
       // fandryuidemos/* -- docs-only illustration components (componentDoc's
       // live "Example" for each primitive), kept in their own namespace so

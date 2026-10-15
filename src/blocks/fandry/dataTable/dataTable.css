@@ -149,7 +149,7 @@ tbody tr:hover {
 .row--editing,
 .row--editing:hover {
   background: hsl(var(--_fd-bg-muted));
-  box-shadow: inset var(--_fd-border-width-lg) 0 0 hsl(var(--_fd-accent));
+  box-shadow: inset var(--_fd-border-width-lg) 0 0 hsl(var(--_fd-primary));
 }
 
 /* Saving: the row's content breathes, and can't be interacted with until

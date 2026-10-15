@@ -20,8 +20,8 @@ export default class FeatureGrid extends LightningElement {
     {
       key: 'branded',
       chipClass: 'icon-chip tint-success',
-      title: "Doesn't look like Salesforce",
-      description: 'Ship a fully-branded Salesforce site your customers would never guess runs on Lightning.',
+      title: 'Your product, not the platform',
+      description: 'Give your app or site its own type, colors and spacing instead of the standard Salesforce look.',
       iconPath: 'M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z'
     },
     {
@@ -48,8 +48,8 @@ export default class FeatureGrid extends LightningElement {
     {
       key: 'customizable',
       chipClass: 'icon-chip tint-accent',
-      title: 'Highly customizable',
-      description: 'Override styling, swap markup, or extend a class directly — nothing here is a black box.',
+      title: 'Components you control',
+      description: 'Restyle with parts, replace content with slots, extend a state class, or copy the source. Nothing here is a black box.',
       iconPath: 'M4 21v-7 M4 10V3 M12 21v-9 M12 8V3 M20 21v-5 M20 12V3 M1 14h6 M9 8h6 M17 16h6'
     },
     {

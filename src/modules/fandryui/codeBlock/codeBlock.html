@@ -1,0 +1,14 @@
+<template>
+  <!-- figure/figcaption names the block. The pre is focusable so keyboard users
+       can scroll a wide block. -->
+  <figure class="figure">
+    <template lwc:if={hasLabel}>
+      <figcaption><fandry-text as="span" size="xs" variant="muted" class="label">{label}</fandry-text></figcaption>
+    </template>
+    <pre class={preClass} tabindex="0"><code>{code}</code></pre>
+    <!-- Safari extends a double/triple-click on the last line past the pre
+         into the page's shadow-DOM text; a block with text in this tree is
+         where it stops. -->
+    <div class="selection-stop" aria-hidden="true">&#8203;</div>
+  </figure>
+</template>

@@ -1,9 +1,12 @@
 # Fandry UI
 
-**Why Should React Have All the Fun?**
+**The flexibility of modern UI development. The simplicity of LWC.**
 
-Fandry UI is an opinionated, extensible UI foundation for **Lightning Web Components**, built from scratch with native LWC. This repo is both the component library itself and its own marketing/docs site, built entirely out of the library's own primitives.
+Fandry UI is a modern, composable UI component library for **Salesforce LWC**, built from scratch with native LWC. It gives developers and ISVs the freedom to build distinctive, customizable experiences, for Experience Cloud, LWR sites and their own products, without adding another UI framework. This repo is both the component library itself and its own marketing/docs site, built entirely out of the library's own primitives.
 
+- **Your UI, your identity**: themes, type, color, spacing and component styles from one token scale
+- **Composition over configuration**: slots, CSS parts and extendable state classes instead of a growing list of props
+- **A UI you control**: native shadow DOM and plain, readable LWC source you can copy and change
 - **Native LWC primitives** for behavior & accessibility
 - **Strict boundaries** to keep the system sane as it grows
 - **Extensibility over completeness** as a core principle
@@ -24,9 +27,12 @@ This is infrastructure, not a component zoo — the docs site around it exists t
 
 ## What This Is Not
 
-- Not a replacement for SLDS (yet)
+- Not a replacement for Lightning Base Components: they're built for standard Salesforce UI and consistency with Lightning Experience; Fandry is built for custom, branded UI
 - Not a drag-and-drop page builder
-- Not React, pretending to be LWC
+- Not a React replacement, and not React pretending to be LWC
+- Not independent of the platform: it runs on LWC, LWR and Lightning Web Security like any other component
+
+Why it exists, and what it trades away: [/why-fandry](https://fandryui.forcetrails.com/why-fandry/).
 
 The primitives themselves are deliberately small and un-flashy — see `src/core/CORE_BOUNDARIES.md`. The marketing site is where flashy is allowed, since its whole job is showing what the primitives can compose into.
 

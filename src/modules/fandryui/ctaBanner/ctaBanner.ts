@@ -4,7 +4,7 @@ const GITHUB_URL = 'https://github.com/rahulgawale/fandryui';
 
 export default class CtaBanner extends LightningElement {
   handleBrowseClick() {
-    window.location.assign('/components');
+    window.location.assign('/components/');
   }
 
   handleGithubClick() {

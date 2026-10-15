@@ -16,23 +16,27 @@
 
 :host {
   /* ---- Colors (HSL, no commas) ----
-     Lightness on primary/accent/success/warning is darkened from the
-     original palette -- at the original values, white text on these
-     backgrounds (fandry-button's default variant, fandry-badge's colored variants)
-     fell well short of WCAG AA's 4.5:1 contrast minimum for normal text
-     (measured: primary 3.56:1, accent 2.85:1, success 2.30:1, warning
-     2.14:1). Same hue/saturation, lightness only, each now clears 4.5:1
-     with a small margin (~4.7-4.9:1). --fd-danger was already compliant
-     (4.80:1) and is unchanged. */
+     Each fill clears WCAG AA (4.5:1) under its foreground: primary (cobalt,
+     apart from danger for every kind of color blindness) 6.8:1, success,
+     warning and danger ~4.7-4.9:1. Accent (mint) is for fills and
+     highlights, too light for white text, so its foreground is dark. Info
+     has its own blue so an info alert never reads as danger. */
   /* --brand-primary / --brand-accent are the older way to set these two, and
      still work when --fd-primary / --fd-accent are not set (heroDemoGrid.ts's
      "Apply theme" sets them on <html> at runtime). */
-  --_fd-primary: var(--fd-primary, var(--brand-primary, 330 81% 48%));
+  --_fd-primary: var(--fd-primary, var(--brand-primary, 226 90% 50%));
   --_fd-primary-foreground: var(--fd-primary-foreground, 0 0% 100%);
 
-  --_fd-accent: var(--fd-accent, var(--brand-accent, 199 89% 36%));
-  --_fd-accent-foreground: var(--fd-accent-foreground, 0 0% 100%);
+  --_fd-accent: var(--fd-accent, var(--brand-accent, 162 72% 42%));
+  --_fd-accent-foreground: var(--fd-accent-foreground, 160 40% 12%);
 
+  /* Info alerts and toasts. They read --fd-accent before --fd-info existed,
+     so a site that set only accent (or --brand-accent) keeps that color. */
+  --_fd-info: var(--fd-info, var(--fd-accent, var(--brand-accent, 199 89% 36%)));
+
+  /* The -foreground tokens below are the text on a solid fill of that
+     status. No component draws one since badges went soft; they're kept
+     for components that extend Base and for a site's own CSS. */
   --_fd-success: var(--fd-success, 142 71% 30%);
   --_fd-success-foreground: var(--fd-success-foreground, 0 0% 100%);
 
@@ -42,10 +46,9 @@
   --_fd-danger: var(--fd-danger, 0 72% 51%);
   --_fd-danger-foreground: var(--fd-danger-foreground, 0 0% 100%);
 
-  /* Distinct hue from --fd-primary, lightness picked the same way (see
-     block comment above): clears 8.5:1 against a white background, well
-     past WCAG AA's 4.5:1 floor. */
-  --_fd-link-visited: var(--fd-link-visited, 271 55% 40%);
+  /* Deep indigo beside the cobalt primary: the familiar visited purple, on
+     theme, and 8.9:1 on white. */
+  --_fd-link-visited: var(--fd-link-visited, 252 56% 44%);
 
   --_fd-bg: var(--fd-bg, 0 0% 100%);
   --_fd-bg-muted: var(--fd-bg-muted, 220 14% 96%);
@@ -140,6 +143,22 @@
   --_fd-ring-color: var(--fd-ring-color, 222 89% 56%);
   --_fd-ring-width: var(--fd-ring-width, 2px);
   --_fd-ring-offset: var(--fd-ring-offset, 0px);
+  /* Two-tone rings: a crisp stroke, then a soft, blurred halo of the same
+     color outside it. A field's stroke sits on its border, inside; a
+     control's (button, link, checkbox, ...) outside, like the solid ring.
+     Nothing moves: both are shadows. A field's stroke is its border's
+     width, not --fd-ring-width; set --fd-ring-field to replace it. */
+  --_fd-ring-halo-width: var(--fd-ring-halo-width, 3px);
+  --_fd-ring-halo-blur: var(--fd-ring-halo-blur, 4px);
+  --_fd-ring-halo-opacity: var(--fd-ring-halo-opacity, 0.3);
+  --_fd-ring-field: var(--fd-ring-field, inset 0 0 0 var(--_fd-border-width) hsl(var(--_fd-ring-color)),
+    0 0 var(--_fd-ring-halo-blur) var(--_fd-ring-halo-width)
+      hsl(var(--_fd-ring-color) / var(--_fd-ring-halo-opacity))
+  );
+  --_fd-ring-control: var(--fd-ring-control, 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color)),
+    0 0 var(--_fd-ring-halo-blur) calc(var(--_fd-ring-width) + var(--_fd-ring-halo-width))
+      hsl(var(--_fd-ring-color) / var(--_fd-ring-halo-opacity))
+  );
 
   /* ---- Radius ---- */
   --_fd-radius-sm: var(--fd-radius-sm, 0.25rem);

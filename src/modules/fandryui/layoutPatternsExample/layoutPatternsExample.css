@@ -1,48 +1,92 @@
-:host {
+/* Light DOM: these rules reach the whole document, hence the lp- prefix. */
+fandryui-layout-patterns-example {
   display: block;
 }
 
-.section {
-  padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
+.lp-section {
+  padding: calc(var(--fd-space-6) * 2) 0;
+  border-top: 1px solid var(--fd-color-border);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--fd-color-text) 3%, transparent), transparent 70%);
 }
 
-.container {
+.lp-inner {
   max-width: 72rem;
   margin: 0 auto;
   padding: 0 var(--fd-space-6);
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: calc(var(--fd-space-6) * 2);
+  align-items: center;
 }
 
-.title {
-  text-align: center;
-  margin-bottom: var(--fd-space-2);
+@media (max-width: 60rem) {
+  .lp-inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--fd-space-6);
+  }
+}
+
+.lp-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fd-space-3);
+}
+
+.lp-title,
+.lp-lede,
+.lp-frame-lede {
   display: block;
 }
 
-/* fandry-text's :host defaults to display: contents (so an as="span" usage
-   doesn't force a line break) -- overridden back to block here so the
-   margin below actually applies, same as dashboardExample.css's .subtitle. */
-.subtitle {
-  display: block;
-  text-align: center;
-  margin: 0 auto var(--fd-space-6);
-  max-width: 34rem;
+/* Inline code, as docStyles.css draws it. */
+.lp-lede code {
+  font-family: var(--font-code, "Geist Mono", monospace);
+  font-size: 0.875em;
+  padding: 0.1em 0.35em;
+  border-radius: var(--fd-radius-sm);
+  background: color-mix(in srgb, var(--fd-color-text) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--fd-color-text) 10%, transparent);
+  overflow-wrap: anywhere;
 }
 
-/* Bordered "screen" chrome around the demo, purely presentational -- unlike
-   dashboardExample's .frame, this one has no min-width/horizontal scroll:
-   .fandry-grid inside is responsive on its own, so the frame is meant to be
-   squeezed down in the browser to see the columns actually collapse. */
-.frame {
+.lp-code {
+  display: block;
+  width: 100%;
+  margin-top: var(--fd-space-2);
+}
+
+/* A blueprint grid behind the screen: the section is about layout. */
+.lp-stage {
+  padding: var(--fd-space-6);
+  border-radius: calc(var(--fd-radius-lg) * 2);
+  border: 1px dashed color-mix(in srgb, hsl(var(--site-primary)) 35%, transparent);
+  background-color: hsl(var(--site-primary) / 0.04);
+  background-image:
+    linear-gradient(hsl(var(--site-primary) / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--site-primary) / 0.08) 1px, transparent 1px);
+  background-size: var(--fd-space-6) var(--fd-space-6);
+}
+
+@media (max-width: 40rem) {
+  .lp-stage {
+    padding: var(--fd-space-3);
+  }
+}
+
+.lp-frame {
   border: 1px solid var(--fd-color-border);
   border-radius: var(--fd-radius-lg);
   background: var(--fd-color-surface);
   padding-block: var(--fd-space-6);
+  box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--fd-color-text) 35%, transparent);
 }
 
-/* .fandry-grid's item is the fandry-card host itself, not something inside
-   it -- this wrapper is what actually gets the flex column + gap, spacing
-   the card's slotted content the same "no dedicated Stack component,
-   just flexbox" way documented in the README. */
+.lp-frame-lede {
+  margin-bottom: var(--fd-space-4);
+}
+
+/* .fandry-grid's items are the card hosts, so this wrapper stacks the content. */
 .order-card-body {
   display: flex;
   flex-direction: column;

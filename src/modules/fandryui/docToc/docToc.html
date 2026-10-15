@@ -1,0 +1,12 @@
+<template>
+  <nav class="toc" aria-label="On this page">
+    <fandry-text as="span" size="xs" variant="muted" class="label">On this page</fandry-text>
+    <ul class="list">
+      <template for:each={links} for:item="link">
+        <li key={link.anchor}>
+          <fandry-link href={link.href} variant="muted" class="item">{link.text}</fandry-link>
+        </li>
+      </template>
+    </ul>
+  </nav>
+</template>

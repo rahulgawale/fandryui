@@ -35,6 +35,12 @@ export default class Dialog extends Base {
       this.isMounted = true;
     }
 
+    // A server render (SSR) only needs the open markup; the browser sets
+    // `open` again and locks scrolling and moves focus then.
+    if (typeof document === 'undefined') {
+      return;
+    }
+
     if (!wasOpen && value) {
       this.previouslyFocused = this.findActiveElement();
       this.lockBodyScroll();
@@ -47,6 +53,10 @@ export default class Dialog extends Base {
   }
 
   connectedCallback() {
+    // Rendered on a server (SSR): there is no document yet, and the browser runs this again.
+    if (typeof document === 'undefined') {
+      return;
+    }
     document.addEventListener('keydown', this.handleDocumentKeydown);
   }
 

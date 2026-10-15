@@ -1,0 +1,200 @@
+@import 'fandryui/infoCard';
+
+:host {
+  display: block;
+}
+
+.section {
+  padding: calc(var(--fd-space-6) * 2) 0;
+  border-top: 1px solid var(--fd-color-border);
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--fd-space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--fd-space-3);
+}
+
+.title {
+  display: block;
+  max-width: 44rem;
+}
+
+.lede {
+  display: block;
+  max-width: 36rem;
+}
+
+/* Bento: the token card takes two columns, compose one, the LWC strip all three. */
+.bento {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--fd-space-5);
+  margin-top: var(--fd-space-5);
+  text-align: left;
+}
+
+.tile-tokens {
+  grid-column: span 2;
+}
+
+.tile-lwc {
+  grid-column: 1 / -1;
+}
+
+/* A tile's own column stacks its items with the card's gap; a copy block
+   nested in a tile spaces its heading and text the same. */
+.copy fandry-heading + fandry-text {
+  margin-top: var(--fd-space-3);
+}
+
+/* Layouts and code fill the tile; the card's column starts items at the left. */
+.tokens-layout,
+.lwc-layout,
+.compose-code {
+  align-self: stretch;
+}
+
+/* Inline code, as docStyles.css draws it. */
+:not(pre) > code {
+  font-family: var(--font-code, "Geist Mono", monospace);
+  font-size: 0.875em;
+  padding: 0.1em 0.35em;
+  border-radius: var(--fd-radius-sm);
+  background: color-mix(in srgb, var(--fd-color-text) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--fd-color-text) 10%, transparent);
+  overflow-wrap: anywhere;
+}
+
+.copy {
+  min-width: 0;
+}
+
+.tokens-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--fd-space-5);
+  align-items: center;
+}
+
+.presets {
+  display: block;
+  margin-top: var(--fd-space-4);
+}
+
+.token-code {
+  display: block;
+  margin-top: var(--fd-space-4);
+}
+
+.compose-code {
+  display: block;
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  padding: var(--fd-space-5);
+  border-radius: var(--fd-radius-lg);
+  /* The default surface; an identity's own surface comes in as inline style. */
+  background: hsl(var(--site-primary) / 0.06);
+  transition: background-color var(--fd-duration-normal, 200ms) ease;
+}
+
+.order {
+  width: 100%;
+  max-width: 20rem;
+}
+
+.order::part(base) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-3);
+}
+
+.order-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fd-space-2);
+}
+
+.order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fd-space-2);
+}
+
+.lwc-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--fd-space-5);
+}
+
+.lwc-layout .copy {
+  flex: 1 1 20rem;
+}
+
+.traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fd-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* minmax(0, ...) so a long code line scrolls inside its block instead of
+   widening the column past the card. */
+@media (max-width: 60rem) {
+  .bento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tile-tokens {
+    grid-column: auto;
+  }
+
+  .tokens-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* The CTA is navigation, so it stays a link, drawn as a secondary button. */
+.more {
+  margin-top: var(--fd-space-5);
+}
+
+.more::part(link) {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--fd-space-3) var(--fd-space-5);
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+  background: var(--fd-color-surface);
+  color: var(--fd-color-text);
+  font-weight: var(--fd-font-weight-medium);
+  text-decoration: none;
+  transition:
+    background-color var(--fd-duration-fast, 150ms) ease,
+    border-color var(--fd-duration-fast, 150ms) ease,
+    transform var(--fd-duration-fast, 150ms) ease;
+}
+
+@media (hover: hover) {
+  .more:hover::part(link) {
+    background: hsl(var(--site-primary) / 0.06);
+    border-color: hsl(var(--site-primary));
+    transform: translateY(-1px);
+  }
+}

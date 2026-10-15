@@ -90,6 +90,10 @@ export default class FdTooltip extends Base {
     this.addEventListener('mouseout', this.handleTriggerMouseOut);
     this.addEventListener('focusin', this.handleTriggerFocusIn);
     this.addEventListener('focusout', this.handleTriggerFocusOut);
+    // Rendered on a server (SSR): there is no document yet, and the browser runs this again.
+    if (typeof document === 'undefined') {
+      return;
+    }
     document.addEventListener('keydown', this.handleDocumentKeydown);
   }
 

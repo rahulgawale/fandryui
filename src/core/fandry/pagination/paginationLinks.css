@@ -27,7 +27,7 @@
 .tab-stop:focus-visible .link,
 .link:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
+  box-shadow: var(--_fd-ring-control);
 }
 
 .link {
