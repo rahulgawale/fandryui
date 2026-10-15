@@ -13,6 +13,8 @@ permissions:
 
 jobs:
   check:
+    # The check's name on a PR, and what branch protection requires.
+    name: Release type
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
