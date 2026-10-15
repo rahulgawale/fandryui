@@ -12,7 +12,7 @@ const MARKUP = `<div class="fandry-container">
 .fandry-grid {
   display: grid;
   grid-template-columns:
-    repeat(auto-fit, minmax(280px, 1fr));
+    repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: var(--fd-space-6);
 }`;
 
