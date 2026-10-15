@@ -1,4 +1,5 @@
 @import 'fandryui/docStyles';
+@import 'fandryui/infoCard';
 
 :host {
   display: block;
@@ -30,7 +31,7 @@
 }
 
 .list {
-  margin-top: var(--fd-space-2);
+  margin: 0;
 }
 
 .list li + li {
@@ -84,16 +85,6 @@
   .compare {
     grid-template-columns: 1fr;
   }
-}
-
-.compare-card,
-.compare-card::part(base) {
-  height: 100%;
-}
-
-.compare-card fandry-heading + fandry-text {
-  display: block;
-  margin-top: var(--fd-space-2);
 }
 
 .tradeoffs {
@@ -200,23 +191,6 @@
     transform: translateY(-4px);
     box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
   }
-}
-
-.start-card,
-.start-card::part(base) {
-  height: 100%;
-}
-
-.start-card::part(base) {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--fd-space-3);
-  padding: var(--fd-space-6);
-}
-
-.start-card fandry-text {
-  display: block;
 }
 
 .start-code {

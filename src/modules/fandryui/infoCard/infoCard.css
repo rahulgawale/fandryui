@@ -1,0 +1,24 @@
+/* The docs site's info cards (What you get, the Why tiles and cards): one
+   padding and rhythm. A page imports this and puts class="info-card" on its
+   fandry-card:
+   @import 'fandryui/infoCard'; */
+
+/* In a grid row, every card is as tall as the tallest. */
+.info-card,
+.info-card::part(base) {
+  height: 100%;
+  min-width: 0;
+}
+
+.info-card::part(base) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fd-space-3);
+  padding: var(--fd-space-6);
+}
+
+/* fandry-text is display: contents by default; block keeps it one flex item. */
+.info-card fandry-text {
+  display: block;
+}

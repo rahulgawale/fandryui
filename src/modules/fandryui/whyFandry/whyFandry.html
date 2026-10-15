@@ -95,7 +95,7 @@
           They solve different problems. Neither is better in general; pick the one whose goals match yours.
         </fandry-text>
         <div class="compare">
-          <fandry-card class="compare-card">
+          <fandry-card class="compare-card info-card">
             <fandry-heading level="3">Lightning Base Components</fandry-heading>
             <fandry-text variant="muted" size="sm">Optimized for:</fandry-text>
             <ul class="list">
@@ -104,7 +104,7 @@
               </template>
             </ul>
           </fandry-card>
-          <fandry-card class="compare-card">
+          <fandry-card class="compare-card info-card">
             <fandry-heading level="3">Fandry UI</fandry-heading>
             <fandry-text variant="muted" size="sm">Optimized for:</fandry-text>
             <ul class="list">
@@ -161,7 +161,7 @@
         </fandry-text>
         <div class="start-grid">
           <template for:each={platforms} for:item="platform">
-            <fandry-card key={platform.slug} class="start-card">
+            <fandry-card key={platform.slug} class="start-card info-card">
               <fandry-badge>{platform.badge}</fandry-badge>
               <fandry-heading level="3">{platform.name}</fandry-heading>
               <fandry-text variant="muted" size="sm"><fandryui-doc-text text={platform.description}></fandryui-doc-text></fandry-text>

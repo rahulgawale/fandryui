@@ -1,3 +1,5 @@
+@import 'fandryui/infoCard';
+
 :host {
   display: block;
 }
@@ -68,23 +70,6 @@
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
-/* .grid's align-items: stretch makes each wrapper as tall as its row; the
-   card (its host and its base part) fills that instead of leaving empty
-   space below its own auto-height content. */
-.card-wrap fandry-card,
-.card-wrap fandry-card::part(base) {
-  height: 100%;
-}
-
-/* Same padding and rhythm as whyFandry's .start-card. */
-.card-wrap fandry-card::part(base) {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--fd-space-3);
-  padding: var(--fd-space-6);
-}
-
 /* hover: hover excludes touch devices -- see componentsIndex.css's
    identical rule for why this matters (a tap otherwise leaves the lift/
    shadow stuck on, with no mouseout event to clear it). */
@@ -93,11 +78,6 @@
     transform: translateY(-4px);
     box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
   }
-}
-
-/* fandry-text is display: contents by default; block keeps it one flex item. */
-.card-wrap fandry-text {
-  display: block;
 }
 
 .icon-chip {
