@@ -6,6 +6,8 @@
 
 .section {
   padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
+  /* Each home section after the hero starts on a hairline, like whySection. */
+  border-top: 1px solid var(--fd-color-border);
   /* Light accent-tint gradient, same approach as heroSection.css's :host
      background: reads --brand-accent (set on <html> by heroDemoGrid's
      "Apply theme" handler) with the default hue as fallback, not

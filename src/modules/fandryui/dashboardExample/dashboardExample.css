@@ -4,6 +4,8 @@
 
 .section {
   padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
+  /* Each home section after the hero starts on a hairline, like whySection. */
+  border-top: 1px solid var(--fd-color-border);
 }
 
 .container {
