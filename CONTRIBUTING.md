@@ -85,6 +85,28 @@ All fandry-\* components should:
 
 Pull requests that violate primitive boundaries will be closed.
 
+### Focus rings
+
+Draw a focus ring with the shared ring tokens, not a `box-shadow` of your own: `--_fd-ring-control` for a control (button, checkbox, link) and `--_fd-ring-field` for a text field's box. Keep `outline: var(--_fd-ring-width) solid transparent` beside it, which is what forced-colors mode paints. A component that also wants a shadow of its own (a button's hover lift) keeps it in a private `--_fd-*` variable and lists it after the ring, so neither replaces the other.
+
+---
+
+## Server Rendering (LWR SSR)
+
+On a site with LWR SSR, a component's constructor, `connectedCallback`, `@api` setters and module scope run on the server, where there is no `document` or `window`. Don't use them there: no `document`/`window` listeners, timers, `requestAnimationFrame`, measuring or focusing. Do that work in `renderedCallback` or an event handler, or skip it on the server:
+
+```ts
+connectedCallback() {
+  // Rendered on a server (SSR): there is no document yet, and the browser runs this again.
+  if (typeof document === 'undefined') {
+    return;
+  }
+  document.addEventListener('keydown', this.handleDocumentKeydown);
+}
+```
+
+When the page loads, the browser creates the component again and runs these callbacks and setters for real, so skipping them on the server loses nothing. `base/__tests__/serverRender.ssr-test.ts` renders every component in `componentsData` with no `document` (see Testing).
+
 ---
 
 ## Sharing Behavior Between Components
@@ -231,6 +253,19 @@ Test helpers (a custom item component, a subclass of a base class) live in the s
 - jsdom has no layout, no real focus behavior and no ARIA id resolution. For overlays and keyboard interaction, also check the component in a real browser with `npm run dev`.
 
 New primitives should cover their public API surface: rendered output, attribute reflection, and any semantic events dispatched. Do not test implementation details (private methods, internal state shape).
+
+`npm test` runs two Jest projects, both set up in `jest.config.cjs`: `dom` (`*.test.ts`, `@lwc/jest-preset`) and `ssr` (`*.ssr-test.ts`, `@lwc/jest-preset/ssr`), which renders components with LWC's server engine and no `document`. A new primitive listed in `componentsData` is server-rendered by `serverRender.ssr-test.ts` automatically. If it only reaches for the browser in a certain state (open, with data), add the props for that state to the test's `PROPS`.
+
+---
+
+## Docs Site
+
+The docs site (`src/modules/fandryui`) may be messy; a few things in it are checked:
+
+- **Every route** in `lwr.config.json` has `properties`: a `title` (60 characters or fewer), a `description` (160 or fewer, unique) and its canonical `path`, ending in `/`. List the same URL in `src/assets/sitemap.xml` and in `src/assets/llms.txt` with its description. `routeMeta.test.ts` fails until all three agree. A component or getting-started page takes its description from its data (`componentsData`, `gettingStartedData`).
+- **Internal links** end in `/`, like the canonical URLs, so they don't redirect.
+- **Docs text** in `componentsData` and `gettingStartedData` marks code with backticks (`` `fandry-toast` ``, `` `--fd-bg` ``), rendered as `<code>` by `fandryui/docText`. Render that text through `<fandryui-doc-text>`, never as `{text}`, or the backticks show.
+- **Demos** restyle through tokens and parts, as a site would. Don't put a `box-shadow` on a control's part (`fandry-button::part(base)`): a `::part()` rule from outside wins over the component's own `box-shadow` in every state, so it removes the focus ring. Put a shadow on the element with `filter: drop-shadow()` instead.
 
 ---
 
