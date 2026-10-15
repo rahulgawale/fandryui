@@ -1,3 +1,10 @@
+# [0.26.0](https://github.com/rahulgawale/fandryui/compare/v0.25.0...v0.26.0) (2026-10-15)
+
+
+### Features
+
+* new default theme (cobalt, soft badges, two-tone focus rings), Why Fandry page, SEO/GEO, SSR-safe components ([#119](https://github.com/rahulgawale/fandryui/issues/119)) ([5ce7caa](https://github.com/rahulgawale/fandryui/commit/5ce7caaa8185f39579afcdd0a8401b4abb87522b))
+
 # [0.25.0](https://github.com/rahulgawale/fandryui/compare/v0.24.0...v0.25.0) (2026-10-14)
 
 
