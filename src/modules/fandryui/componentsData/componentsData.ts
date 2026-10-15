@@ -1577,7 +1577,7 @@ fandry-badge::part(base) {
     },
     category: 'Feedback',
     description: 'A small status/label pill.',
-    props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant. The colored ones are soft, not solid, so a column of badges stays quieter than the data beside it. Status variants use `--fd-{success,warning,danger}-{surface,border,text}`; primary derives its tints from `--fd-primary`.' }],
+    props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant. The colored ones are soft, not solid, so a column of badges stays quieter than the data beside it. Each derives its fill, border and text from its own color (`--fd-primary`, `--fd-success`, `--fd-warning`, `--fd-danger`) with `--fd-bg`, `--fd-text` and `--fd-surface-tint`, so it follows a rebrand and dark themes.' }],
     code: `<fandry-badge variant="primary">New</fandry-badge>`
   },
   {

@@ -720,7 +720,7 @@ fandry-checkbox::part(control checked) {
       blocks: [
         {
           type: 'text',
-          text: 'The defaults are in `fandry/base/tokens.css` (`node_modules/fandryui/modules/fandry/base/` on LWR, `fandryBase/` on Salesforce). `--brand-primary` and `--brand-accent` still work as the older names for `--fd-primary` and `--fd-accent`. Info alerts and toasts use `--fd-info`, or `--fd-accent` when only that is set.'
+          text: 'The defaults are in `fandry/base/tokens.css` (`node_modules/fandryui/modules/fandry/base/` on LWR, `fandryBase/` on Salesforce). `--brand-primary` and `--brand-accent` still work as the older names for `--fd-primary` and `--fd-accent`. Info alerts and toasts use `--fd-info`, or `--fd-accent` when only that is set. Beyond that, no fandry component draws in `--fd-accent`: it is a highlight color for your own CSS.'
         },
         {
           type: 'code',
@@ -754,7 +754,9 @@ fandry-checkbox::part(control checked) {
             'Info alerts and toasts read `--fd-info`, and `--fd-accent` when only that is set, so a site that colored them through accent keeps its color. Set `--fd-info` to color them apart from accent.',
             'Colored badges are soft tints of their color instead of solid fills, and every badge has a border. They still follow `--fd-success`, `--fd-warning`, `--fd-danger` and `--fd-primary`, and dark themes through `--fd-bg` and `--fd-text`; the `-foreground` tokens no longer color them.',
             'Focus: buttons, links and other controls draw their ring with a soft halo, and still follow `--fd-ring-width`. Text fields draw it on their own border, so they no longer follow `--fd-ring-width`, and the textarea no longer uses `--fd-ring-offset`.',
-            'The data table marks the row being edited with `--fd-primary` instead of `--fd-accent`.'
+            'The data table marks the row being edited with `--fd-primary` instead of `--fd-accent`.',
+            'A link draws its focus ring on its `link` part (the `<a>`) instead of `base`, so the ring follows a box you give `::part(link)`. A site that drew its own ring on `fandry-link::part(base):focus-visible` now gets two: drop that rule and set `--fd-ring-control` or `--fd-ring-color` on the link instead.',
+            'A focused button keeps the shadow it lifts with on hover, under its ring.'
           ]
         },
         {
@@ -789,6 +791,12 @@ fandry-badge::part(base) {
   /* your ring color */
   --fd-ring-field: 0 0 0 2px hsl(222 89% 56%);
 }`
+        },
+        {
+          type: 'note',
+          variant: 'warning',
+          title: 'A ring token is a box-shadow list',
+          text: 'A value for `--fd-ring-control` or `--fd-ring-field` has to be one or more box shadows. For an empty one write `0 0 transparent`, not `none`: a button adds its hover shadow after the ring, and `none` in a list makes the whole declaration invalid, so the button draws neither.'
         }
       ]
     }
