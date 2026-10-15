@@ -100,9 +100,44 @@
   padding: calc(var(--fd-space-6) * 1.5) var(--fd-space-6) calc(var(--fd-space-6) * 2);
 }
 
-/* A caption under the live demos. */
-.demo-note {
-  display: block;
+/* A caption under the live demos: a quiet pill, led by an accent dot. */
+.note-row {
+  display: flex;
+  justify-content: center;
   margin-top: var(--fd-space-5);
+}
+
+.demo-note::part(base) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-2);
+  padding: var(--fd-space-2) var(--fd-space-4);
+  border: 1px solid color-mix(in srgb, var(--fd-color-border) 70%, transparent);
+  border-radius: 999px;
+  background: hsl(0 0% 100% / 0.6);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--fd-color-text) 6%, transparent);
   text-align: center;
+}
+
+.note-dot {
+  flex: none;
+  width: var(--fd-space-2);
+  height: var(--fd-space-2);
+  border-radius: 50%;
+  background: hsl(var(--site-accent));
+  box-shadow: 0 0 0 3px hsl(var(--site-accent) / 0.18);
+}
+
+/* Where it wraps, a pill reads as a blob: a rounded box, text from the
+   left, the dot on the first line. */
+@media (max-width: 48rem) {
+  .demo-note::part(base) {
+    align-items: flex-start;
+    border-radius: var(--fd-radius-lg);
+    text-align: left;
+  }
+
+  .note-dot {
+    margin-top: 0.45em;
+  }
 }
