@@ -187,7 +187,9 @@ export default class DashboardExample extends LightningElement {
     'fandry-badge',
     'fandry-heading',
     'fandry-text',
-    'fandry-link'
+    'fandry-link',
+    'fandry-sidebar',
+    'fandry-sidebar-item'
   ];
 
   navItems = [
