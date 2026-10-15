@@ -1,3 +1,10 @@
+## [0.26.1](https://github.com/rahulgawale/fandryui/compare/v0.26.0...v0.26.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* **data-table:** keep the toolbar's buttons inside the card on phones ([#122](https://github.com/rahulgawale/fandryui/issues/122)) ([75e39f9](https://github.com/rahulgawale/fandryui/commit/75e39f9d89842e26245ce394df5b1b6cf5a7718c))
+
 # [0.26.0](https://github.com/rahulgawale/fandryui/compare/v0.25.0...v0.26.0) (2026-10-15)
 
 
