@@ -68,3 +68,10 @@
   margin: 0 auto;
   padding: calc(var(--fd-space-6) * 1.5) var(--fd-space-6) calc(var(--fd-space-6) * 2);
 }
+
+/* A caption under the live demos. */
+.demo-note {
+  display: block;
+  margin-top: var(--fd-space-5);
+  text-align: center;
+}
