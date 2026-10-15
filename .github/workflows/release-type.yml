@@ -1,0 +1,38 @@
+# The squash-merge title decides the release (see release.config.cjs). This
+# checks it against what the PR changes: a feat:/fix:/perf: title must touch
+# something that ships in the npm package. See scripts/check-release-type.mjs.
+
+name: Release type
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Test the check
+        run: node --test scripts/check-release-type.test.mjs
+
+      # The title goes through env, never into the script text.
+      - name: Check the title against the changed files
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: git diff --name-only "$BASE_SHA...$HEAD_SHA" | node scripts/check-release-type.mjs

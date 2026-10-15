@@ -147,6 +147,8 @@ BREAKING CHANGE: The value attribute has been replaced with v-model pattern
 
 All commits to `main` branch must follow this convention. PRs should be squash-merged with a proper conventional commit message.
 
+The type decides the release, not the files: release a change only when it reaches the `fandryui` package. Primitives (`src/core/fandry`, `src/salesforce/fandry`), blocks (`src/blocks/fandry`) and the CLI (`packages/ui`) ship, so use `fix:` or `feat:` for them. The docs site, its demos and tests don't, so use `docs:` or `chore:` (a site fix is `docs(site): ...`, not `fix(site): ...`). The **Release type** check (`scripts/check-release-type.mjs`) fails a `feat:`/`fix:`/`perf:` PR that changes nothing shipped, and warns on a no-release PR that does.
+
 ---
 
 ## What We Accept
