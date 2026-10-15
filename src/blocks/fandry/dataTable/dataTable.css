@@ -33,10 +33,15 @@
   flex: 0 0 auto;
 }
 
+/* Wraps, and may shrink below its buttons' total width, so on a narrow card
+   (a phone) its buttons drop onto a new line instead of past the edge. */
 .toolbar-end {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
   gap: var(--_fd-space-2);
+  min-width: 0;
   margin-left: auto;
 }
 
