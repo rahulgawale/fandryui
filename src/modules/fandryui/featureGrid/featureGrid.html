@@ -1,7 +1,10 @@
 <template>
   <section class="section">
     <div class="container">
-      <fandry-heading level="2" class="title">What you get</fandry-heading>
+      <div class="intro">
+        <fandry-badge variant="primary">Features</fandry-badge>
+        <fandry-heading level="2" class="title">What you get</fandry-heading>
+      </div>
 
       <div class="grid">
         <template for:each={features} for:item="feature">
