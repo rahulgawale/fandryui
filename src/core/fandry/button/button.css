@@ -104,6 +104,15 @@
   box-shadow: var(--_fd-ring-control), var(--_fd-button-lift);
 }
 
+/* A filled button can be the ring's own color, so a line of its fill
+   mixed toward its text color sits just inside the ring: lighter on a dark
+   fill, darker on a light one, 3:1 or more against the fill for any brand. */
+.button--default:focus-visible {
+  box-shadow: inset 0 0 0 var(--_fd-ring-width)
+      color-mix(in srgb, hsl(var(--_fd-primary-foreground)) 75%, hsl(var(--_fd-primary))),
+    var(--_fd-ring-control), var(--_fd-button-lift);
+}
+
 /* Disabled. aria-disabled is a disabled button that keeps focus. */
 .button:disabled,
 .button[aria-disabled='true'] {

@@ -756,7 +756,7 @@ fandry-checkbox::part(control checked) {
             'Focus: buttons, links and other controls draw their ring with a soft halo, and still follow `--fd-ring-width`. Text fields draw it on their own border, so they no longer follow `--fd-ring-width`, and the textarea no longer uses `--fd-ring-offset`.',
             'The data table marks the row being edited with `--fd-primary` instead of `--fd-accent`.',
             'A link draws its focus ring on its `link` part (the `<a>`) instead of `base`, so the ring follows a box you give `::part(link)`. A site that drew its own ring on `fandry-link::part(base):focus-visible` now gets two: drop that rule and set `--fd-ring-control` or `--fd-ring-color` on the link instead.',
-            'A focused button keeps the shadow it lifts with on hover, under its ring.'
+            'A focused button keeps the shadow it lifts with on hover, under its ring. A filled (default) button also draws a line of its own color, mixed toward its text color, just inside the ring, so the ring stands apart from a fill of the same color.'
           ]
         },
         {
