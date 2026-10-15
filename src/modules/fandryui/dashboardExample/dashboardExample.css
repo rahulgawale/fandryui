@@ -6,6 +6,9 @@
   padding: calc(var(--fd-space-6) * 2) 0 calc(var(--fd-space-6) * 2);
   /* Each home section after the hero starts on a hairline, like whySection. */
   border-top: 1px solid var(--fd-color-border);
+  /* A primary wash, fading down: features above has the accent one, so
+     the two sections alternate. Follows "Apply theme". */
+  background: linear-gradient(180deg, hsl(var(--site-primary) / 0.05), transparent 60%);
 }
 
 .container {
