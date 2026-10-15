@@ -211,9 +211,11 @@ code {
    heading, a couple of stat lines, a badge) doesn't wrap awkwardly at the
    narrowest column width auto-fit will produce. Gap matches the
    container's own inline padding for a consistent rhythm between a page's
-   outer gutter and the gutters between its grid items. */
+   outer gutter and the gutters between its grid items. min(280px, 100%)
+   lets the one column shrink to a container narrower than 280px (a phone)
+   instead of running past it. */
 .fandry-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: var(--fd-space-6);
 }
