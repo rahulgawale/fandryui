@@ -42,9 +42,10 @@
   margin-bottom: var(--fd-space-3);
 }
 
+/* No padding: on the host it sits outside the card's border and only
+   narrows the table, which needs the room most on a phone. */
 .demo-frame {
   display: block;
-  padding: var(--fd-space-5);
 }
 
 .two-up {
