@@ -15,7 +15,8 @@ const shared = {
 module.exports = {
   projects: [
     { displayName: 'dom', preset: '@lwc/jest-preset', ...shared },
-    // *.ssr-test.ts: rendered with no document, as under LWR SSR.
+    /* *.ssr-test.ts: rendered with no document, as under LWR SSR. Its
+       "LWC1057: inert is not valid attribute" lines are warnings, not failures. */
     { displayName: 'ssr', preset: '@lwc/jest-preset/ssr', ...shared }
   ]
 };
