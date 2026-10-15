@@ -112,3 +112,14 @@
   margin-top: var(--fd-space-2);
   display: block;
 }
+
+/* Inline code in a card's description, as docStyles.css draws it. */
+.card code {
+  font-family: var(--font-code, "Geist Mono", monospace);
+  font-size: 0.875em;
+  padding: 0.1em 0.35em;
+  border-radius: var(--fd-radius-sm);
+  background: color-mix(in srgb, var(--fd-color-text) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--fd-color-text) 10%, transparent);
+  overflow-wrap: anywhere;
+}
