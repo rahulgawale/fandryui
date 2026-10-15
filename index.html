@@ -2,33 +2,83 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Fandry Ui</title>
-
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <meta charset="utf-8" />
+    <!-- Per page: each route's "properties" in lwr.config.json
+         (routeMeta.test.ts keeps them complete). -->
+    <title>Fandry UI: composable UI components for Salesforce LWC</title>
+    <meta name="description" content="The flexibility of modern UI development with the simplicity of LWC. A themeable, composable component library for Salesforce LWC, LWR and Experience Cloud." />
+    <link rel="canonical" href="https://fandryui.forcetrails.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Fandry UI" />
+    <meta property="og:title" content="Fandry UI: composable UI components for Salesforce LWC" />
+    <meta property="og:description" content="The flexibility of modern UI development with the simplicity of LWC. A themeable, composable component library for Salesforce LWC, LWR and Experience Cloud." />
+    <meta property="og:url" content="https://fandryui.forcetrails.com/" />
+    <meta property="og:image" content="https://fandryui.forcetrails.com/assets/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Fandry UI: the flexibility of modern UI development, the simplicity of LWC." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://fandryui.forcetrails.com/assets/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Fandry UI: the flexibility of modern UI development, the simplicity of LWC." />
+
     <meta name="author" content="Rahul Gawale" />
-    <meta name="description" content="Fandry Ui" />
-    <meta name="apple-mobile-web-app-title" content="Fandry Ui" />
-    <link rel="icon" href="/1/asset/immutable/s/17920530992568310/assets/favicon.ico" />
-    <link rel="manifest" href="/1/asset/immutable/s/17920530992568816/assets/site.webmanifest" />
-    <meta name="application-name" content="Fandry Ui" />
+    <meta name="application-name" content="Fandry UI" />
+    <meta name="apple-mobile-web-app-title" content="Fandry UI" />
+    <meta name="theme-color" content="#0d42f2" />
+    <link rel="icon" href="/1/asset/immutable/s/17920550135301556/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17920550135301556/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17920550135300518/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17920550135301556/assets/site.webmanifest" />
+    <!-- The same on every page: the site, the library it documents, and its
+         author, for search engines and AI answers. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://fandryui.forcetrails.com/#website",
+            "name": "Fandry UI",
+            "url": "https://fandryui.forcetrails.com/",
+            "description": "A composable, themeable UI component library for Salesforce LWC.",
+            "about": { "@id": "https://fandryui.forcetrails.com/#library" },
+            "publisher": { "@id": "https://fandryui.forcetrails.com/#author" }
+          },
+          {
+            "@type": "SoftwareSourceCode",
+            "@id": "https://fandryui.forcetrails.com/#library",
+            "name": "Fandry UI",
+            "alternateName": "fandryui",
+            "description": "A modern, composable UI component library for Salesforce Lightning Web Components (LWC), LWR, Experience Cloud and LWC OSS: themeable with design tokens, extensible with slots, CSS parts and state classes, shipped as plain LWC source.",
+            "url": "https://fandryui.forcetrails.com/",
+            "codeRepository": "https://github.com/rahulgawale/fandryui",
+            "programmingLanguage": ["JavaScript", "TypeScript", "HTML", "CSS"],
+            "runtimePlatform": ["Salesforce Lightning Web Components", "LWR", "LWC OSS"],
+            "license": "https://opensource.org/licenses/MIT",
+            "keywords": "Salesforce, LWC, Lightning Web Components, LWR, Experience Cloud, UI components, design system, design tokens",
+            "sameAs": ["https://www.npmjs.com/package/fandryui", "https://github.com/rahulgawale/fandryui"],
+            "author": { "@id": "https://fandryui.forcetrails.com/#author" }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://fandryui.forcetrails.com/#author",
+            "name": "Rahul Gawale",
+            "url": "https://github.com/rahulgawale"
+          }
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- One request for all three families. -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap"
-    />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17920530992568816/assets/styles/global.css" />
-  <meta name="traceparent" content="00-54c2ae29b1ed5b8f5c6aaf728627c0d7-3e495c09b673373c-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17920550135301556/assets/styles/global.css" />
+  <meta name="traceparent" content="00-9f5dbc1c6fdd0eaa6d41813b8f24251b-4ebd5ff372e61842-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
@@ -36,8 +86,8 @@
     <div class="wrapper">
       <div id="main"><fandryui-home></fandryui-home></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/home/configuration/ci/-%2F-/s/33f82ac09a305a62d006a6668424ae27/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/home/configuration/ci/-%2F-/s/2c8a3e2241eeba5746d35f0c4543e9a7/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fhome%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256--cnWxDfWkzU6pMncUvqRjIMHq8uQEnM5Cna7l9Q2kDQ/bundle_@lwrjs_app-service_home_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fhome%2Fv%2F0_25_0/s/sha256-vE2FGTj79jT-QNCsITob79UAZJIecIIbO1nRRdJdQsc/bundle_fandryui_home.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fhome%2Fv%2F0_25_0/s/sha256-wLzivgrmV1FNRLM2kEafmdeP_6SLvLhYEL6eYHGkULc/bundle_fandryui_home.js" />
   </body>
 </html>
