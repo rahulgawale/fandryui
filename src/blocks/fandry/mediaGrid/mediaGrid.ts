@@ -1,6 +1,5 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
-import { isImage } from 'fandry/mediaItem';
 import type { FdMediaItem } from 'fandry/mediaItem';
 
 /** Everything the grid says; see `messages`. */
@@ -19,7 +18,6 @@ export const DEFAULT_MEDIA_GRID_MESSAGES: FdMediaGridMessages = {
 interface FdMediaTile {
   key: string;
   index: number;
-  isImage: boolean;
   src: string;
   srcset: string | undefined;
   sizes: string | undefined;
@@ -70,7 +68,6 @@ export default class FdMediaGrid extends Base {
       return {
         key: item.id,
         index,
-        isImage: isImage(item),
         src: thumbnail || item.src,
         srcset: thumbnail ? undefined : item.srcset,
         sizes: thumbnail ? undefined : item.sizes,

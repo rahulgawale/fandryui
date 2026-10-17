@@ -8,7 +8,6 @@ import { delay } from 'fandryui/mockApi';
 function photo(name: string | number, alt: string, caption: string, credit: string, width = 1280, height = 960): FdMediaItem {
   return {
     id: `photo-${name}`,
-    type: 'image',
     src: `/assets/media/photo-${name}.jpg`,
     thumbnail: `/assets/media/photo-${name}-400.jpg`,
     width,

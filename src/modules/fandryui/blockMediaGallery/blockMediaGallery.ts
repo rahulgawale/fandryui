@@ -12,7 +12,6 @@ const USAGE = `<fandry-media-gallery
 const ITEMS_CODE = `photos = [
   {
     id: 'lake',              // unique and stable
-    type: 'image',           // the default; video and embeds come later
     src: '/media/lake.jpg',  // the full file, for the viewer
     thumbnail: '/media/lake-400.jpg',
     alt: 'A pine forest above a calm bay.',
@@ -60,7 +59,6 @@ export default class ProductGallery extends FdMediaGalleryState {
 
 const ITEM_PROPS = [
   { name: 'id', type: 'string', description: 'Unique and stable: the key each piece renders by.' },
-  { name: 'type', type: "'image'", description: 'How the item is drawn. Defaults to `image`, the only type so far; video and embeds will be new values, so items written today keep working.' },
   { name: 'src', type: 'string', description: 'The full-size file, shown in the viewer.' },
   { name: 'alt', type: 'string', description: 'Describes the picture for people who can\'t see it. `\'\'` for a decorative one.' },
   { name: 'thumbnail', type: 'string', description: 'A smaller file for the grid. Without one the grid uses `src` (with `srcset` / `sizes`).' },
@@ -75,7 +73,7 @@ const PROPS = [
   { name: 'index', type: 'number', default: '0', description: 'The current item. Set it to choose where the gallery starts; the block keeps it current as the user moves and reports each move through `change`.' },
   { name: 'loading', type: 'boolean', default: 'false', description: 'While the items are being fetched: the grid shows placeholders and says it is busy.' },
   { name: 'loading-count', type: 'number', default: '8', description: 'How many placeholders.' },
-  { name: 'messages', type: 'object', default: '{}', description: 'What the gallery says (the viewer\'s name, Close, Keyboard shortcuts, Previous, Next, "3 of 12", what a screen reader hears on moving, and the name of a tile whose picture has no alt text), e.g. to translate it: any key of `DEFAULT_MEDIA_VIEWER_MESSAGES` (`fandry/mediaViewer`) or `DEFAULT_MEDIA_GRID_MESSAGES` (`fandry/mediaGrid`).' },
+  { name: 'messages', type: 'object', default: '{}', description: 'What the gallery says (the viewer\'s name, Close, Keyboard shortcuts, Previous, Next, "3 of 12", what a screen reader hears on moving, and the name of a tile whose picture has no alt text), e.g. to translate it: any key of `DEFAULT_MEDIA_VIEWER_MESSAGES` (`fandry/mediaViewerState`) or `DEFAULT_MEDIA_GRID_MESSAGES` (`fandry/mediaGrid`).' },
   { name: 'keys (slot)', type: 'slot', default: 'an English list', description: 'The keyboard shortcuts the viewer\'s keyboard button (or `?`) shows. Slot a translated list here; `fandry/mediaKeys` is the default.' },
   { name: 'show(index?) · close()', type: 'methods', default: '—', description: 'Open the viewer (on `index`, or on the current item) and close it.' },
   { name: 'next() · previous() · goTo(index)', type: 'methods', default: '—', description: 'Move the current item, with or without the viewer open.' }

@@ -23,28 +23,6 @@
                 onclick={handleSelect}
               >
                 <span class={tile.frameClass} part="frame">
-                  <template lwc:if={tile.isImage}>
-                    <img
-                      class="image"
-                      part="image"
-                      data-id={tile.key}
-                      src={tile.src}
-                      srcset={tile.srcset}
-                      sizes={tile.sizes}
-                      alt={tile.alt}
-                      loading={tile.loading}
-                      decoding="async"
-                      draggable="false"
-                      onload={handleLoad}
-                      onerror={handleLoad}
-                    />
-                  </template>
-                </span>
-              </fandry-button>
-            </template>
-            <template lwc:else>
-              <div class={tile.frameClass} part="frame">
-                <template lwc:if={tile.isImage}>
                   <img
                     class="image"
                     part="image"
@@ -55,10 +33,28 @@
                     alt={tile.alt}
                     loading={tile.loading}
                     decoding="async"
+                    draggable="false"
                     onload={handleLoad}
                     onerror={handleLoad}
                   />
-                </template>
+                </span>
+              </fandry-button>
+            </template>
+            <template lwc:else>
+              <div class={tile.frameClass} part="frame">
+                <img
+                  class="image"
+                  part="image"
+                  data-id={tile.key}
+                  src={tile.src}
+                  srcset={tile.srcset}
+                  sizes={tile.sizes}
+                  alt={tile.alt}
+                  loading={tile.loading}
+                  decoding="async"
+                  onload={handleLoad}
+                  onerror={handleLoad}
+                />
               </div>
             </template>
             <template lwc:if={tile.hasCaption}>

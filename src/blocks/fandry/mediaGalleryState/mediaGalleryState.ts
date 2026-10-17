@@ -2,7 +2,7 @@ import { api } from 'lwc';
 import Base from 'fandry/base';
 import type { FdMediaItem } from 'fandry/mediaItem';
 import type { FdMediaGridMessages } from 'fandry/mediaGrid';
-import type { FdMediaViewerMessages } from 'fandry/mediaViewer';
+import type { FdMediaViewerMessages } from 'fandry/mediaViewerState';
 
 /**
  * FdMediaGalleryState is the behavior behind the media-gallery block, with no
@@ -15,9 +15,10 @@ import type { FdMediaViewerMessages } from 'fandry/mediaViewer';
  *   <fandry-media-viewer items={items} index={currentIndex} open={viewerOpen}
  *     messages={messages} onchange={handleViewerChange} ontoggle={handleViewerToggle}>
  *
- * Mark the element that opens each item with `data-index` (or use
- * fandry-media-grid, which has its own); that is where focus goes when the
- * viewer closes on a different item than it opened on.
+ * Mark the element that opens each item with `data-index`; that is where
+ * focus goes when the viewer closes on a different item than it opened on.
+ * A template whose openers are elsewhere (fandry-media-gallery's are inside
+ * its grid) overrides `focusItem()`.
  *
  * `items` is controlled: this class never changes it. Which item is current
  * is the gallery's own state, like a native control's value: it moves as the
@@ -35,7 +36,9 @@ export default class FdMediaGalleryState extends Base {
 
   /**
    * Passed to the grid and the viewer: any of DEFAULT_MEDIA_VIEWER_MESSAGES
-   * (fandry/mediaViewer) and DEFAULT_MEDIA_GRID_MESSAGES (fandry/mediaGrid).
+   * (fandry/mediaViewerState) and DEFAULT_MEDIA_GRID_MESSAGES
+   * (fandry/mediaGrid). One object for both, so the two may never share a
+   * key: a test checks it.
    */
   @api messages: Partial<FdMediaViewerMessages & FdMediaGridMessages> = {};
 
@@ -138,11 +141,6 @@ export default class FdMediaGalleryState extends Base {
   /* The viewer hands focus back to what opened it. When the user moved to
      another item meanwhile, the item they were last looking at gets it. */
   protected focusItem(index: number) {
-    const grid = this.template.querySelector('fandry-media-grid') as (HTMLElement & { focusItem(i: number): void }) | null;
-    if (grid) {
-      grid.focusItem(index);
-      return;
-    }
     (this.template.querySelector(`[data-index="${index}"]`) as HTMLElement | null)?.focus();
   }
 

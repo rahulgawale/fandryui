@@ -193,8 +193,8 @@
       <fandry-text variant="muted">
         <code>fandry/mediaGalleryState</code> has the behavior and no template. <code>fandry/mediaGallery</code> is that
         class plus a grid and a viewer. <code>fandry/mediaGrid</code> and <code>fandry/mediaViewer</code> each work on
-        their own and know nothing of each other; what they share is the item shape in <code>fandry/mediaItem</code>. <code>fandry/mediaGestures</code> is the swipe and pinch math, with no template. To change the markup, extend
-        the state class, or, on Salesforce, edit the copy <code>fandry add</code> put in your project. Built from:
+        their own and know nothing of each other; what they share is the item shape in <code>fandry/mediaItem</code>. The viewer is split the same way: <code>fandry/mediaViewerState</code> has its keyboard, swipe and zoom and no template. <code>fandry/mediaGestures</code> is the swipe and pinch math, with no template. To change the markup, extend
+        a state class, or, on Salesforce, edit the copy <code>fandry add</code> put in your project. Built from:
         <template for:each={builtFrom} for:item="piece">
           <fandry-link key={piece.name} href={piece.href} class="chip"><fandry-badge>{piece.name}</fandry-badge></fandry-link>
         </template>

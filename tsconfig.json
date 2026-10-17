@@ -45,6 +45,7 @@
       "fandry/mediaGrid": ["src/blocks/fandry/mediaGrid/mediaGrid"],
       "fandry/mediaKeys": ["src/blocks/fandry/mediaKeys/mediaKeys"],
       "fandry/mediaViewer": ["src/blocks/fandry/mediaViewer/mediaViewer"],
+      "fandry/mediaViewerState": ["src/blocks/fandry/mediaViewerState/mediaViewerState"],
       "fandry/mediaGalleryState": ["src/blocks/fandry/mediaGalleryState/mediaGalleryState"],
       "fandry/mediaGallery": ["src/blocks/fandry/mediaGallery/mediaGallery"],
       "fandry/*": ["src/core/fandry/*"],

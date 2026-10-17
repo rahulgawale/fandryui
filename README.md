@@ -52,7 +52,7 @@ src/
   │   └── fandry/              # Blocks: installable patterns built only from primitives
   │       ├── dataTable/, dataTableState/   # search, filters, inline edit, save hooks, ...
   │       ├── form/, formState/, formField/ # fields, validation, read/edit mode, save hook
-  │       └── mediaGallery/, mediaGalleryState/, mediaGrid/, mediaViewer/, ... # grid + full-screen viewer
+  │       └── mediaGallery/, mediaGalleryState/, mediaGrid/, mediaViewer/, mediaViewerState/, ... # grid + full-screen viewer
   └── modules/
       └── fandryui/             # The site itself: real composites and pages
           ├── home/, heroSection/, featureGrid/, dashboardExample/, ...

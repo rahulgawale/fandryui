@@ -59,6 +59,7 @@
           <div
             class="stage"
             part="stage"
+            lwc:ref="stage"
             onpointerdown={handlePointerDown}
             onpointermove={handlePointerMove}
             onpointerup={handlePointerUp}
@@ -66,23 +67,22 @@
             onwheel={handleWheel}
           >
             <div class={trackClass} style={trackStyle}>
-              <template for:each={slides} for:item="slide">
+              <template for:each={slideViews} for:item="slide">
                 <div key={slide.key} class={slide.className} aria-hidden={slide.ariaHidden}>
-                  <template lwc:if={slide.isImage}>
-                    <img
-                      class={slide.mediaClass}
-                      part="image"
-                      style={slide.mediaStyle}
-                      src={slide.src}
-                      srcset={slide.srcset}
-                      sizes={slide.sizes}
-                      alt={slide.alt}
-                      width={slide.width}
-                      height={slide.height}
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </template>
+                  <img
+                    class={slide.mediaClass}
+                    part="image"
+                    style={slide.mediaStyle}
+                    data-current={slide.isCurrent}
+                    src={slide.item.src}
+                    srcset={slide.item.srcset}
+                    sizes={slide.item.sizes}
+                    alt={slide.item.alt}
+                    width={slide.item.width}
+                    height={slide.item.height}
+                    decoding="async"
+                    draggable="false"
+                  />
                 </div>
               </template>
             </div>
