@@ -17,9 +17,9 @@ export default class BreadcrumbItem extends Base {
   // checkbox.ts for why this can't reach `data-*` attributes.
   @api elementProps: Record<string, unknown> = {};
 
-  // Always the same <a>, so the `link` part and `elementProps` keep one
-  // target: the current crumb just loses its href, and an <a> without one
-  // is plain text, as the WAI-ARIA breadcrumb pattern wants.
+  /* Always the same <a>, so the `link` part and `elementProps` keep one
+     target: the current crumb just loses its href, and an <a> without one
+     is plain text, as the WAI-ARIA breadcrumb pattern wants. */
   get computedHref(): string | undefined {
     return this.href && !this.current ? this.href : undefined;
   }

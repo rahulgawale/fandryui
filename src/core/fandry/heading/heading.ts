@@ -14,12 +14,14 @@ export default class FdHeading extends Base {
     return this._level;
   }
 
+  // Anything but 1-6 (unset, 0, 7, NaN) is the default 2, as an invalid aria-level was.
   set level(value: 1 | 2 | 3 | 4 | 5 | 6) {
-    this._level = Number(value) as 1 | 2 | 3 | 4 | 5 | 6;
+    const level = Number(value);
+    this._level = Number.isInteger(level) && level >= 1 && level <= 6 ? (level as 1 | 2 | 3 | 4 | 5 | 6) : 2;
   }
 
-  // One real h1-h6 per lwc:if branch: a tag name can't be interpolated, and
-  // LWC allows the same slot once in each branch of an if/elseif chain.
+  /* One real h1-h6 per lwc:if branch: a tag name can't be interpolated, and
+     LWC allows the same slot once in each branch of an if/elseif chain. */
   get isLevel1(): boolean {
     return this.level === 1;
   }
