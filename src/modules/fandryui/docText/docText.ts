@@ -59,7 +59,10 @@ export default class DocText extends LightningElement {
   static renderMode = 'light';
 
   @api text = '';
-  /** Links each component the text names to its page. Off where the text sits inside a link already. */
+  /**
+   * Links each component the text names to its page. Set it on every docs
+   * text except one inside a link already, such as a link card's description.
+   */
   @api links = false;
   /** The page's own component (its slug), which `links` leaves alone. */
   @api current = '';
