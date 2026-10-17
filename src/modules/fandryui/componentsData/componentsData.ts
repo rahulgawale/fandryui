@@ -718,7 +718,7 @@ fandry-text::part(base) {
     category: 'Typography',
     description: 'Body text — pick the rendered tag and size independently.',
     props: [
-      { name: 'as', type: "'p' | 'span' | 'div'", default: "'p'", description: 'Layout: block (p/div) or inline (span).' },
+      { name: 'as', type: "'p' | 'span' | 'div'", default: "'p'", description: 'The element rendered: a paragraph (p), a block (div) or inline text (span).' },
       { name: 'size', type: "'xs' | 'sm' | 'md'", default: "'md'", description: 'Font size.' },
       { name: 'variant', type: "'default' | 'muted'", default: "'default'", description: 'Text color.' }
     ],

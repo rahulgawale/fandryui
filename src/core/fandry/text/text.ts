@@ -11,18 +11,13 @@ export default class FdText extends Base {
     return ['text', `text--${this.as}`, `text--${this.size}`, `text--${this.variant}`].join(' ');
   }
 
-  // Deliberately `role="paragraph"` on a single element, not a real
-  // <p>/<div>/<span> swap -- same constraint fandry-heading hit: LWC templates
-  // are static, and branching `as` across several `template if:true`
-  // blocks (one real tag each) breaks slot content projection (confirmed
-  // live -- see heading.ts for the full story). `role="paragraph"` is
-  // ARIA 1.2's own document-structure role for exactly this case: a
-  // paragraph whose semantics aren't carried by a host-language <p>
-  // element. `as="span"`/`as="div"` need no ARIA equivalent -- both are
-  // implicitly `role="generic"`, so the `display` driven by their
-  // `text--{as}` class is the only difference between them.
-  get role(): 'paragraph' | undefined {
-    return this.as === 'p' ? 'paragraph' : undefined;
+  // One real tag per lwc:if branch (an unknown `as` renders a <p>).
+  get isSpan(): boolean {
+    return this.as === 'span';
+  }
+
+  get isDiv(): boolean {
+    return this.as === 'div';
   }
 
   get basePart(): string {

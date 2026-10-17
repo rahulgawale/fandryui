@@ -1,5 +1,5 @@
 <template>
-  <div class={classes} part={basePart} role={role}>
-    <slot></slot>
-  </div>
+  <span lwc:if={isSpan} class={classes} part={basePart}><slot></slot></span>
+  <div lwc:elseif={isDiv} class={classes} part={basePart}><slot></slot></div>
+  <p lwc:else class={classes} part={basePart}><slot></slot></p>
 </template>

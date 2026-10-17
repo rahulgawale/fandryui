@@ -14,9 +14,6 @@
 
 .text--p {
   display: block;
-  /* Matches fandry/base's own `p { margin: 0 0 1em; }` rule -- that rule only
-     matches a real <p> tag, which this isn't (see text.ts for why), so it
-     has to be repeated here instead of inherited for free. */
   margin: 0 0 1em;
 }
 
