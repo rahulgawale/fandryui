@@ -331,9 +331,11 @@ export default class FdMediaViewer extends Base {
       this.keepTabInside(event);
       return;
     }
-    // Escape hides the shortcuts first; fandry-dialog, listening on the document, never hears it.
+    /* Escape hides the shortcuts first. fandry-dialog hears Escape on the
+       document and, as a native modal, from the browser: stop both. */
     if (event.key === 'Escape' && this.keysOpen) {
       event.stopPropagation();
+      event.preventDefault();
       this.keysOpen = false;
       return;
     }

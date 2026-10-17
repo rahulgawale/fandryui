@@ -372,10 +372,13 @@ describe('fandry-media-viewer', () => {
     expect(panel.hidden).toBe(false);
     expect(button.getAttribute('aria-expanded')).toBe('true');
 
-    key(viewer, 'Escape');
+    const escape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true, cancelable: true });
+    dialogOf(viewer).dispatchEvent(escape);
     await settle();
     expect(panel.hidden).toBe(true);
     expect(viewer.open).toBe(true);
+    // Cancelled too, or a native modal dialog closes on the browser's own Escape.
+    expect(escape.defaultPrevented).toBe(true);
 
     key(viewer, '?');
     await settle();
