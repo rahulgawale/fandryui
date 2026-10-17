@@ -39,7 +39,7 @@
               <span class="step" aria-hidden="true">{rung.step}</span>
               <div>
                 <fandry-heading level="3" class="rung-title">{rung.title}</fandry-heading>
-                <fandry-text variant="muted" size="sm"><fandryui-doc-text text={rung.text}></fandryui-doc-text></fandry-text>
+                <fandry-text variant="muted" size="sm"><fandryui-doc-text links text={rung.text}></fandryui-doc-text></fandry-text>
               </div>
             </li>
           </template>
@@ -122,7 +122,7 @@
           <template for:each={tradeOffs} for:item="item">
             <div key={item.key} class="tradeoff">
               <dt><fandry-text as="span" class="tradeoff-title">{item.title}</fandry-text></dt>
-              <dd><fandry-text variant="muted" size="sm"><fandryui-doc-text text={item.text}></fandryui-doc-text></fandry-text></dd>
+              <dd><fandry-text variant="muted" size="sm"><fandryui-doc-text links text={item.text}></fandryui-doc-text></fandry-text></dd>
             </div>
           </template>
         </dl>
@@ -164,7 +164,7 @@
             <fandry-card key={platform.slug} class="start-card info-card">
               <fandry-badge>{platform.badge}</fandry-badge>
               <fandry-heading level="3">{platform.name}</fandry-heading>
-              <fandry-text variant="muted" size="sm"><fandryui-doc-text text={platform.description}></fandryui-doc-text></fandry-text>
+              <fandry-text variant="muted" size="sm"><fandryui-doc-text links text={platform.description}></fandryui-doc-text></fandry-text>
               <fandryui-code-block code={platform.code} class="start-code"></fandryui-code-block>
               <fandry-link href={platform.href} class="start-cta">{platform.cta} →</fandry-link>
             </fandry-card>
