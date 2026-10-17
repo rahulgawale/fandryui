@@ -1,3 +1,10 @@
+## [0.27.2](https://github.com/rahulgawale/fandryui/compare/v0.27.1...v0.27.2) (2026-10-17)
+
+
+### Bug Fixes
+
+* **media-viewer:** a touch on the picture hides the keyboard shortcuts ([#132](https://github.com/rahulgawale/fandryui/issues/132)) ([8ef416f](https://github.com/rahulgawale/fandryui/commit/8ef416f4ef64c53facaa7c317f575d825f3bcf11))
+
 ## [0.27.1](https://github.com/rahulgawale/fandryui/compare/v0.27.0...v0.27.1) (2026-10-17)
 
 
