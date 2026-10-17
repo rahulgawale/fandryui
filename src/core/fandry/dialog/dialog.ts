@@ -46,6 +46,8 @@ export default class Dialog extends Base {
       this.lockBodyScroll();
       this.focusPending = true;
     } else if (wasOpen && !value) {
+      // Out of the top layer now, so the page is no longer inert and can take focus back.
+      this.nativeDialog?.close?.();
       this.unlockBodyScroll();
       this.previouslyFocused?.focus();
       this.previouslyFocused = null;
@@ -88,7 +90,17 @@ export default class Dialog extends Base {
     return this.open ? undefined : '';
   }
 
+  private get nativeDialog(): HTMLDialogElement | null {
+    return this.template.querySelector('dialog');
+  }
+
   renderedCallback() {
+    const dialog = this.nativeDialog;
+    // showModal() needs the element in the page, so it waits for the render. jsdom has none.
+    if (this.open && dialog && !dialog.open) {
+      dialog.showModal?.();
+    }
+
     if (this.focusPending && this.open) {
       this.focusPending = false;
       const panel = this.template.querySelector('.panel') as HTMLElement | null;
@@ -118,26 +130,29 @@ export default class Dialog extends Base {
     }
   };
 
-  // No Tab-cycle focus trap: confirmed live that a light-DOM
-  // `querySelectorAll('button, a[href], ...')`-style enumeration of
-  // "focusable descendants" is broken for the realistic content this
-  // dialog actually holds -- every fandry-* interactive primitive (see
-  // fandry-button's own `focus()` override and its comment) puts its real
-  // native control inside its *own* shadow tree, so the slotted
-  // `<fandry-button>` a consumer actually uses never matches a native
-  // selector, and `document.activeElement`'s deep-walked node (the real
-  // native <button> several shadow roots down) never equals the outer
-  // custom element a selector-based scan would have found anyway --
-  // confirmed by driving this exact demo in a real browser: Tab silently
-  // did nothing. Escape and the backdrop click below remain the way to
-  // close; only Tab's native browser-driven order governs focus while
-  // open.
+  /* Escape is handled on the document, as before. A component inside that
+     stops Escape's keydown from reaching the document also has to cancel
+     it, or the browser's own Escape (the cancel event below) closes the
+     dialog. */
   handleDocumentKeydown = (event: KeyboardEvent) => {
     if (!this.open) {
       return;
     }
 
     if (event.key === 'Escape') {
+      this.close();
+    }
+  };
+
+  // The browser's Escape: closed through close(), so the exit animation plays.
+  handleCancel = (event: Event) => {
+    event.preventDefault();
+    this.close();
+  };
+
+  // The browser can close a modal without a cancel event; keep `open` in step.
+  handleNativeClose = () => {
+    if (this.open && !this.nativeDialog?.open) {
       this.close();
     }
   };
