@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 import { COMPONENTS } from 'fandryui/componentsData';
 import { GETTING_STARTED_PAGES } from 'fandryui/gettingStartedData';
@@ -12,7 +12,7 @@ const SITE = 'https://fandryui.forcetrails.com';
 
 interface Route {
   path: string;
-  properties?: { title?: string; description?: string; path?: string };
+  properties?: { title?: string; description?: string; path?: string; image?: string; imageAlt?: string };
 }
 
 const config = JSON.parse(readFileSync(resolve(ROOT, 'lwr.config.json'), 'utf8')) as { routes: Route[] };
@@ -34,6 +34,21 @@ describe('route metadata', () => {
     expect(path).toBe((route as Route).path === '/' ? '/' : `${(route as Route).path}/`);
   });
 
+  // The og:image: a file under src/assets (served at /assets), 1200 x 630.
+  it.each(routes.map((route) => [route.path, route]))('%s has a share image that exists, with alt text', (_, route) => {
+    const { image, imageAlt } = (route as Route).properties ?? {};
+    expect(image).toMatch(/^\/assets\/.+\.(jpg|png)$/);
+    expect(existsSync(resolve(ROOT, 'src', image!.slice(1)))).toBe(true);
+    expect(imageAlt).toBeTruthy();
+  });
+
+  // The share picture carries the logo; the blocks index shows <slug>.jpg, without it.
+  it('shows each block page its own screenshot', () => {
+    for (const route of routes.filter((r) => /^\/blocks\/./.test(r.path))) {
+      expect(route.properties?.image).toBe(`/assets/blocks/${route.path.split('/').pop()}-og.jpg`);
+    }
+  });
+
   it('gives every page its own title and description', () => {
     const titles = routes.map((route) => route.properties?.title);
     const descriptions = routes.map((route) => route.properties?.description);
@@ -44,7 +59,7 @@ describe('route metadata', () => {
   it('describes each component page from componentsData', () => {
     for (const component of COMPONENTS) {
       const route = routes.find((r) => r.path === `/components/${component.slug}`);
-      expect(route?.properties).toEqual({
+      expect(route?.properties).toMatchObject({
         title: `${component.name} component for LWC | Fandry UI`,
         description: `${firstSentence(plain(component.description))} A Fandry UI component for Salesforce LWC.`,
         path: `/components/${component.slug}/`

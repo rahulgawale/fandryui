@@ -64,6 +64,13 @@
   border-bottom: none;
 }
 
+/* A block's "Built from" chips link to each component's page. */
+fandry-link.chip:hover > fandry-badge::part(base),
+fandry-link.chip:focus-within > fandry-badge::part(base) {
+  border-color: var(--fd-color-primary);
+  color: var(--fd-color-primary);
+}
+
 /* Name/type/default columns are all code: no chip on each. */
 .props-table td > code {
   padding: 0;
@@ -88,4 +95,127 @@
     top: 4rem;
     padding: var(--fd-space-6) 0;
   }
+}
+
+/* A code sample right under a table. */
+.props-table-wrap + fandryui-code-block {
+  display: block;
+  margin-top: var(--fd-space-3);
+}
+
+/*
+  A card that is one link, on the index pages: the title is a fandry-link
+  (class link-card-title) whose box is stretched over the card (class
+  link-card), and keyboard focus rings the whole card with the library's
+  ring.
+*/
+.link-card {
+  position: relative;
+  border-radius: var(--fd-radius-lg);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+/* Not on touch: there a tap would leave the lift stuck. */
+@media (hover: hover) {
+  .link-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
+  }
+}
+
+/* fandry-link rings its <a> while focused; the card's ring replaces it. */
+.link-card-title::part(link) {
+  color: inherit;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.link-card-title::part(link)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* fandry-link's hover filter would make the <a> the box its ::after fills,
+   shrinking it to the title mid-click. The card's lift is the hover cue. */
+.link-card-title::part(link):hover {
+  filter: none;
+}
+
+/* The ring: a second stretched box, from the link's tab stop (the element
+   that takes focus). Clicks pass through to the <a>'s box. */
+.link-card-title::part(base)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--fd-radius-lg);
+  pointer-events: none;
+}
+
+.link-card-title::part(base):focus-visible::after {
+  box-shadow: var(--_fd-ring-control);
+}
+
+/*
+  A block's page (<main class="page block-page">): the demo, then install,
+  usage and API sections. :where() keeps these at one class's weight, so a
+  page's own rule for the same class still wins.
+*/
+:where(.block-page) {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: var(--fd-space-6) var(--fd-space-6) calc(var(--fd-space-6) * 2);
+}
+
+:where(.block-page) .kind {
+  margin-top: var(--fd-space-4);
+}
+
+:where(.block-page) .title {
+  display: block;
+  margin-top: var(--fd-space-2);
+}
+
+:where(.block-page) .lede {
+  margin-top: var(--fd-space-2);
+  max-width: 44rem;
+}
+
+:where(.block-page) .section {
+  margin-top: calc(var(--fd-space-6) * 2);
+}
+
+:where(.block-page) .section-title {
+  display: block;
+  margin-bottom: var(--fd-space-3);
+}
+
+:where(.block-page) .demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-4);
+  margin-bottom: var(--fd-space-3);
+}
+
+/* No padding: on the host it sits outside the card's border and only
+   narrows the demo, which needs the room most on a phone. */
+:where(.block-page) .demo-frame {
+  display: block;
+}
+
+:where(.block-page) .two-up {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--fd-space-4);
+}
+
+:where(.block-page) .label,
+:where(.block-page) .note {
+  display: block;
+  margin: var(--fd-space-3) 0 var(--fd-space-2);
+}
+
+:where(.block-page) .chip {
+  margin-right: var(--fd-space-1);
 }

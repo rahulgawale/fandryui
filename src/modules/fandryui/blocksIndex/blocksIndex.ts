@@ -1,11 +1,13 @@
 import { LightningElement } from 'lwc';
 
 // One entry per block page under /blocks. `includes` is what the block covers,
-// shown as chips on its card.
+// shown as chips on its card; `image` is a screenshot of its demo. The page's
+// og:image is the same with the logo, <slug>-og.jpg (lwr.config.json).
 export default class BlocksIndex extends LightningElement {
   blocks = [
     {
       slug: 'data-table',
+      image: '/assets/blocks/data-table.jpg',
       href: '/blocks/data-table/',
       name: 'Data table',
       description:
@@ -14,6 +16,7 @@ export default class BlocksIndex extends LightningElement {
     },
     {
       slug: 'form',
+      image: '/assets/blocks/form.jpg',
       href: '/blocks/form/',
       name: 'Form',
       description:

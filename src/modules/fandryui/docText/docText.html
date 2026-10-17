@@ -1,6 +1,12 @@
 <template lwc:render-mode="light">
   <template for:each={segments} for:item="segment">
-    <template lwc:if={segment.code}>
+    <template lwc:if={segment.href}>
+      <fandry-link key={segment.key} href={segment.href}>
+        <template lwc:if={segment.code}><code>{segment.text}</code></template>
+        <template lwc:else>{segment.text}</template>
+      </fandry-link>
+    </template>
+    <template lwc:elseif={segment.code}>
       <code key={segment.key}>{segment.text}</code>
     </template>
     <template lwc:else>

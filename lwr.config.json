@@ -24,7 +24,9 @@
             "properties": {
                 "title": "Fandry UI: composable UI components for Salesforce LWC",
                 "description": "The flexibility of modern UI development with the simplicity of LWC. A themeable, composable component library for Salesforce LWC, LWR and Experience Cloud.",
-                "path": "/"
+                "path": "/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -35,7 +37,9 @@
             "properties": {
                 "title": "Why Fandry UI exists | Fandry UI",
                 "description": "What Fandry UI is for, what it trades away, and how it differs from Lightning Base Components: your own design system, composition, and components you control.",
-                "path": "/why-fandry/"
+                "path": "/why-fandry/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -46,7 +50,9 @@
             "properties": {
                 "title": "Getting started | Fandry UI",
                 "description": "One source, one npm package, two platforms. Pick the one you build on; the components are the same.",
-                "path": "/getting-started/"
+                "path": "/getting-started/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -57,7 +63,9 @@
             "properties": {
                 "title": "Getting started with LWR / LWC OSS | Fandry UI",
                 "description": "Install one npm package, point your project at it, and use <fandry-*> components. Your bundler ships only the ones you use.",
-                "path": "/getting-started/lwr-oss/"
+                "path": "/getting-started/lwr-oss/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -68,7 +76,9 @@
             "properties": {
                 "title": "Getting started on Salesforce | Fandry UI",
                 "description": "The platform has no bundler and cannot import npm packages, so the CLI copies components into your project as source you own, with everything they depend on.",
-                "path": "/getting-started/salesforce/"
+                "path": "/getting-started/salesforce/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -79,7 +89,9 @@
             "properties": {
                 "title": "Theming | Fandry UI",
                 "description": "Set --fd-* tokens to theme colors, type, spacing, radius and motion for a site, a section or one component, and ::part() to restyle one element.",
-                "path": "/getting-started/theming/"
+                "path": "/getting-started/theming/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -90,7 +102,9 @@
             "properties": {
                 "title": "Components | Fandry UI",
                 "description": "Every Fandry UI component for Salesforce LWC, with a live example, its props, parts and the code to use it.",
-                "path": "/components/"
+                "path": "/components/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -101,7 +115,9 @@
             "properties": {
                 "title": "Breadcrumb component for LWC | Fandry UI",
                 "description": "A navigation trail of ancestor pages — pair with fandry-breadcrumb-item for each crumb. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/breadcrumb/"
+                "path": "/components/breadcrumb/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -112,7 +128,9 @@
             "properties": {
                 "title": "Breadcrumb Item component for LWC | Fandry UI",
                 "description": "A single crumb inside fandry-breadcrumb, with a current-page state. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/breadcrumb-item/"
+                "path": "/components/breadcrumb-item/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -123,7 +141,9 @@
             "properties": {
                 "title": "Card component for LWC | Fandry UI",
                 "description": "A bordered, padded surface for grouping related content. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/card/"
+                "path": "/components/card/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -134,7 +154,9 @@
             "properties": {
                 "title": "Divider component for LWC | Fandry UI",
                 "description": "A horizontal or vertical rule for separating content. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/divider/"
+                "path": "/components/divider/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -145,7 +167,9 @@
             "properties": {
                 "title": "Pagination component for LWC | Fandry UI",
                 "description": "Previous/next navigation between pages. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/pagination/"
+                "path": "/components/pagination/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -156,7 +180,9 @@
             "properties": {
                 "title": "Sidebar component for LWC | Fandry UI",
                 "description": "A vertical navigation rail — pair with fandry-sidebar-item for links. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/sidebar/"
+                "path": "/components/sidebar/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -167,7 +193,9 @@
             "properties": {
                 "title": "Sidebar Item component for LWC | Fandry UI",
                 "description": "A single navigation row for fandry-sidebar, with an active/current-page state. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/sidebar-item/"
+                "path": "/components/sidebar-item/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -178,7 +206,9 @@
             "properties": {
                 "title": "Heading component for LWC | Fandry UI",
                 "description": "A semantically-leveled heading, sized off the shared type scale. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/heading/"
+                "path": "/components/heading/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -189,7 +219,9 @@
             "properties": {
                 "title": "Icon component for LWC | Fandry UI",
                 "description": "A sizing/color frame around a slotted glyph — brings no icon set of its own. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/icon/"
+                "path": "/components/icon/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -200,7 +232,9 @@
             "properties": {
                 "title": "Label component for LWC | Fandry UI",
                 "description": "The text of a form label, with an optional required indicator. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/label/"
+                "path": "/components/label/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -211,7 +245,9 @@
             "properties": {
                 "title": "Text component for LWC | Fandry UI",
                 "description": "Body text — pick the rendered tag and size independently. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/text/"
+                "path": "/components/text/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -222,7 +258,9 @@
             "properties": {
                 "title": "Button component for LWC | Fandry UI",
                 "description": "A native button with default/secondary/ghost variants and three sizes. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/button/"
+                "path": "/components/button/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -233,7 +271,9 @@
             "properties": {
                 "title": "Checkbox component for LWC | Fandry UI",
                 "description": "A checkbox with a built-in label and indeterminate support. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/checkbox/"
+                "path": "/components/checkbox/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -244,7 +284,9 @@
             "properties": {
                 "title": "Input component for LWC | Fandry UI",
                 "description": "A text input with a label, help text, and prefix/suffix slots. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/input/"
+                "path": "/components/input/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -255,7 +297,9 @@
             "properties": {
                 "title": "Link component for LWC | Fandry UI",
                 "description": "Anchor styling with default/muted variants and a disabled state. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/link/"
+                "path": "/components/link/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -266,7 +310,9 @@
             "properties": {
                 "title": "Radio component for LWC | Fandry UI",
                 "description": "A single radio input — pair with fandry-radio-group for the roving-tabindex group. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/radio/"
+                "path": "/components/radio/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -277,7 +323,9 @@
             "properties": {
                 "title": "Radio Group component for LWC | Fandry UI",
                 "description": "A roving-tabindex container for a set of fandry-radio buttons. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/radio-group/"
+                "path": "/components/radio-group/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -288,7 +336,9 @@
             "properties": {
                 "title": "Select component for LWC | Fandry UI",
                 "description": "A custom listbox-style select, with optional grouped options. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/select/"
+                "path": "/components/select/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -299,7 +349,9 @@
             "properties": {
                 "title": "Switch component for LWC | Fandry UI",
                 "description": "A toggle switch with a built-in label. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/switch/"
+                "path": "/components/switch/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -310,7 +362,9 @@
             "properties": {
                 "title": "Textarea component for LWC | Fandry UI",
                 "description": "A multi-line text input with a label and help text. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/textarea/"
+                "path": "/components/textarea/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -321,7 +375,9 @@
             "properties": {
                 "title": "Alert component for LWC | Fandry UI",
                 "description": "An inline banner for a status message, with an optional title. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/alert/"
+                "path": "/components/alert/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -332,7 +388,9 @@
             "properties": {
                 "title": "Badge component for LWC | Fandry UI",
                 "description": "A small status/label pill. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/badge/"
+                "path": "/components/badge/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -343,7 +401,9 @@
             "properties": {
                 "title": "Progress component for LWC | Fandry UI",
                 "description": "A determinate or indeterminate progress bar. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/progress/"
+                "path": "/components/progress/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -354,7 +414,9 @@
             "properties": {
                 "title": "Skeleton component for LWC | Fandry UI",
                 "description": "A loading placeholder shaped like the content it stands in for. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/skeleton/"
+                "path": "/components/skeleton/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -365,7 +427,9 @@
             "properties": {
                 "title": "Spinner component for LWC | Fandry UI",
                 "description": "A loading spinner in three sizes, with optional text beside it. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/spinner/"
+                "path": "/components/spinner/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -376,7 +440,9 @@
             "properties": {
                 "title": "Loading Overlay component for LWC | Fandry UI",
                 "description": "Covers the page, or one panel, while it is busy. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/loading-overlay/"
+                "path": "/components/loading-overlay/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -387,7 +453,9 @@
             "properties": {
                 "title": "Toast component for LWC | Fandry UI",
                 "description": "An auto-dismissing notification — pair with fandry-toast-viewport for placement. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/toast/"
+                "path": "/components/toast/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -398,7 +466,9 @@
             "properties": {
                 "title": "Toast Viewport component for LWC | Fandry UI",
                 "description": "A fixed or contained stacking region that positions fandry-toast. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/toast-viewport/"
+                "path": "/components/toast-viewport/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -409,7 +479,9 @@
             "properties": {
                 "title": "Tooltip component for LWC | Fandry UI",
                 "description": "A hover/focus description bubble for a slotted trigger. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/tooltip/"
+                "path": "/components/tooltip/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -420,7 +492,9 @@
             "properties": {
                 "title": "Avatar component for LWC | Fandry UI",
                 "description": "A circular avatar with an image and initials fallback. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/avatar/"
+                "path": "/components/avatar/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -431,7 +505,9 @@
             "properties": {
                 "title": "Dialog component for LWC | Fandry UI",
                 "description": "A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/dialog/"
+                "path": "/components/dialog/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -442,7 +518,9 @@
             "properties": {
                 "title": "Menu component for LWC | Fandry UI",
                 "description": "A listbox-style menu — composes with fandry-popover for its own trigger and positioning. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/menu/"
+                "path": "/components/menu/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -453,7 +531,9 @@
             "properties": {
                 "title": "Menu Item component for LWC | Fandry UI",
                 "description": "A single selectable row inside fandry-menu. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/menu-item/"
+                "path": "/components/menu-item/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -464,7 +544,9 @@
             "properties": {
                 "title": "Popover component for LWC | Fandry UI",
                 "description": "An anchored floating panel — owns positioning, not the trigger or content. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/popover/"
+                "path": "/components/popover/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -475,7 +557,9 @@
             "properties": {
                 "title": "Table component for LWC | Fandry UI",
                 "description": "A data table with sorting, pagination, selection, and filtering — wraps @tanstack/table-core. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/table/"
+                "path": "/components/table/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -486,7 +570,9 @@
             "properties": {
                 "title": "Combobox component for LWC | Fandry UI",
                 "description": "A searchable select — type to narrow the options, then pick one. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/combobox/"
+                "path": "/components/combobox/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -497,7 +583,9 @@
             "properties": {
                 "title": "Command component for LWC | Fandry UI",
                 "description": "A command palette — a modal search box over a list of actions. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/command/"
+                "path": "/components/command/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -508,7 +596,9 @@
             "properties": {
                 "title": "Lookup component for LWC | Fandry UI",
                 "description": "Find and pick a record — one by default, or several with multiple. A Fandry UI component for Salesforce LWC.",
-                "path": "/components/lookup/"
+                "path": "/components/lookup/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -519,7 +609,9 @@
             "properties": {
                 "title": "Blocks | Fandry UI",
                 "description": "Working pages and patterns built from Fandry UI components, live on their pages and installable with the same command as any component.",
-                "path": "/blocks/"
+                "path": "/blocks/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         },
         {
@@ -530,7 +622,9 @@
             "properties": {
                 "title": "Data table block | Fandry UI",
                 "description": "A data table for Salesforce LWC with search, filters, pagination, selection, inline and multi-record editing, and save hooks, built from Fandry UI components.",
-                "path": "/blocks/data-table/"
+                "path": "/blocks/data-table/",
+                "image": "/assets/blocks/data-table-og.jpg",
+                "imageAlt": "The data table block, live on its page."
             }
         },
         {
@@ -541,7 +635,9 @@
             "properties": {
                 "title": "Form block | Fandry UI",
                 "description": "A form for Salesforce LWC with validation, read and edit modes, and a save with feedback, built from Fandry UI components.",
-                "path": "/blocks/form/"
+                "path": "/blocks/form/",
+                "image": "/assets/blocks/form-og.jpg",
+                "imageAlt": "The form block, live on its page."
             }
         },
         {
@@ -552,7 +648,9 @@
             "properties": {
                 "title": "Examples | Fandry UI",
                 "description": "Real, interactive UI patterns built entirely from Fandry UI components: dashboards, forms, tables and more, ready to retheme with tokens.",
-                "path": "/examples/"
+                "path": "/examples/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
             }
         }
     ],
