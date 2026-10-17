@@ -1,3 +1,10 @@
+# [0.27.0](https://github.com/rahulgawale/fandryui/compare/v0.26.2...v0.27.0) (2026-10-17)
+
+
+### Features
+
+* media-gallery block with a full-screen viewer ([#127](https://github.com/rahulgawale/fandryui/issues/127)) ([8bd3728](https://github.com/rahulgawale/fandryui/commit/8bd3728a2293cc3375177eb1bf91707e25d17cfd)), closes [#124](https://github.com/rahulgawale/fandryui/issues/124)
+
 ## [0.26.2](https://github.com/rahulgawale/fandryui/compare/v0.26.1...v0.26.2) (2026-10-17)
 
 
