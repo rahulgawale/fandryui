@@ -17,16 +17,9 @@ export default class BreadcrumbItem extends Base {
   // checkbox.ts for why this can't reach `data-*` attributes.
   @api elementProps: Record<string, unknown> = {};
 
-  // Always a single <a> (not a conditional <a>/<span> pair) -- two
-  // `template if:true`/`if:false` branches each holding their own default
-  // <slot> is exactly what fandry-heading's heading.ts documents as
-  // confirmed broken (LWC flags multiple default slots in one template as
-  // an invalid duplicate, even across mutually exclusive branches). Same
-  // fix fandry-link's link.ts already uses for its own disabled state: omit
-  // `href` instead of swapping the tag -- an <a> with no href isn't a
-  // hyperlink (not focusable, not in the accessibility tree's link role),
-  // which is exactly the "plain text" rendering the WAI-ARIA breadcrumb
-  // pattern wants for the current page.
+  /* Always the same <a>, so the `link` part and `elementProps` keep one
+     target: the current crumb just loses its href, and an <a> without one
+     is plain text, as the WAI-ARIA breadcrumb pattern wants. */
   get computedHref(): string | undefined {
     return this.href && !this.current ? this.href : undefined;
   }

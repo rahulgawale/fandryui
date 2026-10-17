@@ -13,20 +13,38 @@ describe('fandry-heading', () => {
     const element = createElement('fandry-heading', { is: FdHeading });
     document.body.appendChild(element);
 
-    const heading = element.shadowRoot!.querySelector('[role="heading"]')!;
+    const heading = element.shadowRoot!.querySelector('[part="base"]')!;
     expect(heading).not.toBeNull();
-    expect(heading.getAttribute('aria-level')).toBe('2');
+    expect(heading.tagName).toBe('H2');
     expect(heading.className).toBe('heading heading--2');
   });
 
-  it.each([1, 2, 3, 4, 5, 6] as const)('sets aria-level to %i for level %i', (level) => {
+  it.each([1, 2, 3, 4, 5, 6] as const)('renders an h%i for that level', (level) => {
     const element = createElement('fandry-heading', { is: FdHeading });
     element.level = level;
     document.body.appendChild(element);
 
-    const heading = element.shadowRoot!.querySelector('[role="heading"]')!;
-    expect(heading.getAttribute('aria-level')).toBe(String(level));
+    const heading = element.shadowRoot!.querySelector('[part="base"]')!;
+    expect(heading.tagName).toBe(`H${level}`);
     expect(heading.className).toBe(`heading heading--${level}`);
+  });
+
+  it.each([0, 7, NaN, undefined, '9'])('falls back to an h2 for level %p', (level) => {
+    const element = createElement('fandry-heading', { is: FdHeading });
+    element.level = level as unknown as 2;
+    document.body.appendChild(element);
+
+    const heading = element.shadowRoot!.querySelector('[part="base"]')!;
+    expect(heading.tagName).toBe('H2');
+    expect(heading.className).toBe('heading heading--2');
+  });
+
+  it('coerces a string level from a static attribute', () => {
+    const element = createElement('fandry-heading', { is: FdHeading });
+    element.level = '3' as unknown as 3;
+    document.body.appendChild(element);
+
+    expect(element.shadowRoot!.querySelector('[part="base"]')!.tagName).toBe('H3');
   });
 
   it('renders exactly one heading element', () => {
@@ -34,7 +52,7 @@ describe('fandry-heading', () => {
     element.level = 3;
     document.body.appendChild(element);
 
-    const headings = element.shadowRoot!.querySelectorAll('[role="heading"]');
+    const headings = element.shadowRoot!.querySelectorAll('[part="base"]');
     expect(headings.length).toBe(1);
   });
 
@@ -61,5 +79,24 @@ describe('fandry-heading', () => {
     const assigned = slot.assignedNodes();
     expect(assigned).toHaveLength(1);
     expect(assigned[0].textContent).toBe('Page title');
+  });
+
+  it('keeps projecting slotted content when the level changes', async () => {
+    const harness = createElement('heading-harness', { is: HeadingHarness });
+    document.body.appendChild(harness);
+    await Promise.resolve();
+
+    const heading = harness.shadowRoot!.querySelector('fandry-heading')!;
+    for (const level of [1, 3, 2] as const) {
+      harness.level = level;
+      await Promise.resolve();
+
+      const bases = heading.shadowRoot!.querySelectorAll('[part="base"]');
+      expect(bases).toHaveLength(1);
+      expect(bases[0].tagName).toBe(`H${level}`);
+      const slots = heading.shadowRoot!.querySelectorAll('slot');
+      expect(slots).toHaveLength(1);
+      expect(slots[0].assignedNodes()[0].textContent).toBe('Page title');
+    }
   });
 });

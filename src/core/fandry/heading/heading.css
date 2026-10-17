@@ -2,11 +2,7 @@
   display: block;
 }
 
-/* fandry/base's shared stylesheet only applies its font-family/weight/
-   letter-spacing rule to real h1-h6 elements -- this renders as a `div`
-   (see heading.ts for why), so those have to be set here directly instead
-   of inherited for free the way fandry-toast's alert-shaped markup can lean on
-   shared rules. */
+/* Self-contained: the font matches base's h1-h6 rule, but doesn't depend on it. */
 .heading {
   margin: 0;
   font-family: var(--_fd-font-heading);

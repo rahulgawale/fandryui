@@ -1,5 +1,8 @@
 <template>
-  <div class={classes} part="base" role="heading" aria-level={level}>
-    <slot></slot>
-  </div>
+  <h1 lwc:if={isLevel1} class={classes} part="base"><slot></slot></h1>
+  <h2 lwc:elseif={isLevel2} class={classes} part="base"><slot></slot></h2>
+  <h3 lwc:elseif={isLevel3} class={classes} part="base"><slot></slot></h3>
+  <h4 lwc:elseif={isLevel4} class={classes} part="base"><slot></slot></h4>
+  <h5 lwc:elseif={isLevel5} class={classes} part="base"><slot></slot></h5>
+  <h6 lwc:else class={classes} part="base"><slot></slot></h6>
 </template>
