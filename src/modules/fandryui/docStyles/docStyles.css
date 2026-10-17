@@ -64,6 +64,13 @@
   border-bottom: none;
 }
 
+/* A block's "Built from" chips link to each component's page. */
+fandry-link.chip:hover > fandry-badge::part(base),
+fandry-link.chip:focus-within > fandry-badge::part(base) {
+  border-color: var(--fd-color-primary);
+  color: var(--fd-color-primary);
+}
+
 /* Name/type/default columns are all code: no chip on each. */
 .props-table td > code {
   padding: 0;

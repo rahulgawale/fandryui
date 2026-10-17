@@ -17,7 +17,7 @@
       <template if:true={entry}>
         <fandry-badge>{entry.category}</fandry-badge>
         <fandry-heading level="1" class="title">{entry.name}</fandry-heading>
-        <fandry-text variant="muted" class="lede"><fandryui-doc-text text={entry.description}></fandryui-doc-text></fandry-text>
+        <fandry-text variant="muted" class="lede"><fandryui-doc-text links current={entry.slug} text={entry.description}></fandryui-doc-text></fandry-text>
         <fandry-text size="sm" variant="muted" class="tag"><code>{entry.tag}</code></fandry-text>
 
         <section class="section">
@@ -59,7 +59,7 @@
                       <td><code>{prop.name}</code></td>
                       <td><code>{prop.type}</code></td>
                       <td><code>{prop.default}</code></td>
-                      <td><fandryui-doc-text text={prop.description}></fandryui-doc-text></td>
+                      <td><fandryui-doc-text links current={entry.slug} text={prop.description}></fandryui-doc-text></td>
                     </tr>
                   </template>
                 </tbody>
@@ -94,7 +94,7 @@
                   <template for:each={parts} for:item="part">
                     <tr key={part.name}>
                       <td><code>{part.name}</code></td>
-                      <td><fandryui-doc-text text={part.description}></fandryui-doc-text></td>
+                      <td><fandryui-doc-text links current={entry.slug} text={part.description}></fandryui-doc-text></td>
                     </tr>
                   </template>
                 </tbody>
@@ -117,7 +117,7 @@
                     <template for:each={states} for:item="state">
                       <tr key={state.name}>
                         <td><code>{state.name}</code></td>
-                        <td><fandryui-doc-text text={state.description}></fandryui-doc-text></td>
+                        <td><fandryui-doc-text links current={entry.slug} text={state.description}></fandryui-doc-text></td>
                       </tr>
                     </template>
                   </tbody>
@@ -139,7 +139,7 @@
           <section key={note.title} class="section">
             <fandry-alert variant="info" title={note.title}>
               <template for:each={note.paragraphs} for:item="paragraph">
-                <fandry-text key={paragraph.key} size="sm" class="note-paragraph"><fandryui-doc-text text={paragraph.text}></fandryui-doc-text></fandry-text>
+                <fandry-text key={paragraph.key} size="sm" class="note-paragraph"><fandryui-doc-text links current={entry.slug} text={paragraph.text}></fandryui-doc-text></fandry-text>
               </template>
             </fandry-alert>
           </section>

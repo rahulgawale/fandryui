@@ -109,7 +109,7 @@
                 <td><code>{prop.name}</code></td>
                 <td><code>{prop.type}</code></td>
                 <td><code>{prop.default}</code></td>
-                <td><fandryui-doc-text text={prop.description}></fandryui-doc-text></td>
+                <td><fandryui-doc-text links text={prop.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -129,7 +129,7 @@
               <tr key={event.name}>
                 <td><code>{event.name}</code></td>
                 <td><code>{event.detail}</code></td>
-                <td><fandryui-doc-text text={event.description}></fandryui-doc-text></td>
+                <td><fandryui-doc-text links text={event.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -148,7 +148,7 @@
             <template for:each={slots} for:item="slot">
               <tr key={slot.name}>
                 <td><code>{slot.name}</code></td>
-                <td><fandryui-doc-text text={slot.description}></fandryui-doc-text></td>
+                <td><fandryui-doc-text links text={slot.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -160,8 +160,8 @@
       <fandryui-doc-heading level="2" text="Make it yours" class="section-title"></fandryui-doc-heading>
       <fandry-text variant="muted">
         The block is two files on purpose. <code>fandry/dataTableState</code> has all the behavior and no template; <code>fandry/dataTable</code> is that class plus the markup you see here. To change the markup, extend the state class and write your own template, or, on Salesforce, just edit the copy <code>fandry add</code> put in your project. Built from:
-        <template for:each={builtFrom} for:item="name">
-          <fandry-badge key={name} class="chip">{name}</fandry-badge>
+        <template for:each={builtFrom} for:item="piece">
+          <fandry-link key={piece.name} href={piece.href} class="chip"><fandry-badge>{piece.name}</fandry-badge></fandry-link>
         </template>
       </fandry-text>
     </section>
