@@ -641,6 +641,19 @@
             }
         },
         {
+            "id": "block-media-gallery",
+            "path": "/blocks/media-gallery",
+            "rootComponent": "fandryui/blockMediaGallery",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Media gallery block | Fandry UI",
+                "description": "A responsive image grid and full-screen viewer for Salesforce LWC, with swipe, pinch to zoom and keyboard control, built from Fandry UI components.",
+                "path": "/blocks/media-gallery/",
+                "image": "/assets/blocks/media-gallery-og.jpg",
+                "imageAlt": "The media gallery block, live on its page."
+            }
+        },
+        {
             "id": "examples",
             "path": "/examples",
             "rootComponent": "fandryui/examples",

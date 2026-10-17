@@ -5,7 +5,7 @@
 .skeleton {
   display: block;
   background: hsl(var(--_fd-bg-muted));
-  animation: fd-skeleton-pulse var(--_fd-duration-slowest) ease-in-out infinite;
+  animation: fd-pulse var(--_fd-duration-slowest) ease-in-out infinite;
 }
 
 .skeleton--text {
@@ -24,14 +24,4 @@
   width: 100%;
   height: var(--_fd-size-lg);
   border-radius: var(--_fd-radius-md);
-}
-
-@keyframes fd-skeleton-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: var(--_fd-pulse-opacity);
-  }
 }

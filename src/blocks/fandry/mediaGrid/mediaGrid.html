@@ -1,0 +1,68 @@
+<template>
+  <!-- role="list": Safari drops a list's role once its bullets are styled away. -->
+  <ul class="grid" part="base" role="list" aria-busy={ariaBusy}>
+    <template lwc:if={loading}>
+      <template for:each={placeholders} for:item="placeholder">
+        <li key={placeholder} class="item" aria-hidden="true">
+          <fandry-skeleton class="placeholder" variant="rect" exportparts="base: placeholder"></fandry-skeleton>
+        </li>
+      </template>
+    </template>
+    <template lwc:else>
+      <template for:each={tiles} for:item="tile">
+        <li key={tile.key} class="item" part="item">
+          <figure class="figure">
+            <template lwc:if={interactive}>
+              <!-- fandry-button, so a tile gets the library's focus ring and tab stop; its <button> is the `button` part. -->
+              <fandry-button
+                class="tile-button"
+                variant="ghost"
+                data-index={tile.index}
+                element-props={tile.buttonProps}
+                exportparts="base: button"
+                onclick={handleSelect}
+              >
+                <span class={tile.frameClass} part="frame">
+                  <img
+                    class="image"
+                    part="image"
+                    data-id={tile.key}
+                    src={tile.src}
+                    srcset={tile.srcset}
+                    sizes={tile.sizes}
+                    alt={tile.alt}
+                    loading={tile.loading}
+                    decoding="async"
+                    draggable="false"
+                    onload={handleLoad}
+                    onerror={handleLoad}
+                  />
+                </span>
+              </fandry-button>
+            </template>
+            <template lwc:else>
+              <div class={tile.frameClass} part="frame">
+                <img
+                  class="image"
+                  part="image"
+                  data-id={tile.key}
+                  src={tile.src}
+                  srcset={tile.srcset}
+                  sizes={tile.sizes}
+                  alt={tile.alt}
+                  loading={tile.loading}
+                  decoding="async"
+                  onload={handleLoad}
+                  onerror={handleLoad}
+                />
+              </div>
+            </template>
+            <template lwc:if={tile.hasCaption}>
+              <figcaption class="caption" part="caption"><fandry-text as="span" size="sm" variant="muted">{tile.caption}</fandry-text></figcaption>
+            </template>
+          </figure>
+        </li>
+      </template>
+    </template>
+  </ul>
+</template>

@@ -12,6 +12,7 @@ const PAGES = [
   { label: 'Blocks', value: '/blocks/' },
   { label: 'Blocks: Data table', value: '/blocks/data-table/' },
   { label: 'Blocks: Form', value: '/blocks/form/' },
+  { label: 'Blocks: Media gallery', value: '/blocks/media-gallery/' },
   { label: 'Examples', value: '/examples/' }
 ];
 

@@ -1,0 +1,20 @@
+<template>
+  <div class="viewer" onkeydown={handleKeydown}>
+    <span class="position">{positionText}</span>
+    <div
+      class="stage"
+      lwc:ref="stage"
+      onpointerdown={handlePointerDown}
+      onpointermove={handlePointerMove}
+      onpointerup={handlePointerUp}
+      onpointercancel={handlePointerCancel}
+    >
+      <div class="track" style={trackStyle}>
+        <template for:each={slides} for:item="slide">
+          <img key={slide.key} class={slide.position} data-current={slide.isCurrent} src={slide.item.src} alt={slide.item.alt} style={slide.mediaStyle} />
+        </template>
+      </div>
+    </div>
+    <button class="next" onclick={handleNext}>{text.next}</button>
+  </div>
+</template>

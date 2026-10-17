@@ -84,14 +84,14 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   body: 'The content below the title.',
   image: 'The `<img>`.',
   initials: 'The initials shown when there is no image.',
-  previous: 'The link to the previous page (also a `link`).',
-  next: 'The link to the next page (also a `link`).',
+  previous: 'The link to the previous page (also a `link`), or the viewer\'s button to the previous picture.',
+  next: 'The link to the next page (also a `link`), or the viewer\'s button to the next picture.',
   eyebrow: 'The small "Previous" / "Next" line.',
-  button: 'The Previous and Next buttons (a fandry-button\'s `base`).',
-  toolbar: 'The bar above the table that holds the search box.',
+  button: 'The Previous and Next buttons, or a tile\'s button (a fandry-button\'s `base`).',
+  toolbar: 'The bar above the table that holds the search box, or the viewer\'s bar above the picture.',
   container: 'The scrolling box around the table.',
   table: 'The native `<table>`.',
-  caption: 'The `<caption>`.',
+  caption: 'The `<caption>`, or a picture\'s caption.',
   'header-row': 'The header row.',
   'header-cell': 'A header cell.',
   'sort-button': 'The button in a sortable header cell.',
@@ -114,7 +114,17 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   'chip-remove': 'The button that removes one chosen record.',
   'clear-all': 'The Clear all button.',
   field: 'One field of a form: its label, control, help text and error (a fandry-form-field\'s `base`).',
-  revert: 'The button that puts back a changed field\'s saved value.'
+  revert: 'The button that puts back a changed field\'s saved value.',
+  item: 'One tile of the grid.',
+  frame: 'The box a tile\'s picture fills, at the grid\'s aspect ratio.',
+  placeholder: 'A skeleton tile while loading (a fandry-skeleton\'s `base`).',
+  'close-button': 'The button that closes the viewer (a fandry-button\'s `base`).',
+  'keys-button': 'The button that shows the viewer\'s keyboard shortcuts (a fandry-button\'s `base`).',
+  keys: 'The box that holds the viewer\'s keyboard shortcuts.',
+  stage: 'The area that shows the picture and takes swipes and pinches.',
+  viewer: 'The full-screen viewer\'s content (a fandry-media-viewer\'s `base`).',
+  'viewer-image': 'The picture in the viewer (a fandry-media-viewer\'s `image`).',
+  'viewer-caption': 'The caption in the viewer (a fandry-media-viewer\'s `caption`).'
 };
 
 /*
@@ -160,7 +170,19 @@ export interface BlockParts {
 
 export const BLOCKS: BlockParts[] = [
   { tag: 'fandry-form', parts: ['field', 'revert'], states: ['changed'] },
-  { tag: 'fandry-form-field', parts: ['base', 'revert'], states: ['changed'] }
+  { tag: 'fandry-form-field', parts: ['base', 'revert'], states: ['changed'] },
+  {
+    tag: 'fandry-media-gallery',
+    parts: ['base', 'item', 'button', 'frame', 'image', 'caption', 'placeholder', 'viewer', 'backdrop', 'panel', 'toolbar', 'status', 'keys-button', 'keys', 'close-button', 'stage', 'previous', 'next', 'viewer-image', 'viewer-caption'],
+    states: ['disabled']
+  },
+  { tag: 'fandry-media-keys', parts: ['base'] },
+  { tag: 'fandry-media-grid', parts: ['base', 'item', 'button', 'frame', 'image', 'caption', 'placeholder'] },
+  {
+    tag: 'fandry-media-viewer',
+    parts: ['base', 'backdrop', 'panel', 'toolbar', 'status', 'keys-button', 'keys', 'close-button', 'stage', 'image', 'previous', 'next', 'caption'],
+    states: ['disabled']
+  }
 ];
 
 export const COMPONENTS: ComponentEntry[] = [
