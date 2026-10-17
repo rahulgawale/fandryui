@@ -23,7 +23,7 @@ export const LANDSCAPES: FdMediaItem[] = [
   photo(15, 'A waterfall dropping into a rocky gorge.', 'The falls', 'Paul Jarvis'),
   photo('backwaters', 'A houseboat on a wide green canal lined with coconut palms and rice fields.', 'Alappuzha backwaters, Kerala', 'Abhishek Prasad', 1280, 854),
   photo(10, 'A pine forest above a calm bay, with mountains far off.', 'Above the bay', 'Paul Jarvis'),
-  photo('sea-link', 'The Bandra–Worli Sea Link\'s cable-stayed towers at golden hour, seen from a rocky shore.', 'Bandra–Worli Sea Link, Mumbai', 'Sid Saxena', 1280, 959),
+  photo('sea-link', 'The Vandre–Worli Sea Link\'s cable-stayed towers at golden hour, seen from a rocky shore.', 'Vandre–Worli Sea Link, Mumbai', 'Sid Saxena', 1280, 959),
   photo(29, 'A snow-covered Himalayan valley below Everest.', 'Khumbu, after snow', 'Go Wild'),
   photo(28, 'A stream running through green forest under a blue sky.', 'Green valley', 'Jerry Adney'),
   photo('hills-fog', 'An orange sunrise over dark hills, with fog filling the valleys between them.', 'Sunrise over the fog', 'Girish Dalvi', 1280, 853),

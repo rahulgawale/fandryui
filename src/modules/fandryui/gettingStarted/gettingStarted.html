@@ -19,13 +19,11 @@
       <template if:true={isOverview}>
         <div class="grid">
           <template for:each={platformCards} for:item="card">
-            <a key={card.slug} href={card.href} class="card-link">
-              <fandry-card class="card">
-                <fandry-badge>{card.badge}</fandry-badge>
-                <fandry-heading level="2">{card.name}</fandry-heading>
-                <fandry-text variant="muted" size="sm"><fandryui-doc-text text={card.description}></fandryui-doc-text></fandry-text>
-              </fandry-card>
-            </a>
+            <fandry-card key={card.slug} class="card link-card">
+              <fandry-badge>{card.badge}</fandry-badge>
+              <fandry-heading level="2"><fandry-link href={card.href} class="link-card-title">{card.name}</fandry-link></fandry-heading>
+              <fandry-text variant="muted" size="sm"><fandryui-doc-text text={card.description}></fandryui-doc-text></fandry-text>
+            </fandry-card>
           </template>
         </div>
       </template>

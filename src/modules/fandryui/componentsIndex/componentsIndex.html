@@ -16,18 +16,16 @@
     <main class="content">
       <fandry-heading level="1">Components</fandry-heading>
       <fandry-text variant="muted" class="lede">
-        Every fandry-* primitive, with a live example, its props, and the code to use it.
+        Every <code>fandry-*</code> primitive, with a live example, its props, and the code to use it.
       </fandry-text>
 
       <div class="grid">
         <template for:each={componentCards} for:item="component">
-          <a key={component.slug} href={component.href} class="card-link">
-            <fandry-card class="card">
-              <fandry-badge>{component.category}</fandry-badge>
-              <fandry-heading level="3">{component.name}</fandry-heading>
-              <fandry-text variant="muted" size="sm"><fandryui-doc-text text={component.description}></fandryui-doc-text></fandry-text>
-            </fandry-card>
-          </a>
+          <fandry-card key={component.slug} class="card link-card">
+            <fandry-badge>{component.category}</fandry-badge>
+            <fandry-heading level="3"><fandry-link href={component.href} class="link-card-title">{component.name}</fandry-link></fandry-heading>
+            <fandry-text variant="muted" size="sm"><fandryui-doc-text text={component.description}></fandryui-doc-text></fandry-text>
+          </fandry-card>
         </template>
       </div>
     </main>

@@ -1,10 +1,10 @@
 <template>
   <fandryui-site-header></fandryui-site-header>
 
-  <main class="page">
+  <main class="block-page">
     <fandry-breadcrumb>
       <fandry-breadcrumb-item href="/">Home</fandry-breadcrumb-item>
-      <fandry-breadcrumb-item href="/blocks">Blocks</fandry-breadcrumb-item>
+      <fandry-breadcrumb-item href="/blocks/">Blocks</fandry-breadcrumb-item>
       <fandry-breadcrumb-item current>Media gallery</fandry-breadcrumb-item>
     </fandry-breadcrumb>
 
@@ -25,13 +25,13 @@
         <fandry-button variant="secondary" onclick={handleReload}>Reload</fandry-button>
       </div>
 
-      <fandry-card class="demo-frame demo-frame--wide">
+      <!-- The tokens are set on the card: the gallery inherits them, and the card reads the gap for its padding. -->
+      <fandry-card class="demo-frame demo-frame--wide" style={galleryStyle}>
         <fandry-media-gallery
           class="demo-gallery"
           items={photos}
           loading={loading}
           loading-count="12"
-          style={galleryStyle}
           onchange={handleChange}
         ></fandry-media-gallery>
       </fandry-card>
@@ -39,34 +39,34 @@
         Last <code>change</code>: {current}. In the viewer: ← → (or Page Up / Page Down) Home End to move, + − 0 to zoom, arrows to look around while zoomed, Esc to close. On a
         phone: swipe, pinch, double tap.
       </fandry-text>
-      <pre class="code-block"><code>{themeCode}</code></pre>
+      <fandryui-code-block code={themeCode}></fandryui-code-block>
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Install</fandry-heading>
+      <fandryui-doc-heading level="2" text="Install" class="section-title"></fandryui-doc-heading>
       <div class="two-up">
         <div>
           <fandry-text size="sm" variant="muted" class="label">LWR / LWC OSS</fandry-text>
-          <pre class="code-block"><code>{installNpm}</code></pre>
+          <fandryui-code-block code={installNpm}></fandryui-code-block>
         </div>
         <div>
           <fandry-text size="sm" variant="muted" class="label">Salesforce DX</fandry-text>
-          <pre class="code-block"><code>{installSfdx}</code></pre>
+          <fandryui-code-block code={installSfdx}></fandryui-code-block>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Usage</fandry-heading>
-      <pre class="code-block"><code>{usageCode}</code></pre>
+      <fandryui-doc-heading level="2" text="Usage" class="section-title"></fandryui-doc-heading>
+      <fandryui-code-block code={usageCode}></fandryui-code-block>
       <fandry-text size="sm" variant="muted" class="note">An item is plain data:</fandry-text>
-      <pre class="code-block"><code>{itemsCode}</code></pre>
+      <fandryui-code-block code={itemsCode}></fandryui-code-block>
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Props and methods</fandry-heading>
-      <div class="table-wrap">
-        <table class="doc-table">
+      <fandryui-doc-heading level="2" text="Props and methods" class="section-title"></fandryui-doc-heading>
+      <div class="props-table-wrap">
+        <table class="props-table">
           <thead>
             <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
           </thead>
@@ -76,7 +76,7 @@
                 <td><code>{prop.name}</code></td>
                 <td><code>{prop.type}</code></td>
                 <td><code>{prop.default}</code></td>
-                <td>{prop.description}</td>
+                <td><fandryui-doc-text text={prop.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -85,9 +85,9 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Item</fandry-heading>
-      <div class="table-wrap">
-        <table class="doc-table">
+      <fandryui-doc-heading level="2" text="Item" class="section-title"></fandryui-doc-heading>
+      <div class="props-table-wrap">
+        <table class="props-table">
           <thead>
             <tr><th>Key</th><th>Type</th><th>Description</th></tr>
           </thead>
@@ -96,7 +96,7 @@
               <tr key={prop.name}>
                 <td><code>{prop.name}</code></td>
                 <td><code>{prop.type}</code></td>
-                <td>{prop.description}</td>
+                <td><fandryui-doc-text text={prop.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -105,9 +105,9 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Events</fandry-heading>
-      <div class="table-wrap">
-        <table class="doc-table">
+      <fandryui-doc-heading level="2" text="Events" class="section-title"></fandryui-doc-heading>
+      <div class="props-table-wrap">
+        <table class="props-table">
           <thead>
             <tr><th>Event</th><th>detail</th><th>Description</th></tr>
           </thead>
@@ -116,7 +116,7 @@
               <tr key={event.name}>
                 <td><code>{event.name}</code></td>
                 <td><code>{event.detail}</code></td>
-                <td>{event.description}</td>
+                <td><fandryui-doc-text text={event.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -125,12 +125,12 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Tokens</fandry-heading>
+      <fandryui-doc-heading level="2" text="Tokens" class="section-title"></fandryui-doc-heading>
       <fandry-text size="sm" variant="muted" class="note">
-        Layout and look are tokens, not props: set them on <code>:root</code>, on a section, or on one gallery. The gap between tiles is the grid's own: <code>{gapCode}</code>.
+        Layout and look are tokens, not props: set them on <code>:root</code>, on a section, or on one gallery.
       </fandry-text>
-      <div class="table-wrap">
-        <table class="doc-table">
+      <div class="props-table-wrap">
+        <table class="props-table">
           <thead>
             <tr><th>Token</th><th>Default</th><th>Description</th></tr>
           </thead>
@@ -139,7 +139,7 @@
               <tr key={token.name}>
                 <td><code>{token.name}</code></td>
                 <td><code>{token.default}</code></td>
-                <td>{token.description}</td>
+                <td><fandryui-doc-text text={token.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -148,9 +148,9 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Parts</fandry-heading>
-      <div class="table-wrap">
-        <table class="doc-table">
+      <fandryui-doc-heading level="2" text="Parts" class="section-title"></fandryui-doc-heading>
+      <div class="props-table-wrap">
+        <table class="props-table">
           <thead>
             <tr><th>Part</th><th>Description</th></tr>
           </thead>
@@ -158,7 +158,7 @@
             <template for:each={parts} for:item="part">
               <tr key={part.name}>
                 <td><code>{part.name}</code></td>
-                <td>{part.description}</td>
+                <td><fandryui-doc-text text={part.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -167,7 +167,7 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Make it yours: a product gallery</fandry-heading>
+      <fandryui-doc-heading level="2" text="Make it yours: a product gallery" class="section-title"></fandryui-doc-heading>
       <fandry-text variant="muted" class="note">
         A store's product page wants one big picture and a strip of thumbnails, not a grid. This one extends <code>fandry/mediaGalleryState</code> and writes only its own markup: the current picture, focus coming back
         after the viewer, the events and the full-screen viewer with swipe and zoom all come from the block.
@@ -177,7 +177,7 @@
           <fandryui-product-gallery class="product-media" items={productPhotos}></fandryui-product-gallery>
           <div class="product-info">
             <fandry-text size="sm" variant="muted">Single origin · Whole bean</fandry-text>
-            <fandry-heading level="2">House Blend</fandry-heading>
+            <fandry-heading level="3">House Blend</fandry-heading>
             <fandry-text class="price">₹ 640 · 250 g</fandry-text>
             <fandry-text variant="muted">
               A medium roast with notes of cocoa and toasted almond, roasted every Monday and shipped the same week.
@@ -186,11 +186,11 @@
           </div>
         </div>
       </fandry-card>
-      <pre class="code-block"><code>{customCode}</code></pre>
+      <fandryui-code-block code={customCode}></fandryui-code-block>
     </section>
 
     <section class="section">
-      <fandry-heading level="3">The pieces</fandry-heading>
+      <fandryui-doc-heading level="2" text="The pieces" class="section-title"></fandryui-doc-heading>
       <fandry-text variant="muted">
         <code>fandry/mediaGalleryState</code> has the behavior and no template. <code>fandry/mediaGallery</code> is that
         class plus a grid and a viewer. <code>fandry/mediaGrid</code> and <code>fandry/mediaViewer</code> each work on

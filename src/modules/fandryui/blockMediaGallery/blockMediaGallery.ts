@@ -63,7 +63,7 @@ const ITEM_PROPS = [
   { name: 'src', type: 'string', description: 'The full-size file, shown in the viewer.' },
   { name: 'alt', type: 'string', description: 'Describes the picture for people who can\'t see it. `\'\'` for a decorative one.' },
   { name: 'thumbnail', type: 'string', description: 'A smaller file for the grid. Without one the grid uses `src` (with `srcset` / `sizes`).' },
-  { name: 'srcset · sizes', type: 'string', description: 'As on a native <img>, for the viewer.' },
+  { name: 'srcset · sizes', type: 'string', description: 'As on a native `<img>`, for the viewer.' },
   { name: 'width · height', type: 'number', description: 'The intrinsic size, so the browser reserves the space before the file arrives.' },
   { name: 'caption', type: 'string', description: 'Shown under the tile and under the picture in the viewer. Leave it out for none.' },
   { name: 'loading', type: "'lazy' | 'eager'", description: 'Defaults to `lazy`. Set `eager` on the pictures that are on screen when the page opens.' }
@@ -74,7 +74,7 @@ const PROPS = [
   { name: 'index', type: 'number', default: '0', description: 'The current item. Set it to choose where the gallery starts; the block keeps it current as the user moves and reports each move through `change`.' },
   { name: 'loading', type: 'boolean', default: 'false', description: 'While the items are being fetched: the grid shows placeholders and says it is busy.' },
   { name: 'loading-count', type: 'number', default: '8', description: 'How many placeholders.' },
-  { name: 'messages', type: 'object', default: '{}', description: 'What the gallery says (the viewer\'s name, Close, Previous, Next, "3 of 12", what a screen reader hears on moving, and the name of a tile whose picture has no alt text), e.g. to translate it: any key of DEFAULT_MEDIA_VIEWER_MESSAGES (fandry/mediaViewer) or DEFAULT_MEDIA_GRID_MESSAGES (fandry/mediaGrid).' },
+  { name: 'messages', type: 'object', default: '{}', description: 'What the gallery says (the viewer\'s name, Close, Previous, Next, "3 of 12", what a screen reader hears on moving, and the name of a tile whose picture has no alt text), e.g. to translate it: any key of `DEFAULT_MEDIA_VIEWER_MESSAGES` (`fandry/mediaViewer`) or `DEFAULT_MEDIA_GRID_MESSAGES` (`fandry/mediaGrid`).' },
   { name: 'show(index?) · close()', type: 'methods', default: '—', description: 'Open the viewer (on `index`, or on the current item) and close it.' },
   { name: 'next() · previous() · goTo(index)', type: 'methods', default: '—', description: 'Move the current item, with or without the viewer open.' }
 ];
@@ -86,6 +86,7 @@ const EVENTS = [
 
 const TOKENS = [
   { name: '--fd-media-columns', default: '4', description: 'The most tiles in a row.' },
+  { name: '--fd-media-gap', default: '--fd-space-3', description: 'The space between tiles.' },
   { name: '--fd-media-min-width', default: '8rem', description: 'The narrowest a tile gets. A narrower box gets fewer columns, so the grid fits wherever it is put, with no breakpoints.' },
   { name: '--fd-media-aspect-ratio', default: '1 / 1', description: 'The shape every tile is cut to.' },
   { name: '--fd-media-fit', default: 'cover', description: '`cover` fills the tile and crops; `contain` shows the whole picture.' },
@@ -93,8 +94,8 @@ const TOKENS = [
 ];
 
 const PARTS = [
-  { name: 'base', description: 'The grid (a <ul>). Its gap: `fandry-media-gallery::part(base) { gap: 1.5rem }`.' },
-  { name: 'item · button · frame · image · caption', description: 'One tile, its fandry-button\'s <button>, the box the picture is cut to, the picture, its caption.' },
+  { name: 'base', description: 'The grid (a `<ul>`).' },
+  { name: 'item · button · frame · image · caption', description: 'One tile, its fandry-button\'s `<button>`, the box the picture is cut to, the picture, its caption.' },
   { name: 'placeholder', description: 'A tile\'s placeholder while loading.' },
   { name: 'viewer · backdrop · panel', description: 'The viewer, and the fandry-dialog it is drawn in.' },
   { name: 'toolbar · status · close-button', description: 'The bar at the top, the "3 of 12", the close button.' },
@@ -135,7 +136,6 @@ export default class BlockMediaGallery extends LightningElement {
   ratioOptions = RATIO_OPTIONS;
   fitOptions = FIT_OPTIONS;
   gapOptions = GAP_OPTIONS;
-  gapCode = 'fandry-media-gallery::part(base) { gap: 1.5rem }';
 
   installNpm = `npm install fandryui
 
@@ -160,19 +160,15 @@ export default class BlockMediaGallery extends LightningElement {
   }
 
   get galleryStyle(): string {
-    // --demo-gap is this page's own, read by the ::part(base) rule in its CSS.
-    return `--fd-media-columns: ${this.columns}; --fd-media-aspect-ratio: ${this.ratio}; --fd-media-fit: ${this.fit}; --demo-gap: ${this.gap};`;
+    return `--fd-media-columns: ${this.columns}; --fd-media-gap: ${this.gap}; --fd-media-aspect-ratio: ${this.ratio}; --fd-media-fit: ${this.fit};`;
   }
 
   get themeCode(): string {
     return `fandry-media-gallery {
   --fd-media-columns: ${this.columns};
+  --fd-media-gap: ${this.gap};
   --fd-media-aspect-ratio: ${this.ratio};
   --fd-media-fit: ${this.fit};
-}
-
-fandry-media-gallery::part(base) {
-  gap: ${this.gap};
 }`;
   }
 

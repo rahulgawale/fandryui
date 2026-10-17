@@ -14,13 +14,13 @@
         100%,
         max(
           var(--_fd-media-min-width),
-          calc((100% - (var(--_fd-media-columns) - 1) * var(--_fd-space-3)) / var(--_fd-media-columns))
+          calc((100% - (var(--_fd-media-columns) - 1) * var(--_fd-media-gap)) / var(--_fd-media-columns))
         )
       ),
       1fr
     )
   );
-  gap: var(--_fd-space-3);
+  gap: var(--_fd-media-gap);
   margin: 0;
   padding: 0;
   list-style: none;
