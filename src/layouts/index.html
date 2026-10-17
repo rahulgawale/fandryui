@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -78,6 +95,17 @@
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a

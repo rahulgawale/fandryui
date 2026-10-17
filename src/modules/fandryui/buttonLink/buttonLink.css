@@ -1,0 +1,48 @@
+/*
+  A fandry-link drawn like a large fandry-button (default and secondary): a
+  real link, so crawlers follow it. Mirrors button.css's lg size, colors,
+  hover and pressed states; no lift shadow, since a ::part box-shadow would
+  replace fandry-link's focus ring.
+*/
+.button-link::part(link) {
+  display: inline-flex;
+  align-items: center;
+  height: var(--_fd-control-height-lg);
+  padding: 0 var(--_fd-space-5);
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-md);
+  background: hsl(var(--_fd-bg));
+  color: hsl(var(--_fd-text));
+  font-size: var(--_fd-font-size-md);
+  font-weight: var(--_fd-font-weight-medium);
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color var(--_fd-duration-fast) ease,
+    box-shadow var(--_fd-duration-fast) var(--_fd-ease-standard);
+}
+
+.button-link--primary::part(link) {
+  border-color: transparent;
+  background: hsl(var(--_fd-primary));
+  color: hsl(var(--_fd-primary-foreground));
+}
+
+/* fandry-link brightens on any hover; that is the primary button's hover too. */
+.button-link::part(link):hover {
+  filter: none;
+}
+
+@media (hover: hover) {
+  .button-link::part(link):hover {
+    background: hsl(var(--_fd-bg-muted));
+  }
+
+  .button-link--primary::part(link):hover {
+    background: hsl(var(--_fd-primary));
+    filter: brightness(var(--_fd-hover-brightness));
+  }
+}
+
+.button-link::part(link):active {
+  transform: translateY(1px);
+}

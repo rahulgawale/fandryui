@@ -18,7 +18,7 @@
 
     <fandry-card class="demo-card chart-card">
       <fandry-text as="span" size="xs" variant="muted">Build velocity</fandry-text>
-      <fandry-heading level="4">Faster every month</fandry-heading>
+      <fandry-heading level="2" class="card-title">Faster every month</fandry-heading>
       <div class="bars">
         <template for:each={bars} for:item="bar">
           <div key={bar.key} class="bar-col">
@@ -30,7 +30,7 @@
     </fandry-card>
 
     <fandry-card class="demo-card theme-card">
-      <fandry-heading level="4">Theme your brand</fandry-heading>
+      <fandry-heading level="2" class="card-title">Theme your brand</fandry-heading>
       <fandry-text variant="muted" size="sm">One token scale, retheme anywhere.</fandry-text>
       <fandry-input label="Primary color" value={primaryColor} oninput={handlePrimaryColorInput}></fandry-input>
       <fandry-input label="Accent color" value={accentColor} oninput={handleAccentColorInput}></fandry-input>
@@ -41,7 +41,7 @@
     </fandry-card>
 
     <fandry-card class="demo-card notif-card">
-      <fandry-heading level="4">Try it live</fandry-heading>
+      <fandry-heading level="2" class="card-title">Try it live</fandry-heading>
       <fandry-text variant="muted" size="sm">A real fandry-toast, not a screenshot.</fandry-text>
       <fandry-button size="sm" onclick={handleShowToast}>Show notification</fandry-button>
       <fandry-toast-viewport placement="bottom-right" contained label="Notifications">

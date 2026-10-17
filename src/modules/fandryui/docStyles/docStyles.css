@@ -130,6 +130,11 @@ fandry-link.chip:focus-within > fandry-badge::part(base) {
   }
 }
 
+/* h2 for the outline, sized like the h3 it used to be. */
+.link-card-heading::part(base) {
+  font-size: var(--_fd-font-size-xl);
+}
+
 /* fandry-link rings its <a> while focused; the card's ring replaces it. */
 .link-card-title::part(link) {
   color: inherit;

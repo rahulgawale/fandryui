@@ -14,7 +14,7 @@ Key facts:
 
 ## Docs
 
-- [Fandry UI: composable UI components for Salesforce LWC](https://fandryui.forcetrails.com/): The flexibility of modern UI development with the simplicity of LWC. A themeable, composable component library for Salesforce LWC, LWR and Experience Cloud.
+- [Fandry UI: composable UI components for Salesforce LWC](https://fandryui.forcetrails.com/): Fandry UI: themeable, composable UI components for Salesforce LWC, LWR and Experience Cloud, shipped as plain LWC source you own.
 - [Why Fandry UI exists](https://fandryui.forcetrails.com/why-fandry/): What Fandry UI is for, what it trades away, and how it differs from Lightning Base Components: your own design system, composition, and components you control.
 - [Getting started](https://fandryui.forcetrails.com/getting-started/): One source, one npm package, two platforms. Pick the one you build on; the components are the same.
 - [Getting started with LWR / LWC OSS](https://fandryui.forcetrails.com/getting-started/lwr-oss/): Install one npm package, point your project at it, and use <fandry-*> components. Your bundler ships only the ones you use.

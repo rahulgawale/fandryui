@@ -13,7 +13,7 @@
         <fandry-card key={block.slug} class="card link-card">
           <!-- The block's demo. Decorative: the heading's link names the card. -->
           <img class="preview" src={block.image} alt="" width="1200" height="630" loading="lazy" />
-          <fandry-heading level="3"><fandry-link href={block.href} class="link-card-title">{block.name}</fandry-link></fandry-heading>
+          <fandry-heading level="2" class="link-card-heading"><fandry-link href={block.href} class="link-card-title">{block.name}</fandry-link></fandry-heading>
           <fandry-text variant="muted" size="sm">{block.description}</fandry-text>
           <div class="chips">
             <template for:each={block.includes} for:item="item">

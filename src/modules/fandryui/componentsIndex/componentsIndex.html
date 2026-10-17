@@ -23,7 +23,7 @@
         <template for:each={componentCards} for:item="component">
           <fandry-card key={component.slug} class="card link-card">
             <fandry-badge>{component.category}</fandry-badge>
-            <fandry-heading level="3"><fandry-link href={component.href} class="link-card-title">{component.name}</fandry-link></fandry-heading>
+            <fandry-heading level="2" class="link-card-heading"><fandry-link href={component.href} class="link-card-title">{component.name}</fandry-link></fandry-heading>
             <fandry-text variant="muted" size="sm"><fandryui-doc-text text={component.description}></fandryui-doc-text></fandry-text>
           </fandry-card>
         </template>

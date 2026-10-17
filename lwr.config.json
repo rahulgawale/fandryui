@@ -23,7 +23,7 @@
             "layoutTemplate": "$layoutsDir/index.html",
             "properties": {
                 "title": "Fandry UI: composable UI components for Salesforce LWC",
-                "description": "The flexibility of modern UI development with the simplicity of LWC. A themeable, composable component library for Salesforce LWC, LWR and Experience Cloud.",
+                "description": "Fandry UI: themeable, composable UI components for Salesforce LWC, LWR and Experience Cloud, shipped as plain LWC source you own.",
                 "path": "/",
                 "image": "/assets/og-image.jpg",
                 "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."

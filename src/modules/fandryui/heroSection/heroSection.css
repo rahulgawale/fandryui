@@ -1,3 +1,5 @@
+@import 'fandryui/buttonLink';
+
 :host {
   display: block;
   /* --brand-primary/--brand-accent (not --fd-primary/--fd-accent) -- those
