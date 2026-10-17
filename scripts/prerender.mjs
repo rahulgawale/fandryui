@@ -105,6 +105,8 @@ try {
     await waitForServer(base);
     browser = await chromium.launch();
     const page = await browser.newPage();
+    // No page views in the site's analytics from the build.
+    await page.route(/googletagmanager\.com|google-analytics\.com/, (route) => route.abort());
     const failures = [];
     for (const path of paths) {
         await page.goto(base + path, { waitUntil: 'networkidle' });
