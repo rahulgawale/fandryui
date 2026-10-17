@@ -30,10 +30,6 @@ export default class FdMediaGalleryState extends Base {
   /** The current item's position in `items`. Set it to choose where the gallery starts. */
   @api index = 0;
 
-  /** True while the items are being fetched; the grid shows placeholders. */
-  @api loading = false;
-  @api loadingCount = 8;
-
   /**
    * Passed to the grid and the viewer: any of DEFAULT_MEDIA_VIEWER_MESSAGES
    * (fandry/mediaViewerState) and DEFAULT_MEDIA_GRID_MESSAGES
