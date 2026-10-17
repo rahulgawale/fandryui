@@ -578,7 +578,7 @@ fandry-heading.eyebrow::part(base) {
     },
     category: 'Typography',
     description: 'A semantically-leveled heading, sized off the shared type scale.',
-    props: [{ name: 'level', type: '1 | 2 | 3 | 4 | 5 | 6', default: '2', description: 'Heading level (role="heading" aria-level, not a real h1-h6).' }],
+    props: [{ name: 'level', type: '1 | 2 | 3 | 4 | 5 | 6', default: '2', description: 'Heading level: renders the matching h1-h6.' }],
     code: `<fandry-heading level="2">Section title</fandry-heading>`
   },
   {

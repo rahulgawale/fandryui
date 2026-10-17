@@ -18,17 +18,28 @@ export default class FdHeading extends Base {
     this._level = Number(value) as 1 | 2 | 3 | 4 | 5 | 6;
   }
 
-  // Deliberately `role="heading" aria-level={level}` on one element, not a
-  // real h1-h6 -- LWC templates are static, so a tag name can't be
-  // interpolated (no `<h{level}>`), and the alternative (branching on
-  // `level` across several `template if:true` blocks, one real heading tag
-  // each) doesn't work either: confirmed live that LWC flags multiple
-  // default `<slot>` elements in one template as an invalid duplicate slot
-  // and content silently fails to project into any of them, regardless of
-  // how mutually exclusive the branches are. `role="heading"
-  // aria-level={level}` is WAI-ARIA's own documented equivalent for
-  // exactly this case -- host-language h1-h6 is only preferable when the
-  // markup can actually express it, which here it can't.
+  // One real h1-h6 per lwc:if branch: a tag name can't be interpolated, and
+  // LWC allows the same slot once in each branch of an if/elseif chain.
+  get isLevel1(): boolean {
+    return this.level === 1;
+  }
+
+  get isLevel2(): boolean {
+    return this.level === 2;
+  }
+
+  get isLevel3(): boolean {
+    return this.level === 3;
+  }
+
+  get isLevel4(): boolean {
+    return this.level === 4;
+  }
+
+  get isLevel5(): boolean {
+    return this.level === 5;
+  }
+
   get classes(): string {
     return ['heading', `heading--${this.level}`].join(' ');
   }
