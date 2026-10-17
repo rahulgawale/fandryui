@@ -1,5 +1,6 @@
 <template>
-  <ul class="grid" part="base" aria-busy={ariaBusy}>
+  <!-- role="list": Safari drops a list's role once its bullets are styled away. -->
+  <ul class="grid" part="base" role="list" aria-busy={ariaBusy}>
     <template lwc:if={loading}>
       <template for:each={placeholders} for:item="placeholder">
         <li key={placeholder} class="item" aria-hidden="true">

@@ -8,7 +8,8 @@ export const PRODUCT_GALLERY_TEXT = {
   viewFullScreen: (alt: string) => `${alt} View full screen.`,
   previous: 'Previous picture',
   next: 'Next picture',
-  picture: (current: number, total: number) => `Picture ${current} of ${total}`
+  picture: (current: number, total: number, alt: string) =>
+    alt ? `Picture ${current} of ${total}: ${alt}` : `Picture ${current} of ${total}`
 };
 
 /**
@@ -50,9 +51,15 @@ export default class ProductGallery extends FdMediaGalleryState {
         index,
         src: item.thumbnail || item.src,
         className: current ? 'thumb thumb--current' : 'thumb',
-        props: { tabIndex: 0, ariaLabel: PRODUCT_GALLERY_TEXT.picture(index + 1, this.count), ariaCurrent: current ? 'true' : null }
+        props: { tabIndex: 0, ariaLabel: PRODUCT_GALLERY_TEXT.picture(index + 1, this.count, item.alt), ariaCurrent: current ? 'true' : null }
       };
     });
+  }
+
+  // The arrows and thumbnails change the main picture away from focus; this says which it is now.
+  get announcement(): string {
+    const item = this.current;
+    return item ? PRODUCT_GALLERY_TEXT.picture(this.currentIndex + 1, this.count, item.alt) : '';
   }
 
   handleThumb(event: Event) {

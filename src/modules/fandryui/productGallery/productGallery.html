@@ -21,7 +21,9 @@
       </fandry-button>
     </div>
 
-    <ul class="thumbs">
+    <div class="visually-hidden" aria-live="polite" aria-atomic="true">{announcement}</div>
+
+    <ul class="thumbs" role="list">
       <template for:each={thumbs} for:item="thumb">
         <li key={thumb.key}>
           <fandry-button class={thumb.className} variant="ghost" data-thumb={thumb.index} element-props={thumb.props} onclick={handleThumb}>

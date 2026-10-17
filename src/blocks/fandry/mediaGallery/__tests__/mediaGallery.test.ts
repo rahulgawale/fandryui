@@ -304,6 +304,59 @@ describe('fandry-media-viewer', () => {
     expect(root(viewer).querySelector('.status')!.hasAttribute('aria-live')).toBe(false);
   });
 
+  it('renders its live region empty on each opening, then fills it, so the opening is announced', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer);
+    await settle();
+    viewer.open = true;
+    await Promise.resolve();
+    const live = root(viewer).querySelector('[aria-live]') as HTMLElement;
+    expect(live.textContent).toBe('');
+    await settle();
+    expect(live.textContent).toBe('1 of 3: The lake');
+    viewer.close();
+    await settle();
+    viewer.open = true;
+    await Promise.resolve();
+    expect(live.textContent).toBe('');
+    await settle();
+    expect(live.textContent).toBe('1 of 3: The lake');
+  });
+
+  it('keeps Tab on its own buttons instead of the page it covers', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
+    await settle();
+    const tab = (from: Host, shiftKey = false) => {
+      const event = new KeyboardEvent('keydown', { key: 'Tab', shiftKey, bubbles: true, composed: true, cancelable: true });
+      from.dispatchEvent(event);
+      return event.defaultPrevented;
+    };
+    const close = nativeButton(navButton(viewer, 'close'));
+    const next = nativeButton(navButton(viewer, 'next'));
+    const closeFocus = jest.spyOn(close, 'focus');
+    const nextFocus = jest.spyOn(next, 'focus');
+
+    // Tab from the last button wraps to the first, Shift+Tab from the first (or the panel) to the last.
+    expect(tab(navButton(viewer, 'next'))).toBe(true);
+    expect(closeFocus).toHaveBeenCalled();
+    expect(tab(navButton(viewer, 'close'), true)).toBe(true);
+    expect(tab(dialogOf(viewer), true)).toBe(true);
+    expect(nextFocus).toHaveBeenCalledTimes(2);
+    // Between them, the browser moves focus itself.
+    expect(tab(navButton(viewer, 'close'))).toBe(false);
+    expect(tab(navButton(viewer, 'previous'), true)).toBe(false);
+  });
+
+  it('wraps Tab on the close button alone when there is one item', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true, items: [ITEMS[0]] });
+    await settle();
+    const close = nativeButton(navButton(viewer, 'close'));
+    const closeFocus = jest.spyOn(close, 'focus');
+    const event = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true });
+    navButton(viewer, 'close').dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(true);
+    expect(closeFocus).toHaveBeenCalled();
+  });
+
   it('slides with alternating animation names, so each move restarts it', async () => {
     const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
     await settle();

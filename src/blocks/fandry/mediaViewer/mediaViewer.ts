@@ -106,6 +106,7 @@ export default class FdMediaViewer extends Base {
       this.settleFrom = '';
       this.gestures.reset();
       this.hasOpened = true;
+      this.liveReady = false;
     }
     this._open = !!value;
   }
@@ -122,6 +123,9 @@ export default class FdMediaViewer extends Base {
   // Where the stage starts the slide that brings in the current item.
   private settleFrom = '';
   private settleRun = 0;
+  /* A live region that arrives with its words already in it says nothing, so
+     each opening renders it empty and fills it a render later. */
+  private liveReady = false;
 
   get text(): FdMediaViewerMessages {
     return { ...DEFAULT_MEDIA_VIEWER_MESSAGES, ...this.messages };
@@ -162,7 +166,7 @@ export default class FdMediaViewer extends Base {
 
   get announcement(): string {
     const item = this.current;
-    if (!item) return '';
+    if (!item || !this.liveReady) return '';
     return this.text.announcement(this.currentIndex + 1, this.count, item.caption || item.alt || '');
   }
 
@@ -305,6 +309,10 @@ export default class FdMediaViewer extends Base {
   }
 
   handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Tab') {
+      this.keepTabInside(event);
+      return;
+    }
     const step = KEY_PAN * (this.stage?.clientWidth ?? 0);
     /* While zoomed the arrow keys look around the picture, as a swipe pans
        it; Page Up / Page Down and the buttons still move between items. */
@@ -327,6 +335,23 @@ export default class FdMediaViewer extends Base {
     if (!action || event.altKey || event.metaKey || event.ctrlKey) return;
     event.preventDefault();
     action();
+  }
+
+  /* fandry-dialog lets Tab leave it, onto a page this viewer covers. The
+     viewer knows its own buttons, so Tab wraps between them. */
+  private keepTabInside(event: KeyboardEvent) {
+    const buttons = (Array.from(this.template.querySelectorAll('.icon-button')) as HTMLElement[]).filter(
+      (button) => !button.hidden
+    );
+    if (!buttons.length) return;
+    const at = buttons.indexOf(event.target as HTMLElement);
+    if (event.shiftKey ? at > 0 : at !== buttons.length - 1) return;
+    event.preventDefault();
+    buttons[event.shiftKey ? buttons.length - 1 : 0].focus();
+  }
+
+  renderedCallback() {
+    if (this._open && this.hasOpened && !this.liveReady) this.liveReady = true;
   }
 
   // ---- gestures
