@@ -1,0 +1,7 @@
+# LF in the repo and in every checkout, whatever the OS or editor; Prettier
+# writes LF too. Binaries are listed so they're never touched.
+* text=auto eol=lf
+
+*.ico binary
+*.jpg binary
+*.png binary
