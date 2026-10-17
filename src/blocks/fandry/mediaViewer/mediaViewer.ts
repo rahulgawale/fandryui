@@ -9,6 +9,8 @@ export interface FdMediaViewerMessages {
   /** The dialog's name. */
   label: string;
   close: string;
+  /** The button that shows the keyboard shortcuts. */
+  keys: string;
   previous: string;
   next: string;
   /** Where the viewer is, shown at the top, e.g. "3 of 12". */
@@ -24,6 +26,7 @@ export interface FdMediaViewerMessages {
 export const DEFAULT_MEDIA_VIEWER_MESSAGES: FdMediaViewerMessages = {
   label: 'Gallery',
   close: 'Close',
+  keys: 'Keyboard shortcuts',
   previous: 'Previous',
   next: 'Next',
   position: (current, total) => `${current} of ${total}`,
@@ -107,6 +110,7 @@ export default class FdMediaViewer extends Base {
       this.gestures.reset();
       this.hasOpened = true;
       this.liveReady = false;
+      this.keysOpen = false;
     }
     this._open = !!value;
   }
@@ -126,6 +130,8 @@ export default class FdMediaViewer extends Base {
   /* A live region that arrives with its words already in it says nothing, so
      each opening renders it empty and fills it a render later. */
   private liveReady = false;
+  // Whether the list of keyboard shortcuts is showing.
+  keysOpen = false;
 
   get text(): FdMediaViewerMessages {
     return { ...DEFAULT_MEDIA_VIEWER_MESSAGES, ...this.messages };
@@ -183,6 +189,14 @@ export default class FdMediaViewer extends Base {
      the page. The handlers ignore it. */
   get closeProps(): Record<string, unknown> {
     return { tabIndex: 0, ariaLabel: this.text.close };
+  }
+
+  get keysProps(): Record<string, unknown> {
+    return { tabIndex: 0, ariaLabel: this.text.keys, ariaExpanded: String(this.keysOpen) };
+  }
+
+  get keysHidden(): boolean {
+    return !this.keysOpen;
   }
 
   get previousProps(): Record<string, unknown> {
@@ -294,6 +308,10 @@ export default class FdMediaViewer extends Base {
     this.close();
   }
 
+  handleKeysToggle() {
+    this.keysOpen = !this.keysOpen;
+  }
+
   handlePrevious() {
     if (this.hasPrevious) this.previous();
   }
@@ -313,6 +331,12 @@ export default class FdMediaViewer extends Base {
       this.keepTabInside(event);
       return;
     }
+    // Escape hides the shortcuts first; fandry-dialog, listening on the document, never hears it.
+    if (event.key === 'Escape' && this.keysOpen) {
+      event.stopPropagation();
+      this.keysOpen = false;
+      return;
+    }
     const step = KEY_PAN * (this.stage?.clientWidth ?? 0);
     /* While zoomed the arrow keys look around the picture, as a swipe pans
        it; Page Up / Page Down and the buttons still move between items. */
@@ -329,7 +353,8 @@ export default class FdMediaViewer extends Base {
       '+': () => this.zoomBy(KEY_ZOOM),
       '=': () => this.zoomBy(KEY_ZOOM),
       '-': () => this.zoomBy(1 / KEY_ZOOM),
-      '0': () => this.resetZoom()
+      '0': () => this.resetZoom(),
+      '?': () => this.handleKeysToggle()
     };
     const action = actions[event.key];
     if (!action || event.altKey || event.metaKey || event.ctrlKey) return;

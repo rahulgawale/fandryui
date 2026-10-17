@@ -43,6 +43,7 @@
       "fandry/mediaItem": ["src/blocks/fandry/mediaItem/mediaItem"],
       "fandry/mediaGestures": ["src/blocks/fandry/mediaGestures/mediaGestures"],
       "fandry/mediaGrid": ["src/blocks/fandry/mediaGrid/mediaGrid"],
+      "fandry/mediaKeys": ["src/blocks/fandry/mediaKeys/mediaKeys"],
       "fandry/mediaViewer": ["src/blocks/fandry/mediaViewer/mediaViewer"],
       "fandry/mediaGalleryState": ["src/blocks/fandry/mediaGalleryState/mediaGalleryState"],
       "fandry/mediaGallery": ["src/blocks/fandry/mediaGallery/mediaGallery"],

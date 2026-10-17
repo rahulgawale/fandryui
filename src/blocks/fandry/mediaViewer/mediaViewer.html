@@ -19,19 +19,40 @@
             has no box of its own to announce from.
           -->
           <div class="visually-hidden" aria-live="polite" aria-atomic="true">{announcement}</div>
-          <fandry-button
-            class="icon-button close"
-            variant="ghost"
-            element-props={closeProps}
-            exportparts="base: close-button"
-            onclick={handleClose}
-          >
-            <fandry-icon size="sm">
-              <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-                <path d="M18 6 6 18M6 6l12 12"></path>
-              </svg>
-            </fandry-icon>
-          </fandry-button>
+          <div class="actions">
+            <fandry-button
+              class="icon-button keys-button"
+              variant="ghost"
+              element-props={keysProps}
+              exportparts="base: keys-button"
+              onclick={handleKeysToggle}
+            >
+              <fandry-icon size="sm">
+                <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                  <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"></path>
+                </svg>
+              </fandry-icon>
+            </fandry-button>
+            <fandry-button
+              class="icon-button close"
+              variant="ghost"
+              element-props={closeProps}
+              exportparts="base: close-button"
+              onclick={handleClose}
+            >
+              <fandry-icon size="sm">
+                <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <path d="M18 6 6 18M6 6l12 12"></path>
+                </svg>
+              </fandry-icon>
+            </fandry-button>
+          </div>
+        </div>
+
+        <!-- Right after its button, so a screen reader reaches it next. The English list is the fallback. -->
+        <div class="keys" part="keys" hidden={keysHidden}>
+          <slot name="keys"><fandry-media-keys></fandry-media-keys></slot>
         </div>
 
         <div class="body">

@@ -25,6 +25,7 @@
 }
 
 .viewer {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -41,6 +42,26 @@
 
 .status {
   font-variant-numeric: tabular-nums;
+}
+
+.actions {
+  display: flex;
+  gap: var(--_fd-space-1);
+}
+
+/* Over the picture, under its button. */
+.keys {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--_fd-control-height-lg) + var(--_fd-space-4));
+  right: var(--_fd-space-2);
+  max-width: calc(100% - 2 * var(--_fd-space-2));
+  padding: var(--_fd-space-3) var(--_fd-space-4);
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-lg);
+  background: hsl(var(--_fd-bg));
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
+  animation: fd-fade-in var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
 .visually-hidden {

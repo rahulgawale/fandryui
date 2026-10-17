@@ -119,6 +119,8 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   frame: 'The box a tile\'s picture fills, at the grid\'s aspect ratio.',
   placeholder: 'A skeleton tile while loading (a fandry-skeleton\'s `base`).',
   'close-button': 'The button that closes the viewer (a fandry-button\'s `base`).',
+  'keys-button': 'The button that shows the viewer\'s keyboard shortcuts (a fandry-button\'s `base`).',
+  keys: 'The box that holds the viewer\'s keyboard shortcuts.',
   stage: 'The area that shows the picture and takes swipes and pinches.',
   viewer: 'The full-screen viewer\'s content (a fandry-media-viewer\'s `base`).',
   'viewer-image': 'The picture in the viewer (a fandry-media-viewer\'s `image`).',
@@ -171,13 +173,14 @@ export const BLOCKS: BlockParts[] = [
   { tag: 'fandry-form-field', parts: ['base', 'revert'], states: ['changed'] },
   {
     tag: 'fandry-media-gallery',
-    parts: ['base', 'item', 'button', 'frame', 'image', 'caption', 'placeholder', 'viewer', 'backdrop', 'panel', 'toolbar', 'status', 'close-button', 'stage', 'previous', 'next', 'viewer-image', 'viewer-caption'],
+    parts: ['base', 'item', 'button', 'frame', 'image', 'caption', 'placeholder', 'viewer', 'backdrop', 'panel', 'toolbar', 'status', 'keys-button', 'keys', 'close-button', 'stage', 'previous', 'next', 'viewer-image', 'viewer-caption'],
     states: ['disabled']
   },
+  { tag: 'fandry-media-keys', parts: ['base'] },
   { tag: 'fandry-media-grid', parts: ['base', 'item', 'button', 'frame', 'image', 'caption', 'placeholder'] },
   {
     tag: 'fandry-media-viewer',
-    parts: ['base', 'backdrop', 'panel', 'toolbar', 'status', 'close-button', 'stage', 'image', 'previous', 'next', 'caption'],
+    parts: ['base', 'backdrop', 'panel', 'toolbar', 'status', 'keys-button', 'keys', 'close-button', 'stage', 'image', 'previous', 'next', 'caption'],
     states: ['disabled']
   }
 ];

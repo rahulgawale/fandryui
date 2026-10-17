@@ -74,7 +74,8 @@ const PROPS = [
   { name: 'index', type: 'number', default: '0', description: 'The current item. Set it to choose where the gallery starts; the block keeps it current as the user moves and reports each move through `change`.' },
   { name: 'loading', type: 'boolean', default: 'false', description: 'While the items are being fetched: the grid shows placeholders and says it is busy.' },
   { name: 'loading-count', type: 'number', default: '8', description: 'How many placeholders.' },
-  { name: 'messages', type: 'object', default: '{}', description: 'What the gallery says (the viewer\'s name, Close, Previous, Next, "3 of 12", what a screen reader hears on moving, and the name of a tile whose picture has no alt text), e.g. to translate it: any key of `DEFAULT_MEDIA_VIEWER_MESSAGES` (`fandry/mediaViewer`) or `DEFAULT_MEDIA_GRID_MESSAGES` (`fandry/mediaGrid`).' },
+  { name: 'messages', type: 'object', default: '{}', description: 'What the gallery says (the viewer\'s name, Close, Keyboard shortcuts, Previous, Next, "3 of 12", what a screen reader hears on moving, and the name of a tile whose picture has no alt text), e.g. to translate it: any key of `DEFAULT_MEDIA_VIEWER_MESSAGES` (`fandry/mediaViewer`) or `DEFAULT_MEDIA_GRID_MESSAGES` (`fandry/mediaGrid`).' },
+  { name: 'keys (slot)', type: 'slot', default: 'an English list', description: 'The keyboard shortcuts the viewer\'s keyboard button (or `?`) shows. Slot a translated list here; `fandry/mediaKeys` is the default.' },
   { name: 'show(index?) · close()', type: 'methods', default: '—', description: 'Open the viewer (on `index`, or on the current item) and close it.' },
   { name: 'next() · previous() · goTo(index)', type: 'methods', default: '—', description: 'Move the current item, with or without the viewer open.' }
 ];
@@ -99,6 +100,7 @@ const PARTS = [
   { name: 'placeholder', description: 'A tile\'s placeholder while loading.' },
   { name: 'viewer · backdrop · panel', description: 'The viewer, and the fandry-dialog it is drawn in.' },
   { name: 'toolbar · status · close-button', description: 'The bar at the top, the "3 of 12", the close button.' },
+  { name: 'keys-button · keys', description: 'The keyboard button, and the box its list of shortcuts shows in.' },
   { name: 'stage · viewer-image · viewer-caption', description: 'Where the pictures slide, the current picture, its caption.' },
   { name: 'previous · next', description: 'The arrows (with `disabled` at the first and last item).' }
 ];

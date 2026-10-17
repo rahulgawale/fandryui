@@ -31,8 +31,8 @@ const dialogOf = (viewer: Host) => root(viewer).querySelector('fandry-dialog') a
 const tileHosts = (grid: Host) => Array.from(root(grid).querySelectorAll('fandry-button.tile-button')) as Host[];
 const tiles = (grid: Host) => tileHosts(grid).map((host) => root(host).querySelector('button') as HTMLButtonElement);
 const currentImage = (viewer: Host) => root(viewer).querySelector('.slide--current img') as HTMLImageElement | null;
-const navButton = (viewer: Host, which: 'previous' | 'next' | 'close') =>
-  root(viewer).querySelector(which === 'close' ? '.close' : `.nav--${which}`) as Host;
+const navButton = (viewer: Host, which: 'previous' | 'next' | 'close' | 'keys') =>
+  root(viewer).querySelector(which === 'close' ? '.close' : which === 'keys' ? '.keys-button' : `.nav--${which}`) as Host;
 const nativeButton = (button: Host) => root(button).querySelector('button') as HTMLButtonElement;
 const key = (viewer: Host, name: string) =>
   dialogOf(viewer).dispatchEvent(new KeyboardEvent('keydown', { key: name, bubbles: true, composed: true }));
@@ -330,31 +330,71 @@ describe('fandry-media-viewer', () => {
       from.dispatchEvent(event);
       return event.defaultPrevented;
     };
-    const close = nativeButton(navButton(viewer, 'close'));
-    const next = nativeButton(navButton(viewer, 'next'));
-    const closeFocus = jest.spyOn(close, 'focus');
-    const nextFocus = jest.spyOn(next, 'focus');
+    const firstFocus = jest.spyOn(nativeButton(navButton(viewer, 'keys')), 'focus');
+    const lastFocus = jest.spyOn(nativeButton(navButton(viewer, 'next')), 'focus');
 
     // Tab from the last button wraps to the first, Shift+Tab from the first (or the panel) to the last.
     expect(tab(navButton(viewer, 'next'))).toBe(true);
-    expect(closeFocus).toHaveBeenCalled();
-    expect(tab(navButton(viewer, 'close'), true)).toBe(true);
+    expect(firstFocus).toHaveBeenCalled();
+    expect(tab(navButton(viewer, 'keys'), true)).toBe(true);
     expect(tab(dialogOf(viewer), true)).toBe(true);
-    expect(nextFocus).toHaveBeenCalledTimes(2);
+    expect(lastFocus).toHaveBeenCalledTimes(2);
     // Between them, the browser moves focus itself.
     expect(tab(navButton(viewer, 'close'))).toBe(false);
     expect(tab(navButton(viewer, 'previous'), true)).toBe(false);
   });
 
-  it('wraps Tab on the close button alone when there is one item', async () => {
+  it('skips the hidden arrows when there is one item', async () => {
     const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true, items: [ITEMS[0]] });
     await settle();
-    const close = nativeButton(navButton(viewer, 'close'));
-    const closeFocus = jest.spyOn(close, 'focus');
+    const firstFocus = jest.spyOn(nativeButton(navButton(viewer, 'keys')), 'focus');
     const event = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true });
     navButton(viewer, 'close').dispatchEvent(event);
     expect(event.defaultPrevented).toBe(true);
-    expect(closeFocus).toHaveBeenCalled();
+    expect(firstFocus).toHaveBeenCalled();
+  });
+
+  it('shows its keyboard shortcuts from its button or ?, and hides them on Escape before closing', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
+    const toggles: boolean[] = [];
+    viewer.addEventListener('toggle', (event) => toggles.push((event as CustomEvent).detail));
+    await settle();
+    const panel = root(viewer).querySelector('.keys') as HTMLElement;
+    const button = nativeButton(navButton(viewer, 'keys'));
+    expect(panel.hidden).toBe(true);
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+    expect(button.getAttribute('aria-label')).toBe('Keyboard shortcuts');
+    // The English list is the slot's fallback.
+    expect(panel.querySelector('slot[name="keys"] fandry-media-keys')).not.toBeNull();
+
+    button.click();
+    await settle();
+    expect(panel.hidden).toBe(false);
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+
+    key(viewer, 'Escape');
+    await settle();
+    expect(panel.hidden).toBe(true);
+    expect(viewer.open).toBe(true);
+
+    key(viewer, '?');
+    await settle();
+    expect(panel.hidden).toBe(false);
+    key(viewer, '?');
+    await settle();
+    expect(panel.hidden).toBe(true);
+    expect(toggles).toEqual([]);
+  });
+
+  it('opens with its shortcuts hidden', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
+    await settle();
+    key(viewer, '?');
+    viewer.close();
+    await settle();
+    viewer.open = true;
+    await settle();
+    expect((root(viewer).querySelector('.keys') as HTMLElement).hidden).toBe(true);
   });
 
   it('slides with alternating animation names, so each move restarts it', async () => {

@@ -17,8 +17,11 @@
     index={currentIndex}
     open={viewerOpen}
     messages={messages}
-    exportparts="base: viewer, backdrop, panel, toolbar, status, close-button, stage, previous, next, disabled, image: viewer-image, caption: viewer-caption"
+    exportparts="base: viewer, backdrop, panel, toolbar, status, keys-button, keys, close-button, stage, previous, next, disabled, image: viewer-image, caption: viewer-caption"
     onchange={handleViewerChange}
     ontoggle={handleViewerToggle}
-  ></fandry-media-viewer>
+  >
+    <!-- Passed on to the viewer; empty, it falls back to the same English list the viewer's own slot does. -->
+    <slot name="keys" slot="keys"><fandry-media-keys></fandry-media-keys></slot>
+  </fandry-media-viewer>
 </template>
