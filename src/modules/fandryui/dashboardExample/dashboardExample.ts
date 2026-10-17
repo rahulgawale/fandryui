@@ -177,6 +177,21 @@ const VIEWS: Record<string, ViewDef> = {
 };
 
 export default class DashboardExample extends LightningElement {
+  primitivesUsed = [
+    'fandry-input',
+    'fandry-popover',
+    'fandry-menu',
+    'fandry-avatar',
+    'fandry-button',
+    'fandry-card',
+    'fandry-badge',
+    'fandry-heading',
+    'fandry-text',
+    'fandry-link',
+    'fandry-sidebar',
+    'fandry-sidebar-item'
+  ];
+
   navItems = [
     { key: 'overview', label: 'Overview' },
     { key: 'orders', label: 'Orders' },
@@ -200,12 +215,12 @@ export default class DashboardExample extends LightningElement {
 
   recentOrders = VIEWS.orders.rows.slice(0, 3);
 
-  get navItemClasses() {
-    return this.navItems.map((item) => ({
-      ...item,
-      className: item.key === this.selectedKey ? 'nav-item nav-item--active' : 'nav-item'
-    }));
+  get navItemStates() {
+    return this.navItems.map((item) => ({ ...item, active: item.key === this.selectedKey }));
   }
+
+  // The field has no visible label in the topbar; this names it instead.
+  searchProps = { ariaLabel: 'Search orders and products' };
 
   get isOverviewTab(): boolean {
     return this.selectedKey === 'overview';
@@ -259,7 +274,9 @@ export default class DashboardExample extends LightningElement {
     return { tabIndex: 0, ariaHasPopup: 'menu', ariaExpanded: this.accountMenuOpen };
   }
 
+  // The items switch the view in place, so their href="#" never navigates.
   handleNavClick(event: Event) {
+    event.preventDefault();
     const key = (event.currentTarget as HTMLElement).dataset.key;
     if (key && key !== this.selectedKey) {
       this.selectedKey = key;
@@ -270,13 +287,6 @@ export default class DashboardExample extends LightningElement {
       this.statusFilter = null;
       this.searchQuery = '';
       this.detailRow = null;
-    }
-  }
-
-  handleNavKeydown(event: KeyboardEvent) {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this.handleNavClick(event);
     }
   }
 

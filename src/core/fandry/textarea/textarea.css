@@ -9,8 +9,25 @@
 }
 
 .label {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--_fd-space-1);
   font-size: var(--_fd-font-size-sm);
+  font-weight: var(--_fd-font-weight-medium);
   color: hsl(var(--_fd-text));
+}
+
+.required {
+  color: hsl(var(--_fd-danger));
+}
+
+/* A fandry-label in the label slot is only this label's text: it takes the
+   label's look, and leaves the asterisk to `required` on the field. */
+::slotted(fandry-label) {
+  font: inherit;
+  color: inherit;
+  --_fd-label-asterisk: none;
 }
 
 .textarea {
@@ -21,17 +38,34 @@
   resize: vertical;
   background: hsl(var(--_fd-bg));
   color: hsl(var(--_fd-text));
+  transition: border-color var(--_fd-duration-fast) var(--_fd-ease-standard),
+    box-shadow var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
 .textarea:focus-visible {
-  outline: none;
+  /* Transparent, not none: forced-colors mode drops the box-shadow ring
+     and paints this instead. */
+  outline: var(--_fd-ring-width) solid transparent;
   border-color: hsl(var(--_fd-border-focus));
-  box-shadow: 0 0 0 var(--_fd-ring-offset) hsl(var(--_fd-bg)),
-    0 0 0 calc(var(--_fd-ring-width) + var(--_fd-ring-offset))
-      hsl(var(--_fd-ring-color));
+  box-shadow: var(--_fd-ring-field);
 }
 
 .help-text {
   font-size: var(--_fd-font-size-xs);
   color: hsl(var(--_fd-text-muted));
+}
+
+.error-text {
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-danger));
+}
+
+/* Not `hidden` while empty, so it can announce its text (see
+   fandry/fieldError). Out of the flow, so it leaves no gap either. */
+.error-text--empty {
+  position: absolute;
+}
+
+.textarea[part~='invalid'] {
+  border-color: hsl(var(--_fd-danger));
 }

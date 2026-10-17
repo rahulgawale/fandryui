@@ -52,7 +52,21 @@ describe('fandry-popover', () => {
   });
 
   describe('panel position', () => {
-    // jsdom does no layout, so the trigger's box is supplied.
+    // jsdom does no layout: an 800x600 viewport, and the trigger's box in `mount`.
+    let layout: jest.SpyInstance[] = [];
+
+    beforeEach(() => {
+      layout = [
+        jest.spyOn(document.documentElement, 'clientWidth', 'get').mockReturnValue(800),
+        jest.spyOn(document.documentElement, 'clientHeight', 'get').mockReturnValue(600),
+        jest
+          .spyOn(Element.prototype, 'getBoundingClientRect')
+          .mockReturnValue({ top: 0, bottom: 600, left: 0, right: 800, width: 800, height: 600 } as DOMRect)
+      ];
+    });
+
+    afterEach(() => layout.forEach((spy) => spy.mockRestore()));
+
     function mount(props: Record<string, unknown>) {
       const element = createElement('fandry-popover', { is: FdPopover });
       Object.assign(element, props);
@@ -70,6 +84,8 @@ describe('fandry-popover', () => {
 
     const panelStyle = async (element: HTMLElement & { open: boolean }) => {
       element.open = true;
+      // Render, then place.
+      await flush();
       await flush();
       return (element.shadowRoot!.querySelector('.panel') as HTMLElement).style;
     };
@@ -102,25 +118,172 @@ describe('fandry-popover', () => {
       expect(style.top).toBe('100px');
     });
 
-    it('follows the trigger when an ancestor scrolls while open', async () => {
+    // The frames the popover has asked for, run by hand.
+    function frames() {
+      let pending: FrameRequestCallback[] = [];
+      const raf = jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => pending.push(cb));
+      return {
+        get pending() {
+          return pending.length;
+        },
+        async run() {
+          const due = pending;
+          pending = [];
+          due.forEach((cb) => cb(0));
+          await flush();
+        },
+        restore: () => raf.mockRestore()
+      };
+    }
+
+    const moveTrigger = (element: HTMLElement, top: number) => {
+      const trigger = element.shadowRoot!.querySelector('.trigger') as HTMLElement;
+      trigger.getBoundingClientRect = () =>
+        ({ top, bottom: top + 30, left: 200, right: 260, width: 60, height: 30 }) as DOMRect;
+    };
+
+    const panelOf = (element: HTMLElement) => element.shadowRoot!.querySelector('.panel') as HTMLElement;
+
+    it('follows the trigger frame by frame while open', async () => {
+      const frame = frames();
       const element = mount({});
       const style = await panelStyle(element);
       expect(style.top).toBe('130px');
 
-      const trigger = element.shadowRoot!.querySelector('.trigger') as HTMLElement;
-      trigger.getBoundingClientRect = () =>
-        ({ top: 40, bottom: 70, left: 200, right: 260, width: 60, height: 30 }) as DOMRect;
+      moveTrigger(element, 40);
+      await frame.run();
+      expect(panelOf(element).style.top).toBe('70px');
 
-      const frames: FrameRequestCallback[] = [];
-      const raf = jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => frames.push(cb));
-      document.dispatchEvent(new Event('scroll'));
-      // Scroll does not bubble: it is heard because the listener is on the capture path.
-      window.dispatchEvent(new Event('scroll'));
-      frames.forEach((cb) => cb(0));
-      raf.mockRestore();
+      moveTrigger(element, 10);
+      await frame.run();
+      expect(panelOf(element).style.top).toBe('40px');
+      frame.restore();
+    });
+
+    it('stops following once closed or removed', async () => {
+      const frame = frames();
+      const cancel = jest.spyOn(window, 'cancelAnimationFrame');
+      const element = mount({});
+      await panelStyle(element);
+      expect(frame.pending).toBe(1);
+
+      cancel.mockClear();
+      element.open = false;
+      expect(cancel).toHaveBeenCalled();
+      await frame.run();
+      expect(frame.pending).toBe(0);
+
+      element.open = true;
       await flush();
+      expect(frame.pending).toBe(1);
+      cancel.mockClear();
+      document.body.removeChild(element);
+      expect(cancel).toHaveBeenCalled();
+      await frame.run();
+      expect(frame.pending).toBe(0);
 
-      expect((element.shadowRoot!.querySelector('.panel') as HTMLElement).style.top).toBe('70px');
+      cancel.mockRestore();
+      frame.restore();
+    });
+
+    it('measures from the box a fixed panel is really placed from', async () => {
+      const frame = frames();
+      const element = mount({ align: 'end' });
+      await panelStyle(element);
+
+      // A transformed ancestor at (50, 20), 400 wide.
+      const origin = element.shadowRoot!.querySelector('.origin') as HTMLElement;
+      origin.getBoundingClientRect = () =>
+        ({ top: 20, bottom: 320, left: 50, right: 450, width: 400, height: 300 }) as DOMRect;
+      await frame.run();
+
+      expect(panelOf(element).style.top).toBe('110px');
+      expect(panelOf(element).style.right).toBe('190px');
+      frame.restore();
+    });
+
+    it('measures the slotted trigger, not the wrapper around it', async () => {
+      const harness = createElement('fandry-popover-trigger-harness', { is: PopoverTriggerHarness });
+      document.body.appendChild(harness);
+      const popover = harness.shadowRoot!.querySelector('fandry-popover') as HTMLElement & { open: boolean };
+      const button = harness.shadowRoot!.querySelector('button') as HTMLElement;
+      button.getBoundingClientRect = () =>
+        ({ top: 10, bottom: 40, left: 300, right: 380, width: 80, height: 30 }) as DOMRect;
+
+      const style = await panelStyle(popover);
+      expect(style.top).toBe('40px');
+      expect(style.left).toBe('300px');
+      expect(style.getPropertyValue('--_fd-popover-trigger-width')).toBe('80px');
+    });
+
+    it('tells the panel how wide the trigger is', async () => {
+      const style = await panelStyle(mount({}));
+      expect(style.getPropertyValue('--_fd-popover-trigger-width')).toBe('60px');
+    });
+
+    describe('flip', () => {
+      // A 200px square panel.
+      let size: jest.SpyInstance[] = [];
+
+      beforeEach(() => {
+        size = [
+          jest.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(200),
+          jest.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(200)
+        ];
+      });
+
+      afterEach(() => size.forEach((spy) => spy.mockRestore()));
+
+      const open = async (element: HTMLElement & { open: boolean }) => {
+        await panelStyle(element);
+        return panelOf(element);
+      };
+
+      it('stays on its side while the panel fits there', async () => {
+        const panel = await open(mount({}));
+        expect(panel.classList).toContain('panel--bottom');
+        expect(panel.style.top).toBe('130px');
+      });
+
+      it('opens above when it would run off the bottom and there is more room above', async () => {
+        const element = mount({});
+        moveTrigger(element, 500);
+        const panel = await open(element);
+        expect(panel.classList).toContain('panel--top');
+        expect(panel.classList).not.toContain('panel--bottom');
+        expect(panel.style.bottom).toBe('100px');
+        expect(panel.style.top).toMatch(/^(auto)?$/);
+      });
+
+      it('flips back when the trigger scrolls to where the panel fits again', async () => {
+        const frame = frames();
+        const element = mount({});
+        moveTrigger(element, 500);
+        const panel = await open(element);
+        expect(panel.classList).toContain('panel--top');
+
+        moveTrigger(element, 100);
+        await frame.run();
+        expect(panel.classList).toContain('panel--bottom');
+        expect(panel.style.top).toBe('130px');
+        frame.restore();
+      });
+
+      it('stays put when neither side fits and the other has no more room', async () => {
+        const element = mount({});
+        moveTrigger(element, 250); // 250 above and 320 below, for a 400px panel
+        size[0].mockReturnValue(400);
+        const panel = await open(element);
+        expect(panel.classList).toContain('panel--bottom');
+      });
+
+      it('flips a side placement too', async () => {
+        // 200px of room on the left, 540px on the right.
+        size[1].mockReturnValue(700);
+        const panel = await open(mount({ placement: 'left' }));
+        expect(panel.classList).toContain('panel--right');
+        expect(panel.style.left).toBe('260px');
+      });
     });
   });
 

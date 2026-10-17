@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import { toAnchor } from 'fandryui/docHeading';
 import { COMPONENTS, CATEGORY_ORDER, PART_DESCRIPTIONS, STATE_DESCRIPTIONS, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
 
 import DemoBreadcrumb from 'fandryuidemos/demoBreadcrumb';
@@ -17,6 +18,7 @@ import DemoDividerTheme from 'fandryuidemos/demoDividerTheme';
 import DemoHeadingTheme from 'fandryuidemos/demoHeadingTheme';
 import DemoIconTheme from 'fandryuidemos/demoIconTheme';
 import DemoInputTheme from 'fandryuidemos/demoInputTheme';
+import DemoInputError from 'fandryuidemos/demoInputError';
 import DemoLabelTheme from 'fandryuidemos/demoLabelTheme';
 import DemoLinkTheme from 'fandryuidemos/demoLinkTheme';
 import DemoLookupTheme from 'fandryuidemos/demoLookupTheme';
@@ -29,6 +31,7 @@ import DemoSelectTheme from 'fandryuidemos/demoSelectTheme';
 import DemoSidebarTheme from 'fandryuidemos/demoSidebarTheme';
 import DemoSkeletonTheme from 'fandryuidemos/demoSkeletonTheme';
 import DemoSpinnerTheme from 'fandryuidemos/demoSpinnerTheme';
+import DemoLoadingOverlayTheme from 'fandryuidemos/demoLoadingOverlayTheme';
 import DemoSwitchTheme from 'fandryuidemos/demoSwitchTheme';
 import DemoTableTheme from 'fandryuidemos/demoTableTheme';
 import DemoTextTheme from 'fandryuidemos/demoTextTheme';
@@ -51,6 +54,7 @@ import DemoCheckbox from 'fandryuidemos/demoCheckbox';
 import DemoCombobox from 'fandryuidemos/demoCombobox';
 import DemoComboboxCustom from 'fandryuidemos/demoComboboxCustom';
 import DemoSelectCustom from 'fandryuidemos/demoSelectCustom';
+import DemoSelectLong from 'fandryuidemos/demoSelectLong';
 import DemoCommandCustom from 'fandryuidemos/demoCommandCustom';
 import CustomSearch from 'fandryuidemos/customSearch';
 import DemoCommand from 'fandryuidemos/demoCommand';
@@ -69,6 +73,10 @@ import DemoBadge from 'fandryuidemos/demoBadge';
 import DemoProgress from 'fandryuidemos/demoProgress';
 import DemoSkeleton from 'fandryuidemos/demoSkeleton';
 import DemoSpinner from 'fandryuidemos/demoSpinner';
+import DemoLoadingOverlay from 'fandryuidemos/demoLoadingOverlay';
+import DemoLoadingOverlayContained from 'fandryuidemos/demoLoadingOverlayContained';
+import DemoLoadingOverlayCustom from 'fandryuidemos/demoLoadingOverlayCustom';
+import DemoSpinnerLabel from 'fandryuidemos/demoSpinnerLabel';
 import DemoToast from 'fandryuidemos/demoToast';
 import DemoToastViewport from 'fandryuidemos/demoToastViewport';
 import DemoTooltip from 'fandryuidemos/demoTooltip';
@@ -100,6 +108,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   combobox: DemoCombobox,
   'combobox-custom': DemoComboboxCustom,
   'select-custom': DemoSelectCustom,
+  'select-long': DemoSelectLong,
   'command-custom': DemoCommandCustom,
   'search-custom': CustomSearch,
   command: DemoCommand,
@@ -118,6 +127,10 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   progress: DemoProgress,
   skeleton: DemoSkeleton,
   spinner: DemoSpinner,
+  'loading-overlay': DemoLoadingOverlay,
+  'loading-overlay-contained': DemoLoadingOverlayContained,
+  'loading-overlay-custom': DemoLoadingOverlayCustom,
+  'spinner-label': DemoSpinnerLabel,
   toast: DemoToast,
   'toast-viewport': DemoToastViewport,
   tooltip: DemoTooltip,
@@ -142,8 +155,10 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'heading-theme': DemoHeadingTheme,
   'icon-theme': DemoIconTheme,
   'input-theme': DemoInputTheme,
+  'input-error': DemoInputError,
   'label-theme': DemoLabelTheme,
   'link-theme': DemoLinkTheme,
+  'loading-overlay-theme': DemoLoadingOverlayTheme,
   'lookup-theme': DemoLookupTheme,
   'menu-theme': DemoMenuTheme,
   'pagination-theme': DemoPaginationTheme,
@@ -187,8 +202,31 @@ export default class ComponentDoc extends LightningElement {
   get extraExamples() {
     return (this.entry?.examples ?? []).map((example) => ({
       ...example,
+      heading: `Example: ${example.title}`,
+      anchor: toAnchor(example.title),
       demoComponent: DEMO_COMPONENTS[example.demo]
     }));
+  }
+
+  // Explanations shown in an info alert under the main code block (see
+  // ComponentNote), with a key for each paragraph.
+  get notes() {
+    return (this.entry?.notes ?? []).map((note) => ({
+      title: note.title,
+      paragraphs: note.paragraphs.map((text, index) => ({ key: `${note.title}-${index}`, text }))
+    }));
+  }
+
+  // Mirrors the section headings in the template, in order.
+  get tocItems() {
+    return [
+      { anchor: 'example', text: 'Example' },
+      ...(this.customizeDemo ? [{ anchor: 'customize', text: 'Custom colors and parts' }] : []),
+      { anchor: 'props', text: 'Props' },
+      ...(this.hasParts ? [{ anchor: 'parts', text: 'Parts' }] : []),
+      { anchor: 'code', text: 'Code' },
+      ...this.extraExamples.map((example) => ({ anchor: example.anchor, text: example.title }))
+    ];
   }
 
   get hasProps(): boolean {
@@ -229,7 +267,7 @@ export default class ComponentDoc extends LightningElement {
       items: COMPONENTS.filter((component) => component.category === category).map((component) => ({
         slug: component.slug,
         name: component.name,
-        href: `/components/${component.slug}`,
+        href: `/components/${component.slug}/`,
         active: component.slug === this.slug
       }))
     }));
@@ -241,7 +279,7 @@ export default class ComponentDoc extends LightningElement {
 
   get previousHref(): string {
     const previous = this.adjacent.previous;
-    return previous ? `/components/${previous.slug}` : '';
+    return previous ? `/components/${previous.slug}/` : '';
   }
 
   get previousLabel(): string {
@@ -250,7 +288,7 @@ export default class ComponentDoc extends LightningElement {
 
   get nextHref(): string {
     const next = this.adjacent.next;
-    return next ? `/components/${next.slug}` : '';
+    return next ? `/components/${next.slug}/` : '';
   }
 
   get nextLabel(): string {

@@ -9,12 +9,12 @@
      everything else instead of staying pinned to the default brand hues. */
   background: radial-gradient(
       circle at 15% 0%,
-      hsl(var(--brand-primary, 330 81% 48%) / 0.12),
+      hsl(var(--site-primary) / 0.12),
       transparent 55%
     ),
     radial-gradient(
       circle at 85% 10%,
-      hsl(var(--brand-accent, 199 89% 36%) / 0.12),
+      hsl(var(--site-accent) / 0.12),
       transparent 55%
     );
 }
@@ -34,6 +34,54 @@
   margin: 0;
 }
 
+/* The brand gradient as text, running accent -> primary: the reverse of the
+   wash behind it (primary top left, accent top right), so each end of the
+   text sits over the other color. The accent end is darkened a little so
+   the large text keeps 3:1 on the light hero; both follow the theme picker.
+   Over it, a soft sheen sweeps across every few seconds (the first layer). */
+.gradient-text {
+  background-image:
+    linear-gradient(
+      105deg,
+      transparent 42%,
+      hsl(0 0% 100% / 0.55) 50%,
+      transparent 58%
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, hsl(var(--site-accent)) 82%, black),
+      hsl(var(--site-primary))
+    );
+  background-size: 250% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0, 0 0;
+  animation: hero-sheen 7s ease-in-out 1.2s infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* The sheen crosses left to right in the first part, then rests off the text. */
+@keyframes hero-sheen {
+  0% {
+    background-position: 100% 0, 0 0;
+  }
+
+  35%,
+  100% {
+    background-position: 0% 0, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text {
+    animation: none;
+  }
+}
+
 .subhead {
   max-width: 34rem;
 }
@@ -50,4 +98,46 @@
   max-width: 72rem;
   margin: 0 auto;
   padding: calc(var(--fd-space-6) * 1.5) var(--fd-space-6) calc(var(--fd-space-6) * 2);
+}
+
+/* A caption under the live demos: a quiet pill, led by an accent dot. */
+.note-row {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--fd-space-5);
+}
+
+.demo-note::part(base) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-2);
+  padding: var(--fd-space-2) var(--fd-space-4);
+  border: 1px solid color-mix(in srgb, var(--fd-color-border) 70%, transparent);
+  border-radius: 999px;
+  background: hsl(0 0% 100% / 0.6);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--fd-color-text) 6%, transparent);
+  text-align: center;
+}
+
+.note-dot {
+  flex: none;
+  width: var(--fd-space-2);
+  height: var(--fd-space-2);
+  border-radius: 50%;
+  background: hsl(var(--site-accent));
+  box-shadow: 0 0 0 3px hsl(var(--site-accent) / 0.18);
+}
+
+/* Where it wraps, a pill reads as a blob: a rounded box, text from the
+   left, the dot on the first line. */
+@media (max-width: 48rem) {
+  .demo-note::part(base) {
+    align-items: flex-start;
+    border-radius: var(--fd-radius-lg);
+    text-align: left;
+  }
+
+  .note-dot {
+    margin-top: 0.45em;
+  }
 }

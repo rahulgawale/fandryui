@@ -1,0 +1,43 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-backdrop: 160 40% 10%;
+  --fd-backdrop-opacity: 0.4;
+  --fd-loading-overlay-delay: 0ms;
+}
+
+/* The spinner's track is the border color: a tint of the primary here. */
+fandry-loading-overlay {
+  --fd-border: 160 84% 26% / 0.2;
+}
+
+fandry-loading-overlay::part(backdrop) {
+  backdrop-filter: blur(4px);
+}
+
+fandry-loading-overlay::part(panel) {
+  flex-direction: row;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+}
+
+/* The ring is 1em square: its font-size is its size. */
+fandry-loading-overlay::part(spinner) {
+  font-size: 1.25rem;
+}
+
+fandry-loading-overlay::part(label) {
+  font-weight: 600;
+}

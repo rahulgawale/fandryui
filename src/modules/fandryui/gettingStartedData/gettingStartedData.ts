@@ -30,7 +30,7 @@ const LWR_OSS: GettingStartedPage = {
   badge: 'npm',
   title: 'Getting started with LWR / LWC OSS',
   description:
-    'Install one npm package, point your project at it, and use <fandry-*> components. Your bundler ships only the ones you use.',
+    'Install one npm package, point your project at it, and use `<fandry-*>` components. Your bundler ships only the ones you use.',
   sections: [
     {
       id: 'requirements',
@@ -40,7 +40,7 @@ const LWR_OSS: GettingStartedPage = {
           type: 'list',
           items: [
             'Node.js 18 or newer',
-            'An LWR or LWC OSS project using lwc 8.x (lwc is a peer dependency, so Fandry uses your copy)',
+            'An LWR or LWC OSS project using `lwc` 8.x (`lwc` is a peer dependency, so Fandry uses your copy)',
             'npm, or pnpm / yarn if you prefer'
           ]
         }
@@ -52,7 +52,7 @@ const LWR_OSS: GettingStartedPage = {
       blocks: [
         {
           type: 'text',
-          text: 'One package brings every component and its single third-party dependency (@tanstack/table-core, used by fandry-table). There is nothing else to install.'
+          text: 'One package brings every component and its single third-party dependency (`@tanstack/table-core`, used by `fandry-table`). There is nothing else to install.'
         },
         { type: 'code', label: 'Terminal', code: 'npm install fandryui' }
       ]
@@ -63,7 +63,7 @@ const LWR_OSS: GettingStartedPage = {
       blocks: [
         {
           type: 'text',
-          text: 'The CLI detects your project from lwr.config.json or lwc.config.json and registers the package as a module source. You can also make this edit by hand.'
+          text: 'The CLI detects your project from `lwr.config.json` or `lwc.config.json` and registers the package as a module source. You can also make this edit by hand.'
         },
         { type: 'code', label: 'Terminal', code: 'npx fandry init' },
         {
@@ -83,7 +83,7 @@ const LWR_OSS: GettingStartedPage = {
           type: 'note',
           variant: 'info',
           title: 'lwc.config.json projects',
-          text: 'Plain LWC OSS projects keep the same record at the top level: "modules": [ { "npm": "fandryui" } ].'
+          text: 'Plain LWC OSS projects keep the same record at the top level: `"modules": [ { "npm": "fandryui" } ]`.'
         }
       ]
     },
@@ -93,7 +93,7 @@ const LWR_OSS: GettingStartedPage = {
       blocks: [
         {
           type: 'text',
-          text: 'The package brings its own fandry namespace, so fandry/button is <fandry-button>. No imports are needed in your template.'
+          text: 'The package brings its own `fandry` namespace, so `fandry/button` is `<fandry-button>`. No imports are needed in your template.'
         },
         {
           type: 'code',
@@ -158,7 +158,7 @@ export default class App extends LightningElement {
         },
         {
           type: 'text',
-          text: 'Everything under node_modules/fandryui is readable LWC source. Fandry is not a black box: open a component to see exactly what it does.'
+          text: 'Everything under `node_modules/fandryui` is readable LWC source. Fandry is not a black box: open a component to see exactly what it does.'
         }
       ]
     },
@@ -168,7 +168,7 @@ export default class App extends LightningElement {
       blocks: [
         {
           type: 'text',
-          text: 'There is no registry and nothing is registered globally. Your bundler follows the module graph from your templates, so a page that uses fandry-button does not include table, dialog or lookup. There is nothing to add with the CLI on this platform.'
+          text: 'There is no registry and nothing is registered globally. Your bundler follows the module graph from your templates, so a page that uses `fandry-button` does not include table, dialog or lookup. There is nothing to add with the CLI on this platform.'
         }
       ]
     },
@@ -179,10 +179,10 @@ export default class App extends LightningElement {
         {
           type: 'list',
           items: [
-            'Extend the shared base class: import Base from "fandry/base" gives your own component Fandry\'s stylesheet and design tokens.',
-            'Theme by setting any --fd-* token on :root (e.g. --fd-primary: 210 90% 40%; --fd-radius-md: 0), or on one section to theme just that part of the page.',
-            'Restyle one element inside a component with ::part(), e.g. fandry-link::part(link). Each component page lists its parts.',
-            'Need a change inside a component that neither CSS nor slots can reach? Copy it into your own namespace and make it yours. Its source is short, plain LWC; keep extends Base and it still follows your tokens.',
+            'Extend the shared base class: `import Base from "fandry/base"` gives your own component Fandry\'s stylesheet and design tokens.',
+            'Theme by setting any `--fd-*` token on `:root` (e.g. `--fd-primary: 210 90% 40%; --fd-radius-md: 0`), or on one section to theme just that part of the page.',
+            'Restyle one element inside a component with `::part()`, e.g. `fandry-link::part(link)`. Each component page lists its parts.',
+            'Need a change inside a component that neither CSS nor slots can reach? Copy it into your own namespace and make it yours. Its source is short, plain LWC; keep `extends Base` and it still follows your tokens.',
             'Browse every component, its props and examples under Components.'
           ]
         },
@@ -190,7 +190,7 @@ export default class App extends LightningElement {
           type: 'note',
           variant: 'warning',
           title: 'Build fails with LWC1121 in @lwrjs/loader?',
-          text: 'Fresh installs of lwr 0.18.3 can pull @lwc/compiler 9.x, which rejects LWR\'s own loader. Pin your @lwc/* packages to the same 8.x version as lwc (npm "overrides"). The repository\'s examples/consumer/package.json shows a working set.'
+          text: 'Fresh installs of `lwr` 0.18.3 can pull `@lwc/compiler` 9.x, which rejects LWR\'s own loader. Pin your `@lwc/*` packages to the same 8.x version as `lwc` (npm `"overrides"`). The repository\'s `examples/consumer/package.json` shows a working set.'
         }
       ]
     }
@@ -212,16 +212,16 @@ const SALESFORCE: GettingStartedPage = {
         {
           type: 'list',
           items: [
-            'A Salesforce DX project (it has an sfdx-project.json)',
-            'The Salesforce CLI (sf) and an authorized org',
-            'Node.js 18 or newer, to run the fandry CLI'
+            'A Salesforce DX project (it has an `sfdx-project.json`)',
+            'The Salesforce CLI (`sf`) and an authorized org',
+            'Node.js 18 or newer, to run the `fandry` CLI'
           ]
         },
         {
           type: 'note',
           variant: 'info',
           title: 'Native shadow DOM, whatever your org uses',
-          text: "Fandry components render in native shadow DOM (they set static shadowSupportMode = 'native'), even in orgs that run other components on the synthetic-shadow polyfill. That is what lets you restyle their internals with ::part() and keeps their behavior identical to LWR. Your own components don't need to change: they can stay synthetic and still use and style fandry components, and Lightning components you slot into fandry (a lightning-button in a card or dialog) keep working. The one place not to use Lightning base components is inside an option's component (select, combobox, command, lookup): fandry renders that component, so it runs in native shadow, where base components lose their SLDS styling. SLDS and other global CSS don't reach inside them; theme them with --fd-* tokens and parts."
+          text: "Fandry components render in native shadow DOM (they set `static shadowSupportMode = 'native'`), even in orgs that run other components on the synthetic-shadow polyfill. That is what lets you restyle their internals with `::part()` and keeps their behavior identical to LWR. Your own components don't need to change: they can stay synthetic and still use and style fandry components, and Lightning components you slot into fandry (a lightning-button in a card or dialog) keep working. The one place not to use Lightning base components is inside an option's component (select, combobox, command, lookup): fandry renders that component, so it runs in native shadow, where base components lose their SLDS styling. SLDS and other global CSS don't reach inside them; theme them with `--fd-*` tokens and parts."
         }
       ]
     },
@@ -231,12 +231,12 @@ const SALESFORCE: GettingStartedPage = {
       blocks: [
         {
           type: 'text',
-          text: 'Install fandryui as a dev dependency. It is only used to run the fandry CLI and to copy source out of; nothing from node_modules is deployed.'
+          text: 'Install `fandryui` as a dev dependency. It is only used to run the `fandry` CLI and to copy source out of; nothing from `node_modules` is deployed.'
         },
         { type: 'code', label: 'Terminal', code: 'npm install --save-dev fandryui' },
         {
           type: 'text',
-          text: 'Prefer not to install it? Every command below also works as npx fandryui <command>.'
+          text: 'Prefer not to install it? Every command below also works as `npx fandryui <command>`.'
         }
       ]
     },
@@ -263,7 +263,7 @@ const SALESFORCE: GettingStartedPage = {
         },
         {
           type: 'text',
-          text: 'Use --dir <path> to install into a different package directory. Your existing indentation and default package directory are left untouched.'
+          text: 'Use `--dir <path>` to install into a different package directory. Your existing indentation and default package directory are left untouched.'
         }
       ]
     },
@@ -301,7 +301,7 @@ npx fandry add table --overwrite # replace table even if you edited it`
         },
         {
           type: 'text',
-          text: 'Each bundle gets a .js-meta.xml using your project\'s sourceApiVersion, and it is never rewritten after that, so you can expose a component or add targets safely. Bundles you have edited are never overwritten unless you name them with --overwrite.'
+          text: 'Each bundle gets a `.js-meta.xml` using your project\'s `sourceApiVersion`, and it is never rewritten after that, so you can expose a component or add targets safely. Bundles you have edited are never overwritten unless you name them with `--overwrite`.'
         }
       ]
     },
@@ -340,7 +340,7 @@ npx fandry add table --overwrite # replace table even if you edited it`
           type: 'note',
           variant: 'info',
           title: 'Make it yours: CSS, then slots, then your own copy',
-          text: 'Style most things from your own CSS with --fd-* tokens and ::part(), down to a rainbow border. Add to a component through its slots: a loading spinner is just slotted content. For a change inside a component that neither CSS nor slots reach, like a different native element or different internal behavior, copy fandryButton to myButton, rename it, and change anything: it still extends fandryBase, so it keeps your tokens and native shadow DOM. fandry add does not overwrite files you changed unless you pass --overwrite. With lightning-* components the only equivalent is rebuilding from SLDS blueprints.'
+          text: 'Style most things from your own CSS with `--fd-*` tokens and `::part()`, down to a rainbow border. Add to a component through its slots: a loading spinner is just slotted content. For a change inside a component that neither CSS nor slots reach, like a different native element or different internal behavior, copy `fandryButton` to `myButton`, rename it, and change anything: it still extends fandryBase, so it keeps your tokens and native shadow DOM. fandry add does not overwrite files you changed unless you pass --overwrite. With lightning-* components the only equivalent is rebuilding from SLDS blueprints.'
         }
       ]
     },
@@ -350,7 +350,7 @@ npx fandry add table --overwrite # replace table even if you edited it`
       blocks: [
         {
           type: 'text',
-          text: 'On the platform your code lives in the default c namespace, so fandryButton is <c-fandry-button>. No imports are needed in the template.'
+          text: 'On the platform your code lives in the default `c` namespace, so `fandryButton` is `<c-fandry-button>`. No imports are needed in the template.'
         },
         {
           type: 'code',
@@ -423,14 +423,14 @@ sf project deploy start --source-dir fandryui --source-dir force-app --target-or
           type: 'note',
           variant: 'warning',
           title: 'select, combobox, command and lookup use dynamic components',
-          text: 'They use lwc:is, which Salesforce only accepts when the bundle\'s own .js-meta.xml declares the lightning__dynamicComponent capability (with API 55 or later and Lightning Web Security on); otherwise the deploy fails with LWC1188. fandry add writes the capability into the meta files it creates and tells you if an existing one lacks it. Nothing in jsconfig.json or your project settings does this.'
+          text: 'They use `lwc:is`, which Salesforce only accepts when the bundle\'s own `.js-meta.xml` declares the `lightning__dynamicComponent` capability (with API 55 or later and Lightning Web Security on); otherwise the deploy fails with LWC1188. `fandry add` writes the capability into the meta files it creates and tells you if an existing one lacks it. Nothing in `jsconfig.json` or your project settings does this.'
         },
         {
           type: 'list',
           items: [
-            'Fandry is not a managed package. Components are plain c-namespace source in your project.',
-            'The table depends on @tanstack/table-core. Because npm packages cannot be imported on the platform, fandry add table installs it as the fandryTableCore bundle.',
-            'Upgrading: update fandryui, then run fandry add <name> again. Bundles you have not edited are updated to the new version, edited ones are skipped, and --overwrite replaces only the components you name. Commit fandry.json: it records what was installed so an upgrade can be told apart from an edit.'
+            'Fandry is not a managed package. Components are plain `c`-namespace source in your project.',
+            'The table depends on `@tanstack/table-core`. Because npm packages cannot be imported on the platform, `fandry add table` installs it as the `fandryTableCore` bundle.',
+            'Upgrading: update `fandryui`, then run `fandry add <name>` again. Bundles you have not edited are updated to the new version, edited ones are skipped, and `--overwrite` replaces only the components you name. Commit `fandry.json`: it records what was installed so an upgrade can be told apart from an edit.'
           ]
         }
       ]
@@ -441,7 +441,7 @@ sf project deploy start --source-dir fandryui --source-dir force-app --target-or
 /* Every public token, grouped for the theming page. theming.test.ts fails
    when this and fandry/base/tokens.css disagree. */
 export const THEMING_TOKENS = `Color (H S% L%)   --fd-primary  --fd-primary-foreground
-                  --fd-accent  --fd-accent-foreground
+                  --fd-accent  --fd-accent-foreground  --fd-info
                   --fd-success  --fd-success-foreground
                   --fd-warning  --fd-warning-foreground
                   --fd-danger  --fd-danger-foreground
@@ -460,12 +460,15 @@ Sizes             --fd-size-xs  --fd-size-sm  --fd-size-md  --fd-size-lg
                   --fd-switch-width  --fd-switch-padding  --fd-tooltip-arrow-size
                   --fd-sidebar-width  --fd-toast-width  --fd-form-column-min-width
                   --fd-media-columns  --fd-media-min-width  --fd-media-aspect-ratio
-                  --fd-media-fit  --fd-link-underline-offset
+                  --fd-media-fit  --fd-link-underline-offset  --fd-spinner-thickness
 Focus ring        --fd-ring-color  --fd-ring-width  --fd-ring-offset
+                  --fd-ring-field  --fd-ring-control  --fd-ring-halo-width  --fd-ring-halo-blur
+                  --fd-ring-halo-opacity
 Surfaces          --fd-surface-tint  --fd-shadow-sm  --fd-shadow-color-floating
                   --fd-shadow-color-modal  --fd-shadow-color-subtle
                   --fd-hover-brightness  --fd-disabled-opacity  --fd-pulse-opacity
                   --fd-backdrop  --fd-backdrop-opacity  --fd-z-overlay
+                  --fd-z-overlay-contained
 Type              --fd-font-sans  --fd-font-mono  --fd-font-heading
                   --fd-font-size-xs  --fd-font-size-sm  --fd-font-size-md
                   --fd-font-size-lg  --fd-font-size-xl  --fd-font-size-2xl
@@ -475,6 +478,7 @@ Type              --fd-font-sans  --fd-font-mono  --fd-font-heading
                   --fd-heading-letter-spacing
 Motion            --fd-duration-fast  --fd-duration-normal  --fd-duration-slow
                   --fd-duration-spin  --fd-duration-slowest
+                  --fd-loading-overlay-delay
                   --fd-ease-standard  --fd-ease-emphasized  --fd-ease-in-out`;
 
 const THEMING: GettingStartedPage = {
@@ -483,7 +487,7 @@ const THEMING: GettingStartedPage = {
   badge: 'css',
   title: 'Theming',
   description:
-    'Set --fd-* tokens to change colors, type, spacing, radius and motion for the whole site, one section or one component. Use ::part() to restyle one element inside a component.',
+    'Set `--fd-*` tokens to theme colors, type, spacing, radius and motion for a site, a section or one component, and `::part()` to restyle one element.',
   sections: [
     {
       id: 'how',
@@ -491,13 +495,13 @@ const THEMING: GettingStartedPage = {
       blocks: [
         {
           type: 'text',
-          text: 'Every token has two names. You set the public one, --fd-*. Components read a private one, --_fd-*, which each component resolves from the public name or its default. Custom properties inherit through shadow roots, so a value you set on any ancestor reaches every fandry component below it, and the ones those components render.'
+          text: 'Every token has two names. You set the public one, `--fd-*`. Components read a private one, `--_fd-*`, which each component resolves from the public name or its default. Custom properties inherit through shadow roots, so a value you set on any ancestor reaches every fandry component below it, and the ones those components render.'
         },
         {
           type: 'code',
           label: 'Inside every component (fandry/base/tokens.css)',
           code: `:host {
-  --_fd-primary: var(--fd-primary, 330 81% 48%);
+  --_fd-primary: var(--fd-primary, 226 90% 50%);
   --_fd-radius-md: var(--fd-radius-md, 0.375rem);
   /* ... */
 }`
@@ -505,8 +509,8 @@ const THEMING: GettingStartedPage = {
         {
           type: 'list',
           items: [
-            'Set --fd-* names only. The --_fd-* names are internal and can change.',
-            'Colors are bare HSL channels with no commas and no hsl(): --fd-primary: 210 90% 40%. Components wrap them in hsl() themselves, which is how they add transparency.',
+            'Set `--fd-*` names only. The `--_fd-*` names are internal and can change.',
+            'Colors are bare HSL channels with no commas and no `hsl()`: `--fd-primary: 210 90% 40%`. Components wrap them in `hsl()` themselves, which is how they add transparency.',
             'Nothing needs a global stylesheet: every token has a default. Set only what you want to change.'
           ]
         }
@@ -518,7 +522,7 @@ const THEMING: GettingStartedPage = {
       blocks: [
         {
           type: 'text',
-          text: 'Put the tokens on :root in a stylesheet the page loads. Every fandry component on the page inherits them.'
+          text: 'Put the tokens on `:root` in a stylesheet the page loads. Every fandry component on the page inherits them.'
         },
         {
           type: 'code',
@@ -541,7 +545,7 @@ const THEMING: GettingStartedPage = {
           type: 'note',
           variant: 'warning',
           title: ':root in a component stylesheet does not work',
-          text: "A component's own CSS is scoped to that component, so :root { ... } in my/app/app.css never reaches the page. Use a stylesheet the layout loads, or set the tokens on :host (see below)."
+          text: "A component's own CSS is scoped to that component, so `:root { ... }` in `my/app/app.css` never reaches the page. Use a stylesheet the layout loads, or set the tokens on `:host` (see below)."
         },
         {
           type: 'text',
@@ -550,9 +554,9 @@ const THEMING: GettingStartedPage = {
         {
           type: 'list',
           items: [
-            'Experience Cloud LWR site: in Experience Builder, Settings > Advanced > Edit Head Markup, add a <style> with the :root rule, or a <link> to a static resource holding it.',
-            'Lightning pages, apps and record pages: set the tokens on :host of your outermost component. Everything it renders inherits them, including fandry components nested in other components.',
-            'A whole Lightning app from one file: upload the :root rule as a CSS static resource and load it once with loadStyle from lightning/platformResourceLoader.'
+            'Experience Cloud LWR site: in Experience Builder, Settings > Advanced > Edit Head Markup, add a `<style>` with the `:root` rule, or a `<link>` to a static resource holding it.',
+            'Lightning pages, apps and record pages: set the tokens on `:host` of your outermost component. Everything it renders inherits them, including fandry components nested in other components.',
+            'A whole Lightning app from one file: upload the `:root` rule as a CSS static resource and load it once with `loadStyle` from `lightning/platformResourceLoader`.'
           ]
         },
         {
@@ -610,7 +614,7 @@ export default class MyApp extends LightningElement {
       blocks: [
         {
           type: 'text',
-          text: 'A fandry component reads its tokens on its own element, so a token set on the element itself changes that one instance, and whatever it renders: set --fd-primary on a fandry-table and its checkboxes and pagination buttons follow.'
+          text: 'A fandry component reads its tokens on its own element, so a token set on the element itself changes that one instance, and whatever it renders: set `--fd-primary` on a `fandry-table` and its checkboxes and pagination buttons follow.'
         },
         {
           type: 'code',
@@ -638,7 +642,7 @@ fandry-button {
           type: 'note',
           variant: 'info',
           title: 'Put the rule where the element is',
-          text: "A selector only matches elements in its own shadow tree. .danger or fandry-button in app.css matches the buttons in app.html, not buttons inside some other component, and a global stylesheet's fandry-button rule matches only buttons outside every component. To change every button on the site, set the token on :root; to change the buttons of one component, set it in that component's CSS. On Salesforce the tag is c-fandry-button."
+          text: "A selector only matches elements in its own shadow tree. `.danger` or `fandry-button` in `app.css` matches the buttons in `app.html`, not buttons inside some other component, and a global stylesheet's `fandry-button` rule matches only buttons outside every component. To change every button on the site, set the token on `:root`; to change the buttons of one component, set it in that component's CSS. On Salesforce the tag is c-fandry-button."
         }
       ]
     },
@@ -648,7 +652,7 @@ fandry-button {
       blocks: [
         {
           type: 'text',
-          text: "When no token covers it, style the element directly with ::part(). Each component's page lists its parts and states. A part also carries the name of each state while it is on, so naming both targets that state only. The same rule as above applies: write it in the stylesheet of the component whose template renders the element."
+          text: "When no token covers it, style the element directly with `::part()`. Each component's page lists its parts and states. A part also carries the name of each state while it is on, so naming both targets that state only. The same rule as above applies: write it in the stylesheet of the component whose template renders the element."
         },
         {
           type: 'code',
@@ -669,6 +673,12 @@ fandry-checkbox::part(control checked) {
         {
           type: 'text',
           text: 'Parts need native shadow DOM, which every fandry component uses, on LWR and on Salesforce alike. Tokens work everywhere.'
+        },
+        {
+          type: 'note',
+          variant: 'warning',
+          title: 'Keep box-shadow off a control\'s part',
+          text: 'A control draws its focus ring as a `box-shadow`, and a `::part()` rule from outside wins over the component\'s own, in every state. So `fandry-button::part(base) { box-shadow: ... }` leaves a focused button with no ring. Put a shadow on the element instead, `fandry-button.cta { filter: drop-shadow(0 6px 12px hsl(160 84% 26% / 0.35)) }`, or change the ring with `--fd-ring-control`.'
         }
       ]
     },
@@ -680,9 +690,9 @@ fandry-checkbox::part(control checked) {
           type: 'list',
           items: [
             'An inline style or a rule on the component element itself.',
-            'The nearest ancestor that sets the token: a section, then your component\'s :host, then :root.',
-            'The default in tokens.css.',
-            'Reduced motion wins over all of them: when the user asks for it, the transition durations go to 0ms whatever the site sets. Looping indicators (spinner, skeleton) keep running.'
+            'The nearest ancestor that sets the token: a section, then your component\'s `:host`, then `:root`.',
+            'The default in `tokens.css`.',
+            'Reduced motion wins over all of them: when the user asks for it, the transition durations go to `0ms` whatever the site sets. Looping indicators (spinner, skeleton) keep running.'
           ]
         }
       ]
@@ -693,7 +703,7 @@ fandry-checkbox::part(control checked) {
       blocks: [
         {
           type: 'text',
-          text: 'The private --_fd-* names only exist inside fandry components and components that extend fandry/base. A component that extends Base reads them like the library does. Any other CSS should read the --fd-* names, with a fallback: outside a fandry component the private names are not set, and markup you slot into one inherits them only while it sits in that slot.'
+          text: 'The private `--_fd-*` names only exist inside fandry components and components that extend `fandry/base`. A component that extends Base reads them like the library does. Any other CSS should read the `--fd-*` names, with a fallback: outside a fandry component the private names are not set, and markup you slot into one inherits them only while it sits in that slot.'
         },
         {
           type: 'code',
@@ -717,7 +727,7 @@ fandry-checkbox::part(control checked) {
       blocks: [
         {
           type: 'text',
-          text: 'The defaults are in fandry/base/tokens.css (node_modules/fandryui/modules/fandry/base/ on LWR, fandryBase/ on Salesforce). --brand-primary and --brand-accent still work as the older names for --fd-primary and --fd-accent.'
+          text: 'The defaults are in `fandry/base/tokens.css` (`node_modules/fandryui/modules/fandry/base/` on LWR, `fandryBase/` on Salesforce). `--brand-primary` and `--brand-accent` still work as the older names for `--fd-primary` and `--fd-accent`. Info alerts and toasts use `--fd-info`, or `--fd-accent` when only that is set. Beyond that, no fandry component draws in `--fd-accent`: it is a highlight color for your own CSS.'
         },
         {
           type: 'code',
@@ -728,7 +738,72 @@ fandry-checkbox::part(control checked) {
           type: 'note',
           variant: 'warning',
           title: 'Deprecated component hooks',
-          text: '--fd-button-radius, --fd-button-padding-x, --fd-button-border-width, --fd-card-bg, --fd-card-height and --fd-icon-size still work but will be removed. Use a token set on the element, or its base part: .round::part(base) { border-radius: 999px }.'
+          text: '`--fd-button-radius`, `--fd-button-padding-x`, `--fd-button-border-width`, `--fd-card-bg`, `--fd-card-height` and `--fd-icon-size` still work but will be removed. Use a token set on the element, or its base part: `.round::part(base) { border-radius: 999px }`.'
+        },
+        {
+          type: 'text',
+          text: '`--fd-success-foreground`, `--fd-warning-foreground` and `--fd-danger-foreground` are the text color on a solid fill of that status. Badges are soft tints now, so no fandry component draws one; they are there for your own CSS (see Upgrading below) and for components that extend `fandry/base`.'
+        }
+      ]
+    },
+    {
+      id: 'upgrading',
+      title: 'Upgrading from 0.25',
+      blocks: [
+        {
+          type: 'text',
+          text: 'No token was removed or renamed, so a themed site keeps working. These changed how components look; each comes with the CSS that keeps the old look.'
+        },
+        {
+          type: 'list',
+          items: [
+            'Default colors: `--fd-primary` is cobalt and `--fd-accent` mint. A site that sets its own sees no change.',
+            'Info alerts and toasts read `--fd-info`, and `--fd-accent` when only that is set, so a site that colored them through accent keeps its color. Set `--fd-info` to color them apart from accent.',
+            'Colored badges are soft tints of their color instead of solid fills, and every badge has a border. They still follow `--fd-success`, `--fd-warning`, `--fd-danger` and `--fd-primary`, and dark themes through `--fd-bg` and `--fd-text`; the `-foreground` tokens no longer color them.',
+            'Focus: buttons, links and other controls draw their ring with a soft halo, and still follow `--fd-ring-width`. A few keep a flat ring that follows only `--fd-ring-color` and `--fd-ring-width`, not `--fd-ring-control`: sidebar and breadcrumb items, table sort buttons, and menu items (drawn inside the item). Text fields draw it on their own border, so they no longer follow `--fd-ring-width`, and the textarea no longer uses `--fd-ring-offset`.',
+            'The data table marks the row being edited with `--fd-primary` instead of `--fd-accent`.',
+            'A link draws its focus ring on its `link` part (the `<a>`) instead of `base`, so the ring follows a box you give `::part(link)`. A site that drew its own ring on `fandry-link::part(base):focus-visible` now gets two: drop that rule and set `--fd-ring-control` or `--fd-ring-color` on the link instead.',
+            'A focused button keeps the shadow it lifts with on hover, under its ring. A filled (default) button also draws a line of its own color, mixed toward its text color, just inside the ring, so the ring stands apart from a fill of the same color.'
+          ]
+        },
+        {
+          type: 'code',
+          label: 'Keep the old default colors',
+          code: `:root {
+  --fd-primary: 330 81% 48%;
+  --fd-accent: 199 89% 36%;
+  --fd-accent-foreground: 0 0% 100%;
+  --fd-link-visited: 271 55% 40%;
+}`
+        },
+        {
+          type: 'code',
+          label: 'Solid badges (the same for warning, danger and primary)',
+          code: `fandry-badge::part(base success) {
+  background: hsl(var(--fd-success, 142 71% 30%));
+  color: hsl(var(--fd-success-foreground, 0 0% 100%));
+  border-color: transparent;
+}
+
+/* No border on any badge */
+fandry-badge::part(base) {
+  border-width: 0;
+}`
+        },
+        {
+          type: 'code',
+          label: 'A flat focus ring, as before',
+          code: `:root {
+  --fd-ring-halo-opacity: 0;
+  /* your ring color */
+  --fd-ring-field: 0 0 0 2px hsl(222 89% 56%);
+}`
+        },
+        {
+          type: 'note',
+          variant: 'warning',
+          title: 'A ring token is a box-shadow list',
+          text: 'A value for `--fd-ring-control` or `--fd-ring-field` has to be one or more box shadows. For an empty one write `0 0 transparent`, not `none`: a button adds its hover shadow after the ring, and `none` in a list makes the whole declaration invalid, so the button draws neither.'
         }
       ]
     }
@@ -749,7 +824,7 @@ const OVERVIEW: GettingStartedPage = {
       blocks: [
         {
           type: 'text',
-          text: 'Fandry UI is a single package, fandryui. What differs is how your platform resolves code, so what you run and what you write differs slightly.'
+          text: 'Fandry UI is a single package, `fandryui`. What differs is how your platform resolves code, so what you run and what you write differs slightly.'
         }
       ]
     },
@@ -776,7 +851,31 @@ npx fandry add button table
         },
         {
           type: 'text',
-          text: 'LWR and LWC OSS let a package bring its own namespace and have a bundler that ships only what you use, so the whole package is installed and you write <fandry-*>. Salesforce code lives in the default c namespace and has no bundler or npm resolution, so the CLI copies the components you choose, with their dependencies, into your project and you write <c-fandry-*>. It is the same source either way.'
+          text: 'LWR and LWC OSS let a package bring its own namespace and have a bundler that ships only what you use, so the whole package is installed and you write `<fandry-*>`. Salesforce code lives in the default `c` namespace and has no bundler or npm resolution, so the CLI copies the components you choose, with their dependencies, into your project and you write `<c-fandry-*>`. It is the same source either way.'
+        }
+      ]
+    },
+    {
+      id: 'philosophy',
+      title: 'How Fandry is designed',
+      blocks: [
+        {
+          type: 'text',
+          text: 'Fandry UI is a composable component library for Salesforce LWC, for products and sites that should look like themselves, not like the platform. It is an opinionated design system with defined ways to change it, not a set of components with a prop for everything.'
+        },
+        {
+          type: 'list',
+          items: [
+            'Sensible defaults. Every component works and looks finished with no configuration.',
+            'Composition over configuration. Variations come from slots and composition; a prop is added only for a genuinely binary behavior like disabled.',
+            'Customization in steps. Set `--fd-*` tokens, restyle a `::part()`, replace a slot or `messages` text, extend a state class, or copy the source. Go only as far as you need.'
+          ]
+        },
+        {
+          type: 'note',
+          variant: 'info',
+          title: 'Why Fandry UI?',
+          text: 'The reasoning, the trade-offs and how Fandry differs from Lightning Base Components are on the Why Fandry page (/why-fandry).'
         }
       ]
     },

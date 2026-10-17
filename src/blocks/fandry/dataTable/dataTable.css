@@ -28,16 +28,20 @@
   max-width: var(--_fd-control-max-width-sm);
 }
 
-/* fandry-select sizes to its content, so the slot does too -- a fixed slot
-   would leave uneven gaps between filters. */
+/* Each filter is as wide as its select; a fixed slot would leave uneven gaps. */
 .filter {
   flex: 0 0 auto;
 }
 
+/* Wraps, and may shrink below its buttons' total width, so on a narrow card
+   (a phone) its buttons drop onto a new line instead of past the edge. */
 .toolbar-end {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
   gap: var(--_fd-space-2);
+  min-width: 0;
   margin-left: auto;
 }
 
@@ -150,7 +154,7 @@ tbody tr:hover {
 .row--editing,
 .row--editing:hover {
   background: hsl(var(--_fd-bg-muted));
-  box-shadow: inset var(--_fd-border-width-lg) 0 0 hsl(var(--_fd-accent));
+  box-shadow: inset var(--_fd-border-width-lg) 0 0 hsl(var(--_fd-primary));
 }
 
 /* Saving: the row's content breathes, and can't be interacted with until

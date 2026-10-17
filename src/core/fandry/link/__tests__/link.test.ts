@@ -148,6 +148,29 @@ describe('fandry-link', () => {
     expect(tabStop.getAttribute('aria-labelledby')).toBe(anchor.getAttribute('id'));
   });
 
+  it('mirrors elementProps.ariaCurrent onto the tab stop and adds the current state', () => {
+    const element = createElement('fandry-link', { is: FdLink });
+    element.href = '/docs/';
+    element.elementProps = { ariaCurrent: 'page' };
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
+    const anchor = element.shadowRoot!.querySelector('a')!;
+    expect(tabStop.getAttribute('aria-current')).toBe('page');
+    expect(anchor.getAttribute('part')).toBe('link default current');
+  });
+
+  it('leaves aria-current off when elementProps.ariaCurrent is "false"', () => {
+    const element = createElement('fandry-link', { is: FdLink });
+    element.href = '/docs/';
+    element.elementProps = { ariaCurrent: 'false' };
+    document.body.appendChild(element);
+
+    const tabStop = element.shadowRoot!.querySelector('.tab-stop')!;
+    expect(tabStop.hasAttribute('aria-current')).toBe(false);
+    expect(element.shadowRoot!.querySelector('a')!.getAttribute('part')).toBe('link default');
+  });
+
   it('mirrors disabled onto the tab stop and drops its tab stop', () => {
     const element = createElement('fandry-link', { is: FdLink });
     element.href = 'https://example.com';

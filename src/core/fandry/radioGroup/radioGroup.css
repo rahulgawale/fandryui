@@ -14,6 +14,13 @@
   color: hsl(var(--_fd-text));
 }
 
+/* A fandry-label slotted in as the label is only this label's text: it
+   takes the label's look. */
+::slotted(fandry-label) {
+  font: inherit;
+  color: inherit;
+}
+
 .radio-group {
   display: flex;
   flex-direction: column;

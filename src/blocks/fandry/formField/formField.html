@@ -1,6 +1,6 @@
 <template>
   <template if:true={hasField}>
-    <div class="field" onkeydown={handleKeydown} onfocusout={handleFocusOut}>
+    <div class={fieldClasses} part={basePart} onkeydown={handleKeydown} onfocusout={handleFocusOut}>
       <template if:true={isReadOnly}>
         <div class="read">
           <fandry-text as="span" size="sm" variant="muted" class="read-label">{field.label}</fandry-text>
@@ -16,6 +16,7 @@
             name={field.name}
             label={field.label}
             help-text={field.helpText}
+            error-text={error}
             placeholder={field.placeholder}
             required={field.required}
             disabled={disabled}
@@ -31,6 +32,7 @@
             name={field.name}
             label={field.label}
             help-text={field.helpText}
+            error-text={error}
             placeholder={field.placeholder}
             required={field.required}
             disabled={disabled}
@@ -46,6 +48,7 @@
             name={field.name}
             label={field.label}
             help-text={field.helpText}
+            error-text={error}
             placeholder={field.placeholder}
             required={field.required}
             disabled={disabled}
@@ -98,10 +101,30 @@
           ></fandry-switch>
         </template>
 
+        <template if:true={showChanged}>
+          <fandry-button
+            class="revert"
+            exportparts="base: revert"
+            variant="ghost"
+            size="sm"
+            disabled={disabled}
+            element-props={revertButtonProps}
+            onclick={handleRevert}
+          >
+            <fandry-icon size="sm">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                ></path>
+              </svg>
+            </fandry-icon>
+          </fandry-button>
+        </template>
+
         <template if:true={showOwnHelpText}>
           <p class="help">{field.helpText}</p>
         </template>
-        <template if:true={hasError}>
+        <template if:true={showOwnError}>
           <p class="error" role="alert">{error}</p>
         </template>
       </template>

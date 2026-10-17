@@ -1,6 +1,6 @@
 <template>
   <div class="form-control" part="base">
-    <label class="label" part="label" for="trigger" hidden={labelHidden}>
+    <label id="label" class="label" part="label" for="trigger" hidden={labelHidden} onclick={handleLabelClick}>
       <slot name="label" onslotchange={handleTextSlotChange}>{label}</slot>
       <template if:true={required}>
         <span class="required" part="required" aria-hidden="true">*</span>
@@ -21,9 +21,12 @@
         aria-expanded={ariaExpanded}
         aria-controls="listbox"
         aria-activedescendant={activeOptionId}
-        aria-describedby="help-text"
+        aria-describedby={describedBy}
+        aria-invalid={ariaInvalid}
         aria-required={ariaRequired}
         onkeydown={handleTriggerKeydown}
+        onkeyup={handleTriggerKeyup}
+        onblur={handleTriggerBlur}
         lwc:spread={resolvedElementProps}
       >
         <span class={valueClasses} part="value">
@@ -35,7 +38,7 @@
         <span class="chevron" part="chevron" aria-hidden="true"></span>
       </button>
 
-      <div id="listbox" class="listbox" part="listbox" role="listbox" onmousedown={handleListboxMouseDown}>
+      <div id="listbox" class="listbox" part="listbox" role="listbox" aria-labelledby="label" onmousedown={handleListboxMouseDown} onmousemove={handleListboxMouseMove}>
         <template if:true={renderPlaceholder}>
           <div
             id={renderPlaceholder.id}
@@ -61,7 +64,6 @@
             aria-selected={option.ariaSelected}
             aria-disabled={option.ariaDisabled}
             onclick={handleOptionClick}
-            onmouseenter={handleOptionMouseEnter}
           ><template if:true={option.component}><lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component></template><template if:false={option.component}>{option.label}</template></div>
         </template>
 
@@ -80,13 +82,16 @@
                 aria-selected={option.ariaSelected}
                 aria-disabled={option.ariaDisabled}
                 onclick={handleOptionClick}
-                onmouseenter={handleOptionMouseEnter}
               ><template if:true={option.component}><lwc:component lwc:is={option.component} lwc:spread={option.resolvedComponentProps}></lwc:component></template><template if:false={option.component}>{option.label}</template></div>
             </template>
           </div>
         </template>
       </div>
     </fandry-popover>
+
+    <div id="error-text" class={errorTextClasses} part="error-text" aria-live="polite">
+      <slot name="error-text" onslotchange={handleTextSlotChange}>{errorText}</slot>
+    </div>
 
     <div id="help-text" class="help-text" part="help-text" hidden={helpTextHidden}>
       <slot name="help-text" onslotchange={handleTextSlotChange}>{helpText}</slot>

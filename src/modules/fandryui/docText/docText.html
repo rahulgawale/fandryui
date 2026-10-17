@@ -1,0 +1,10 @@
+<template lwc:render-mode="light">
+  <template for:each={segments} for:item="segment">
+    <template lwc:if={segment.code}>
+      <code key={segment.key}>{segment.text}</code>
+    </template>
+    <template lwc:else>
+      <span key={segment.key}>{segment.text}</span>
+    </template>
+  </template>
+</template>

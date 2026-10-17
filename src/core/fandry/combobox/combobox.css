@@ -21,6 +21,14 @@
   color: hsl(var(--_fd-danger));
 }
 
+/* A fandry-label in the label slot is only this label's text: it takes the
+   label's look, and leaves the asterisk to `required` on the field. */
+::slotted(fandry-label) {
+  font: inherit;
+  color: inherit;
+  --_fd-label-asterisk: none;
+}
+
 /* The panel is positioned against this wrapper, so it lines up with the
    field's own edges. */
 .control {
@@ -39,8 +47,8 @@
   border-radius: var(--_fd-radius-md);
   /* Right padding leaves room for the chevron. */
   padding: var(--_fd-space-1) var(--_fd-space-5) var(--_fd-space-1) var(--_fd-space-2);
-  transition: border-color var(--_fd-duration-fast) ease,
-    box-shadow var(--_fd-duration-fast) ease;
+  transition: border-color var(--_fd-duration-fast) var(--_fd-ease-standard),
+    box-shadow var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
 .input::placeholder {
@@ -50,7 +58,7 @@
 .input:focus {
   outline: none;
   border-color: hsl(var(--_fd-border-focus));
-  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
+  box-shadow: var(--_fd-ring-field);
 }
 
 .input:disabled {
@@ -144,4 +152,19 @@
 .help-text {
   font-size: var(--_fd-font-size-xs);
   color: hsl(var(--_fd-text-muted));
+}
+
+.error-text {
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-danger));
+}
+
+/* Not `hidden` while empty, so it can announce its text (see
+   fandry/fieldError). Out of the flow, so it leaves no gap either. */
+.error-text--empty {
+  position: absolute;
+}
+
+.input[part~='invalid'] {
+  border-color: hsl(var(--_fd-danger));
 }

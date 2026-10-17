@@ -1,28 +1,34 @@
 <template lwc:render-mode="light">
-  <section class="section">
-    <div class="container">
-      <fandry-heading level="2" class="title">Layout is just CSS</fandry-heading>
-      <fandry-text variant="muted" class="subtitle">
-        <code>.fandry-container</code> and <code>.fandry-grid</code> aren't fandry-* components -- they're plain CSS classes from
-        <code>src/assets/styles/global.css</code>, wrapping ordinary fandry-* primitives.
-      </fandry-text>
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="lp-copy">
+        <fandry-badge variant="primary">Layout</fandry-badge>
+        <fandry-heading level="2" class="lp-title">Layout is just CSS</fandry-heading>
+        <fandry-text variant="muted" class="lp-lede">
+          No Container or Grid components to learn. Two plain classes from <code>global.css</code> wrap ordinary
+          primitives, and the grid finds its own columns as the space changes.
+        </fandry-text>
+        <fandryui-code-block label="orders.html" code={markup} class="lp-code"></fandryui-code-block>
+      </div>
 
-      <div class="frame">
-        <div class="fandry-container">
-          <fandry-heading level="1">Orders</fandry-heading>
-          <fandry-text variant="muted">3 orders placed today.</fandry-text>
+      <div class="lp-stage">
+        <div class="lp-frame">
+          <div class="fandry-container">
+            <fandry-heading level="3">Orders</fandry-heading>
+            <fandry-text variant="muted" class="lp-frame-lede">3 orders placed today.</fandry-text>
 
-          <div class="fandry-grid">
-            <template for:each={orders} for:item="order">
-              <fandry-card key={order.key}>
-                <div class="order-card-body">
-                  <fandry-text as="span" size="xs" variant="muted">{order.code}</fandry-text>
-                  <fandry-heading level="4">{order.customer}</fandry-heading>
-                  <fandry-text as="span" size="sm">{order.amount}</fandry-text>
-                  <fandry-badge variant={order.badgeVariant}>{order.badgeLabel}</fandry-badge>
-                </div>
-              </fandry-card>
-            </template>
+            <div class="fandry-grid">
+              <template for:each={orders} for:item="order">
+                <fandry-card key={order.key}>
+                  <div class="order-card-body">
+                    <fandry-text as="span" size="xs" variant="muted">{order.code}</fandry-text>
+                    <fandry-heading level="4">{order.customer}</fandry-heading>
+                    <fandry-text as="span" size="sm">{order.amount}</fandry-text>
+                    <fandry-badge variant={order.badgeVariant}>{order.badgeLabel}</fandry-badge>
+                  </div>
+                </fandry-card>
+              </template>
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 # fandry
 
-Small, extensible [Lightning Web Components](https://lwc.dev) you own and can read. Fandry UI ships as **plain LWC source** (HTML, CSS and JavaScript), not a compiled runtime, so there is nothing to reverse-engineer: open `node_modules/fandryui/modules/fandry/button/` and read it.
+Build Salesforce apps that look like your product, not the platform. Small, extensible [Lightning Web Components](https://lwc.dev) you own and can read. Fandry UI ships as **plain LWC source** (HTML, CSS and JavaScript), not a compiled runtime, so there is nothing to reverse-engineer: open `node_modules/fandryui/modules/fandry/button/` and read it.
 
 Docs and live examples: <https://fandryui.forcetrails.com>
 
@@ -79,9 +79,9 @@ npx fandry add form
 npx fandry add media-gallery
 ```
 
-`data-table` gives you search, column filters, pagination, selection, row actions, inline editing and `saveRow` / `deleteRow` hooks with success and error toasts, with skeleton loading and a saving state. It is controlled: it never edits your `data`, it reports `rowsave` / `rowdelete` and you put the result back. `--all` does not include blocks; ask for one by name. A live version with the full API is at [/blocks/data-table](https://fandryui.forcetrails.com/blocks/data-table).
+`data-table` gives you search, column filters, pagination, selection, row actions, inline editing and `saveRow` / `deleteRow` hooks with success and error toasts, with skeleton loading and a saving state. It is controlled: it never edits your `data`, it reports `rowsave` / `rowdelete` and you put the result back. `--all` does not include blocks; ask for one by name. A live version with the full API is at [/blocks/data-table](https://fandryui.forcetrails.com/blocks/data-table/).
 
-`form` is a form that can read first and edit on demand (`mode="read"`). Fields are plain data (`{ name, label, type, required, validate }`), errors show once a field has been left or a save was attempted, a form-level `validate` hook covers rules that span fields or need the server, and a `saveValues` hook is where the request goes. Like `data-table` it is controlled: it reports `save` and you put the result back into `values`. Live at [/blocks/form](https://fandryui.forcetrails.com/blocks/form).
+`form` is a form that can read first and edit on demand (`mode="read"`). Fields are plain data (`{ name, label, type, required, validate }`), errors show once a field has been left or a save was attempted, a form-level `validate` hook covers rules that span fields or need the server, and a `saveValues` hook is where the request goes. A field whose value differs from the saved one is marked and gets a Revert button, and Reset (`reset()`) discards every edit without leaving edit mode. Like `data-table` it is controlled: it reports `save` and you put the result back into `values`. Live at [/blocks/form](https://fandryui.forcetrails.com/blocks/form/).
 
 `media-gallery` is a grid of pictures that fits whatever box it is in, with skeleton placeholders while you fetch, and a full-screen viewer with Previous / Next, swipe, pinch to zoom and keyboard control. Items are plain data (`{ id, src, alt, thumbnail, caption }`, with a `type` so video can follow), and columns, tile shape and fit are tokens (`--fd-media-columns`, `--fd-media-aspect-ratio`, `--fd-media-fit`). The grid and the viewer work on their own too, and a different layout (a product page's main picture and thumbnails) extends `fandry/mediaGalleryState`. Live at [/blocks/media-gallery](https://fandryui.forcetrails.com/blocks/media-gallery).
 
@@ -136,7 +136,7 @@ fandry-button { --fd-radius-md: 999px; }     /* every button this component rend
 
 On Salesforce, where you don't own the page: set the tokens on `:host` of your outermost component, load a static resource holding the `:root` rule with `loadStyle`, or, on an Experience Cloud LWR site, put it in the head markup. The docs site's **Theming** page (`/getting-started/theming`) covers all of this.
 
-The full list, with defaults, is in `modules/fandry/base/tokens.css` (the `--fd-*` names; the `--_fd-*` ones are what components read internally, so don't set those). `--brand-primary` / `--brand-accent` still work as the older names for `--fd-primary` / `--fd-accent`.
+The full list, with defaults, is in `modules/fandry/base/tokens.css` (the `--fd-*` names; the `--_fd-*` ones are what components read internally, so don't set those). `--brand-primary` / `--brand-accent` still work as the older names for `--fd-primary` / `--fd-accent`. Info alerts and toasts use `--fd-info`, or `--fd-accent` when only that is set.
 
 To restyle one element inside a component, use its parts. Each component's page lists them:
 

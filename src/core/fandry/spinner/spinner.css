@@ -1,28 +1,41 @@
 :host {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--_fd-space-2);
 }
 
+/* The ring is 1em square, so its thickness (in em by default) follows its size. */
 .spinner {
-  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
-  border: var(--_fd-border-width-lg) solid hsl(var(--_fd-border));
+  border: var(--_fd-spinner-thickness) solid hsl(var(--_fd-border));
   border-top-color: hsl(var(--_fd-primary));
   animation: fd-spinner-rotate var(--_fd-duration-spin) linear infinite;
 }
 
 .spinner--sm {
-  width: var(--_fd-size-sm);
-  height: var(--_fd-size-sm);
+  font-size: var(--_fd-size-sm);
 }
 
 .spinner--md {
-  width: var(--_fd-size-md);
-  height: var(--_fd-size-md);
+  font-size: var(--_fd-size-md);
 }
 
 .spinner--lg {
-  width: var(--_fd-size-lg);
-  height: var(--_fd-size-lg);
+  font-size: var(--_fd-size-lg);
+}
+
+.label {
+  font-size: var(--_fd-font-size-sm);
+}
+
+/* A fandry-label slotted in as the label is only this label's text: it
+   takes the label's look. */
+::slotted(fandry-label) {
+  font: inherit;
+  color: inherit;
 }
 
 @keyframes fd-spinner-rotate {

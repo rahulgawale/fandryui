@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import { toAnchor } from 'fandryui/docHeading';
 import {
   GETTING_STARTED_PAGES,
   PLATFORM_PAGES,
@@ -28,7 +29,7 @@ export default class GettingStarted extends LightningElement {
     return GETTING_STARTED_PAGES.map((page) => ({
       slug: page.slug || 'overview',
       name: page.name,
-      href: page.slug ? `/getting-started/${page.slug}` : '/getting-started',
+      href: page.slug ? `/getting-started/${page.slug}/` : '/getting-started/',
       active: page.slug === this.page.slug
     }));
   }
@@ -39,9 +40,13 @@ export default class GettingStarted extends LightningElement {
       slug: page.slug,
       name: page.name,
       badge: page.badge,
-      href: `/getting-started/${page.slug}`,
+      href: `/getting-started/${page.slug}/`,
       description: page.description
     }));
+  }
+
+  get tocItems() {
+    return this.page.sections.map((section) => ({ anchor: toAnchor(section.title), text: section.title }));
   }
 
   // The template can't switch on a block's `type`, so each block carries one

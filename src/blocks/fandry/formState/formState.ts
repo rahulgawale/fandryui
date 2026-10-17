@@ -1,6 +1,7 @@
 import { api, track } from 'lwc';
 import Base from 'fandry/base';
-import type { FdFormField } from 'fandry/formField';
+import type { FdFormField, FdFormFieldMessages } from 'fandry/formField';
+import { DEFAULT_FORM_FIELD_MESSAGES } from 'fandry/formField';
 import { toBoolean } from 'fandry/formField';
 
 export type FdFormValues = Record<string, unknown>;
@@ -12,6 +13,8 @@ export interface FdFormRenderField {
   field: FdFormField;
   value: unknown;
   error: string;
+  /** The user's value differs from the saved one. */
+  changed: boolean;
 }
 
 /** Everything the form says; see `messages`. */
@@ -27,6 +30,10 @@ export interface FdFormMessages {
   edit: string;
   save: string;
   cancel: string;
+  /** The button that discards every edit and stays in edit mode. */
+  reset: string;
+  /** The name (and tooltip) of the button on a changed field that puts back its saved value. */
+  revert: (label: string) => string;
   /** The Save button's text while saving. */
   saving: string;
   /** How a checkbox or switch reads in `read` mode. */
@@ -44,6 +51,8 @@ export const DEFAULT_FORM_MESSAGES: FdFormMessages = {
   edit: 'Edit',
   save: 'Save',
   cancel: 'Cancel',
+  reset: 'Reset',
+  revert: DEFAULT_FORM_FIELD_MESSAGES.revert,
   saving: 'Saving…',
   yes: 'Yes',
   no: 'No'
@@ -75,7 +84,9 @@ function escapeAttrValue(value: string): string {
  *
  * Data is controlled: this component never edits `values`. What the user
  * types is a draft over it, and a successful save is reported through `save`
- * for the consumer to put into the `values` it passes back in.
+ * for the consumer to put into the `values` it passes back in. A field is
+ * `changed` while its draft differs from `values`; one field's draft is
+ * dropped by its Revert button, all of them by reset().
  *
  * Validation, in the order it runs:
  *   1. per field: `required`, then the field's own `validate`
@@ -128,8 +139,9 @@ export default class FdFormState extends Base {
   }
 
   // Handed to each fandry-form-field.
-  get fieldMessages(): { yes: string; no: string } {
-    return { yes: this.text.yes, no: this.text.no };
+  get fieldMessages(): FdFormFieldMessages {
+    const { yes, no, revert } = this.text;
+    return { yes, no, revert };
   }
 
   // What the user has typed, over `values`: so a `values` that changes while
@@ -177,6 +189,12 @@ export default class FdFormState extends Base {
     return { tabIndex: 0, ariaDisabled: this.saving ? 'true' : null };
   }
 
+  /* aria-disabled for the same reason: Reset has nothing left to do the
+     moment it is pressed, and the focus is on it. */
+  get resetButtonProps(): Record<string, unknown> {
+    return { tabIndex: 0, ariaDisabled: this.saving || !this.hasChanges ? 'true' : null };
+  }
+
   get statusVariant(): string {
     return this.status?.variant ?? 'info';
   }
@@ -194,7 +212,8 @@ export default class FdFormState extends Base {
       name: field.name,
       field,
       value: this.rawValue(field.name),
-      error: values ? this.visibleError(field, values) : ''
+      error: values ? this.visibleError(field, values) : '',
+      changed: this.isEditing && !field.readonly && this.isChanged(field)
     }));
   }
 
@@ -244,12 +263,20 @@ export default class FdFormState extends Base {
     return merged;
   }
 
+  // Compared in the saved shape, so typing a value back is not a change.
+  private isChanged(field: FdFormField): boolean {
+    if (!(field.name in this.draft)) return false;
+    return this.toSavedShape(field, this.draft[field.name]) !== this.toSavedShape(field, this.values[field.name]);
+  }
+
+  get hasChanges(): boolean {
+    return this.editableFields.some((field) => this.isChanged(field));
+  }
+
   private changedValues(): FdFormValues {
     const changes: FdFormValues = {};
     for (const field of this.editableFields) {
-      if (!(field.name in this.draft)) continue;
-      const next = this.toSavedShape(field, this.draft[field.name]);
-      if (next !== this.toSavedShape(field, this.values[field.name])) changes[field.name] = next;
+      if (this.isChanged(field)) changes[field.name] = this.toSavedShape(field, this.draft[field.name]);
     }
     return changes;
   }
@@ -313,6 +340,35 @@ export default class FdFormState extends Base {
     );
   }
 
+  /* Back to the saved value, as if the field had never been edited: its
+     error goes too. Reported as the `change` it is. */
+  handleFieldRevert(event: Event) {
+    event.stopPropagation();
+    const name = (event.currentTarget as HTMLElement).dataset.name;
+    const field = this.fields.find((candidate) => candidate.name === name);
+    if (!field || !(field.name in this.draft) || this.saving) return;
+
+    const without = <T>(record: Record<string, T>): Record<string, T> => {
+      const { [field.name]: _dropped, ...rest } = record;
+      return rest;
+    };
+    this.draft = without(this.draft);
+    this.touched = without(this.touched);
+    this.serverErrors = without(this.serverErrors);
+    this.status = null;
+
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        detail: {
+          name: field.name,
+          value: this.toSavedShape(field, this.values[field.name]),
+          values: this.currentValues()
+        },
+        bubbles: true
+      })
+    );
+  }
+
   handleFieldBlur(event: Event) {
     event.stopPropagation();
     const name = (event.currentTarget as HTMLElement).dataset.name;
@@ -342,6 +398,15 @@ export default class FdFormState extends Base {
     this.status = null;
     this.dispatchEvent(new CustomEvent('cancel', { bubbles: true }));
     this.leaveEdit();
+  }
+
+  /** Discards every edit and stays in edit mode; cancel() also leaves it. */
+  @api
+  reset() {
+    if (!this.isEditing || this.saving) return;
+    this.clearDraft();
+    this.status = null;
+    this.dispatchEvent(new CustomEvent('reset', { bubbles: true }));
   }
 
   @api
@@ -396,6 +461,10 @@ export default class FdFormState extends Base {
     this.actionClicked = true;
     this.cancel();
     this.actionClicked = false;
+  }
+
+  handleReset() {
+    this.reset();
   }
 
   handleSave() {

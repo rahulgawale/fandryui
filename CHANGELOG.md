@@ -1,3 +1,92 @@
+## [0.26.1](https://github.com/rahulgawale/fandryui/compare/v0.26.0...v0.26.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* **data-table:** keep the toolbar's buttons inside the card on phones ([#122](https://github.com/rahulgawale/fandryui/issues/122)) ([75e39f9](https://github.com/rahulgawale/fandryui/commit/75e39f9d89842e26245ce394df5b1b6cf5a7718c))
+
+# [0.26.0](https://github.com/rahulgawale/fandryui/compare/v0.25.0...v0.26.0) (2026-10-15)
+
+
+### Features
+
+* new default theme (cobalt, soft badges, two-tone focus rings), Why Fandry page, SEO/GEO, SSR-safe components ([#119](https://github.com/rahulgawale/fandryui/issues/119)) ([5ce7caa](https://github.com/rahulgawale/fandryui/commit/5ce7caaa8185f39579afcdd0a8401b4abb87522b))
+
+# [0.25.0](https://github.com/rahulgawale/fandryui/compare/v0.24.0...v0.25.0) (2026-10-14)
+
+
+### Features
+
+* **lookup:** add a debounceMs prop for the search delay ([#118](https://github.com/rahulgawale/fandryui/issues/118)) ([c7776b7](https://github.com/rahulgawale/fandryui/commit/c7776b749016daed520369e6408d073260985ddf))
+
+# [0.24.0](https://github.com/rahulgawale/fandryui/compare/v0.23.2...v0.24.0) (2026-10-14)
+
+
+### Features
+
+* **spinner:** show a label; add fandry-loading-overlay ([#117](https://github.com/rahulgawale/fandryui/issues/117)) ([cfb9daf](https://github.com/rahulgawale/fandryui/commit/cfb9dafab0cd51b10f3d85d7ac4bba6383c8b11e))
+
+## [0.23.2](https://github.com/rahulgawale/fandryui/compare/v0.23.1...v0.23.2) (2026-10-13)
+
+
+### Bug Fixes
+
+* **registry:** install components a stylesheet's selectors name ([#116](https://github.com/rahulgawale/fandryui/issues/116)) ([a6a5806](https://github.com/rahulgawale/fandryui/commit/a6a58069d5a10db50ea014a74ce010651d7c1fcf))
+
+## [0.23.1](https://github.com/rahulgawale/fandryui/compare/v0.23.0...v0.23.1) (2026-10-13)
+
+
+### Bug Fixes
+
+* **registry:** ignore component tags named only in comments ([#115](https://github.com/rahulgawale/fandryui/issues/115)) ([79e81c4](https://github.com/rahulgawale/fandryui/commit/79e81c4d0906c86889140fa6eb0036d1498e3aba))
+
+# [0.23.0](https://github.com/rahulgawale/fandryui/compare/v0.22.0...v0.23.0) (2026-10-12)
+
+
+### Features
+
+* **popover:** follow the trigger everywhere, flip at the viewport edge, fill a row ([#114](https://github.com/rahulgawale/fandryui/issues/114)) ([0215e99](https://github.com/rahulgawale/fandryui/commit/0215e998d3ab49b48da4a4ed234157847c74634a))
+
+# [0.22.0](https://github.com/rahulgawale/fandryui/compare/v0.21.0...v0.22.0) (2026-10-12)
+
+
+### Features
+
+* **form:** mark changed fields, revert one, reset all ([#113](https://github.com/rahulgawale/fandryui/issues/113)) ([52866fe](https://github.com/rahulgawale/fandryui/commit/52866fe241f7b13d1d24e343ca979e420d5bf7ba))
+
+# [0.21.0](https://github.com/rahulgawale/fandryui/compare/v0.20.1...v0.21.0) (2026-10-12)
+
+
+### Features
+
+* **label:** fandry-label is the text of a label, inside your own <label> ([#111](https://github.com/rahulgawale/fandryui/issues/111)) ([5562c46](https://github.com/rahulgawale/fandryui/commit/5562c46b40b017b4e8a90c0e4df1a2a2fdc4bcda))
+
+## [0.20.1](https://github.com/rahulgawale/fandryui/compare/v0.20.0...v0.20.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* **command:** VoiceOver can reach the palette and hears its options ([#109](https://github.com/rahulgawale/fandryui/issues/109)) ([ad7e704](https://github.com/rahulgawale/fandryui/commit/ad7e704282f1dd96d2c4ad7f51486ca0ce26ce4f))
+
+# [0.20.0](https://github.com/rahulgawale/fandryui/compare/v0.19.7...v0.20.0) (2026-10-12)
+
+
+### Bug Fixes
+
+* **textarea:** the label reaches the field, and a null value shows empty ([#107](https://github.com/rahulgawale/fandryui/issues/107)) ([9c4601c](https://github.com/rahulgawale/fandryui/commit/9c4601c34c2fa929f3c6533905b0d944509511f9))
+
+
+### Features
+
+* error-text on input, textarea, select, combobox and lookup ([#108](https://github.com/rahulgawale/fandryui/issues/108)) ([220177e](https://github.com/rahulgawale/fandryui/commit/220177e09731c0ef9930335d610aff50efd2e005))
+
+## [0.19.7](https://github.com/rahulgawale/fandryui/compare/v0.19.6...v0.19.7) (2026-10-12)
+
+
+### Bug Fixes
+
+* harden button, input and select behavior and accessibility ([#106](https://github.com/rahulgawale/fandryui/issues/106)) ([8006368](https://github.com/rahulgawale/fandryui/commit/8006368f3c4b1bc5bf4fd099577fc31068ac4b0a))
+
 ## [0.19.6](https://github.com/rahulgawale/fandryui/compare/v0.19.5...v0.19.6) (2026-10-03)
 
 

@@ -5,15 +5,18 @@
         <fandry-form-field
           key={item.name}
           data-name={item.name}
+          exportparts="base: field, changed, revert"
           field={item.field}
           value={item.value}
           error={item.error}
+          changed={item.changed}
           mode={mode}
           disabled={saving}
           messages={fieldMessages}
           onchange={handleFieldChange}
           onblur={handleFieldBlur}
           onsubmit={handleFieldSubmit}
+          onrevert={handleFieldRevert}
         ></fandry-form-field>
       </template>
     </div>
@@ -24,7 +27,7 @@
 
     <!--
       Replaces the default buttons. A button you put here reaches the form
-      through its methods: form.edit(), form.save(), form.cancel().
+      through its methods: form.edit(), form.save(), form.cancel(), form.reset().
     -->
     <div class="actions">
       <slot name="actions">
@@ -39,6 +42,7 @@
             {saveLabel}
           </fandry-button>
           <fandry-button variant="secondary" disabled={saving} onclick={handleCancel}>{text.cancel}</fandry-button>
+          <fandry-button variant="ghost" data-action="reset" element-props={resetButtonProps} onclick={handleReset}>{text.reset}</fandry-button>
         </template>
       </slot>
     </div>

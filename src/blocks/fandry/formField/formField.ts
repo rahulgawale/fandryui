@@ -1,5 +1,6 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
+import { partList } from 'fandry/parts';
 
 export interface FdFormOption {
   label: string;
@@ -51,13 +52,20 @@ const INPUT_TYPES: FdFormFieldType[] = ['text', 'email', 'number', 'tel', 'url',
 
 const EMPTY_TEXT = '—';
 
-/** How a checkbox or switch reads in `read` mode; see `messages`. */
+/** Everything a field says; see `messages`. */
 export interface FdFormFieldMessages {
+  /** How a checkbox or switch reads in `read` mode. */
   yes: string;
   no: string;
+  /** The name (and tooltip) of the button that puts back a changed field's saved value. */
+  revert: (label: string) => string;
 }
 
-export const DEFAULT_FORM_FIELD_MESSAGES: FdFormFieldMessages = { yes: 'Yes', no: 'No' };
+export const DEFAULT_FORM_FIELD_MESSAGES: FdFormFieldMessages = {
+  yes: 'Yes',
+  no: 'No',
+  revert: (label) => `Revert ${label}`
+};
 
 // A checkbox/switch value that came from serialized data (e.g. Salesforce,
 // which sends booleans as the strings "true"/"false") would read as checked
@@ -73,9 +81,10 @@ export function toBoolean(value: unknown): boolean {
  * One field: its label, its control, its help text and its error -- or, in
  * `read` mode, the label and the value as text. It owns no state: the value
  * and the error come in, and a single `change` (every edit, keystrokes
- * included), `blur`, and `submit` (Enter in a text input) go out. fandry-form is a list of these; use one on its
- * own, or extend fandry/formState, when a screen needs a field the form
- * doesn't render the way you want.
+ * included), `blur`, `submit` (Enter in a text input) and `revert` (the
+ * Revert button of a `changed` field) go out. fandry-form is a list of
+ * these; use one on its own, or extend fandry/formState, when a screen needs
+ * a field the form doesn't render the way you want.
  */
 export default class FormField extends Base {
   @api field: FdFormField | null = null;
@@ -85,6 +94,12 @@ export default class FormField extends Base {
   /** `edit` shows the control; `read` shows the value as text. */
   @api mode: 'read' | 'edit' = 'edit';
   @api disabled = false;
+  /**
+   * The value differs from the saved one: the field is marked (the `changed`
+   * state of its `base` part) and offers a Revert button. Whoever owns the
+   * saved value decides; the field has nothing to compare against.
+   */
+  @api changed = false;
 
   /** Replaces any of DEFAULT_FORM_FIELD_MESSAGES, e.g. to translate them. */
   @api messages: Partial<FdFormFieldMessages> = {};
@@ -96,6 +111,29 @@ export default class FormField extends Base {
 
   get hasField(): boolean {
     return !!this.field;
+  }
+
+  private get text(): FdFormFieldMessages {
+    return { ...DEFAULT_FORM_FIELD_MESSAGES, ...this.messages };
+  }
+
+  // Text that is only read has no edit to show or take back.
+  get showChanged(): boolean {
+    return this.changed && !this.isReadOnly;
+  }
+
+  get fieldClasses(): string {
+    return this.showChanged ? 'field changed' : 'field';
+  }
+
+  get basePart(): string {
+    return partList('base', { changed: this.showChanged });
+  }
+
+  // The button is only an icon, so its name is also its tooltip.
+  get revertButtonProps(): Record<string, unknown> {
+    const name = this.text.revert(this.field?.label ?? '');
+    return { tabIndex: 0, ariaLabel: name, title: name };
   }
 
   private get type(): FdFormFieldType {
@@ -162,6 +200,12 @@ export default class FormField extends Base {
     return !!this.error;
   }
 
+  // Likewise the error: a primitive with a place for it ties it to its
+  // control and announces it, so only the rest get this field's own line.
+  get showOwnError(): boolean {
+    return this.hasError && (this.isRadio || this.isCheckbox || this.isSwitch);
+  }
+
   // `tabIndex` is what every native control needs to be in Safari's Tab
   // order (see the primitives), and it is lost as soon as elementProps is
   // replaced, so it is restated here. The consumer's props go in between,
@@ -183,8 +227,7 @@ export default class FormField extends Base {
 
   private readableValue(): string {
     if (this.isCheckbox || this.isSwitch) {
-      const text = { ...DEFAULT_FORM_FIELD_MESSAGES, ...this.messages };
-      return this.checked ? text.yes : text.no;
+      return this.checked ? this.text.yes : this.text.no;
     }
     if (this.isSelect || this.isRadio) {
       return this.options.find((option) => option.value === this.stringValue)?.label ?? this.stringValue;
@@ -212,6 +255,15 @@ export default class FormField extends Base {
       event.preventDefault();
       this.dispatchEvent(new CustomEvent('submit', { bubbles: true }));
     }
+  }
+
+  handleRevert() {
+    /* The button is removed with the change, which would drop focus to the
+       page, so focus goes to the control first. First, so that the `blur`
+       this causes reaches the form before `revert` does: a reverted field
+       is one the user hasn't touched. */
+    this.focus();
+    this.dispatchEvent(new CustomEvent('revert', { bubbles: true }));
   }
 
   handleFocusOut() {

@@ -39,7 +39,7 @@
   justify-content: center;
   transition: border-color var(--_fd-duration-fast) ease,
     background-color var(--_fd-duration-fast) ease,
-    box-shadow var(--_fd-duration-fast) ease;
+    box-shadow var(--_fd-duration-fast) var(--_fd-ease-standard);
 }
 
 /* Hover */
@@ -72,7 +72,7 @@
 
 /* Focus */
 .control:focus-within .circle {
-  box-shadow: 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
+  box-shadow: var(--_fd-ring-control);
 }
 
 /* Disabled */
@@ -85,4 +85,11 @@
 /* Label */
 .label {
   font-size: var(--_fd-font-size-sm);
+}
+
+/* A fandry-label slotted in as the label is only this label's text: it
+   takes the label's look. */
+::slotted(fandry-label) {
+  font: inherit;
+  color: inherit;
 }

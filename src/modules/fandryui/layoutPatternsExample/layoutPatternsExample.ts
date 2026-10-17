@@ -1,11 +1,29 @@
 import { LightningElement } from 'lwc';
 
+const MARKUP = `<div class="fandry-container">
+  <fandry-heading>Orders</fandry-heading>
+  <div class="fandry-grid">
+    <fandry-card>…</fandry-card>
+    <fandry-card>…</fandry-card>
+  </div>
+</div>
+
+/* global.css */
+.fandry-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--fd-space-6);
+}`;
+
 export default class LayoutPatternsExample extends LightningElement {
   // Light DOM -- its host, fandryui-home, is also light DOM (see home.ts),
   // so this needs to be too or its own shadow root would re-introduce the
   // same boundary one level down, blocking global.css's fandry-container/
   // fandry-grid classes from ever reaching the markup below.
   static renderMode = 'light';
+
+  markup = MARKUP;
 
   orders = [
     {

@@ -5,6 +5,7 @@ import type { FdSearchItem } from 'fandry/searchState';
 import { exitFinished } from 'fandry/motion';
 import { resolveElementProps } from 'fandry/elementProps';
 import { slotHasContent } from 'fandry/textSlots';
+import { fieldInvalid, fieldDescribedBy, withoutAriaInvalid } from 'fandry/fieldError';
 
 export interface FdLookupRecord {
   id: string;
@@ -39,9 +40,12 @@ function toIds(value: string | string[] | null | undefined): string[] {
   return list.filter((id) => typeof id === 'string' && id !== '');
 }
 
-// How long typing must pause before `search` fires. Fixed, not a prop: a
-// consumer that wants something different can debounce on their side.
+// How long typing must pause before `search` fires, unless `debounceMs` says
+// otherwise. A prop because a consumer's own debounce can only add to it.
 const SEARCH_DEBOUNCE_MS = 250;
+
+// The longest delay setTimeout honors; a longer one fires at once.
+const MAX_TIMEOUT_MS = 2 ** 31 - 1;
 
 /** Text the lookup announces that isn't markup; see `messages`. */
 export interface FdLookupMessages {
@@ -125,6 +129,8 @@ const RESERVED_ELEMENT_PROPS = [
 export default class FdLookup extends FdSearchState {
   @api label = '';
   @api helpText = '';
+  // Shown under the control, and makes the field invalid -- see fandry/fieldError.
+  @api errorText = '';
   @api name = '';
   @api placeholder = '';
 
@@ -157,6 +163,21 @@ export default class FdLookup extends FdSearchState {
    * the same as the native `multiple` attribute.
    */
   @api multiple = false;
+
+  /**
+   * Milliseconds typing must pause before `search` fires; 0 searches on
+   * every keystroke, as fandry-table's `globalFilterDebounceMs` does.
+   * Opening the list still searches at once.
+   */
+  @api debounceMs: number | string = SEARCH_DEBOUNCE_MS;
+
+  // An attribute arrives as a string. Blank or not a number means the
+  // default; null, '' and true must not read as 0.
+  private get searchDelay(): number {
+    const raw = this.debounceMs;
+    const ms = typeof raw === 'number' || (typeof raw === 'string' && raw.trim() !== '') ? Number(raw) : NaN;
+    return Number.isNaN(ms) ? SEARCH_DEBOUNCE_MS : Math.min(Math.max(ms, 0), MAX_TIMEOUT_MS);
+  }
 
   // The one source of truth for what's selected. `value`, `record` and
   // `records` are three ways in and out of it. Until `value` is set,
@@ -346,6 +367,26 @@ export default class FdLookup extends FdSearchState {
     return !!this.helpText || !!this.textSlots['help-text'];
   }
 
+  get hasErrorText(): boolean {
+    return !!this.errorText || !!this.textSlots['error-text'];
+  }
+
+  get errorTextClasses(): string {
+    return this.hasErrorText ? 'error-text' : 'error-text error-text--empty';
+  }
+
+  get invalid(): boolean {
+    return fieldInvalid(this.hasErrorText, this.elementProps);
+  }
+
+  get ariaInvalid(): 'true' | null {
+    return this.invalid ? 'true' : null;
+  }
+
+  get describedBy(): string | null {
+    return fieldDescribedBy(this.hasErrorText, this.hasHelpText);
+  }
+
   // Single mode with a record chosen: the field shows it as its value and
   // the input goes away. Everywhere else the input is there.
   get showSelected(): boolean {
@@ -443,7 +484,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   get resolvedElementProps(): Record<string, unknown> {
-    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-lookup');
+    return withoutAriaInvalid(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-lookup'));
   }
 
   disconnectedCallback() {
@@ -510,9 +551,15 @@ export default class FdLookup extends FdSearchState {
   }
 
   private scheduleSearch() {
+    const delay = this.searchDelay;
+    if (delay === 0) {
+      this.dispatchSearch();
+      return;
+    }
+
     this.clearSearchTimer();
     this.searchPending = true;
-    this.searchTimer = setTimeout(() => this.dispatchSearch(), SEARCH_DEBOUNCE_MS);
+    this.searchTimer = setTimeout(() => this.dispatchSearch(), delay);
   }
 
   // Stops the timer only. `searchPending` is left alone on purpose: see
@@ -644,7 +691,7 @@ export default class FdLookup extends FdSearchState {
   }
 
   get controlPart(): string {
-    return partList('control', { disabled: this.disabled });
+    return partList('control', { disabled: this.disabled, invalid: this.invalid });
   }
 
   // Which text slots have content -- see fandry/textSlots.

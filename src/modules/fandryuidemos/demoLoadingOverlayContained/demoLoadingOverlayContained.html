@@ -1,0 +1,11 @@
+<template>
+  <div class="panel">
+    <fandry-card>
+      <fandry-heading level="4">Order summary</fandry-heading>
+      <fandry-text variant="muted">3 items, ships Friday.</fandry-text>
+      <fandry-text variant="muted">Total $184.00, paid by card.</fandry-text>
+      <fandry-button variant="secondary" onclick={handleRefresh}>Refresh</fandry-button>
+    </fandry-card>
+    <fandry-loading-overlay open={refreshing} contained label="Refreshing…"></fandry-loading-overlay>
+  </div>
+</template>

@@ -3,10 +3,11 @@ import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
 import { resolveElementProps } from 'fandry/elementProps';
 import { slotHasContent } from 'fandry/textSlots';
+import { fieldInvalid, fieldDescribedBy, withoutAriaInvalid } from 'fandry/fieldError';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
-// itself controls -- `id` is reserved because fandry-label's `html-for="input"`
+// itself controls -- `id` is reserved because the label's `for="input"`
 // association depends on it staying put (same reasoning as fandry-select's
 // reserved `id`). `aria-describedby` has no plain string IDL property (see
 // select.ts's fuller note) -- only the newer `ariaDescribedByElements`
@@ -32,6 +33,8 @@ const RESERVED_ELEMENT_PROPS = [
 export default class Input extends Base {
   @api label = '';
   @api helpText = '';
+  // Shown under the control, and makes the field invalid -- see fandry/fieldError.
+  @api errorText = '';
   @api value = '';
   @api type: string = 'text';
   @api name = '';
@@ -51,7 +54,7 @@ export default class Input extends Base {
   @track hasFocus = false;
 
   get resolvedElementProps(): Record<string, unknown> {
-    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-input');
+    return withoutAriaInvalid(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-input'));
   }
 
   get hasLabel(): boolean {
@@ -60,6 +63,33 @@ export default class Input extends Base {
 
   get hasHelpText(): boolean {
     return !!this.helpText || !!this.textSlots['help-text'];
+  }
+
+  get hasErrorText(): boolean {
+    return !!this.errorText || !!this.textSlots['error-text'];
+  }
+
+  get errorTextClasses(): string {
+    return this.hasErrorText ? 'error-text' : 'error-text error-text--empty';
+  }
+
+  get invalid(): boolean {
+    return fieldInvalid(this.hasErrorText, this.elementProps);
+  }
+
+  get ariaInvalid(): 'true' | null {
+    return this.invalid ? 'true' : null;
+  }
+
+  // null and undefined would otherwise show as the words "null"/"undefined".
+  get inputValue(): string {
+    return this.value ?? '';
+  }
+
+  // Only what there is: an empty description is still announced as one by
+  // some screen readers.
+  get describedBy(): string | null {
+    return fieldDescribedBy(this.hasErrorText, this.hasHelpText);
   }
 
   get controlClasses() {
@@ -126,7 +156,7 @@ export default class Input extends Base {
   }
 
   get controlPart(): string {
-    return partList('control', { disabled: this.disabled });
+    return partList('control', { disabled: this.disabled, invalid: this.invalid });
   }
 
   // Which text slots have content -- see fandry/textSlots.

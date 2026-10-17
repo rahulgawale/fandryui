@@ -13,6 +13,13 @@ export interface ComponentExample {
   code: string;
 }
 
+// A short explanation shown in an info alert under the main code block:
+// why the component is used the way it is, where that is not obvious.
+export interface ComponentNote {
+  title: string;
+  paragraphs: string[];
+}
+
 export interface ComponentEntry {
   slug: string;
   name: string;
@@ -26,6 +33,7 @@ export interface ComponentEntry {
   states?: string[];
   code: string;
   examples?: ComponentExample[];
+  notes?: ComponentNote[];
   /** A live example of theming this component with tokens and parts, shown under the default example. */
   customize?: ComponentExample;
 }
@@ -47,16 +55,18 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   required: 'The required-field asterisk.',
   control: 'The box the field draws: a text field\'s border, a select\'s button, a checkbox\'s box, a radio\'s circle, a switch\'s track.',
   indicator: 'The mark that shows the state or value: a checkbox\'s check, a radio\'s dot, a switch\'s thumb, a progress bar\'s fill.',
-  input: 'The native <input>.',
-  textarea: 'The native <textarea>.',
+  input: 'The native `<input>`.',
+  textarea: 'The native `<textarea>`.',
   prefix: 'The wrapper of the prefix slot.',
   suffix: 'The wrapper of the suffix slot.',
   'help-text': 'The help text under the field.',
+  'error-text': 'The error under the field. In the page even while empty, so style it only for a field that is `invalid`.',
   value: 'The selected value, as shown in the closed field.',
   chevron: 'The dropdown arrow.',
   trigger: 'The wrapper of the trigger slot.',
-  panel: 'The surface that opens: a dropdown\'s list, a popover, a tooltip, a dialog.',
-  backdrop: 'The dimmed layer behind a modal panel.',
+  panel: 'The surface that opens: a dropdown\'s list, a popover, a tooltip, a dialog, a loading overlay\'s box.',
+  backdrop: 'The dimmed layer behind a modal panel, or a loading overlay\'s cover.',
+  spinner: 'A loading overlay\'s spinner (a fandry-spinner\'s `base`).',
   arrow: 'The arrow that points at the trigger.',
   search: 'The wrapper of the search input.',
   listbox: 'The list of options.',
@@ -67,21 +77,21 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   'option-description': 'An option\'s second line.',
   empty: 'What shows when there is nothing to list.',
   status: 'A status line (a page count, "Searching…").',
-  link: 'The native <a>.',
+  link: 'The native `<a>`.',
   list: 'The element holding the items.',
   separator: 'The separator before the item.',
   title: 'The title line.',
   body: 'The content below the title.',
-  image: 'The <img>.',
+  image: 'The `<img>`.',
   initials: 'The initials shown when there is no image.',
-  previous: 'The link to the previous page (also a `link`).',
-  next: 'The link to the next page (also a `link`).',
+  previous: 'The link to the previous page (also a `link`), or the viewer\'s button to the previous picture.',
+  next: 'The link to the next page (also a `link`), or the viewer\'s button to the next picture.',
   eyebrow: 'The small "Previous" / "Next" line.',
-  button: 'The Previous and Next buttons (a fandry-button\'s `base`).',
-  toolbar: 'The bar above the table that holds the search box.',
+  button: 'The Previous and Next buttons, or a tile\'s button (a fandry-button\'s `base`).',
+  toolbar: 'The bar above the table that holds the search box, or the viewer\'s bar above the picture.',
   container: 'The scrolling box around the table.',
-  table: 'The native <table>.',
-  caption: 'The <caption>.',
+  table: 'The native `<table>`.',
+  caption: 'The `<caption>`, or a picture\'s caption.',
   'header-row': 'The header row.',
   'header-cell': 'A header cell.',
   'sort-button': 'The button in a sortable header cell.',
@@ -102,7 +112,17 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   chip: 'One chosen record.',
   'chip-label': 'A chosen record\'s name.',
   'chip-remove': 'The button that removes one chosen record.',
-  'clear-all': 'The Clear all button.'
+  'clear-all': 'The Clear all button.',
+  field: 'One field of a form: its label, control, help text and error (a fandry-form-field\'s `base`).',
+  revert: 'The button that puts back a changed field\'s saved value.',
+  item: 'One tile of the grid.',
+  frame: 'The box a tile\'s picture fills, at the grid\'s aspect ratio.',
+  placeholder: 'A skeleton tile while loading (a fandry-skeleton\'s `base`).',
+  'close-button': 'The button that closes the viewer (a fandry-button\'s `base`).',
+  stage: 'The area that shows the picture and takes swipes and pinches.',
+  viewer: 'The full-screen viewer\'s content (a fandry-media-viewer\'s `base`).',
+  'viewer-image': 'The picture in the viewer (a fandry-media-viewer\'s `image`).',
+  'viewer-caption': 'The caption in the viewer (a fandry-media-viewer\'s `caption`).'
 };
 
 /*
@@ -115,6 +135,8 @@ export const STATE_DESCRIPTIONS: Record<string, string> = {
   checked: 'The box, circle or track of a checked control.',
   indeterminate: 'A checkbox that is neither checked nor unchecked, or a progress bar with no known value.',
   disabled: 'A control, option or item that cannot be used.',
+  invalid: 'A field that has error text.',
+  changed: 'A form field whose value differs from the saved one.',
   selected: 'The chosen option, or a selected table row.',
   active: 'The option the keyboard or pointer is on.',
   current: 'The link to the page being viewed.',
@@ -131,6 +153,34 @@ export const STATE_DESCRIPTIONS: Record<string, string> = {
   warning: '`variant="warning"`.',
   danger: '`variant="danger"`.'
 };
+
+/*
+  The parts and states of the blocks, in the same vocabulary. A block has
+  its own page under /blocks rather than an entry in COMPONENTS, so its
+  parts are listed here; parts.test.ts holds every block that has a
+  template to this list (one with no parts needs no entry).
+*/
+export interface BlockParts {
+  tag: string;
+  parts: string[];
+  states?: string[];
+}
+
+export const BLOCKS: BlockParts[] = [
+  { tag: 'fandry-form', parts: ['field', 'revert'], states: ['changed'] },
+  { tag: 'fandry-form-field', parts: ['base', 'revert'], states: ['changed'] },
+  {
+    tag: 'fandry-media-gallery',
+    parts: ['base', 'item', 'button', 'frame', 'image', 'caption', 'placeholder', 'viewer', 'backdrop', 'panel', 'toolbar', 'status', 'close-button', 'stage', 'previous', 'next', 'viewer-image', 'viewer-caption'],
+    states: ['disabled']
+  },
+  { tag: 'fandry-media-grid', parts: ['base', 'item', 'button', 'frame', 'image', 'caption', 'placeholder'] },
+  {
+    tag: 'fandry-media-viewer',
+    parts: ['base', 'backdrop', 'panel', 'toolbar', 'status', 'close-button', 'stage', 'image', 'previous', 'next', 'caption'],
+    states: ['disabled']
+  }
+];
 
 export const COMPONENTS: ComponentEntry[] = [
   // ---- Layout ----
@@ -362,7 +412,7 @@ fandry-pagination::part(status) {
 }`
     },
     category: 'Layout',
-    description: 'Previous/next navigation — as links between two adjacent pages, or as Previous / Page N of M / Next buttons for paging a collection.',
+    description: 'Previous/next navigation between pages. Links between two adjacent pages, or Previous / Page N of M / Next buttons for paging a collection.',
     props: [
       { name: 'previous-href', type: 'string', default: "''", description: 'Omit to hide the previous link (e.g. on the first page).' },
       { name: 'previous-label', type: 'string', default: "''", description: 'Title of the previous page.' },
@@ -586,7 +636,7 @@ fandry-icon::part(base) {
       demo: 'label-theme',
       code: `<!-- template -->
 <div class="brand stack narrow">
-  <fandry-label html-for="theme-email" required>Email</fandry-label>
+  <label for="theme-email"><fandry-label required>Email</fandry-label></label>
   <input id="theme-email" type="email" class="native-input" placeholder="you@brand.com" />
 </div>
 
@@ -609,13 +659,30 @@ fandry-label::part(required) {
 }`
     },
     category: 'Typography',
-    description: 'A form label, with an optional required indicator.',
-    props: [
-      { name: 'html-for', type: 'string', default: "''", description: 'id of the control this label describes.' },
-      { name: 'required', type: 'boolean', default: 'false', description: 'Shows a required indicator.' }
+    description: 'The text of a form label, with an optional required indicator. Put it inside your own `<label>`, or in the `label` slot of a field.',
+    notes: [
+      {
+        title: 'Why you write the <label> yourself',
+        paragraphs: [
+          'A label finds its control by id, and the browser looks an id up inside one shadow root only. A `<label>` rendered inside `fandry-label` could never reach a control outside it: it would look right, give the control no name for a screen reader, and do nothing when clicked.',
+          'So you write the `<label>`, beside its control, and `fandry-label` goes inside it as the text. That is how web components work, not something particular to this library: each component is a tree of its own, so two elements that refer to each other have to be in the same one.',
+          'The fields (`fandry-input`, `fandry-textarea`, `fandry-select`, `fandry-combobox`, `fandry-lookup`) follow the same rule from the inside. Each renders its own `<label>` next to its own control, so they take the label as a prop or a slot and need no `fandry-label`.'
+        ]
+      }
     ],
-    code: `<fandry-label html-for="username" required>Username</fandry-label>
-<input id="username" />`
+    props: [
+      { name: 'required', type: 'boolean', default: 'false', description: 'Shows the required asterisk. It is only the mark: set `required` on your control as well. In a field\'s `label` slot the field shows it instead, from its own `required`.' },
+      { name: 'html-for', type: 'string', default: '—', description: 'Deprecated: it does nothing. The `for` goes on the `<label>` you wrap this in.' }
+    ],
+    code: `<!-- with your own control -->
+<label for="username"><fandry-label required>Username</fandry-label></label>
+<input id="username" />
+
+<!-- in a field's label slot: it looks like the field's label, and the
+     field shows the asterisk -->
+<fandry-input required>
+  <fandry-label slot="label">Username</fandry-label>
+</fandry-input>`
   },
   {
     slug: 'text',
@@ -681,13 +748,13 @@ get saveLabel() {
 }
 
 // aria-disabled, not disabled: disabling the focused button would drop
-// focus to the page. tabIndex: 0 is fandry-button's own default.
+// focus to the page. It keeps focus but ignores clicks, so handleSave
+// can't run twice. tabIndex: 0 is fandry-button's own default.
 get saveButtonProps() {
   return { tabIndex: 0, ariaDisabled: this.saving ? 'true' : null };
 }
 
 async handleSave() {
-  if (this.saving) return; // the button stays clickable while saving
   this.saving = true;
   try {
     await this.save();
@@ -729,7 +796,12 @@ fandry-button::part(base) {
 
 fandry-button.cta::part(base) {
   padding-inline: 1.5rem;
-  box-shadow: 0 6px 16px hsl(160 84% 26% / 0.35);
+}
+
+/* The glow goes on the element, not the part: a box-shadow on the part
+   would replace the button's focus ring. */
+fandry-button.cta {
+  filter: drop-shadow(0 6px 12px hsl(160 84% 26% / 0.35));
 }
 
 /* A variant is a state too: only secondary buttons. */
@@ -781,7 +853,7 @@ fandry-button.rainbow::part(base)::after {
 }`
     },
     category: 'Forms',
-    description: 'A native button with default/secondary/ghost variants and three sizes.',
+    description: 'A native button with `default`/`secondary`/`ghost` variants and three sizes.',
     props: [
       { name: 'variant', type: "'default' | 'secondary' | 'ghost'", default: "'default'", description: 'Visual style.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size.' },
@@ -790,7 +862,7 @@ fandry-button.rainbow::part(base)::after {
         type: 'boolean',
         default: 'false',
         description:
-          "Disables the button. A button that must keep focus (one that is saving) takes `element-props={ tabIndex: 0, ariaDisabled: 'true' }` instead: it looks the same and has the same `disabled` state."
+          "Disables the button. A button that must keep focus (one that is saving) takes `element-props={ tabIndex: 0, ariaDisabled: 'true' }` instead: it looks the same, has the same `disabled` state, and its clicks are ignored."
       },
       { name: 'type', type: "'button' | 'submit' | 'reset'", default: "'button'", description: 'Native button type.' }
     ],
@@ -828,9 +900,10 @@ fandry-checkbox::part(label) {
   font-weight: 600;
 }
 
-/* A state: only the checked box. */
+/* A state: only the checked box. A glow, as a filter: the box draws
+   its focus ring with box-shadow. */
 fandry-checkbox::part(control checked) {
-  box-shadow: 0 0 0 3px hsl(160 84% 26% / 0.2);
+  filter: drop-shadow(0 0 3px hsl(160 84% 26% / 0.45));
 }`
     },
     category: 'Forms',
@@ -848,8 +921,8 @@ fandry-checkbox::part(control checked) {
     slug: 'combobox',
     name: 'Combobox',
     tag: 'fandry-combobox',
-    parts: ['base', 'label', 'required', 'control', 'input', 'chevron', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty', 'help-text'],
-    states: ['disabled', 'selected', 'active'],
+    parts: ['base', 'label', 'required', 'control', 'input', 'chevron', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'empty', 'help-text', 'error-text'],
+    states: ['disabled', 'invalid', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'combobox-theme',
@@ -895,6 +968,7 @@ fandry-combobox::part(option-description) {
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected or typed.' },
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
       { name: 'name', type: 'string', default: "''", description: 'Exposed as `data-name` on the input.' },
       { name: 'options', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The options. Search matches label, description, keywords and group; a prefix in the label ranks first.' },
       { name: 'value', type: 'string', default: "''", description: 'Selected value. Listen for `change` (detail is the new value).' },
@@ -902,7 +976,7 @@ fandry-combobox::part(option-description) {
       { name: 'required', type: 'boolean', default: 'false', description: 'Marks the field required (asterisk + aria-required).' },
       { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native input (e.g. `{ tabIndex: 2 }`); keys the component controls are ignored with a warning.' },
       { name: 'empty (slot)', type: 'slot', default: "'No results'", description: 'Replaces the message shown when nothing matches.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<fandry-combobox
   label="Framework"
@@ -991,8 +1065,47 @@ export default class PeopleSearch extends FdSearchState {
     slug: 'input',
     name: 'Input',
     tag: 'fandry-input',
-    parts: ['base', 'label', 'control', 'prefix', 'input', 'suffix', 'help-text', 'required'],
-    states: ['disabled'],
+    examples: [
+      {
+        title: 'An error',
+        demo: 'input-error',
+        code: `<!-- template -->
+<fandry-input label="Email" type="email" required
+  help-text="We'll send the receipt here."
+  error-text={emailError} value={email}
+  oninput={handleInput} onchange={handleChange}></fandry-input>
+
+// component
+email = '';
+emailError = '';
+
+// Checked when the field is left: an error while still typing is noise.
+handleChange(event) {
+  this.email = event.detail;
+  this.emailError = this.check(this.email);
+}
+
+// Once there is an error, it goes as soon as the value is right.
+handleInput(event) {
+  this.email = event.detail;
+  if (this.emailError) this.emailError = this.check(this.email);
+}
+
+// A field is invalid while it has error text: there is no separate flag.
+// The control gets aria-invalid and the error as its description, and a
+// screen reader hears the error when it appears. Textarea, select,
+// combobox and lookup take error-text the same way.
+//
+// Markup instead of a string goes in the slot:
+//   <span slot="error-text">Taken. <a href="/login">Sign in?</a></span>
+
+/* css: the field while it is invalid, and the message */
+fandry-input::part(control invalid) { background: hsl(0 80% 98%); }
+fandry-input::part(error-text) { font-weight: 600; }`
+      }
+    ],
+    parts: ['base', 'label', 'control', 'prefix', 'input', 'suffix', 'help-text', 'error-text', 'required'],
+    states: ['disabled', 'invalid'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'input-theme',
@@ -1035,10 +1148,11 @@ fandry-input::part(help-text) {
     props: [
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
       { name: 'type', type: 'string', default: "'text'", description: 'Native input type (email, password, ...).' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Field size.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text (a link, an icon). Shown even without the matching prop.' }
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text (a link, an icon). Shown even without the matching prop.' }
     ],
     code: `<fandry-input label="Email" type="email" placeholder="you@company.com"></fandry-input>`
   },
@@ -1047,7 +1161,7 @@ fandry-input::part(help-text) {
     name: 'Link',
     tag: 'fandry-link',
     parts: ['base', 'link'],
-    states: ['default', 'muted', 'disabled'],
+    states: ['default', 'muted', 'disabled', 'current'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'link-theme',
@@ -1076,7 +1190,8 @@ fandry-link::part(link):hover {
       { name: 'href', type: 'string', default: "''", description: 'Link target.' },
       { name: 'target', type: "'_self' | '_blank' | '_parent' | '_top'", default: "'_self'", description: 'Native anchor target.' },
       { name: 'variant', type: "'default' | 'muted'", default: "'default'", description: 'Visual style.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Renders with no href, removing it from tab order.' }
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Renders with no href, removing it from tab order.' },
+      { name: 'element-props', type: 'Record<string, unknown>', default: '{}', description: 'Spread onto the native `<a>` (e.g. `{ title: \'Docs\' }`). `{ ariaCurrent: \'page\' }` marks a nav\'s current page for assistive tech and adds the `current` state.' }
     ],
     code: `<fandry-link href="https://github.com/rahulgawale/fandryui" target="_blank">GitHub</fandry-link>`
   },
@@ -1203,8 +1318,8 @@ fandry-radio::part(label) {
     slug: 'select',
     name: 'Select',
     tag: 'fandry-select',
-    parts: ['base', 'label', 'required', 'control', 'value', 'chevron', 'listbox', 'option', 'group', 'group-label', 'help-text', 'panel'],
-    states: ['disabled', 'selected', 'active'],
+    parts: ['base', 'label', 'required', 'control', 'value', 'chevron', 'listbox', 'option', 'group', 'group-label', 'help-text', 'error-text', 'panel'],
+    states: ['disabled', 'invalid', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'select-theme',
@@ -1249,8 +1364,11 @@ fandry-select::part(option selected) {
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is selected.' },
       { name: 'options', type: '{ label, value, disabled?, component?, componentProps? }[]', default: '[]', description: 'Flat option list. An option\'s `component` (with `componentProps`) draws its own row instead of the label -- see the custom options example.' },
       { name: 'groups', type: '{ label, options }[]', default: '[]', description: 'Grouped option list (used instead of options).' },
-      { name: 'value', type: 'string', default: "''", description: 'Selected value.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
+      { name: 'value', type: 'string', default: "''", description: 'Selected value. `\'\'` (or null) is no selection and shows the placeholder, unless an option has that value: give one `value: \'\'` to offer "None".' },
+      { name: 'change (event)', type: 'CustomEvent<string>', default: '—', description: 'Fires when the user picks a different value; `event.detail` is the new value. Not fired when `value` is set from code.' },
+      { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<fandry-select
   label="Plan"
@@ -1288,6 +1406,30 @@ planOptions = [
 //
 // On Salesforce this uses lwc:is: fandry-select's .js-meta.xml needs the
 // lightning__dynamicComponent capability (API 55+), which \`fandry add\` writes.`
+      },
+      {
+        title: 'A long list, with the keyboard',
+        demo: 'select-long',
+        code: `<!-- template -->
+<fandry-select label="Country" placeholder="Choose a country"
+  options={countryOptions} value={value} onchange={handleChange}></fandry-select>
+
+// component
+handleChange(event) {
+  this.value = event.detail;
+}
+
+// The list scrolls once it is taller than --fd-listbox-max-height, and
+// the option the keyboard is on is kept in view. Hovering never scrolls.
+//
+// Closed:  Enter, Space, ArrowDown or ArrowUp open the list
+//          ArrowLeft / ArrowRight choose the previous or next option
+//          typing chooses the option that starts with what was typed
+// Open:    ArrowUp / ArrowDown move, and stop at the first and last option
+//          Home / End, Page Up / Page Down move further
+//          typing moves to a match: "new z" finds New Zealand, and "s"
+//          pressed again steps through the options that start with s
+//          Enter or Space choose; Escape or Tab close without choosing`
       }
     ]
   },
@@ -1337,8 +1479,8 @@ fandry-switch::part(label) {
     slug: 'textarea',
     name: 'Textarea',
     tag: 'fandry-textarea',
-    parts: ['base', 'label', 'control', 'textarea', 'help-text', 'required'],
-    states: ['disabled'],
+    parts: ['base', 'label', 'control', 'textarea', 'help-text', 'error-text', 'required'],
+    states: ['disabled', 'invalid'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'textarea-theme',
@@ -1371,9 +1513,10 @@ fandry-textarea::part(label) {
     props: [
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
       { name: 'rows', type: 'number', default: '3', description: 'Visible row count.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<fandry-textarea label="Notes" rows="4"></fandry-textarea>`
   },
@@ -1398,7 +1541,7 @@ fandry-textarea::part(label) {
 /* Scoped to this demo. Set the same --fd-* tokens on :root to theme
    every fandry-* component on the site. */
 .brand {
-  --fd-accent: 45 90% 40%;
+  --fd-info: 45 90% 40%;
   --fd-success: 160 84% 26%;
   --fd-radius-md: 0.75rem;
   --fd-surface-tint: 10%;
@@ -1459,7 +1602,7 @@ fandry-badge::part(base) {
     },
     category: 'Feedback',
     description: 'A small status/label pill.',
-    props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant.' }],
+    props: [{ name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'danger'", default: "'default'", description: 'Color variant. The colored ones are soft, not solid, so a column of badges stays quieter than the data beside it. Each derives its fill, border and text from its own color (`--fd-primary`, `--fd-success`, `--fd-warning`, `--fd-danger`) with `--fd-bg`, `--fd-text` and `--fd-surface-tint`, so it follows a rebrand and dark themes.' }],
     code: `<fandry-badge variant="primary">New</fandry-badge>`
   },
   {
@@ -1546,7 +1689,7 @@ fandry-skeleton::part(base) {
     slug: 'spinner',
     name: 'Spinner',
     tag: 'fandry-spinner',
-    parts: ['base'],
+    parts: ['base', 'label'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'spinner-theme',
@@ -1555,6 +1698,7 @@ fandry-skeleton::part(base) {
   <fandry-spinner size="sm" label="Loading"></fandry-spinner>
   <fandry-spinner size="md" label="Loading"></fandry-spinner>
   <fandry-spinner size="lg" label="Loading"></fandry-spinner>
+  <fandry-spinner size="sm">Saving record…</fandry-spinner>
 </div>
 
 /* css */
@@ -1562,23 +1706,157 @@ fandry-skeleton::part(base) {
    every fandry-* component on the site. */
 .brand {
   --fd-primary: 160 84% 26%;
-  --fd-border: 160 30% 90%;
-  --fd-border-width-lg: 4px;
+  --fd-spinner-thickness: 0.2em;
+}
+
+/* The track is the border color. Set on the spinner alone, it is a tint
+   of the primary color here and the border color everywhere else. */
+fandry-spinner {
+  --fd-border: 160 84% 26% / 0.2;
 }
 
 fandry-spinner::part(base) {
   border-right-color: hsl(45 90% 50%);
+}
+
+fandry-spinner::part(label) {
+  color: hsl(160 84% 26%);
+  font-weight: 600;
 }`
     },
     category: 'Feedback',
-    description: 'A loading spinner in three sizes.',
+    description: 'A loading spinner in three sizes, with optional text beside it.',
     props: [
-      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size.' },
-      { name: 'label', type: 'string', default: "''", description: 'Names this spinner, e.g. "Saving changes". Overrides messages.label.' },
-      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Spinner size. The ring\'s thickness follows it (`--fd-spinner-thickness`, in em of the ring).' },
+      { name: 'default slot', type: 'slot', default: '—', description: 'Text shown beside the ring, e.g. "Loading fields…". It becomes the status a screen reader reads, in place of label.' },
+      { name: 'label', type: 'string', default: "''", description: 'Names a spinner that shows no text, e.g. "Saving changes". Not displayed. Overrides messages.label.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label, and is read in place of slotted text.' },
       { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default name ("Loading") for every instance, e.g. to translate it.' }
     ],
+    examples: [
+      {
+        title: 'With a label',
+        demo: 'spinner-label',
+        code: `<!-- Text in the default slot shows beside the ring. Style it with ::part(label). -->
+<fandry-spinner size="sm">Loading fields…</fandry-spinner>
+<fandry-spinner size="md">Saving record…</fandry-spinner>
+<fandry-spinner size="lg">Converting lead…</fandry-spinner>`
+      }
+    ],
     code: `<fandry-spinner size="md"></fandry-spinner>`
+  },
+  {
+    slug: 'loading-overlay',
+    name: 'Loading Overlay',
+    tag: 'fandry-loading-overlay',
+    parts: ['backdrop', 'panel', 'spinner', 'label'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'loading-overlay-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-button onclick={handleSave}>Save record</fandry-button>
+  <fandry-loading-overlay open={saving} label="Saving record…"></fandry-loading-overlay>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-backdrop: 160 40% 10%;
+  --fd-backdrop-opacity: 0.4;
+  --fd-loading-overlay-delay: 0ms;
+}
+
+/* The spinner's track is the border color: a tint of the primary here. */
+fandry-loading-overlay {
+  --fd-border: 160 84% 26% / 0.2;
+}
+
+fandry-loading-overlay::part(backdrop) {
+  backdrop-filter: blur(4px);
+}
+
+fandry-loading-overlay::part(panel) {
+  flex-direction: row;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+}
+
+/* The ring is 1em square: its font-size is its size. */
+fandry-loading-overlay::part(spinner) {
+  font-size: 1.25rem;
+}
+
+fandry-loading-overlay::part(label) {
+  font-weight: 600;
+}`
+    },
+    category: 'Feedback',
+    description: 'Covers the page, or one panel, while it is busy. A backdrop blocks the pointer and the keyboard, and a panel shows a spinner and a label.',
+    props: [
+      { name: 'open', type: 'boolean', default: 'false', description: 'Whether the page or panel is busy. Bind it rather than wrapping the overlay in `lwc:if`: it stays in the page so its label is announced, and so it can fade out.' },
+      { name: 'contained', type: 'boolean', default: 'false', description: 'Covers the nearest positioned ancestor (position: relative) instead of the viewport, and blocks keys inside its parent element. Put the overlay directly inside the panel it covers.' },
+      { name: 'label', type: 'string', default: "''", description: 'The text under the spinner, e.g. "Saving record…". Wins over messages.label. To restyle it (bold, color), use `::part(label)`, not the slot.' },
+      { name: 'messages', type: '{ label }', default: '{}', description: 'Replaces the default label ("Loading") for every instance, e.g. to translate it.' },
+      { name: 'default slot', type: 'slot', default: 'spinner and label', description: 'The whole content of the panel, spinner included: your own indicator, markup in the text, a progress bar, a Cancel button. Its text (minus anything `aria-hidden`) is what is announced, or the label when it has none.' }
+    ],
+    notes: [
+      {
+        title: 'Not a dialog',
+        paragraphs: [
+          'It blocks the pointer and the keyboard the moment it opens, but takes no focus and has nothing to close: the page must always set open back to false, on errors and timeouts too. It only shows after `--fd-loading-overlay-delay` (`150ms`), so an operation that finishes sooner never flashes an overlay.',
+          'Focus stays where it was. Over the page, keys do nothing until it closes (typing, Tab, Enter, Space, arrow-key scrolling, paste, the page\'s own shortcuts); the browser\'s shortcuts and wheel or touch scrolling still work. A contained overlay blocks keys inside the element it is in and lets Tab leave it. Keys still reach content in the overlay once it has focus: focus a Cancel button you put there yourself.',
+          'It blocks hardware keys, not every input method: text from an IME or an on-screen keyboard, and a screen reader\'s own click, can still reach what is behind it. Guard the actions that must not run twice.',
+          'It keeps a polite status region in the page at all times and puts the content\'s text into it once the overlay shows, so a screen reader announces it. A label edited in place while it is open is not announced again. Mark a slotted spinner `aria-hidden="true"`: the region already says what is happening.'
+        ]
+      }
+    ],
+    examples: [
+      {
+        title: 'Your own content',
+        demo: 'loading-overlay-custom',
+        code: `<!-- template: the default slot replaces the spinner and label, so bring your own indicator -->
+<fandry-button onclick={handleImport}>Import contacts</fandry-button>
+<fandry-loading-overlay open={importing}>
+  <fandry-progress value={percent} label="Import progress"></fandry-progress>
+  <fandry-text>Importing contacts…</fandry-text>
+  <fandry-button variant="secondary" onclick={handleCancel}>Cancel</fandry-button>
+</fandry-loading-overlay>
+
+// js: keys are blocked outside the overlay, so put focus on the action
+async handleImport() {
+  this.importing = true;
+  await Promise.resolve();
+  this.template.querySelector('fandry-loading-overlay fandry-button').focus();
+}`
+      },
+      {
+        title: 'Over one panel',
+        demo: 'loading-overlay-contained',
+        code: `<!-- template: the overlay goes directly inside the panel it covers -->
+<div class="panel">
+  <fandry-card>
+    ...
+    <fandry-button variant="secondary" onclick={handleRefresh}>Refresh</fandry-button>
+  </fandry-card>
+  <fandry-loading-overlay open={refreshing} contained label="Refreshing…"></fandry-loading-overlay>
+</div>
+
+/* css */
+.panel {
+  position: relative;
+}
+
+/* Follow the panel's corners */
+.panel fandry-loading-overlay::part(backdrop) {
+  border-radius: var(--fd-radius-lg, 0.5rem);
+}`
+      }
+    ],
+    code: `<fandry-button onclick={handleConvert}>Convert lead</fandry-button>
+<fandry-loading-overlay open={converting} label="Converting lead…"></fandry-loading-overlay>`
   },
   {
     slug: 'toast',
@@ -1620,7 +1898,7 @@ fandry-toast-viewport::part(base) {
 }`
     },
     category: 'Feedback',
-    description: 'An auto-dismissing notification — pair with fandry-toast-viewport for placement.',
+    description: 'An auto-dismissing notification — pair with `fandry-toast-viewport` for placement.',
     props: [
       { name: 'variant', type: "'info' | 'success' | 'warning' | 'danger'", default: "'info'", description: 'Status color.' },
       { name: 'duration', type: 'number', default: '4000', description: 'Milliseconds before auto-dismiss.' }
@@ -1668,7 +1946,7 @@ fandry-toast-viewport::part(base) {
 }`
     },
     category: 'Feedback',
-    description: 'A fixed or contained stacking region that positions fandry-toast.',
+    description: 'A fixed or contained stacking region that positions `fandry-toast`.',
     props: [
       { name: 'placement', type: "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'", default: "'bottom-right'", description: 'Corner to stack from.' },
       { name: 'contained', type: 'boolean', default: 'false', description: 'position: absolute against the nearest positioned ancestor instead of the viewport.' },
@@ -1807,12 +2085,13 @@ fandry-command::part(option-description) {
 }`
     },
     category: 'Overlays & Data',
-    description: 'A command palette — a modal search box over a list of actions. Generic: it reports the chosen value and leaves what it does (and the Cmd+K shortcut) to you.',
+    description: 'A command palette — a modal search box over a list of actions. Generic: it reports the chosen value and leaves what it does (and the `Cmd+K`/`Ctrl+K` shortcut) to you.',
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Whether the palette is shown. Listen for `toggle` (detail is the new state) and update it.' },
       { name: 'label', type: 'string', default: "''", description: 'Accessible name of the palette.' },
       { name: 'aria-label', type: 'string', default: '—', description: 'The same name, set the standard way. Wins over label.' },
       { name: 'placeholder', type: 'string', default: "''", description: 'Hint shown in the empty search box.' },
+      { name: 'messages', type: '{ results(count) }', default: '{}', description: 'Replaces what a screen reader hears as the list narrows ("3 results"), e.g. to translate it. "No results" is the `empty` slot.' },
       { name: 'items', type: '{ label, value, description?, group?, keywords?, disabled? }[]', default: '[]', description: 'The commands. Ungrouped items list first; grouped items sit under their heading.' },
       { name: 'select (event)', type: 'CustomEvent<{ value }>', default: '—', description: 'Fired when an item is picked; the palette then closes itself.' },
       { name: 'empty (slot)', type: 'slot', default: "'No results found'", description: 'Replaces the message shown when nothing matches.' }
@@ -2046,7 +2325,7 @@ fandry-menu-item.danger::part(base) {
 }`
     },
     category: 'Overlays & Data',
-    description: 'A single selectable row inside fandry-menu.',
+    description: 'A single selectable row inside `fandry-menu`.',
     props: [
       { name: 'value', type: 'string', default: "''", description: 'Value reported to onselect.' },
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
@@ -2084,9 +2363,9 @@ fandry-popover::part(panel) {
 }`
     },
     category: 'Overlays & Data',
-    description: 'An anchored floating panel — owns positioning, not the trigger or content.',
+    description: 'An anchored floating panel — owns positioning, not the trigger or content. The panel is never narrower than its trigger; set `display: block` on the popover for a trigger that fills its row.',
     props: [
-      { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'bottom'", description: 'Panel position relative to the trigger.' },
+      { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'bottom'", description: 'Side of the trigger the panel opens on. It opens on the opposite side instead when it would run off the viewport and that side has more room.' },
       { name: 'align', type: "'start' | 'end'", default: "'start'", description: "Which edge of the trigger the panel aligns to, for 'top'/'bottom' placement." },
       { name: 'open', type: 'boolean', default: 'false', description: 'Open state (consumer-controlled via ontoggle).' }
     ],
@@ -2139,7 +2418,7 @@ fandry-table::part(row):hover {
 }`
     },
     category: 'Overlays & Data',
-    description: 'A data table with sorting, pagination, selection, and filtering — wraps @tanstack/table-core.',
+    description: 'A data table with sorting, pagination, selection, and filtering — wraps `@tanstack/table-core`.',
     props: [
       { name: 'columns', type: 'ColumnDef[]', default: '[]', description: 'Column definitions.' },
       { name: 'data', type: 'RowData[]', default: '[]', description: 'Row data.' },
@@ -2160,8 +2439,8 @@ fandry-table::part(row):hover {
     slug: 'lookup',
     name: 'Lookup',
     tag: 'fandry-lookup',
-    parts: ['base', 'label', 'required', 'control', 'selection', 'selection-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text'],
-    states: ['disabled', 'selected', 'active'],
+    parts: ['base', 'label', 'required', 'control', 'selection', 'selection-label', 'clear-button', 'chips', 'chip', 'chip-label', 'chip-remove', 'input', 'clear-all', 'panel', 'listbox', 'group', 'group-label', 'option', 'option-label', 'option-description', 'status', 'empty', 'help-text', 'error-text'],
+    states: ['disabled', 'invalid', 'selected', 'active'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'lookup-theme',
@@ -2170,6 +2449,7 @@ fandry-table::part(row):hover {
   <fandry-lookup
     label="Account"
     placeholder="Search accounts"
+    debounce-ms="300"
     results={results}
     loading={loading}
     record={account}
@@ -2208,10 +2488,12 @@ fandry-lookup::part(option-description) {
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'placeholder', type: 'string', default: "''", description: 'Shown in the empty search box.' },
       { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
       { name: 'name', type: 'string', default: "''", description: 'Exposed as `data-name` on the input.' },
       { name: 'results', type: '{ id, label, description?, disabled?, … }[]', default: '[]', description: 'Matches for the current search, shown exactly as given (never re-filtered). Extra fields ride along and come back in `change`.' },
       { name: 'loading', type: 'boolean', default: 'false', description: 'Shows a searching indicator while your query is in flight.' },
       { name: 'multiple', type: 'boolean', default: 'false', description: 'Allow any number of records, shown as removable chips with a “Clear all”. The list stays open after each pick, already-chosen records are not offered again, and Backspace in an empty field removes the last chip.' },
+      { name: 'debounce-ms', type: 'number', default: '250', description: 'Milliseconds typing must pause before `search` fires; 0 searches on every keystroke. Opening the list still searches at once.' },
       { name: 'value', type: 'string | string[]', default: "''", description: 'The selected id (an array of ids with `multiple`). Set it to render existing data; it updates when the user picks or clears. The lookup names each id from `record`/`records` or `results`; for any it can\'t, it fires `resolve` and shows the raw id (muted) until you supply the record.' },
       { name: 'record', type: '{ id, label, … } | null', default: 'null', description: 'Single mode: the selected record, shown as the field\'s value with a clear button. On its own it preselects; once `value` has been set it only supplies the name for that id.' },
       { name: 'records', type: '{ id, label, … }[]', default: '[]', description: 'Multiple mode: the selected records. On its own it preselects; once `value` has been set it only supplies names for those ids (any subset is fine).' },
@@ -2224,7 +2506,7 @@ fandry-lookup::part(option-description) {
       { name: 'empty (slot)', type: 'slot', default: "'No records found'", description: 'Replaces the message shown when a search has no matches.' },
       { name: 'clear-all · searching (slots)', type: 'slot', default: "'Clear all' · 'Searching…'", description: 'Replace the Clear all button\'s text and the searching line.' },
       { name: 'messages', type: '{ searching, clear(name), remove(name) }', default: '{}', description: 'Replaces the accessible names of the spinner and the clear and remove buttons, e.g. to translate them.' },
-      { name: 'label · help-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label or help text. Shown even without the matching prop.' }
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<!-- template -->
 <fandry-lookup

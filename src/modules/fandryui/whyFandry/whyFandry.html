@@ -1,0 +1,181 @@
+<template>
+  <fandryui-site-header></fandryui-site-header>
+  <main>
+    <fandryui-page-intro
+      page-title="Why Fandry UI exists"
+      subtitle="The flexibility of modern UI development, with the simplicity of LWC. What Fandry is for, what it trades away, and where to check each claim."
+    ></fandryui-page-intro>
+
+    <article class="article">
+      <section class="section">
+        <fandryui-doc-heading level="2" text="Your UI, your identity" class="section-title"></fandryui-doc-heading>
+        <fandry-text class="para">
+          Salesforce ISVs and teams building Experience Cloud and LWR sites ship products with their own
+          brand. Their users should see that product, not the standard Salesforce interface.
+        </fandry-text>
+        <fandry-text class="para">
+          Every Fandry component reads its colors, type, spacing, radius and motion from one token scale.
+          Set the public <code>--fd-*</code> tokens on <code>:root</code> to theme everything, or on one section or element to theme
+          just that part of the page.
+        </fandry-text>
+        <fandryui-code-block label="your-site.css" code={themeCode}></fandryui-code-block>
+      </section>
+
+      <section class="section">
+        <fandryui-doc-heading level="2" text="Composition over configuration" class="section-title"></fandryui-doc-heading>
+        <fandry-text class="para">
+          Each component ships a sensible default. When you need something different, you compose:
+          replace a slot, restyle a part, extend the class that holds the behavior. A component gets a new
+          prop only for a genuinely binary behavior like <code>disabled</code>, not for every variation someone might want.
+        </fandry-text>
+        <fandryui-code-block label="Markup in a slot, not a prop" code={composeCode}></fandryui-code-block>
+        <fandry-text class="para">
+          Every component keeps the same five steps open, from the quickest change to a full rewrite, so you
+          go only as far as you need:
+        </fandry-text>
+        <ol class="ladder">
+          <template for:each={ladder} for:item="rung">
+            <li key={rung.key} class="rung">
+              <span class="step" aria-hidden="true">{rung.step}</span>
+              <div>
+                <fandry-heading level="3" class="rung-title">{rung.title}</fandry-heading>
+                <fandry-text variant="muted" size="sm"><fandryui-doc-text text={rung.text}></fandryui-doc-text></fandry-text>
+              </div>
+            </li>
+          </template>
+        </ol>
+      </section>
+
+      <section class="section">
+        <fandryui-doc-heading level="2" text="A UI you control" class="section-title"></fandryui-doc-heading>
+        <fandry-text class="para">
+          Every component renders in native shadow DOM, on LWR and in a Salesforce org, even one that loads
+          the synthetic-shadow polyfill. Encapsulation keeps your global CSS from breaking a component by
+          accident, and CSS parts give you a deliberate way in.
+        </fandry-text>
+        <fandryui-code-block label="Parts and states" code={partsCode}></fandryui-code-block>
+        <fandry-text class="para">
+          Fandry ships as plain LWC source, not a compiled runtime. Components with real state, like the
+          table, keep it in a template-less class you can extend with your own markup:
+        </fandry-text>
+        <fandryui-code-block label="orderGrid.ts" code={extendCode}></fandryui-code-block>
+        <fandry-text class="para">
+          Tokens and parts are public API: renaming or removing one is a breaking change, so your design
+          system evolves when you decide, not as a side effect of an upgrade.
+        </fandry-text>
+      </section>
+
+      <section class="section">
+        <fandryui-doc-heading level="2" text="Less dependence on Salesforce's UI" class="section-title"></fandryui-doc-heading>
+        <fandry-text class="para">
+          Fandry has its own component implementations and its own design system. It doesn't render&nbsp;
+          <code>lightning-*</code> components or depend on SLDS, so a change to Lightning Base Components or their styling
+          doesn't change how your product looks.
+        </fandry-text>
+        <fandry-text class="para">
+          Your UI should evolve when your product evolves, not when Salesforce changes its components. That
+          is a claim about base components only: Fandry still runs on LWC, LWR and Lightning Web Security, and
+          follows the platform like any other code.
+        </fandry-text>
+      </section>
+
+      <section class="section">
+        <fandryui-doc-heading level="2" text="The simplicity of LWC" class="section-title"></fandryui-doc-heading>
+        <fandry-text class="para">
+          A Fandry component is a Lightning Web Component. You set <code>@api</code> properties, fill slots and listen for
+          standard <code>input</code>, <code>change</code>, <code>focus</code> and <code>blur</code> events, the same way you already work. There is no second
+          framework, virtual DOM or build pipeline to add, and your own components and <code>lightning-*</code> components
+          sit alongside Fandry's.
+        </fandry-text>
+      </section>
+
+      <section class="section">
+        <fandryui-doc-heading level="2" text="Lightning Base Components and Fandry UI" class="section-title"></fandryui-doc-heading>
+        <fandry-text class="para">
+          They solve different problems. Neither is better in general; pick the one whose goals match yours.
+        </fandry-text>
+        <div class="compare">
+          <fandry-card class="compare-card info-card">
+            <fandry-heading level="3">Lightning Base Components</fandry-heading>
+            <fandry-text variant="muted" size="sm">Optimized for:</fandry-text>
+            <ul class="list">
+              <template for:each={lbcGoals} for:item="goal">
+                <li key={goal}><fandry-text size="sm">{goal}</fandry-text></li>
+              </template>
+            </ul>
+          </fandry-card>
+          <fandry-card class="compare-card info-card">
+            <fandry-heading level="3">Fandry UI</fandry-heading>
+            <fandry-text variant="muted" size="sm">Optimized for:</fandry-text>
+            <ul class="list">
+              <template for:each={fandryGoals} for:item="goal">
+                <li key={goal}><fandry-text size="sm">{goal}</fandry-text></li>
+              </template>
+            </ul>
+          </fandry-card>
+        </div>
+      </section>
+
+      <section class="section">
+        <fandryui-doc-heading level="2" text="The trade-offs" class="section-title"></fandryui-doc-heading>
+        <dl class="tradeoffs">
+          <template for:each={tradeOffs} for:item="item">
+            <div key={item.key} class="tradeoff">
+              <dt><fandry-text as="span" class="tradeoff-title">{item.title}</fandry-text></dt>
+              <dd><fandry-text variant="muted" size="sm"><fandryui-doc-text text={item.text}></fandryui-doc-text></fandry-text></dd>
+            </div>
+          </template>
+        </dl>
+      </section>
+    </article>
+
+    <section class="demo">
+      <div class="demo-inner">
+        <fandryui-doc-heading level="2" text="One component, three identities" class="section-title"></fandryui-doc-heading>
+        <fandry-text variant="muted" class="para">
+          The same markup three times. Only the <code>--fd-*</code> tokens on each wrapper differ.
+        </fandry-text>
+        <div class="themes">
+          <template for:each={themes} for:item="theme">
+            <div key={theme.key} class="theme" style={theme.style}>
+              <fandry-text as="span" size="xs" class="theme-name">{theme.name}</fandry-text>
+              <fandry-card class="theme-card">
+                <fandry-badge variant="primary">New</fandry-badge>
+                <fandry-heading level="3">Spring collection</fandry-heading>
+                <fandry-text variant="muted" size="sm">Get early access and member pricing.</fandry-text>
+                <fandry-input label="Email" placeholder="you@example.com"></fandry-input>
+                <fandry-button>Join the list</fandry-button>
+              </fandry-card>
+              <fandry-text as="span" size="xs" variant="muted" class="theme-note">{theme.note}</fandry-text>
+            </div>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <section class="start">
+      <div class="start-inner">
+        <fandryui-doc-heading level="2" text="Get started" class="section-title"></fandryui-doc-heading>
+        <fandry-text variant="muted" class="para">
+          One npm package and the same components on both platforms. Pick the one you build on.
+        </fandry-text>
+        <div class="start-grid">
+          <template for:each={platforms} for:item="platform">
+            <fandry-card key={platform.slug} class="start-card info-card">
+              <fandry-badge>{platform.badge}</fandry-badge>
+              <fandry-heading level="3">{platform.name}</fandry-heading>
+              <fandry-text variant="muted" size="sm"><fandryui-doc-text text={platform.description}></fandryui-doc-text></fandry-text>
+              <fandryui-code-block code={platform.code} class="start-code"></fandryui-code-block>
+              <fandry-link href={platform.href} class="start-cta">{platform.cta} →</fandry-link>
+            </fandry-card>
+          </template>
+        </div>
+        <fandry-text variant="muted" size="sm" class="next">
+          Then make it your own with the <fandry-link href="/getting-started/theming/">theming guide</fandry-link>,
+          or see more in <fandry-link href="/examples/">Examples</fandry-link>.
+        </fandry-text>
+      </div>
+    </section>
+  </main>
+  <fandryui-site-footer></fandryui-site-footer>
+</template>

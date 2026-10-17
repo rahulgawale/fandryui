@@ -15,12 +15,18 @@
         <template if:true={showSelected}>
           <div class="selected" part="selection" role="group" aria-labelledby="label">
             <span class={selectedLabelClasses} part="selection-label">{selectedLabel}</span>
+            <!--
+              With a record chosen there is no input: this button is what
+              takes focus, so it carries the error and help text instead.
+              (aria-invalid is not for a button; the error text says it.)
+            -->
             <button
               type="button"
               class="clear"
               part="clear-button"
               tabindex="0"
               aria-label={clearLabel}
+              aria-describedby={describedBy}
               disabled={disabled}
               onclick={handleClear}
             >
@@ -69,7 +75,8 @@
               aria-expanded={ariaExpanded}
               aria-controls="listbox"
               aria-activedescendant={openActiveDescendant}
-              aria-describedby="help-text"
+              aria-describedby={describedBy}
+              aria-invalid={ariaInvalid}
               aria-required={ariaRequired}
               oninput={handleInput}
               onclick={handleInputClick}
@@ -142,6 +149,10 @@
           </template>
         </div>
       </template>
+    </div>
+
+    <div id="error-text" class={errorTextClasses} part="error-text" aria-live="polite">
+      <slot name="error-text" onslotchange={handleTextSlotChange}>{errorText}</slot>
     </div>
 
     <div id="help-text" class="help-text" part="help-text" hidden={helpTextHidden}>

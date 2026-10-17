@@ -23,10 +23,20 @@
    every fandry-* component on the site. */
 .brand {
   --fd-primary: 160 84% 26%;
-  --fd-border: 160 30% 90%;
-  --fd-border-width-lg: 4px;
+  --fd-spinner-thickness: 0.2em;
+}
+
+/* The track is the border color. Set on the spinner alone, it is a tint
+   of the primary color here and the border color everywhere else. */
+fandry-spinner {
+  --fd-border: 160 84% 26% / 0.2;
 }
 
 fandry-spinner::part(base) {
   border-right-color: hsl(45 90% 50%);
+}
+
+fandry-spinner::part(label) {
+  color: hsl(160 84% 26%);
+  font-weight: 600;
 }

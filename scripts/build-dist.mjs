@@ -210,7 +210,16 @@ function buildRegistry(sfdxComponents, version) {
       for (const [, bundle] of text.matchAll(/from\s+['"]c\/(fandry[A-Za-z]+)['"]/g)) {
         deps.add(byBundle.get(bundle));
       }
-      for (const [, tag] of text.matchAll(/<\/?c-fandry-([a-z-]+)/g)) {
+      /* A template renders a tag; a script needs one only when it queries for
+         its slotted children; a stylesheet needs every tag its selectors name
+         (the platform won't deploy it otherwise). A tag in a comment is none. */
+      const css = file.endsWith('.css');
+      const tags = file.endsWith('.html')
+        ? /<\/?c-fandry-([a-z-]+)/g
+        : css
+          ? /(?<![\w.#-])c-fandry-([a-z-]+)/g
+          : /(?:querySelector(?:All)?|closest)\(\s*['"`]c-fandry-([a-z-]+)/g;
+      for (const [, tag] of (css ? text.replace(/\/\*[\s\S]*?\*\//g, '') : text).matchAll(tags)) {
         deps.add(kebabToCamel(tag));
       }
     }

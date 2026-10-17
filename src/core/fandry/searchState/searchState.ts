@@ -130,6 +130,21 @@ export default class FdSearchState extends Base {
     return false;
   }
 
+  /**
+   * Whether an option is `aria-selected`: by default, the current value. A
+   * list with no value of its own (a command palette) overrides this to mark
+   * the active option instead -- Safari with VoiceOver reads the option that
+   * `aria-activedescendant` points at only when it is `aria-selected`.
+   */
+  protected isAriaSelected(selected: boolean, _active: boolean): boolean {
+    return selected;
+  }
+
+  /** How many results the current search has. */
+  protected get resultCount(): number {
+    return this.entries.length;
+  }
+
   /** What picking an enabled item does. */
   protected commit(_item: FdSearchItem): void {}
 
@@ -253,7 +268,7 @@ export default class FdSearchState extends Base {
       description: item.description ?? '',
       hasDescription: !!item.description,
       disabled,
-      ariaSelected: selected ? 'true' : 'false',
+      ariaSelected: this.isAriaSelected(selected, id === activeId) ? 'true' : 'false',
       ariaDisabled: disabled ? 'true' : 'false',
       component: item.component,
       resolvedComponentProps: item.componentProps ?? {},

@@ -14,7 +14,7 @@
     <main class="content">
       <fandry-badge>{page.badge}</fandry-badge>
       <fandry-heading level="1" class="title">{page.title}</fandry-heading>
-      <fandry-text variant="muted" class="lede">{page.description}</fandry-text>
+      <fandry-text variant="muted" class="lede"><fandryui-doc-text text={page.description}></fandryui-doc-text></fandry-text>
 
       <template if:true={isOverview}>
         <div class="grid">
@@ -23,7 +23,7 @@
               <fandry-card class="card">
                 <fandry-badge>{card.badge}</fandry-badge>
                 <fandry-heading level="2">{card.name}</fandry-heading>
-                <fandry-text variant="muted" size="sm">{card.description}</fandry-text>
+                <fandry-text variant="muted" size="sm"><fandryui-doc-text text={card.description}></fandryui-doc-text></fandry-text>
               </fandry-card>
             </a>
           </template>
@@ -32,41 +32,32 @@
 
       <template for:each={sections} for:item="section">
         <section key={section.id} class="section">
-          <fandry-heading level="2" class="section-title">{section.title}</fandry-heading>
+          <fandryui-doc-heading level="2" text={section.title} class="section-title"></fandryui-doc-heading>
 
           <template for:each={section.blocks} for:item="block">
             <div key={block.key} class="block">
               <template if:true={block.isText}>
-                <fandry-text>{block.text}</fandry-text>
+                <fandry-text><fandryui-doc-text text={block.text}></fandryui-doc-text></fandry-text>
               </template>
 
               <template if:true={block.isList}>
                 <ul class="list">
                   <template for:each={block.items} for:item="item">
-                    <li key={item}><fandry-text>{item}</fandry-text></li>
+                    <li key={item}><fandry-text><fandryui-doc-text text={item}></fandryui-doc-text></fandry-text></li>
                   </template>
                 </ul>
               </template>
 
-              <!-- figure/figcaption gives each block an accessible name. The pre is
-                   focusable (tabindex="0") so keyboard users can scroll a wide
-                   block; without it a scrollable region is unreachable. -->
               <template if:true={block.isCode}>
-                <figure class="figure">
-                  <figcaption><fandry-text as="span" size="xs" variant="muted" class="code-label">{block.label}</fandry-text></figcaption>
-                  <pre class="code-block" tabindex="0"><code>{block.code}</code></pre>
-                </figure>
+                <fandryui-code-block label={block.label} code={block.code}></fandryui-code-block>
               </template>
 
               <template if:true={block.isTree}>
-                <figure class="figure">
-                  <figcaption><fandry-text as="span" size="xs" variant="muted" class="code-label">{block.label}</fandry-text></figcaption>
-                  <pre class="code-block tree" tabindex="0"><code>{block.code}</code></pre>
-                </figure>
+                <fandryui-code-block label={block.label} code={block.code} variant="tree"></fandryui-code-block>
               </template>
 
               <template if:true={block.isNote}>
-                <fandry-alert variant={block.variant} title={block.title}>{block.text}</fandry-alert>
+                <fandry-alert variant={block.variant} title={block.title}><fandryui-doc-text text={block.text}></fandryui-doc-text></fandry-alert>
               </template>
             </div>
           </template>
@@ -74,8 +65,10 @@
       </template>
 
       <fandry-divider class="end-divider"></fandry-divider>
-      <fandry-text variant="muted" size="sm">Ready to build? Browse every component, its props and examples under <fandry-link href="/components">Components</fandry-link>.</fandry-text>
+      <fandry-text variant="muted" size="sm">Ready to build? Browse every component, its props and examples under <fandry-link href="/components/">Components</fandry-link>.</fandry-text>
     </main>
+
+    <fandryui-doc-toc class="toc" items={tocItems}></fandryui-doc-toc>
   </div>
 
   <fandryui-site-footer></fandryui-site-footer>

@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+/* A contained overlay covers its nearest positioned ancestor. */
+.panel {
+  position: relative;
+  max-width: 20rem;
+}
+
+.panel fandry-loading-overlay::part(backdrop) {
+  border-radius: var(--fd-radius-lg, 0.5rem);
+}

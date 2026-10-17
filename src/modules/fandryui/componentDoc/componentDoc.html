@@ -17,11 +17,11 @@
       <template if:true={entry}>
         <fandry-badge>{entry.category}</fandry-badge>
         <fandry-heading level="1" class="title">{entry.name}</fandry-heading>
-        <fandry-text variant="muted" class="lede">{entry.description}</fandry-text>
-        <fandry-text as="span" size="sm" variant="muted" class="tag">{entry.tag}</fandry-text>
+        <fandry-text variant="muted" class="lede"><fandryui-doc-text text={entry.description}></fandryui-doc-text></fandry-text>
+        <fandry-text size="sm" variant="muted" class="tag"><code>{entry.tag}</code></fandry-text>
 
         <section class="section">
-          <fandry-heading level="3">Example</fandry-heading>
+          <fandryui-doc-heading level="2" text="Example" class="section-title"></fandryui-doc-heading>
           <fandry-card class="demo-frame">
             <lwc:component lwc:is={demoComponent}></lwc:component>
           </fandry-card>
@@ -29,7 +29,7 @@
 
         <template if:true={customizeDemo}>
           <section class="section">
-            <fandry-heading level="3">Example: Custom colors and parts</fandry-heading>
+            <fandryui-doc-heading level="2" text="Custom colors and parts" anchor="customize" class="section-title"></fandryui-doc-heading>
             <fandry-text variant="muted" size="sm" class="section-note">
               The same component with a few <code>--fd-*</code> tokens set around it and its parts restyled. The code is
               under Parts below.
@@ -41,7 +41,7 @@
         </template>
 
         <section class="section">
-          <fandry-heading level="3">Props</fandry-heading>
+          <fandryui-doc-heading level="2" text="Props" class="section-title"></fandryui-doc-heading>
           <template if:true={hasProps}>
             <div class="props-table-wrap">
               <table class="props-table">
@@ -59,7 +59,7 @@
                       <td><code>{prop.name}</code></td>
                       <td><code>{prop.type}</code></td>
                       <td><code>{prop.default}</code></td>
-                      <td>{prop.description}</td>
+                      <td><fandryui-doc-text text={prop.description}></fandryui-doc-text></td>
                     </tr>
                   </template>
                 </tbody>
@@ -75,7 +75,7 @@
 
         <template if:true={hasParts}>
           <section class="section">
-            <fandry-heading level="3">Parts</fandry-heading>
+            <fandryui-doc-heading level="2" text="Parts" class="section-title"></fandryui-doc-heading>
             <fandry-text variant="muted" size="sm" class="section-note">
               Style the elements inside the component from your own CSS with <code>::part()</code>. Every fandry
               component renders in native shadow DOM, so parts work on LWR and Salesforce alike. For colors, spacing,
@@ -94,7 +94,7 @@
                   <template for:each={parts} for:item="part">
                     <tr key={part.name}>
                       <td><code>{part.name}</code></td>
-                      <td>{part.description}</td>
+                      <td><fandryui-doc-text text={part.description}></fandryui-doc-text></td>
                     </tr>
                   </template>
                 </tbody>
@@ -117,7 +117,7 @@
                     <template for:each={states} for:item="state">
                       <tr key={state.name}>
                         <td><code>{state.name}</code></td>
-                        <td>{state.description}</td>
+                        <td><fandryui-doc-text text={state.description}></fandryui-doc-text></td>
                       </tr>
                     </template>
                   </tbody>
@@ -125,28 +125,38 @@
               </div>
             </template>
             <template if:true={customizeCode}>
-              <pre class="code-block parts-code"><code>{customizeCode}</code></pre>
+              <fandryui-code-block code={customizeCode} class="parts-code"></fandryui-code-block>
             </template>
           </section>
         </template>
 
         <section class="section">
-          <fandry-heading level="3">Code</fandry-heading>
-          <pre class="code-block"><code>{entry.code}</code></pre>
+          <fandryui-doc-heading level="2" text="Code" class="section-title"></fandryui-doc-heading>
+          <fandryui-code-block code={entry.code}></fandryui-code-block>
         </section>
+
+        <template for:each={notes} for:item="note">
+          <section key={note.title} class="section">
+            <fandry-alert variant="info" title={note.title}>
+              <template for:each={note.paragraphs} for:item="paragraph">
+                <fandry-text key={paragraph.key} size="sm" class="note-paragraph"><fandryui-doc-text text={paragraph.text}></fandryui-doc-text></fandry-text>
+              </template>
+            </fandry-alert>
+          </section>
+        </template>
 
         <template for:each={extraExamples} for:item="example">
           <div key={example.title}>
             <section class="section">
-              <fandry-heading level="3">Example: {example.title}</fandry-heading>
+              <fandryui-doc-heading level="2" text={example.heading} anchor={example.anchor} class="section-title"></fandryui-doc-heading>
               <fandry-card class="demo-frame">
                 <lwc:component lwc:is={example.demoComponent}></lwc:component>
               </fandry-card>
             </section>
 
             <section class="section">
-              <fandry-heading level="3">Code: {example.title}</fandry-heading>
-              <pre class="code-block"><code>{example.code}</code></pre>
+              <fandry-text size="sm" variant="muted" class="code-caption">Code</fandry-text>
+              <fandryui-code-block code={example.code}></fandryui-code-block>
             </section>
           </div>
         </template>
@@ -166,6 +176,10 @@
         </fandry-text>
       </template>
     </main>
+
+    <template if:true={entry}>
+      <fandryui-doc-toc class="toc" items={tocItems}></fandryui-doc-toc>
+    </template>
   </div>
 
   <fandryui-site-footer></fandryui-site-footer>

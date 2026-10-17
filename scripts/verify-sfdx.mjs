@@ -71,7 +71,8 @@ check(r.code === 0, `add exited ${r.code}: ${r.out}`);
 check(/fandryLookup.*uses? lwc:is/s.test(r.out) && /lightning__dynamicComponent/.test(r.out), `add of a lwc:is component did not explain the capability: ${r.out}`);
 const lwc = join(sf, 'fandryui/main/default/lwc');
 const installed = new Set(readdirSync(lwc));
-for (const b of ['fandryTable', 'fandryTableState', 'fandryTableCore', 'fandryBase', 'fandryLookup', 'fandrySearchState', 'fandryRadioGroup', 'fandryRadio', 'fandryDialog']) {
+// fandryLabel: lookup's stylesheet names it in a selector, which the platform requires.
+for (const b of ['fandryTable', 'fandryTableState', 'fandryTableCore', 'fandryBase', 'fandryLookup', 'fandryLabel', 'fandrySearchState', 'fandryRadioGroup', 'fandryRadio', 'fandryDialog']) {
   check(installed.has(b), `expected bundle ${b} to be installed`);
 }
 check(!installed.has('fandryCarousel') && !installed.has('fandryMenu'), 'installed a bundle nobody asked for or depends on');
@@ -88,9 +89,17 @@ function assertSelfContained(installed) {
       for (const [, dep] of text.matchAll(/from\s+['"]c\/(fandry[A-Za-z]+)['"]/g)) {
         check(installed.has(dep), `${bundle}/${file} imports c/${dep}, which was not installed`);
       }
-      for (const [, tag] of text.matchAll(/<\/?c-fandry-([a-z-]+)/g)) {
+      /* The registry's own rule: a tag in a comment is not a dependency,
+         a tag in a stylesheet's selector is. */
+      const css = file.endsWith('.css');
+      const tags = file.endsWith('.html')
+        ? /<\/?c-fandry-([a-z-]+)/g
+        : css
+          ? /(?<![\w.#-])c-fandry-([a-z-]+)/g
+          : /(?:querySelector(?:All)?|closest)\(\s*['"`]c-fandry-([a-z-]+)/g;
+      for (const [, tag] of (css ? text.replace(/\/\*[\s\S]*?\*\//g, '') : text).matchAll(tags)) {
         const dep = `fandry${kebabToCamel(tag).replace(/^./, (c) => c.toUpperCase())}`;
-        check(installed.has(dep), `${bundle}/${file} renders <c-fandry-${tag}>, which was not installed`);
+        check(installed.has(dep), `${bundle}/${file} uses <c-fandry-${tag}>, which was not installed`);
       }
       check(!/from\s+['"]@/.test(text), `${bundle}/${file} imports an npm package`);
     }
@@ -195,11 +204,21 @@ check(readJson(join(dirProject, 'sfdx-project.json')).packageDirectories.length 
 r = fandry(dirProject, 'init', '--dir', 'elsewhere');
 check(r.code === 1 && /already installed/.test(r.out), 'init moved to a new --dir while components were installed in the old one');
 
+// A component named only in another's comments is not installed with it.
+const menuProject = join(work, 'menu');
+mkdirSync(menuProject);
+writeFileSync(join(menuProject, 'sfdx-project.json'), JSON.stringify({ packageDirectories: [{ path: 'force-app', default: true }], sourceApiVersion: '66.0' }));
+fandry(menuProject, 'init');
+fandry(menuProject, 'add', 'menu');
+const withMenu = readdirSync(join(menuProject, 'fandryui/main/default/lwc'));
+check(withMenu.includes('fandryMenuItem'), 'add menu did not install the menuItem it queries for');
+check(!withMenu.includes('fandryButton') && !withMenu.includes('fandryPopover'), `add menu installed a bundle only its comments name: ${withMenu.join(', ')}`);
+
 // Upgrades vs. edits, against a copy of the package we can "release" a new version of.
 const pkg = join(work, 'pkg');
 cpSync(DIST, pkg, { recursive: true });
 const pkgLwc = join(pkg, 'sfdx/lwc');
-writeFileSync(join(pkgLwc, 'fandryLabel/legacy.css'), '/* v1 only */\n');
+writeFileSync(join(pkgLwc, 'fandryTableState/legacy.css'), '/* v1 only */\n');
 const up = join(work, 'up');
 mkdirSync(up);
 writeFileSync(join(up, 'sfdx-project.json'), JSON.stringify({ packageDirectories: [{ path: 'force-app', default: true }], sourceApiVersion: '66.0' }));
@@ -207,20 +226,20 @@ const cli = join(pkg, 'bin/fandry.mjs');
 runCli(cli, up, ['init']);
 runCli(cli, up, ['add', 'input', 'table']);
 const upLwc = join(up, 'fandryui/main/default/lwc');
-check(existsSync(join(upLwc, 'fandryLabel/legacy.css')), 'test setup: v1 file was not installed');
+check(existsSync(join(upLwc, 'fandryTableState/legacy.css')), 'test setup: v1 file was not installed');
 
 // "New release": label changes and drops legacy.css; button and base change too.
-rmSync(join(pkgLwc, 'fandryLabel/legacy.css'));
-for (const b of ['fandryLabel', 'fandryButton', 'fandryBase']) {
+rmSync(join(pkgLwc, 'fandryTableState/legacy.css'));
+for (const b of ['fandryTableState', 'fandryButton', 'fandryBase']) {
   appendFileSync(join(pkgLwc, b, `${b}.js`), '\n// v2\n');
 }
 // The user edited button locally before upgrading.
 appendFileSync(join(upLwc, 'fandryButton/fandryButton.js'), '\n// my edit\n');
 
 r = runCli(cli, up, ['add', 'table']);
-check(/Updated[^\n]*fandryLabel/.test(r.out) && /Updated[^\n]*fandryBase/.test(r.out), `untouched bundles were not upgraded: ${r.out}`);
-check(readFileSync(join(upLwc, 'fandryLabel/fandryLabel.js'), 'utf8').includes('// v2'), 'upgrade did not install the new version');
-check(!existsSync(join(upLwc, 'fandryLabel/legacy.css')), 'upgrade left a file the new version dropped');
+check(/Updated[^\n]*fandryTableState/.test(r.out) && /Updated[^\n]*fandryBase/.test(r.out), `untouched bundles were not upgraded: ${r.out}`);
+check(readFileSync(join(upLwc, 'fandryTableState/fandryTableState.js'), 'utf8').includes('// v2'), 'upgrade did not install the new version');
+check(!existsSync(join(upLwc, 'fandryTableState/legacy.css')), 'upgrade left a file the new version dropped');
 check(/Skipped[^\n]*fandryButton/.test(r.out) && readFileSync(join(upLwc, 'fandryButton/fandryButton.js'), 'utf8').includes('// my edit'), 'an edited bundle was not preserved on upgrade');
 
 // --overwrite is for what you name, not for the dependencies of what you name.

@@ -87,14 +87,27 @@ describe('fandry-form-field', () => {
     expect(el.shadowRoot!.querySelector('.help')).toBeNull();
   });
 
-  it('shows an error as an alert and marks the control invalid', async () => {
-    const el = mount({ field: { name: 'n', label: 'N' }, error: 'Required.' });
+  /* A primitive with a place for an error ties it to its control and
+     announces it, so the field hands it over instead of showing its own. */
+  it.each(['text', 'textarea', 'select'])('gives a %s control its error to show', async (type) => {
+    const el = mount({ field: { name: 'n', label: 'N', type, options: [] }, error: 'Required.' });
+    await settle();
+
+    expect((control(el) as any).errorText).toBe('Required.');
+    expect(control(el)!.shadowRoot!.querySelector('[part~="error-text"]')!.textContent).toBe('Required.');
+    expect(el.shadowRoot!.querySelector('.error')).toBeNull();
+  });
+
+  it.each(['checkbox', 'switch', 'radio'])('shows the error of a %s as an alert and marks the control invalid', async (type) => {
+    const el = mount({ field: { name: 'n', label: 'N', type, options: [] }, error: 'Required.' });
     await settle();
 
     const error = el.shadowRoot!.querySelector('.error')!;
     expect(error.textContent).toBe('Required.');
     expect(error.getAttribute('role')).toBe('alert');
-    expect((control(el) as any).elementProps.ariaInvalid).toBe('true');
+    if (type !== 'radio') {
+      expect((control(el) as any).elementProps.ariaInvalid).toBe('true');
+    }
   });
 
   it('keeps the Safari tab stop, and lets the consumer add to the control', async () => {
@@ -222,6 +235,43 @@ describe('fandry-form-field', () => {
       await settle();
 
       expect(el.shadowRoot!.querySelector('.error')).toBeNull();
+    });
+  });
+
+  describe('changed', () => {
+    it('offers no Revert button until it is changed', async () => {
+      const el = mount({ field: { name: 'n', label: 'Name' } });
+      await settle();
+
+      expect(el.shadowRoot!.querySelector('.revert')).toBeNull();
+      expect(el.shadowRoot!.querySelector('.field')!.getAttribute('part')).toBe('base');
+    });
+
+    it.each(['text', 'textarea', 'select', 'radio', 'checkbox', 'switch'])(
+      'marks a changed %s field and asks to revert it',
+      async (type) => {
+        const el = mount({ field: { name: 'n', label: 'Name', type, options: OPTIONS }, changed: true });
+        const revert = jest.fn();
+        el.addEventListener('revert', revert);
+        await settle();
+
+        expect(el.shadowRoot!.querySelector('.field')!.getAttribute('part')).toBe('base changed');
+        const button = el.shadowRoot!.querySelector('.revert') as HTMLElement;
+        // Only an icon, so the name is on the button.
+        expect(button.querySelector('fandry-icon svg')).not.toBeNull();
+        expect(button.shadowRoot!.querySelector('button')!.getAttribute('aria-label')).toBe('Revert Name');
+
+        button.click();
+        expect(revert).toHaveBeenCalledTimes(1);
+      }
+    );
+
+    it('has nothing to revert while it is read', async () => {
+      const el = mount({ field: { name: 'n', label: 'Name' }, changed: true, mode: 'read' });
+      await settle();
+
+      expect(el.shadowRoot!.querySelector('.revert')).toBeNull();
+      expect(el.shadowRoot!.querySelector('.field')!.getAttribute('part')).toBe('base');
     });
   });
 

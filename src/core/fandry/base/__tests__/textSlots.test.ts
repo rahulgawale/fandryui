@@ -13,10 +13,12 @@ describe('text slots', () => {
   });
 
   it.each([
-    ['input', 'fandry-label'],
+    ['input', '.label'],
     ['input', '.help-text'],
     ['select', '.label'],
     ['select', '.help-text'],
+    ['textarea', '.label'],
+    ['textarea', '.help-text'],
     ['switch', '.label'],
     ['checkbox', '.label'],
     ['group', '.label'],
@@ -37,6 +39,20 @@ describe('text slots', () => {
 
     const select = harness.shadowRoot!.querySelector('.select')!;
     expect(select.shadowRoot!.querySelector('.label .required')).not.toBeNull();
+  });
+
+  /* Slotted, the label and help text still name and describe the textarea:
+     both wrappers are in its own shadow root, with the control. */
+  it('labels and describes the textarea from its slots', async () => {
+    const harness = createElement('text-slots-harness', { is: TextSlotsHarness });
+    document.body.appendChild(harness);
+    await settle();
+
+    const root = harness.shadowRoot!.querySelector('.textarea')!.shadowRoot!;
+    const textarea = root.querySelector('textarea')!;
+    expect(textarea.labels).toContain(root.querySelector('label'));
+    expect(root.querySelector('.label .required')).not.toBeNull();
+    expect(textarea.getAttribute('aria-describedby')).toBe(root.querySelector('.help-text')!.id);
   });
 
   it('points the radio group at its slotted label', async () => {

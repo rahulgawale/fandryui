@@ -4,7 +4,7 @@
   <main class="page">
     <fandry-breadcrumb>
       <fandry-breadcrumb-item href="/">Home</fandry-breadcrumb-item>
-      <fandry-breadcrumb-item href="/blocks">Blocks</fandry-breadcrumb-item>
+      <fandry-breadcrumb-item href="/blocks/">Blocks</fandry-breadcrumb-item>
       <fandry-breadcrumb-item current>Form</fandry-breadcrumb-item>
     </fandry-breadcrumb>
 
@@ -25,6 +25,7 @@
         ></fandry-switch>
         <fandry-text size="sm" variant="muted">
           Try it: choose <strong>Edit</strong>, clear the name or break the email and leave the field, then Save.
+          A field you change is highlighted and gets a revert button; <strong>Reset</strong> takes back all of them.
           Then use the username <strong>admin</strong>, a rule only the server can check.
         </fandry-text>
       </div>
@@ -42,37 +43,37 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Install</fandry-heading>
+      <fandryui-doc-heading level="2" text="Install" class="section-title"></fandryui-doc-heading>
       <div class="two-up">
         <div>
           <fandry-text size="sm" variant="muted" class="label">LWR / LWC OSS</fandry-text>
-          <pre class="code-block"><code>{installNpm}</code></pre>
+          <fandryui-code-block code={installNpm}></fandryui-code-block>
         </div>
         <div>
           <fandry-text size="sm" variant="muted" class="label">Salesforce DX</fandry-text>
-          <pre class="code-block"><code>{installSfdx}</code></pre>
+          <fandryui-code-block code={installSfdx}></fandryui-code-block>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Usage</fandry-heading>
-      <pre class="code-block"><code>{usageCode}</code></pre>
+      <fandryui-doc-heading level="2" text="Usage" class="section-title"></fandryui-doc-heading>
+      <fandryui-code-block code={usageCode}></fandryui-code-block>
       <fandry-text size="sm" variant="muted" class="note">
         A field is plain data. Its type picks the control, and its rules are functions:
       </fandry-text>
-      <pre class="code-block"><code>{fieldsCode}</code></pre>
+      <fandryui-code-block code={fieldsCode}></fandryui-code-block>
       <fandry-text size="sm" variant="muted" class="note">
         The block owns the workflow (when errors show, the saving state, read and edit); you own the request and the
         data:
       </fandry-text>
-      <pre class="code-block"><code>{hooksCode}</code></pre>
+      <fandryui-code-block code={hooksCode}></fandryui-code-block>
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Props</fandry-heading>
-      <div class="table-wrap">
-        <table class="doc-table">
+      <fandryui-doc-heading level="2" text="Props" class="section-title"></fandryui-doc-heading>
+      <div class="props-table-wrap">
+        <table class="props-table">
           <thead>
             <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
           </thead>
@@ -82,7 +83,7 @@
                 <td><code>{prop.name}</code></td>
                 <td><code>{prop.type}</code></td>
                 <td><code>{prop.default}</code></td>
-                <td>{prop.description}</td>
+                <td><fandryui-doc-text text={prop.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -91,9 +92,9 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Field</fandry-heading>
-      <div class="table-wrap">
-        <table class="doc-table">
+      <fandryui-doc-heading level="2" text="Field" class="section-title"></fandryui-doc-heading>
+      <div class="props-table-wrap">
+        <table class="props-table">
           <thead>
             <tr><th>Key</th><th>Type</th><th>Description</th></tr>
           </thead>
@@ -102,7 +103,7 @@
               <tr key={prop.name}>
                 <td><code>{prop.name}</code></td>
                 <td><code>{prop.type}</code></td>
-                <td>{prop.description}</td>
+                <td><fandryui-doc-text text={prop.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -111,9 +112,9 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Events</fandry-heading>
-      <div class="table-wrap">
-        <table class="doc-table">
+      <fandryui-doc-heading level="2" text="Events" class="section-title"></fandryui-doc-heading>
+      <div class="props-table-wrap">
+        <table class="props-table">
           <thead>
             <tr><th>Event</th><th>detail</th><th>Description</th></tr>
           </thead>
@@ -122,7 +123,7 @@
               <tr key={event.name}>
                 <td><code>{event.name}</code></td>
                 <td><code>{event.detail}</code></td>
-                <td>{event.description}</td>
+                <td><fandryui-doc-text text={event.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -131,9 +132,9 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Slots</fandry-heading>
-      <div class="table-wrap">
-        <table class="doc-table">
+      <fandryui-doc-heading level="2" text="Slots" class="section-title"></fandryui-doc-heading>
+      <div class="props-table-wrap">
+        <table class="props-table">
           <thead>
             <tr><th>Slot</th><th>Description</th></tr>
           </thead>
@@ -141,7 +142,7 @@
             <template for:each={slots} for:item="slot">
               <tr key={slot.name}>
                 <td><code>{slot.name}</code></td>
-                <td>{slot.description}</td>
+                <td><fandryui-doc-text text={slot.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -150,7 +151,27 @@
     </section>
 
     <section class="section">
-      <fandry-heading level="3">Make it yours</fandry-heading>
+      <fandryui-doc-heading level="2" text="Parts" class="section-title"></fandryui-doc-heading>
+      <div class="props-table-wrap">
+        <table class="props-table">
+          <thead>
+            <tr><th>Part</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <template for:each={parts} for:item="part">
+              <tr key={part.name}>
+                <td><code>{part.name}</code></td>
+                <td><fandryui-doc-text text={part.description}></fandryui-doc-text></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+      <fandryui-code-block code={partsCode}></fandryui-code-block>
+    </section>
+
+    <section class="section">
+      <fandryui-doc-heading level="2" text="Make it yours" class="section-title"></fandryui-doc-heading>
       <fandry-text variant="muted">
         The block is three pieces on purpose. <code>fandry/formState</code> has all the behavior and no template; <code>fandry/form</code> is that class plus the layout and actions you see here; <code>fandry/formField</code> is one field, which you can also use on its own. To change the markup, extend the state class and write your own template, or, on Salesforce, just edit the copy <code>fandry add</code> put in your project. Built from:
         <template for:each={builtFrom} for:item="name">

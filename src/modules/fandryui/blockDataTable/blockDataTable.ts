@@ -151,7 +151,7 @@ export default class BlockDataTable extends LightningElement {
   }
 
   get scaleLinkHref(): string {
-    return this.isBenchmark ? '/blocks/data-table' : '/blocks/data-table?rows=10000&latency=0&pageSize=50';
+    return this.isBenchmark ? '/blocks/data-table/' : '/blocks/data-table/?rows=10000&latency=0&pageSize=50';
   }
 
   get scaleLinkLabel(): string {
