@@ -1,3 +1,10 @@
+## [0.27.1](https://github.com/rahulgawale/fandryui/compare/v0.27.0...v0.27.1) (2026-10-17)
+
+
+### Bug Fixes
+
+* **heading, text:** render real h1-h6 and p/span/div instead of ARIA roles ([#129](https://github.com/rahulgawale/fandryui/issues/129)) ([7692356](https://github.com/rahulgawale/fandryui/commit/7692356c9f9dbed0ba15f1bfaec6ea235978961d))
+
 # [0.27.0](https://github.com/rahulgawale/fandryui/compare/v0.26.2...v0.27.0) (2026-10-17)
 
 
