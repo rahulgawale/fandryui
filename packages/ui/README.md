@@ -28,7 +28,7 @@ npm install fandryui
 
 or `pnpm add fandryui`. Then run the setup command for your platform. The package includes a small CLI, `fandry` (`npx fandry ...`, or `npx fandryui ...` before it is installed).
 
-`lwc` is a **peer dependency** (`^8.0.0`): an LWC project already has it, and two copies of the engine in one app break component identity, so Fandry uses yours.
+`lwc` is a **peer dependency** (`^8.0.0 || ^9.0.0`): an LWC project already has it, and two copies of the engine in one app break component identity, so Fandry uses yours.
 
 ### LWR / LWC OSS
 
