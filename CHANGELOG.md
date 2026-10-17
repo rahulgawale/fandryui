@@ -1,3 +1,10 @@
+## [0.26.2](https://github.com/rahulgawale/fandryui/compare/v0.26.1...v0.26.2) (2026-10-17)
+
+
+### Bug Fixes
+
+* **dialog:** keep focus in the dialog with a native modal <dialog> ([#124](https://github.com/rahulgawale/fandryui/issues/124)) ([320bc16](https://github.com/rahulgawale/fandryui/commit/320bc16875a516212d8f94dc6489402062cda1e7))
+
 ## [0.26.1](https://github.com/rahulgawale/fandryui/compare/v0.26.0...v0.26.1) (2026-10-15)
 
 
