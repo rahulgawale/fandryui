@@ -81,7 +81,8 @@ export default class FdMediaViewerState extends Base {
   }
 
   set index(value: number) {
-    const next = Number(value) || 0;
+    // A position in `items`: 1.5 would find no item.
+    const next = Math.trunc(Number(value)) || 0;
     if (next !== this._index) {
       this.settleFrom = '';
       this.gestures.reset();
@@ -274,7 +275,7 @@ export default class FdMediaViewerState extends Base {
   /* `dragged` is how far a swipe had already moved the stage, so the new
      item carries on from there instead of jumping. */
   private go(target: number, dragged: number) {
-    if (!this.count || target < 0 || target >= this.count || target === this.currentIndex) return;
+    if (!this.count || !Number.isInteger(target) || target < 0 || target >= this.count || target === this.currentIndex) return;
     const direction = target > this.currentIndex ? 1 : -1;
     this.settleFrom = `calc(${direction * 100}% + ${dragged}px)`;
     this.settleRun += 1;

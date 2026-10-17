@@ -86,6 +86,14 @@ describe('fandry-media-gallery', () => {
     expect(root(gridOf(gallery)).activeElement).toBe(tileHosts(gridOf(gallery))[2]);
   });
 
+  it('opens a fractional index on the item it falls in', async () => {
+    const gallery = mount('fandry-media-gallery', FdMediaGallery, { index: 2.7 });
+    await settle();
+    gallery.show();
+    await settle();
+    expect(viewerOf(gallery).index).toBe(2);
+  });
+
   it('can be driven from outside: show(), next(), goTo(), close()', async () => {
     const gallery = mount('fandry-media-gallery', FdMediaGallery);
     await settle();

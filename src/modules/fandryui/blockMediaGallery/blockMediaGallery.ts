@@ -74,7 +74,7 @@ const PROPS = [
   { name: 'loading', type: 'boolean', default: 'false', description: 'While the items are being fetched: the grid shows placeholders and says it is busy.' },
   { name: 'loading-count', type: 'number', default: '8', description: 'How many placeholders.' },
   { name: 'messages', type: 'object', default: '{}', description: 'What the gallery says (the viewer\'s name, Close, Keyboard shortcuts, Previous, Next, "3 of 12", what a screen reader hears on moving, and the name of a tile whose picture has no alt text), e.g. to translate it: any key of `DEFAULT_MEDIA_VIEWER_MESSAGES` (`fandry/mediaViewerState`) or `DEFAULT_MEDIA_GRID_MESSAGES` (`fandry/mediaGrid`).' },
-  { name: 'keys (slot)', type: 'slot', default: 'an English list', description: 'The keyboard shortcuts the viewer\'s keyboard button (or `?`) shows. Slot a translated list here; `fandry/mediaKeys` is the default.' },
+  { name: 'keys (slot)', type: 'slot', default: 'an English list', description: 'The keyboard shortcuts the viewer\'s keyboard button (or `?`) shows. To translate it, slot a `fandry-media-keys` here with its text slots filled (`title`, `previous-next`, `first-last`, `zoom`, `reset-zoom`, `pan`, `page`, `toggle`, `close`, and the keys named with words: `key-home`, `key-end`, `key-page-up`, `key-page-down`, `key-escape`), or a list of your own.' },
   { name: 'show(index?) · close()', type: 'methods', default: '—', description: 'Open the viewer (on `index`, or on the current item) and close it.' },
   { name: 'next() · previous() · goTo(index)', type: 'methods', default: '—', description: 'Move the current item, with or without the viewer open.' }
 ];

@@ -50,7 +50,7 @@ export default class FdMediaGalleryState extends Base {
   }
 
   get currentIndex(): number {
-    return Math.min(Math.max(Number(this.index) || 0, 0), Math.max(this.count - 1, 0));
+    return Math.min(Math.max(Math.trunc(Number(this.index)) || 0, 0), Math.max(this.count - 1, 0));
   }
 
   get current(): FdMediaItem | undefined {

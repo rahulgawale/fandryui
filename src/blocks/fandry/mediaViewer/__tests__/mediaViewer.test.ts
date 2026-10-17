@@ -176,6 +176,20 @@ describe('fandry-media-viewer', () => {
     expect(viewer.index).toBe(0);
   });
 
+  it('treats a fractional index as the item it falls in, and ignores goTo() between items', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true, index: 1.5 });
+    const onChange = jest.fn();
+    viewer.addEventListener('change', onChange);
+    await settle();
+    expect(viewer.index).toBe(1);
+    expect(currentImage(viewer)!.getAttribute('src')).toBe('/b.jpg');
+    expect(root(viewer).querySelector('.status')!.textContent).toBe('2 of 3');
+    viewer.goTo(0.5);
+    await settle();
+    expect(viewer.index).toBe(1);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   it('shows an item set from outside unzoomed, even while zoomed', async () => {
     const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
     await settle();
