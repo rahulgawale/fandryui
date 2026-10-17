@@ -2,11 +2,32 @@
   display: contents;
 }
 
+/* The backdrop is the <dialog> itself, filling the viewport, so the browser's
+   own dialog box (centered, sized to its content, bordered) is undone here
+   and its ::backdrop left empty -- as in fandry-command. */
 .backdrop {
   position: fixed;
   inset: 0;
   z-index: var(--_fd-z-overlay);
 
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  color: inherit;
+}
+
+.backdrop::backdrop {
+  background: transparent;
+}
+
+/* Only while it shows: a <dialog> that isn't open is display: none, which
+   keeps it unseen between mounting and showModal(). */
+.backdrop[open],
+.backdrop--closing {
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,9 +1,14 @@
 <template>
   <template if:true={isMounted}>
-    <div class={backdropClasses} part="backdrop" inert={backdropInert} onclick={handleBackdropClick}>
-      <div class="panel" part="panel" role="dialog" aria-modal="true" aria-label={accessibleLabel} tabindex="-1">
+    <!--
+      A native modal <dialog>: the browser makes the rest of the page inert,
+      so Tab can't leave it, and draws it in the top layer. It is the
+      full-screen backdrop; the panel is the box inside it.
+    -->
+    <dialog lwc:ref="dialog" class={backdropClasses} part="backdrop" aria-label={accessibleLabel} inert={backdropInert} onclick={handleBackdropClick} oncancel={handleCancel} onclose={handleNativeClose}>
+      <div lwc:ref="panel" class="panel" part="panel" tabindex="-1">
         <slot></slot>
       </div>
-    </div>
+    </dialog>
   </template>
 </template>

@@ -19,16 +19,90 @@ describe('fandry-dialog', () => {
     expect(element.shadowRoot!.querySelector('.panel')).toBeNull();
   });
 
-  it('renders dialog semantics on the panel when open', () => {
+  it('renders a named native <dialog> around the panel when open', () => {
     const element = createElement('fandry-dialog', { is: FdDialog });
     element.label = 'Delete item';
     element.open = true;
     document.body.appendChild(element);
 
-    const panel = element.shadowRoot!.querySelector('.panel')!;
-    expect(panel.getAttribute('role')).toBe('dialog');
-    expect(panel.getAttribute('aria-modal')).toBe('true');
-    expect(panel.getAttribute('aria-label')).toBe('Delete item');
+    const dialog = element.shadowRoot!.querySelector('dialog')!;
+    expect(dialog.getAttribute('part')).toBe('backdrop');
+    expect(dialog.getAttribute('aria-label')).toBe('Delete item');
+    expect(dialog.querySelector('.panel')).not.toBeNull();
+  });
+
+  describe('native modal', () => {
+    /* jsdom has no showModal() / close(); these stand in for the browser's,
+       which make the rest of the page inert so Tab can't leave the dialog. */
+    const proto = HTMLElement.prototype as any;
+    let showModal: jest.Mock;
+    let close: jest.Mock;
+    beforeEach(() => {
+      showModal = jest.fn(function (this: any) { this.open = true; });
+      close = jest.fn(function (this: any) { this.open = false; });
+      proto.showModal = showModal;
+      proto.close = close;
+    });
+    afterEach(() => {
+      delete proto.showModal;
+      delete proto.close;
+    });
+
+    it('opens modally, and leaves the top layer as soon as it closes', async () => {
+      const element = createElement('fandry-dialog', { is: FdDialog });
+      element.open = true;
+      document.body.appendChild(element);
+      await flush();
+      const dialog = element.shadowRoot!.querySelector('dialog') as any;
+      expect(showModal).toHaveBeenCalledTimes(1);
+      expect(dialog.open).toBe(true);
+
+      element.open = false;
+      expect(close).toHaveBeenCalledTimes(1);
+      expect(dialog.open).toBe(false);
+    });
+
+    it("closes through close() on the browser's Escape (cancel), so the exit still plays", async () => {
+      const element = createElement('fandry-dialog', { is: FdDialog });
+      element.open = true;
+      document.body.appendChild(element);
+      await flush();
+      const handler = jest.fn();
+      element.addEventListener('toggle', handler);
+
+      const cancel = new Event('cancel', { cancelable: true });
+      element.shadowRoot!.querySelector('dialog')!.dispatchEvent(cancel);
+
+      expect(cancel.defaultPrevented).toBe(true);
+      expect(element.open).toBe(false);
+      expect(handler).toHaveBeenCalledTimes(1);
+    });
+
+    it('keeps open in step when the browser closes it without a cancel', async () => {
+      const element = createElement('fandry-dialog', { is: FdDialog });
+      element.open = true;
+      document.body.appendChild(element);
+      await flush();
+      const dialog = element.shadowRoot!.querySelector('dialog') as any;
+
+      dialog.open = false;
+      dialog.dispatchEvent(new Event('close'));
+      expect(element.open).toBe(false);
+    });
+
+    it("ignores its own close() call's late close event after reopening", async () => {
+      const element = createElement('fandry-dialog', { is: FdDialog });
+      element.open = true;
+      document.body.appendChild(element);
+      await flush();
+      element.open = false;
+      element.open = true;
+      await flush();
+      const dialog = element.shadowRoot!.querySelector('dialog')!;
+
+      dialog.dispatchEvent(new Event('close'));
+      expect(element.open).toBe(true);
+    });
   });
 
   it('closes and dispatches a "toggle" event on Escape', () => {
@@ -252,6 +326,6 @@ describe('fandry-dialog', () => {
     Object.assign(element, { label: 'From label', ariaLabel: 'From aria-label' });
     document.body.appendChild(element);
 
-    expect(element.shadowRoot!.querySelector('.panel')!.getAttribute('aria-label')).toBe('From aria-label');
+    expect(element.shadowRoot!.querySelector('dialog')!.getAttribute('aria-label')).toBe('From aria-label');
   });
 });
