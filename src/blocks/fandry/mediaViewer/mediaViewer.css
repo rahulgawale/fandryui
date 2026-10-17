@@ -1,0 +1,182 @@
+:host {
+  display: contents;
+}
+
+/* fandry-dialog, made full screen. Its surface is the page's own --fd-bg and
+   --fd-text, so a site that wants a dark viewer sets those two on the
+   viewer (or styles ::part(panel)). */
+.dialog::part(backdrop) {
+  padding: 0;
+  background: hsl(var(--_fd-bg));
+}
+
+.dialog::part(panel) {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  max-width: none;
+  max-height: none;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none;
+  background: hsl(var(--_fd-bg));
+}
+
+.viewer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: hsl(var(--_fd-text));
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_fd-space-3);
+  padding: var(--_fd-space-2) var(--_fd-space-2) var(--_fd-space-2) var(--_fd-space-4);
+}
+
+.status {
+  font-variant-numeric: tabular-nums;
+}
+
+.actions {
+  display: flex;
+  gap: var(--_fd-space-1);
+}
+
+/* Over the picture, under its button. */
+.keys {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--_fd-control-height-lg) + var(--_fd-space-4));
+  right: var(--_fd-space-2);
+  max-width: calc(100% - 2 * var(--_fd-space-2));
+  padding: var(--_fd-space-3) var(--_fd-space-4);
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-lg);
+  background: hsl(var(--_fd-bg));
+  box-shadow: var(--_fd-shadow-sm) hsl(var(--_fd-shadow-color-floating));
+  animation: fd-fade-in var(--_fd-duration-fast) var(--_fd-ease-standard);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+/* The browser's own panning and zooming would fight the viewer's. */
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+}
+
+/* Two names for one animation; see trackClass in mediaViewer.ts. The start
+   comes from --_fd-slide-x, set by the viewer. */
+.track--settle-a {
+  animation: fd-media-settle-a var(--_fd-duration-normal) var(--_fd-ease-standard);
+}
+
+.track--settle-b {
+  animation: fd-media-settle-b var(--_fd-duration-normal) var(--_fd-ease-standard);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: var(--_fd-space-4);
+}
+
+.slide--previous {
+  translate: -100% 0;
+}
+
+.slide--next {
+  translate: 100% 0;
+}
+
+.media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: translate var(--_fd-duration-normal) var(--_fd-ease-standard),
+    scale var(--_fd-duration-normal) var(--_fd-ease-standard);
+  /* No zoom-in cursor: a single click doesn't zoom, a double click does. */
+  -webkit-user-drag: none;
+}
+
+.media--zoomed {
+  cursor: grab;
+}
+
+.icon-button::part(base) {
+  width: var(--_fd-control-height-lg);
+  height: var(--_fd-control-height-lg);
+  padding: 0;
+  border-radius: var(--_fd-radius-full);
+}
+
+/* Outline glyphs: fandry-icon fills a slotted <svg> with currentColor, which
+   suits solid icons; these are drawn with their stroke. */
+.glyph {
+  fill: none;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.nav--previous {
+  left: var(--_fd-space-4);
+}
+
+.nav--next {
+  right: var(--_fd-space-4);
+}
+
+.caption::part(base) {
+  margin: 0;
+  padding: var(--_fd-space-3) var(--_fd-space-4) var(--_fd-space-4);
+  text-align: center;
+}
+
+@keyframes fd-media-settle-a {
+  from {
+    translate: var(--_fd-slide-x, 0) 0;
+  }
+}
+
+@keyframes fd-media-settle-b {
+  from {
+    translate: var(--_fd-slide-x, 0) 0;
+  }
+}

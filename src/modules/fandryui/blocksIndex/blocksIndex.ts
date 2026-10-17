@@ -22,6 +22,15 @@ export default class BlocksIndex extends LightningElement {
       description:
         'A form that reads first and edits on demand: fields, validation that speaks up at the right moment, and a save with feedback.',
       includes: ['Fields', 'Validation', 'Actions', 'Read / edit mode', 'Revert and reset', 'Save hook', 'Server-side rules']
+    },
+    {
+      slug: 'media-gallery',
+      image: '/assets/blocks/media-gallery.jpg',
+      href: '/blocks/media-gallery/',
+      name: 'Media gallery',
+      description:
+        'A grid of pictures that fits any box, and a full-screen viewer with swipe, pinch to zoom and keyboard control.',
+      includes: ['Responsive grid', 'Skeleton loading', 'Lazy loading', 'Captions', 'Full-screen viewer', 'Swipe', 'Pinch to zoom', 'Keyboard', 'Headless state']
     }
   ];
 }

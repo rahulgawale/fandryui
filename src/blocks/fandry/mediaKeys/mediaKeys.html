@@ -1,0 +1,40 @@
+<template>
+  <!-- Each text is a slot with the English as its fallback; the keys named with words too (Home, Esc). -->
+  <div class="keys" part="base">
+    <fandry-text class="title" size="sm"><slot name="title">Keyboard shortcuts</slot></fandry-text>
+    <dl class="list">
+      <div class="row">
+        <dt><kbd>←</kbd> <kbd>→</kbd></dt>
+        <dd><fandry-text as="span" size="sm" variant="muted"><slot name="previous-next">Previous or next picture</slot></fandry-text></dd>
+      </div>
+      <div class="row">
+        <dt><kbd><slot name="key-home">Home</slot></kbd> <kbd><slot name="key-end">End</slot></kbd></dt>
+        <dd><fandry-text as="span" size="sm" variant="muted"><slot name="first-last">First or last picture</slot></fandry-text></dd>
+      </div>
+      <div class="row">
+        <dt><kbd>+</kbd> <kbd>−</kbd></dt>
+        <dd><fandry-text as="span" size="sm" variant="muted"><slot name="zoom">Zoom in or out</slot></fandry-text></dd>
+      </div>
+      <div class="row">
+        <dt><kbd>0</kbd></dt>
+        <dd><fandry-text as="span" size="sm" variant="muted"><slot name="reset-zoom">Reset zoom</slot></fandry-text></dd>
+      </div>
+      <div class="row">
+        <dt><kbd>←</kbd> <kbd>↑</kbd> <kbd>↓</kbd> <kbd>→</kbd></dt>
+        <dd><fandry-text as="span" size="sm" variant="muted"><slot name="pan">Look around a zoomed picture</slot></fandry-text></dd>
+      </div>
+      <div class="row">
+        <dt><kbd><slot name="key-page-up">Page Up</slot></kbd> <kbd><slot name="key-page-down">Page Down</slot></kbd></dt>
+        <dd><fandry-text as="span" size="sm" variant="muted"><slot name="page">Previous or next picture, also while zoomed</slot></fandry-text></dd>
+      </div>
+      <div class="row">
+        <dt><kbd>?</kbd></dt>
+        <dd><fandry-text as="span" size="sm" variant="muted"><slot name="toggle">Show or hide this list</slot></fandry-text></dd>
+      </div>
+      <div class="row">
+        <dt><kbd><slot name="key-escape">Esc</slot></kbd></dt>
+        <dd><fandry-text as="span" size="sm" variant="muted"><slot name="close">Close</slot></fandry-text></dd>
+      </div>
+    </dl>
+  </div>
+</template>

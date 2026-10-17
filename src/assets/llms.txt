@@ -68,4 +68,5 @@ Key facts:
 - [Blocks](https://fandryui.forcetrails.com/blocks/): Working pages and patterns built from Fandry UI components, live on their pages and installable with the same command as any component.
 - [Data table block](https://fandryui.forcetrails.com/blocks/data-table/): A data table for Salesforce LWC with search, filters, pagination, selection, inline and multi-record editing, and save hooks, built from Fandry UI components.
 - [Form block](https://fandryui.forcetrails.com/blocks/form/): A form for Salesforce LWC with validation, read and edit modes, and a save with feedback, built from Fandry UI components.
+- [Media gallery block](https://fandryui.forcetrails.com/blocks/media-gallery/): A responsive image grid and full-screen viewer for Salesforce LWC, with swipe, pinch to zoom and keyboard control, built from Fandry UI components.
 - [Examples](https://fandryui.forcetrails.com/examples/): Real, interactive UI patterns built entirely from Fandry UI components: dashboards, forms, tables and more, ready to retheme with tokens.

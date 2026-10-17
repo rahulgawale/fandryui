@@ -200,6 +200,18 @@
   --_fd-toast-width: var(--fd-toast-width, 20rem);
   /* The narrowest a fandry-form column gets before the fields wrap. */
   --_fd-form-column-min-width: var(--fd-form-column-min-width, 16rem);
+  /* The media-gallery block's grid: at most --fd-media-columns tiles to a
+     row, fewer when a tile would get narrower than --fd-media-min-width, so
+     it fits whatever box it is put in. Each tile is cut to
+     --fd-media-aspect-ratio and filled the way --fd-media-fit says
+     (`cover` crops, `contain` letterboxes). --fd-media-gap is the space
+     between tiles; the column math needs it, so it is a token, not a gap
+     set on the grid's part. */
+  --_fd-media-columns: var(--fd-media-columns, 4);
+  --_fd-media-gap: var(--fd-media-gap, var(--_fd-space-3));
+  --_fd-media-min-width: var(--fd-media-min-width, 8rem);
+  --_fd-media-aspect-ratio: var(--fd-media-aspect-ratio, 1 / 1);
+  --_fd-media-fit: var(--fd-media-fit, cover);
   /* In em, so the gap under a link's text scales with the text. */
   --_fd-link-underline-offset: var(--fd-link-underline-offset, 0.125em);
 

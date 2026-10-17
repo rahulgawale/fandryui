@@ -459,7 +459,9 @@ Sizes             --fd-size-xs  --fd-size-sm  --fd-size-md  --fd-size-lg
                   --fd-avatar-size-sm  --fd-avatar-size-md  --fd-avatar-size-lg
                   --fd-switch-width  --fd-switch-padding  --fd-tooltip-arrow-size
                   --fd-sidebar-width  --fd-toast-width  --fd-form-column-min-width
-                  --fd-link-underline-offset  --fd-spinner-thickness
+                  --fd-media-columns  --fd-media-gap  --fd-media-min-width
+                  --fd-media-aspect-ratio  --fd-media-fit  --fd-link-underline-offset
+                  --fd-spinner-thickness
 Focus ring        --fd-ring-color  --fd-ring-width  --fd-ring-offset
                   --fd-ring-field  --fd-ring-control  --fd-ring-halo-width  --fd-ring-halo-blur
                   --fd-ring-halo-opacity

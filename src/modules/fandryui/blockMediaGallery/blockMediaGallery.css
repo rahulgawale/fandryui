@@ -1,0 +1,49 @@
+@import 'fandryui/docStyles';
+
+:host {
+  display: block;
+}
+
+.demo-frame {
+  max-width: 44rem;
+}
+
+/* The controls line up on their fields, not their labels. */
+.demo-controls {
+  align-items: flex-end;
+}
+
+/* A select is as wide as its value; this keeps the row from shifting as
+   options change. */
+.demo-controls fandry-select {
+  min-width: 9rem;
+}
+
+.demo-frame--wide {
+  max-width: none;
+  margin-bottom: var(--fd-space-3);
+}
+
+/* The demo's own choice: inside the card's border, the space is never
+   tighter than the gap between tiles. The block itself adds no outer space. */
+.demo-frame--wide::part(base) {
+  padding: max(var(--fd-space-3), var(--fd-media-gap, 0px));
+}
+
+.product {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--fd-space-6);
+  align-items: start;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fd-space-3);
+}
+
+.price {
+  font-weight: var(--fd-font-weight-semibold);
+}
