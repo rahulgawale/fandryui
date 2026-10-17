@@ -1,3 +1,11 @@
+## [0.27.3](https://github.com/rahulgawale/fandryui/compare/v0.27.2...v0.27.3) (2026-10-17)
+
+
+### Bug Fixes
+
+* **deps:** restore lockfile entries npm 10 needs for npm ci ([#136](https://github.com/rahulgawale/fandryui/issues/136)) ([5ed9f9d](https://github.com/rahulgawale/fandryui/commit/5ed9f9d477af68434d4baf30236eb0885460fdab)), closes [#133](https://github.com/rahulgawale/fandryui/issues/133)
+* **package:** accept lwc 9 as a peer dependency ([#135](https://github.com/rahulgawale/fandryui/issues/135)) ([fa54622](https://github.com/rahulgawale/fandryui/commit/fa546220eb7f645a56f29bf60fc3d2f21122be8b))
+
 ## [0.27.2](https://github.com/rahulgawale/fandryui/compare/v0.27.1...v0.27.2) (2026-10-17)
 
 
