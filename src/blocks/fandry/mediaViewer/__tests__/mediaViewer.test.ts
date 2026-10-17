@@ -276,6 +276,26 @@ describe('fandry-media-viewer', () => {
     expect(toggles).toEqual([]);
   });
 
+  it('hides its shortcuts on a tap on the picture, without moving', async () => {
+    const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
+    const changes: number[] = [];
+    viewer.addEventListener('change', (event) => changes.push((event as unknown as CustomEvent).detail.index));
+    await settle();
+    key(viewer, '?');
+    await settle();
+    const panel = root(viewer).querySelector('.keys') as HTMLElement;
+    expect(panel.hidden).toBe(false);
+
+    const stage = root(viewer).querySelector('.stage')!;
+    pointer(stage, 'pointerdown', { clientX: 300, time: 0 });
+    pointer(stage, 'pointermove', { clientX: 100 });
+    pointer(stage, 'pointerup', { clientX: 100, time: 100 });
+    await settle();
+    expect(panel.hidden).toBe(true);
+    expect(changes).toEqual([]);
+    expect(viewer.open).toBe(true);
+  });
+
   it('opens with its shortcuts hidden', async () => {
     const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
     await settle();
