@@ -5,8 +5,8 @@
       so Tab can't leave it, and draws it in the top layer. It is the
       full-screen backdrop; the panel is the box inside it.
     -->
-    <dialog class={backdropClasses} part="backdrop" aria-label={accessibleLabel} inert={backdropInert} onclick={handleBackdropClick} oncancel={handleCancel} onclose={handleNativeClose}>
-      <div class="panel" part="panel" tabindex="-1">
+    <dialog lwc:ref="dialog" class={backdropClasses} part="backdrop" aria-label={accessibleLabel} inert={backdropInert} onclick={handleBackdropClick} oncancel={handleCancel} onclose={handleNativeClose}>
+      <div lwc:ref="panel" class="panel" part="panel" tabindex="-1">
         <slot></slot>
       </div>
     </dialog>

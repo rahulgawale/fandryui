@@ -90,8 +90,9 @@ export default class Dialog extends Base {
     return this.open ? undefined : '';
   }
 
-  private get nativeDialog(): HTMLDialogElement | null {
-    return this.template.querySelector('dialog');
+  // Until the first render, and after the dialog unmounts, there is none.
+  private get nativeDialog(): HTMLDialogElement | undefined {
+    return this.refs?.dialog as HTMLDialogElement | undefined;
   }
 
   renderedCallback() {
@@ -103,13 +104,11 @@ export default class Dialog extends Base {
 
     if (this.focusPending && this.open) {
       this.focusPending = false;
-      const panel = this.template.querySelector('.panel') as HTMLElement | null;
-      panel?.focus();
+      (this.refs?.panel as HTMLElement | undefined)?.focus();
     }
 
     if (!this.open && this.isMounted) {
-      const backdrop = this.template.querySelector('.backdrop');
-      exitFinished(backdrop).then(() => {
+      exitFinished(this.nativeDialog).then(() => {
         // Reopened while it was exiting -- the dialog is live again.
         if (!this.open) {
           this.isMounted = false;
