@@ -367,11 +367,8 @@ export default class FdMediaViewerState extends Base {
 
   handlePointerDown(event: PointerEvent) {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
-    // A tap on the picture hides the shortcuts, and only that: no swipe starts.
-    if (this.keysOpen) {
-      this.keysOpen = false;
-      return;
-    }
+    // A touch on the picture hides the shortcuts; the gesture still goes on, and a tap doesn't move.
+    this.keysOpen = false;
     const stage = this.stage;
     if (!stage) return;
     if (!this.gestures.active) this.measure();

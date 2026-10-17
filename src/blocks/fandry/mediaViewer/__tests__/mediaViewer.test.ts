@@ -276,23 +276,32 @@ describe('fandry-media-viewer', () => {
     expect(toggles).toEqual([]);
   });
 
-  it('hides its shortcuts on a tap on the picture, without moving', async () => {
+  it('hides its shortcuts on a touch on the picture: a tap stays put, a swipe still moves', async () => {
     const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
     const changes: number[] = [];
     viewer.addEventListener('change', (event) => changes.push((event as unknown as CustomEvent).detail.index));
     await settle();
+    const panel = root(viewer).querySelector('.keys') as HTMLElement;
+    const stage = root(viewer).querySelector('.stage') as HTMLElement;
+    stage.getBoundingClientRect = () => ({ width: 400, height: 300, left: 0, top: 0 }) as DOMRect;
+
     key(viewer, '?');
     await settle();
-    const panel = root(viewer).querySelector('.keys') as HTMLElement;
     expect(panel.hidden).toBe(false);
+    pointer(stage, 'pointerdown', { clientX: 200, time: 0 });
+    pointer(stage, 'pointerup', { clientX: 200, time: 100 });
+    await settle();
+    expect(panel.hidden).toBe(true);
+    expect(changes).toEqual([]);
 
-    const stage = root(viewer).querySelector('.stage')!;
+    key(viewer, '?');
+    await settle();
     pointer(stage, 'pointerdown', { clientX: 300, time: 0 });
     pointer(stage, 'pointermove', { clientX: 100 });
     pointer(stage, 'pointerup', { clientX: 100, time: 100 });
     await settle();
     expect(panel.hidden).toBe(true);
-    expect(changes).toEqual([]);
+    expect(changes).toEqual([1]);
     expect(viewer.open).toBe(true);
   });
 
