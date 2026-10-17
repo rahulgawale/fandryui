@@ -44,6 +44,15 @@
   margin-top: var(--fd-space-1);
 }
 
+/* One level up for the outline (h1, h2 per pattern, h3 in its demo), sized as before. */
+.pattern-title::part(base) {
+  font-size: var(--_fd-font-size-xl);
+}
+
+.demo-title::part(base) {
+  font-size: var(--_fd-font-size-lg);
+}
+
 .pattern > fandry-text {
   max-width: 24rem;
 }

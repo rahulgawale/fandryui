@@ -65,7 +65,8 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
       }
@@ -78,6 +79,15 @@
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. -->
+    <style>
+      @media (scripting: enabled) {
+        .prerender {
+          display: none;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a

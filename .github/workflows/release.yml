@@ -51,6 +51,13 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Plain-HTML copies of every page for crawlers that don't run
+      # JavaScript; see scripts/prerender.mjs.
+      - name: Prerender pages
+        run: |
+          npx playwright install --with-deps --only-shell chromium
+          npm run prerender
+
       - name: Release
         env:
           # A PAT (not the default GITHUB_TOKEN) is required so the release

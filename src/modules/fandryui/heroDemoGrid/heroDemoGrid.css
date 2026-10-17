@@ -95,3 +95,8 @@
 .notif-card {
   position: relative;
 }
+
+/* h2 for the outline, sized like the small card titles they are. */
+.card-title::part(base) {
+  font-size: var(--_fd-font-size-lg);
+}

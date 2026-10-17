@@ -8,11 +8,11 @@
             <fandry-badge>01</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Pricing card</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Pricing card</fandry-heading>
           <fandry-text variant="muted" size="sm">A plan card with a badge, feature list, and single CTA.</fandry-text>
           <fandry-card class="demo">
             <fandry-badge variant="primary">Popular</fandry-badge>
-            <fandry-heading level="4" class="price-heading">Pro</fandry-heading>
+            <fandry-heading level="3" class="demo-title price-heading">Pro</fandry-heading>
             <div class="price"><span class="amount">$29</span><span class="period">/mo</span></div>
             <ul class="check-list">
               <template for:each={pricingFeatures} for:item="feature">
@@ -36,10 +36,10 @@
             <fandry-badge>02</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Login form</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Login form</fandry-heading>
           <fandry-text variant="muted" size="sm">Inputs, a checkbox, and a link, wired together.</fandry-text>
           <fandry-card class="demo">
-            <fandry-heading level="4">Sign in</fandry-heading>
+            <fandry-heading level="3" class="demo-title">Sign in</fandry-heading>
             <fandry-input label="Email" type="email" placeholder="you@company.com"></fandry-input>
             <fandry-input label="Password" type="password" placeholder="••••••••"></fandry-input>
             <div class="form-row">
@@ -56,10 +56,10 @@
             <fandry-badge>03</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Settings list</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Settings list</fandry-heading>
           <fandry-text variant="muted" size="sm">Label, description, and a switch, repeated with dividers.</fandry-text>
           <fandry-card class="demo">
-            <fandry-heading level="4">Notifications</fandry-heading>
+            <fandry-heading level="3" class="demo-title">Notifications</fandry-heading>
             <div class="setting-row">
               <div class="setting-copy">
                 <fandry-text as="span">Email alerts</fandry-text>
@@ -92,7 +92,7 @@
             <fandry-badge>04</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Empty state</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Empty state</fandry-heading>
           <fandry-text variant="muted" size="sm">Icon, heading, muted copy, and a way forward.</fandry-text>
           <fandry-card class="demo empty-state">
             <div class="empty-icon">
@@ -102,7 +102,7 @@
                 </svg>
               </fandry-icon>
             </div>
-            <fandry-heading level="4">No invoices yet</fandry-heading>
+            <fandry-heading level="3" class="demo-title">No invoices yet</fandry-heading>
             <fandry-text variant="muted" size="sm">Invoices show up here once you place your first order.</fandry-text>
             <fandry-button variant="secondary">Browse Products</fandry-button>
           </fandry-card>
@@ -114,10 +114,10 @@
             <fandry-badge>05</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Notification list</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Notification list</fandry-heading>
           <fandry-text variant="muted" size="sm">A stack of fandry-alert, each with its own variant.</fandry-text>
           <fandry-card class="demo">
-            <fandry-heading level="4">Notifications</fandry-heading>
+            <fandry-heading level="3" class="demo-title">Notifications</fandry-heading>
             <div class="notif-list">
               <fandry-alert variant="info">New comment on ticket #4821.</fandry-alert>
               <fandry-alert variant="success" title="Payment received">Invoice INV-2044 is now paid.</fandry-alert>
@@ -132,10 +132,10 @@
             <fandry-badge>06</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Team list</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Team list</fandry-heading>
           <fandry-text variant="muted" size="sm">Avatar, name, role, and a badge, data-driven with for:each.</fandry-text>
           <fandry-card class="demo">
-            <fandry-heading level="4">Team</fandry-heading>
+            <fandry-heading level="3" class="demo-title">Team</fandry-heading>
             <div class="team-list">
               <template for:each={teamMembers} for:item="member">
                 <div key={member.key} class="team-row">
@@ -157,10 +157,10 @@
             <fandry-badge>07</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Attachment list</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Attachment list</fandry-heading>
           <fandry-text variant="muted" size="sm">File icon, filename, size, and a remove action.</fandry-text>
           <fandry-card class="demo">
-            <fandry-heading level="4">Attachments</fandry-heading>
+            <fandry-heading level="3" class="demo-title">Attachments</fandry-heading>
             <div class="file-list">
               <template for:each={files} for:item="file">
                 <div key={file.key} class="file-row">
@@ -186,10 +186,10 @@
             <fandry-badge>08</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Onboarding checklist</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Onboarding checklist</fandry-heading>
           <fandry-text variant="muted" size="sm">Completed steps locked, the rest genuinely checkable.</fandry-text>
           <fandry-card class="demo">
-            <fandry-heading level="4">Get started</fandry-heading>
+            <fandry-heading level="3" class="demo-title">Get started</fandry-heading>
             <fandry-text variant="muted" size="sm">2 of 4 steps complete</fandry-text>
             <div class="checklist">
               <fandry-checkbox label="Create your account" checked disabled></fandry-checkbox>
@@ -206,7 +206,7 @@
             <fandry-badge>09</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Search bar</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Search bar</fandry-heading>
           <fandry-text variant="muted" size="sm">fandry-input's prefix slot plus a static results list.</fandry-text>
           <fandry-card class="demo">
             <fandry-input label="Quick search" placeholder="Search orders, products, people…">
@@ -229,15 +229,15 @@
             <fandry-badge>10</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">KPI row</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">KPI row</fandry-heading>
           <fandry-text variant="muted" size="sm">Three stat tiles with a trend badge each.</fandry-text>
           <fandry-card class="demo">
-            <fandry-heading level="4">This month</fandry-heading>
+            <fandry-heading level="3" class="demo-title">This month</fandry-heading>
             <div class="kpi-row">
               <template for:each={kpis} for:item="kpi">
                 <div key={kpi.key} class="kpi">
                   <fandry-text as="span" size="xs" variant="muted">{kpi.label}</fandry-text>
-                  <fandry-heading level="4">{kpi.value}</fandry-heading>
+                  <fandry-heading level="3" class="demo-title">{kpi.value}</fandry-heading>
                   <fandry-badge variant={kpi.variant}>{kpi.change}</fandry-badge>
                 </div>
               </template>
@@ -251,7 +251,7 @@
             <fandry-badge>11</fandry-badge>
             <fandry-link href={sourceUrl} target="_blank" variant="muted">View source</fandry-link>
           </div>
-          <fandry-heading level="3">Breadcrumb navigation</fandry-heading>
+          <fandry-heading level="2" class="pattern-title">Breadcrumb navigation</fandry-heading>
           <fandry-text variant="muted" size="sm">Each crumb swaps the card below — fandry-breadcrumb driving real state.</fandry-text>
           <fandry-breadcrumb class="crumb-nav" aria-label="Folder path">
             <template for:each={crumbItems} for:item="crumb">
@@ -265,7 +265,7 @@
             </template>
           </fandry-breadcrumb>
           <fandry-card class="demo">
-            <fandry-heading level="4">{activePage.title}</fandry-heading>
+            <fandry-heading level="3" class="demo-title">{activePage.title}</fandry-heading>
             <fandry-text variant="muted" size="sm">{activePage.body}</fandry-text>
           </fandry-card>
         </div>

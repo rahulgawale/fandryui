@@ -131,6 +131,33 @@ fandry-link.chip:focus-within > fandry-badge::part(base) {
 }
 
 /* fandry-link rings its <a> while focused; the card's ring replaces it. */
+/* Navigation drawn as a large button: a real link, so crawlers follow it. */
+.button-link::part(link) {
+  display: inline-flex;
+  align-items: center;
+  height: var(--_fd-control-height-lg);
+  padding: 0 var(--_fd-space-5);
+  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border-radius: var(--_fd-radius-md);
+  background: hsl(var(--_fd-bg));
+  color: hsl(var(--_fd-text));
+  font-size: var(--_fd-font-size-md);
+  font-weight: var(--_fd-font-weight-medium);
+  line-height: 1;
+  text-decoration: none;
+}
+
+.button-link--primary::part(link) {
+  border-color: transparent;
+  background: hsl(var(--_fd-primary));
+  color: hsl(var(--_fd-primary-foreground));
+}
+
+/* h2 for the outline, sized like the h3 it used to be. */
+.link-card-heading::part(base) {
+  font-size: var(--_fd-font-size-xl);
+}
+
 .link-card-title::part(link) {
   color: inherit;
   text-decoration: none;
