@@ -47,7 +47,7 @@
   background: hsl(var(--_fd-bg-muted));
   font: inherit;
   color: inherit;
-  animation: fd-media-pulse var(--_fd-duration-slowest) ease-in-out infinite;
+  animation: fd-pulse var(--_fd-duration-slowest) ease-in-out infinite;
 }
 
 .frame--loaded {
@@ -97,10 +97,4 @@
 .placeholder::part(base) {
   height: auto;
   aspect-ratio: var(--_fd-media-aspect-ratio);
-}
-
-@keyframes fd-media-pulse {
-  50% {
-    opacity: var(--_fd-pulse-opacity);
-  }
 }

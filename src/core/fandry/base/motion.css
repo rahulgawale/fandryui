@@ -71,6 +71,14 @@
   }
 }
 
+/* "Still loading": a skeleton, or a picture that hasn't arrived. Run it
+   `infinite`; it dims to --_fd-pulse-opacity and back. */
+@keyframes fd-pulse {
+  50% {
+    opacity: var(--_fd-pulse-opacity);
+  }
+}
+
 @keyframes fd-slide-out {
   to {
     opacity: 0;
