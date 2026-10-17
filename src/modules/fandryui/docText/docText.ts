@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { componentHrefForTag } from 'fandryui/componentLinks';
+import { COMPONENT_SLUGS, componentHrefForTag } from 'fandryui/componentLinks';
 
 export interface TextSegment {
   key: string;
@@ -27,6 +27,13 @@ export function toSegments(text = '', links?: LinkOptions): TextSegment[] {
   return links ? linkComponents(segments, links) : segments;
 }
 
+/* A component's tag in plain text: not the tail of a longer name
+   (c-fandry-select), and the longest slug first, so fandry-radio-group isn't
+   fandry-radio and fandry-dialog-based still finds fandry-dialog. */
+const TAG_IN_TEXT = new RegExp(
+  `((?<![\\w-])fandry-(?:${[...COMPONENT_SLUGS].sort((a, b) => b.length - a.length).join('|')})(?!\\w))`
+);
+
 /* Each component a text names (`fandry-select`, or plain fandry-select)
    links to its page, the first time only: one link per name is enough. */
 function linkComponents(segments: TextSegment[], { current = '' }: LinkOptions): TextSegment[] {
@@ -41,7 +48,7 @@ function linkComponents(segments: TextSegment[], { current = '' }: LinkOptions):
       const href = hrefFor(segment.text);
       return href ? [{ ...segment, href }] : [segment];
     }
-    const pieces = segment.text.split(/(fandry-[a-z]+(?:-[a-z]+)*)/);
+    const pieces = segment.text.split(TAG_IN_TEXT);
     if (pieces.length === 1) return [segment];
     return pieces
       .map((piece, index) => {

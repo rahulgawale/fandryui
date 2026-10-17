@@ -64,11 +64,17 @@
   border-bottom: none;
 }
 
-/* A block's "Built from" chips link to each component's page. */
+/* A block's "Built from" chips link to each component's page: the badge is
+   the chip, so the link drops its underline and hover filter. */
+fandry-link.chip::part(link) {
+  text-decoration: none;
+  filter: none;
+}
+
 fandry-link.chip:hover > fandry-badge::part(base),
 fandry-link.chip:focus-within > fandry-badge::part(base) {
-  border-color: var(--fd-color-primary);
-  color: var(--fd-color-primary);
+  border-color: hsl(var(--fd-primary, var(--brand-primary, 226 90% 50%)));
+  color: hsl(var(--fd-primary, var(--brand-primary, 226 90% 50%)));
 }
 
 /* Name/type/default columns are all code: no chip on each. */
