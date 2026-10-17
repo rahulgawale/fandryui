@@ -1,6 +1,7 @@
 import { LightningElement } from 'lwc';
 import type { FdMediaItem } from 'fandry/mediaItem';
 import { fetchPhotos, PRODUCT_PHOTOS } from './photos';
+import { componentHref } from 'fandryui/componentLinks';
 
 const USAGE = `<fandry-media-gallery
   items={photos}
@@ -133,7 +134,7 @@ export default class BlockMediaGallery extends LightningElement {
   events = EVENTS;
   tokens = TOKENS;
   parts = PARTS;
-  builtFrom = BUILT_FROM;
+  builtFrom = BUILT_FROM.map((name) => ({ name, href: componentHref(name) }));
   columnOptions = COLUMN_OPTIONS;
   ratioOptions = RATIO_OPTIONS;
   fitOptions = FIT_OPTIONS;

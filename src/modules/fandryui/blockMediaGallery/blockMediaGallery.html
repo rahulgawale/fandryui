@@ -75,7 +75,7 @@
                 <td><code>{prop.name}</code></td>
                 <td><code>{prop.type}</code></td>
                 <td><code>{prop.default}</code></td>
-                <td><fandryui-doc-text text={prop.description}></fandryui-doc-text></td>
+                <td><fandryui-doc-text links text={prop.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -95,7 +95,7 @@
               <tr key={prop.name}>
                 <td><code>{prop.name}</code></td>
                 <td><code>{prop.type}</code></td>
-                <td><fandryui-doc-text text={prop.description}></fandryui-doc-text></td>
+                <td><fandryui-doc-text links text={prop.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -115,7 +115,7 @@
               <tr key={event.name}>
                 <td><code>{event.name}</code></td>
                 <td><code>{event.detail}</code></td>
-                <td><fandryui-doc-text text={event.description}></fandryui-doc-text></td>
+                <td><fandryui-doc-text links text={event.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -138,7 +138,7 @@
               <tr key={token.name}>
                 <td><code>{token.name}</code></td>
                 <td><code>{token.default}</code></td>
-                <td><fandryui-doc-text text={token.description}></fandryui-doc-text></td>
+                <td><fandryui-doc-text links text={token.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -157,7 +157,7 @@
             <template for:each={parts} for:item="part">
               <tr key={part.name}>
                 <td><code>{part.name}</code></td>
-                <td><fandryui-doc-text text={part.description}></fandryui-doc-text></td>
+                <td><fandryui-doc-text links text={part.description}></fandryui-doc-text></td>
               </tr>
             </template>
           </tbody>
@@ -195,8 +195,8 @@
         class plus a grid and a viewer. <code>fandry/mediaGrid</code> and <code>fandry/mediaViewer</code> each work on
         their own and know nothing of each other; what they share is the item shape in <code>fandry/mediaItem</code>. <code>fandry/mediaGestures</code> is the swipe and pinch math, with no template. To change the markup, extend
         the state class, or, on Salesforce, edit the copy <code>fandry add</code> put in your project. Built from:
-        <template for:each={builtFrom} for:item="name">
-          <fandry-badge key={name} class="chip">{name}</fandry-badge>
+        <template for:each={builtFrom} for:item="piece">
+          <fandry-link key={piece.name} href={piece.href} class="chip"><fandry-badge>{piece.name}</fandry-badge></fandry-link>
         </template>
       </fandry-text>
     </section>

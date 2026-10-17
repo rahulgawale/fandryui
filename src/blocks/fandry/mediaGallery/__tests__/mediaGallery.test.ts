@@ -357,7 +357,7 @@ describe('fandry-media-viewer', () => {
   it('shows its keyboard shortcuts from its button or ?, and hides them on Escape before closing', async () => {
     const viewer = mount('fandry-media-viewer', FdMediaViewer, { open: true });
     const toggles: boolean[] = [];
-    viewer.addEventListener('toggle', (event) => toggles.push((event as CustomEvent).detail));
+    viewer.addEventListener('toggle', (event) => toggles.push((event as unknown as CustomEvent).detail));
     await settle();
     const panel = root(viewer).querySelector('.keys') as HTMLElement;
     const button = nativeButton(navButton(viewer, 'keys'));

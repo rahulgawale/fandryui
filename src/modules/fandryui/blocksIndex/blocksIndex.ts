@@ -26,7 +26,7 @@ export default class BlocksIndex extends LightningElement {
     {
       slug: 'media-gallery',
       image: '/assets/blocks/media-gallery.jpg',
-      href: '/blocks/media-gallery',
+      href: '/blocks/media-gallery/',
       name: 'Media gallery',
       description:
         'A grid of pictures that fits any box, and a full-screen viewer with swipe, pinch to zoom and keyboard control.',
