@@ -160,8 +160,8 @@
       <fandryui-doc-heading level="2" text="Make it yours" class="section-title"></fandryui-doc-heading>
       <fandry-text variant="muted">
         The block is two files on purpose. <code>fandry/dataTableState</code> has all the behavior and no template; <code>fandry/dataTable</code> is that class plus the markup you see here. To change the markup, extend the state class and write your own template, or, on Salesforce, just edit the copy <code>fandry add</code> put in your project. Built from:
-        <template for:each={builtFrom} for:item="name">
-          <fandry-badge key={name} class="chip">{name}</fandry-badge>
+        <template for:each={builtFrom} for:item="piece">
+          <fandry-link key={piece.name} href={piece.href} class="chip"><fandry-badge>{piece.name}</fandry-badge></fandry-link>
         </template>
       </fandry-text>
     </section>

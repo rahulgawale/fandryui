@@ -1,6 +1,7 @@
 import { LightningElement } from 'lwc';
 import { toAnchor } from 'fandryui/docHeading';
 import { COMPONENTS, CATEGORY_ORDER, PART_DESCRIPTIONS, STATE_DESCRIPTIONS, getComponentBySlug, getAdjacentComponents } from 'fandryui/componentsData';
+import { componentHref } from 'fandryui/componentLinks';
 
 import DemoBreadcrumb from 'fandryuidemos/demoBreadcrumb';
 import DemoButtonLoading from 'fandryuidemos/demoButtonLoading';
@@ -267,7 +268,7 @@ export default class ComponentDoc extends LightningElement {
       items: COMPONENTS.filter((component) => component.category === category).map((component) => ({
         slug: component.slug,
         name: component.name,
-        href: `/components/${component.slug}/`,
+        href: componentHref(component.slug),
         active: component.slug === this.slug
       }))
     }));
@@ -279,7 +280,7 @@ export default class ComponentDoc extends LightningElement {
 
   get previousHref(): string {
     const previous = this.adjacent.previous;
-    return previous ? `/components/${previous.slug}/` : '';
+    return previous ? componentHref(previous.slug) : '';
   }
 
   get previousLabel(): string {
@@ -288,7 +289,7 @@ export default class ComponentDoc extends LightningElement {
 
   get nextHref(): string {
     const next = this.adjacent.next;
-    return next ? `/components/${next.slug}/` : '';
+    return next ? componentHref(next.slug) : '';
   }
 
   get nextLabel(): string {

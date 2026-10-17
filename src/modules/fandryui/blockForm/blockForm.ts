@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import { componentHref } from 'fandryui/componentLinks';
 import { BLOCKS, PART_DESCRIPTIONS, STATE_DESCRIPTIONS } from 'fandryui/componentsData';
 import { createMockApi, PLAN_OPTIONS } from './mockApi';
 import type { Profile } from './mockApi';
@@ -106,7 +107,7 @@ export default class BlockForm extends LightningElement {
   slots = SLOTS;
   parts = PARTS;
   partsCode = PARTS_CODE;
-  builtFrom = BUILT_FROM;
+  builtFrom = BUILT_FROM.map((name) => ({ name, href: componentHref(name) }));
 
   installNpm = `npm install fandryui
 
