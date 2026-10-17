@@ -71,15 +71,21 @@
         ]
       }
     </script>
-    <!-- Google Analytics 4; async, so it never blocks rendering. -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV"></script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
-      gtag('js', new Date());
-      gtag('config', 'G-18F150Z1JV');
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -90,12 +96,14 @@
     />
     <link rel="stylesheet" href="/assets/styles/global.css" />
     <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
-         app renders the real page. -->
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
     <style>
-      @media (scripting: enabled) {
-        .prerender {
-          display: none;
-        }
+      .js .prerender {
+        display: none;
       }
     </style>
   </head>
