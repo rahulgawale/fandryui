@@ -48,6 +48,7 @@
       "fandry/mediaGalleryState": ["src/blocks/fandry/mediaGalleryState/mediaGalleryState"],
       "fandry/mediaGallery": ["src/blocks/fandry/mediaGallery/mediaGallery"],
       "fandry/*": ["src/core/fandry/*"],
+      "fandryui/componentLinks": ["src/modules/fandryui/componentLinks/componentLinks"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
       "fandryui/docHeading": ["src/modules/fandryui/docHeading/docHeading"],
       "fandryui/docText": ["src/modules/fandryui/docText/docText"],
