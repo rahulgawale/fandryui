@@ -85,8 +85,8 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--fd-space-4);
   margin-top: var(--fd-space-6);
-  /* Two cards side by side read best at equal height. Grid stretches each
-     link to the row height, and the card fills it (see .card below). */
+  /* Two cards side by side read best at equal height: the card fills its
+     row (see .card below). */
   align-items: stretch;
 }
 
@@ -96,26 +96,9 @@
   }
 }
 
-.card-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  border-radius: var(--fd-radius-lg);
-  overflow: hidden;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-}
-
-@media (hover: hover) {
-  .card-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
-  }
-}
-
 .card,
 .card::part(base) {
-  /* fandry-card is height: auto by default. Fill the stretched link so its
-     hover lift and shadow hug the card, not a taller box. */
+  /* fandry-card is height: auto by default; both cards fill their row. */
   height: 100%;
 }
 

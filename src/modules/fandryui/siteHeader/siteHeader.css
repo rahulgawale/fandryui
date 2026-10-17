@@ -34,6 +34,12 @@
 }
 
 .logo {
+  display: block;
+}
+
+/* A fandry-link, so it keeps the library's focus ring; its <a> lays out the
+   mark and the name. */
+.logo::part(link) {
   display: flex;
   align-items: center;
   gap: var(--fd-space-2);

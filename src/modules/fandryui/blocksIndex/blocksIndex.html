@@ -4,23 +4,23 @@
   <main class="page">
     <fandry-heading level="1">Blocks</fandry-heading>
     <fandry-text variant="muted" class="lede">
-      Working pages and patterns built from fandry-* primitives. Each one is live on its page, and installs
+      Working pages and patterns built from <code>fandry-*</code> primitives. Each one is live on its page, and installs
       into your project with the same command as any component.
     </fandry-text>
 
     <div class="grid">
       <template for:each={blocks} for:item="block">
-        <a key={block.slug} href={block.href} class="card-link">
-          <fandry-card class="card">
-            <fandry-heading level="3">{block.name}</fandry-heading>
-            <fandry-text variant="muted" size="sm">{block.description}</fandry-text>
-            <div class="chips">
-              <template for:each={block.includes} for:item="item">
-                <fandry-badge key={item}>{item}</fandry-badge>
-              </template>
-            </div>
-          </fandry-card>
-        </a>
+        <fandry-card key={block.slug} class="card link-card">
+          <!-- The block's demo. Decorative: the heading's link names the card. -->
+          <img class="preview" src={block.image} alt="" width="1200" height="630" loading="lazy" />
+          <fandry-heading level="3"><fandry-link href={block.href} class="link-card-title">{block.name}</fandry-link></fandry-heading>
+          <fandry-text variant="muted" size="sm">{block.description}</fandry-text>
+          <div class="chips">
+            <template for:each={block.includes} for:item="item">
+              <fandry-badge key={item}>{item}</fandry-badge>
+            </template>
+          </div>
+        </fandry-card>
       </template>
     </div>
   </main>

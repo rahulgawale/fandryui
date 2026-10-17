@@ -13,15 +13,15 @@
   font-weight: var(--fd-font-weight-medium);
 }
 
-/* The hero's primary -> accent gradient, with both stops darkened until the
-   light text clears WCAG AA (9.2:1 / 4.8:1). */
+/* The default brand's primary -> accent gradient, darkened until the light
+   text clears WCAG AA (9.2:1 / 4.8:1). Fixed: it doesn't follow --brand-*. */
 .code-block {
   margin: 0;
   padding: var(--fd-space-4);
   background: linear-gradient(
     135deg,
-    hsl(var(--site-primary-dark)),
-    hsl(var(--site-accent-dark))
+    hsl(var(--site-code-start)),
+    hsl(var(--site-code-end))
   );
   color: hsl(220 14% 96%);
   border-radius: var(--fd-radius-md);

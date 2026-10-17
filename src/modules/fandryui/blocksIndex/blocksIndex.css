@@ -1,3 +1,5 @@
+@import 'fandryui/docStyles';
+
 :host {
   display: block;
 }
@@ -19,23 +21,21 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: var(--fd-space-4);
-  align-items: start;
 }
 
-.card-link {
+/* Every card in a row as tall as the tallest. */
+.card,
+.card::part(base) {
+  height: 100%;
+}
+
+.preview {
   display: block;
-  text-decoration: none;
-  color: inherit;
-  border-radius: var(--fd-radius-lg);
-  overflow: hidden;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-}
-
-@media (hover: hover) {
-  .card-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--fd-color-text) 25%, transparent);
-  }
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--fd-color-border);
+  border-radius: var(--fd-radius-md);
+  margin-bottom: var(--fd-space-3);
 }
 
 .card > * + * {
