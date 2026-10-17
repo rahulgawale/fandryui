@@ -45,6 +45,14 @@ describe('toSegments with links', () => {
     expect(toSegments(text, { current: 'breadcrumb' }).filter((segment) => segment.href)).toEqual([]);
   });
 
+  it('links a whole tag only: not the tail of c-fandry-select, but fandry-dialog in fandry-dialog-based', () => {
+    const linked = (text: string) =>
+      toSegments(text, {}).filter((segment) => segment.href).map((segment) => segment.text);
+    expect(linked('Use c-fandry-select on Salesforce.')).toEqual([]);
+    expect(linked('A fandry-dialog-based overlay.')).toEqual(['fandry-dialog']);
+    expect(linked('One fandry-radio-group.')).toEqual(['fandry-radio-group']);
+  });
+
   it('links nothing without options', () => {
     expect(toSegments('`fandry-select`')).toEqual([{ key: '1', text: 'fandry-select', code: true }]);
   });

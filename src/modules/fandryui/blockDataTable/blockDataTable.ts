@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import { componentHref } from 'fandryui/componentLinks';
 import { benchmarkOptionsFromUrl, createMockApi, ROLE_OPTIONS, STATUS_OPTIONS } from './mockApi';
 import type { Person } from './mockApi';
 
@@ -93,7 +94,7 @@ export default class BlockDataTable extends LightningElement {
   props = PROPS;
   events = EVENTS;
   slots = SLOTS;
-  builtFrom = BUILT_FROM;
+  builtFrom = BUILT_FROM.map((name) => ({ name, href: componentHref(name) }));
 
   installNpm = `npm install fandryui
 

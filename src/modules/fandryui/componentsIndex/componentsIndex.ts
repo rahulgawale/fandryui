@@ -1,5 +1,6 @@
 import { LightningElement } from 'lwc';
 import { COMPONENTS, CATEGORY_ORDER } from 'fandryui/componentsData';
+import { componentHref } from 'fandryui/componentLinks';
 
 export default class ComponentsIndex extends LightningElement {
   get sidebarGroups() {
@@ -8,7 +9,7 @@ export default class ComponentsIndex extends LightningElement {
       items: COMPONENTS.filter((component) => component.category === category).map((component) => ({
         slug: component.slug,
         name: component.name,
-        href: `/components/${component.slug}/`,
+        href: componentHref(component.slug),
         active: false
       }))
     }));
@@ -18,7 +19,7 @@ export default class ComponentsIndex extends LightningElement {
     return COMPONENTS.map((component) => ({
       slug: component.slug,
       name: component.name,
-      href: `/components/${component.slug}/`,
+      href: componentHref(component.slug),
       description: component.description,
       category: component.category
     }));

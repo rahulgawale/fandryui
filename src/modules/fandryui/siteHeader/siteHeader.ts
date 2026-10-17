@@ -1,5 +1,6 @@
 import { LightningElement } from 'lwc';
 import { COMPONENTS, CATEGORY_ORDER } from 'fandryui/componentsData';
+import { componentHref } from 'fandryui/componentLinks';
 
 const PAGES = [
   { label: 'Home', value: '/' },
@@ -38,7 +39,7 @@ export default class SiteHeader extends LightningElement {
     ...CATEGORY_ORDER.flatMap((category) =>
       COMPONENTS.filter((component) => component.category === category).map((component) => ({
         label: component.name,
-        value: `/components/${component.slug}/`,
+        value: componentHref(component.slug),
         group: category,
         description: component.tag,
         keywords: [component.slug]
