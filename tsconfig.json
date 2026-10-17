@@ -41,6 +41,7 @@
       "fandry/formField": ["src/blocks/fandry/formField/formField"],
       "fandry/form": ["src/blocks/fandry/form/form"],
       "fandry/*": ["src/core/fandry/*"],
+      "fandryui/componentLinks": ["src/modules/fandryui/componentLinks/componentLinks"],
       "fandryui/componentsData": ["src/modules/fandryui/componentsData/componentsData"],
       "fandryui/docHeading": ["src/modules/fandryui/docHeading/docHeading"],
       "fandryui/docText": ["src/modules/fandryui/docText/docText"],
