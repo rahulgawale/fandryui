@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,157 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-f8bc5b30e9994f42a875c172427dc807-2f5a5f65bd629a1d-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-711770a29b5d47614a3685400b0a0fb4-21fb2f95c36bab41-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-why-fandry></fandryui-why-fandry></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<main><section><h1>Why Fandry UI exists</h1>
+<p>The flexibility of modern UI development, with the simplicity of LWC. What Fandry is for, what it trades away, and where to check each claim.</p></section>
+<article><section><h2>Your UI, your identity</h2>
+Link to section Your UI, your identity
+<p>Salesforce ISVs and teams building Experience Cloud and LWR sites ship products with their own brand. Their users should see that product, not the standard Salesforce interface.</p>
+<p>Every Fandry component reads its colors, type, spacing, radius and motion from one token scale. Set the public <code>--fd-*</code> tokens on <code>:root</code> to theme everything, or on one section or element to theme just that part of the page.</p>
+your-site.css
+<pre>/* The whole site */
+:root {
+  --fd-primary: 24 70% 38%;
+  --fd-font-heading: Georgia, serif;
+  --fd-radius-md: 0;
+}
+
+/* One section of it */
+.promo {
+  --fd-primary: 160 84% 30%;
+}</pre>
+​</section><section><h2>Composition over configuration</h2>
+Link to section Composition over configuration
+<p>Each component ships a sensible default. When you need something different, you compose: replace a slot, restyle a part, extend the class that holds the behavior. A component gets a new prop only for a genuinely binary behavior like <code>disabled</code>, not for every variation someone might want.</p>
+Markup in a slot, not a prop
+<pre>&lt;fandry-input label=&quot;Email&quot;&gt;
+  &lt;span slot=&quot;help-text&quot;&gt;
+    We only use it for &lt;a href=&quot;/privacy&quot;&gt;order updates&lt;/a&gt;.
+  &lt;/span&gt;
+&lt;/fandry-input&gt;</pre>
+​
+<p>Every component keeps the same five steps open, from the quickest change to a full rewrite, so you go only as far as you need:</p>
+<ol><li>1
+<h3>Tokens</h3>
+<p>Set <code>--fd-*</code> on <code>:root</code>, a section or one element to change colors, type, spacing, radius and motion.</p></li><li>2
+<h3>Parts and states</h3>
+<p>Restyle one element inside a component with <code>::part()</code>, including states like <code>checked</code> or <code>disabled</code>.</p></li><li>3
+<h3>Slots and messages</h3>
+<p>Replace or add content and text. Every visible string is a slot or a <code>messages</code> entry, so sites can translate it.</p></li><li>4
+<h3>Extend the state class</h3>
+<p>Components with real state ship it as a template-less class. Keep the behavior, write your own markup.</p></li><li>5
+<h3>Copy the component</h3>
+<p>The source is short, plain LWC. Copy it into your namespace and change anything, keeping the tokens.</p></li></ol></section><section><h2>A UI you control</h2>
+Link to section A UI you control
+<p>Every component renders in native shadow DOM, on LWR and in a Salesforce org, even one that loads the synthetic-shadow polyfill. Encapsulation keeps your global CSS from breaking a component by accident, and CSS parts give you a deliberate way in.</p>
+Parts and states
+<pre>/* One element inside a component, in one state */
+.checkout fandry-switch::part(control checked) {
+  background: hsl(160 84% 30%);
+}</pre>
+​
+<p>Fandry ships as plain LWC source, not a compiled runtime. Components with real state, like the table, keep it in a template-less class you can extend with your own markup:</p>
+orderGrid.ts
+<pre>// Same sorting, paging and selection, your own template
+import FdTableState from 'fandry/tableState';
+
+export default class OrderGrid extends FdTableState {}</pre>
+​
+<p>Tokens and parts are public API: renaming or removing one is a breaking change, so your design system evolves when you decide, not as a side effect of an upgrade.</p></section><section><h2>Less dependence on Salesforce's UI</h2>
+Link to section Less dependence on Salesforce's UI
+<p>Fandry has its own component implementations and its own design system. It doesn't render <code>lightning-*</code> components or depend on SLDS, so a change to Lightning Base Components or their styling doesn't change how your product looks.</p>
+<p>Your UI should evolve when your product evolves, not when Salesforce changes its components. That is a claim about base components only: Fandry still runs on LWC, LWR and Lightning Web Security, and follows the platform like any other code.</p></section><section><h2>The simplicity of LWC</h2>
+Link to section The simplicity of LWC
+<p>A Fandry component is a Lightning Web Component. You set <code>@api</code> properties, fill slots and listen for standard <code>input</code>, <code>change</code>, <code>focus</code> and <code>blur</code> events, the same way you already work. There is no second framework, virtual DOM or build pipeline to add, and your own components and <code>lightning-*</code> components sit alongside Fandry's.</p></section><section><h2>Lightning Base Components and Fandry UI</h2>
+Link to section Lightning Base Components and Fandry UI
+<p>They solve different problems. Neither is better in general; pick the one whose goals match yours.</p>
+<h3>Lightning Base Components</h3>
+<p>Optimized for:</p>
+<ul><li><p>Standard Salesforce UI patterns</p></li><li><p>Consistency with Lightning Experience</p></li><li><p>Enterprise stability, maintained by Salesforce</p></li><li><p>Styling hooks and some slots within the SLDS look</p></li></ul>
+<h3>Fandry UI</h3>
+<p>Optimized for:</p>
+<ul><li><p>Custom interfaces with your own product identity</p></li><li><p>Composition: slots, parts and extendable state</p></li><li><p>Theming from one token scale</p></li><li><p>Source you can read, copy and evolve on your schedule</p></li></ul></section><section><h2>The trade-offs</h2>
+Link to section The trade-offs
+<dl><dt>Fewer components</dt><dd><p>Fandry is a small set of primitives and a few blocks, not the full Lightning Base Components catalog. Some screens will still call for a <code>lightning-*</code> component, and slotting one into a fandry component works.</p></dd>
+<dt>It does not look like Salesforce</dt><dd><p>That is the point, and also the cost. If your app should feel like part of Lightning Experience, base components are the better fit.</p></dd>
+<dt>Opinionated, on purpose</dt><dd><p>Customization goes through tokens, parts, slots and state classes, not a growing list of props. Some changes mean composing or copying rather than flipping a flag.</p></dd>
+<dt>Updates are yours to take</dt><dd><p>On Salesforce, <code>fandry add</code> copies source into your project. Running it again updates the components you have not edited and leaves your changes alone, so you decide when anything changes.</p></dd>
+<dt>Still a Salesforce platform citizen</dt><dd><p>Fandry depends on LWC, LWR and Lightning Web Security like any other component. Independence from base components is not independence from the platform.</p></dd>
+<dt>Not a React replacement</dt><dd><p>Fandry is a component library. It has no router, state store or rendering model of its own; your application stays plain LWC.</p></dd></dl></section></article><section><h2>One component, three identities</h2>
+Link to section One component, three identities
+<p>The same markup three times. Only the <code>--fd-*</code> tokens on each wrapper differ.</p>
+Default
+New
+<h3>Spring collection</h3>
+<p>Get early access and member pricing.</p>
+Email
+No tokens set.
+Editorial
+New
+<h3>Spring collection</h3>
+<p>Get early access and member pricing.</p>
+Email
+Serif headings, square corners, warm palette.
+Midnight
+New
+<h3>Spring collection</h3>
+<p>Get early access and member pricing.</p>
+Email
+Dark surfaces, rounder corners, bright accent.</section><section><h2>Get started</h2>
+Link to section Get started
+<p>One npm package and the same components on both platforms. Pick the one you build on.</p>
+npm
+<h3>LWR / LWC OSS</h3>
+<p>Install one npm package, point your project at it, and use <code>&lt;fandry-*&gt;</code> components. Your bundler ships only the ones you use.</p>
+<pre>npm install fandryui
+npx fandry init</pre>
+​
+<a href="/getting-started/lwr-oss/">Start with LWR →</a>
+sfdx
+<h3>Salesforce DX</h3>
+<p>The platform has no bundler and cannot import npm packages, so the CLI copies components into your project as source you own, with everything they depend on.</p>
+<pre>npm install --save-dev fandryui
+npx fandry init
+npx fandry add button</pre>
+​
+<a href="/getting-started/salesforce/">Start with Salesforce DX →</a>
+<p>Then make it your own with the <a href="/getting-started/theming/">theming guide</a>, or see more in <a href="/examples/">Examples</a>.</p></section></main>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-why-fandry></fandryui-why-fandry></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/why-fandry/configuration/ci/-%2Fwhy-fandry-/s/2c8a34047523bab602d2ce5054e13f69/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/why-fandry/configuration/ci/-%2Fwhy-fandry-/s/e757ff90649a4f36deaf9a7a22ae23b4/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fwhy-fandry%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-hIBxNBo-mUKykjZO8v3gxizwrEoXdrsTvEshvS-dr3w/bundle_@lwrjs_app-service_why-fandry_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FwhyFandry%2Fv%2F0_27_0/s/sha256-rClHgMOGUskmsyVORp8rb2eTV4kOobl07ZOb0L0A5LI/bundle_fandryui_whyFandry.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FwhyFandry%2Fv%2F0_27_1/s/sha256-Sz7-t_M03_9PKeA2gX3jVeuegcEXLcMWBEnKdrvxnFE/bundle_fandryui_whyFandry.js" />
   </body>
 </html>

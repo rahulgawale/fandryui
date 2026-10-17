@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,238 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-2f560eb26956a6448deca797cb84205e-d24da3df467c0d87-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-5372508dcce01283223c257b2bb6398a-4a26a3f4fa5d1b5a-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-component-doc></fandryui-component-doc></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<nav>Layout
+<a href="/components/breadcrumb/">Breadcrumb</a>
+<a href="/components/breadcrumb-item/">Breadcrumb Item</a>
+<a href="/components/card/">Card</a>
+<a href="/components/divider/">Divider</a>
+<a href="/components/pagination/">Pagination</a>
+<a href="/components/sidebar/">Sidebar</a>
+<a href="/components/sidebar-item/">Sidebar Item</a>
+Typography
+<a href="/components/heading/">Heading</a>
+<a href="/components/icon/">Icon</a>
+<a href="/components/label/">Label</a>
+<a href="/components/text/">Text</a>
+Forms
+<a href="/components/button/">Button</a>
+<a href="/components/checkbox/">Checkbox</a>
+<a href="/components/combobox/">Combobox</a>
+<a href="/components/input/">Input</a>
+<a href="/components/link/">Link</a>
+<a href="/components/radio/">Radio</a>
+<a href="/components/radio-group/">Radio Group</a>
+<a href="/components/select/">Select</a>
+<a href="/components/switch/">Switch</a>
+<a href="/components/textarea/">Textarea</a>
+Feedback
+<a href="/components/alert/">Alert</a>
+<a href="/components/badge/">Badge</a>
+<a href="/components/progress/">Progress</a>
+<a href="/components/skeleton/">Skeleton</a>
+<a href="/components/spinner/">Spinner</a>
+<a href="/components/loading-overlay/">Loading Overlay</a>
+<a href="/components/toast/">Toast</a>
+<a href="/components/toast-viewport/">Toast Viewport</a>
+<a href="/components/tooltip/">Tooltip</a>
+Overlays &amp; Data
+<a href="/components/avatar/">Avatar</a>
+<a href="/components/command/">Command</a>
+<a href="/components/dialog/">Dialog</a>
+<a href="/components/menu/">Menu</a>
+<a href="/components/menu-item/">Menu Item</a>
+<a href="/components/popover/">Popover</a>
+<a href="/components/table/">Table</a>
+Salesforce
+<a href="/components/lookup/">Lookup</a></nav>
+<main>Salesforce
+<h1>Lookup</h1>
+<p>Find and pick a record — one by default, or several with <code>multiple</code>. It fetches nothing itself: it reports what was typed, you run the query and hand the records back.</p>
+<p><code>fandry-lookup</code></p>
+<section><h2>Example</h2>
+Link to section Example</section><section><h2>Custom colors and parts</h2>
+Link to section Custom colors and parts
+<p>The same component with a few <code>--fd-*</code> tokens set around it and its parts restyled. The code is under Parts below.</p></section><section><h2>Props</h2>
+Link to section Props
+<table><thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>label</code></td><td><code>string</code></td><td><code>''</code></td><td>Visible label.</td></tr><tr><td><code>placeholder</code></td><td><code>string</code></td><td><code>''</code></td><td>Shown in the empty search box.</td></tr><tr><td><code>help-text</code></td><td><code>string</code></td><td><code>''</code></td><td>Helper text below the field.</td></tr><tr><td><code>error-text</code></td><td><code>string</code></td><td><code>''</code></td><td>An error shown under the field: the field is invalid while it has one (<code>aria-invalid</code>, the <code>invalid</code> state), and a screen reader hears it when it appears and when the field is focused.</td></tr><tr><td><code>name</code></td><td><code>string</code></td><td><code>''</code></td><td>Exposed as <code>data-name</code> on the input.</td></tr><tr><td><code>results</code></td><td><code>{ id, label, description?, disabled?, … }[]</code></td><td><code>[]</code></td><td>Matches for the current search, shown exactly as given (never re-filtered). Extra fields ride along and come back in <code>change</code>.</td></tr><tr><td><code>loading</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Shows a searching indicator while your query is in flight.</td></tr><tr><td><code>multiple</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Allow any number of records, shown as removable chips with a “Clear all”. The list stays open after each pick, already-chosen records are not offered again, and Backspace in an empty field removes the last chip.</td></tr><tr><td><code>debounce-ms</code></td><td><code>number</code></td><td><code>250</code></td><td>Milliseconds typing must pause before <code>search</code> fires; 0 searches on every keystroke. Opening the list still searches at once.</td></tr><tr><td><code>value</code></td><td><code>string | string[]</code></td><td><code>''</code></td><td>The selected id (an array of ids with <code>multiple</code>). Set it to render existing data; it updates when the user picks or clears. The lookup names each id from <code>record</code>/<code>records</code> or <code>results</code>; for any it can't, it fires <code>resolve</code> and shows the raw id (muted) until you supply the record.</td></tr><tr><td><code>record</code></td><td><code>{ id, label, … } | null</code></td><td><code>null</code></td><td>Single mode: the selected record, shown as the field's value with a clear button. On its own it preselects; once <code>value</code> has been set it only supplies the name for that id.</td></tr><tr><td><code>records</code></td><td><code>{ id, label, … }[]</code></td><td><code>[]</code></td><td>Multiple mode: the selected records. On its own it preselects; once <code>value</code> has been set it only supplies names for those ids (any subset is fine).</td></tr><tr><td><code>required</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Marks the field required (asterisk + aria-required).</td></tr><tr><td><code>disabled</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Disables the field and the pill's clear button.</td></tr><tr><td><code>element-props</code></td><td><code>Record&lt;string, unknown&gt;</code></td><td><code>{}</code></td><td>Spread onto the native input; keys the component controls are ignored with a warning.</td></tr><tr><td><code>search (event)</code></td><td><code>CustomEvent&lt;{ query }&gt;</code></td><td><code>—</code></td><td>Fires when the list opens by click or ArrowDown (immediately, so an empty query can offer recent records), after typing pauses, and in <code>multiple</code> mode after each pick.</td></tr><tr><td><code>resolve (event)</code></td><td><code>CustomEvent&lt;{ values }&gt;</code></td><td><code>—</code></td><td>Fires once for ids set through <code>value</code> that the lookup can't name yet. Look them up and set <code>record</code>/<code>records</code>. It does not repeat for an id already asked about.</td></tr><tr><td><code>change (event)</code></td><td><code>CustomEvent&lt;{ value, record }&gt; | CustomEvent&lt;{ values, records }&gt;</code></td><td><code>—</code></td><td>Single mode: <code>{ value, record }</code> on pick, and <code>{ value: '', record: null }</code> on clear. Multiple mode: <code>{ values, records }</code> on every pick, removal and Clear all.</td></tr><tr><td><code>empty (slot)</code></td><td><code>slot</code></td><td><code>'No records found'</code></td><td>Replaces the message shown when a search has no matches.</td></tr><tr><td><code>clear-all · searching (slots)</code></td><td><code>slot</code></td><td><code>'Clear all' · 'Searching…'</code></td><td>Replace the Clear all button's text and the searching line.</td></tr><tr><td><code>messages</code></td><td><code>{ searching, clear(name), remove(name) }</code></td><td><code>{}</code></td><td>Replaces the accessible names of the spinner and the clear and remove buttons, e.g. to translate them.</td></tr><tr><td><code>label · help-text · error-text (slots)</code></td><td><code>slot</code></td><td><code>the props</code></td><td>Markup in place of the label, help text or error text. Shown even without the matching prop.</td></tr></tbody></table></section><section><h2>Parts</h2>
+Link to section Parts
+<p>Style the elements inside the component from your own CSS with <code>::part()</code>. Every fandry component renders in native shadow DOM, so parts work on LWR and Salesforce alike. For colors, spacing, radius and type across many components, set the <code>--fd-*</code> tokens instead. The code for the &quot;Custom colors and parts&quot; example above:</p>
+<table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>base</code></td><td>The outermost element.</td></tr><tr><td><code>label</code></td><td>The label.</td></tr><tr><td><code>required</code></td><td>The required-field asterisk.</td></tr><tr><td><code>control</code></td><td>The box the field draws: a text field's border, a select's button, a checkbox's box, a radio's circle, a switch's track.</td></tr><tr><td><code>selection</code></td><td>The chosen record, in single-select mode.</td></tr><tr><td><code>selection-label</code></td><td>The chosen record's name.</td></tr><tr><td><code>clear-button</code></td><td>The button that clears the chosen record.</td></tr><tr><td><code>chips</code></td><td>The row of chosen records and the input, in multi-select mode.</td></tr><tr><td><code>chip</code></td><td>One chosen record.</td></tr><tr><td><code>chip-label</code></td><td>A chosen record's name.</td></tr><tr><td><code>chip-remove</code></td><td>The button that removes one chosen record.</td></tr><tr><td><code>input</code></td><td>The native <code>&lt;input&gt;</code>.</td></tr><tr><td><code>clear-all</code></td><td>The Clear all button.</td></tr><tr><td><code>panel</code></td><td>The surface that opens: a dropdown's list, a popover, a tooltip, a dialog, a loading overlay's box.</td></tr><tr><td><code>listbox</code></td><td>The list of options.</td></tr><tr><td><code>group</code></td><td>A group of options.</td></tr><tr><td><code>group-label</code></td><td>A group's heading.</td></tr><tr><td><code>option</code></td><td>One option.</td></tr><tr><td><code>option-label</code></td><td>An option's label.</td></tr><tr><td><code>option-description</code></td><td>An option's second line.</td></tr><tr><td><code>status</code></td><td>A status line (a page count, &quot;Searching…&quot;).</td></tr><tr><td><code>empty</code></td><td>What shows when there is nothing to list.</td></tr><tr><td><code>help-text</code></td><td>The help text under the field.</td></tr><tr><td><code>error-text</code></td><td>The error under the field. In the page even while empty, so style it only for a field that is <code>invalid</code>.</td></tr></tbody></table>
+<p>States are extra names on a part while the state is on. Name both to style one state, e.g.<code>fandry-checkbox::part(control checked)</code>.</p>
+<table><thead><tr><th>State</th><th>Description</th></tr></thead><tbody><tr><td><code>disabled</code></td><td>A control, option or item that cannot be used.</td></tr><tr><td><code>invalid</code></td><td>A field that has error text.</td></tr><tr><td><code>selected</code></td><td>The chosen option, or a selected table row.</td></tr><tr><td><code>active</code></td><td>The option the keyboard or pointer is on.</td></tr></tbody></table>
+<pre>&lt;!-- template --&gt;
+&lt;div class=&quot;brand narrow&quot;&gt;
+  &lt;fandry-lookup
+    label=&quot;Account&quot;
+    placeholder=&quot;Search accounts&quot;
+    debounce-ms=&quot;300&quot;
+    results={results}
+    loading={loading}
+    record={account}
+    onsearch={handleSearch}
+    onchange={handleChange}
+  &gt;&lt;/fandry-lookup&gt;
+&lt;/div&gt;
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 999px;
+  --fd-border-focus: 160 84% 36%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-bg-muted: 160 40% 94%;
+}
+
+fandry-lookup::part(control) {
+  padding-inline: 0.75rem;
+  background: hsl(160 40% 98%);
+}
+
+fandry-lookup::part(panel) {
+  border-radius: 1rem;
+  box-shadow: 0 12px 32px hsl(160 40% 20% / 0.18);
+}
+
+fandry-lookup::part(option-description) {
+  font-style: italic;
+}</pre>
+​</section><section><h2>Code</h2>
+Link to section Code
+<pre>&lt;!-- template --&gt;
+&lt;fandry-lookup
+  label=&quot;Account&quot;
+  placeholder=&quot;Search accounts&quot;
+  results={results}
+  loading={loading}
+  record={account}
+  onsearch={handleSearch}
+  onchange={handleChange}
+&gt;&lt;/fandry-lookup&gt;
+
+// component
+async handleSearch(event) {
+  this.loading = true;
+  // Apex, GraphQL, UI API -- whatever you already use:
+  this.results = await findAccounts(event.detail.query);
+  this.loading = false;
+}
+
+handleChange(event) {
+  this.account = event.detail.record; // null when cleared
+}
+
+// Ignore a slow earlier answer landing after a newer one: keep a request
+// counter and only apply the result of the latest.</pre>
+​</section>
+<section><h2>Example: Multiple records</h2>
+Link to section Example: Multiple records</section><section><p>Code</p>
+<pre>&lt;!-- template: bind `records` instead of `record` --&gt;
+&lt;fandry-lookup
+  label=&quot;Accounts&quot;
+  multiple
+  results={results}
+  loading={loading}
+  records={accounts}
+  onsearch={handleSearch}
+  onchange={handleChange}
+&gt;&lt;/fandry-lookup&gt;
+
+// component
+handleChange(event) {
+  this.accounts = event.detail.records; // also event.detail.values (the ids)
+}
+
+// The list stays open after each pick and fires `search` again with an
+// empty query, so refresh it (recent records, minus what's now chosen).
+// Records already chosen are hidden from `results` automatically.</pre>
+​</section>
+<section><h2>Example: Existing value (single and multiple)</h2>
+Link to section Example: Existing value (single and multiple)</section><section><p>Code</p>
+<pre>&lt;!-- template: bind `value`. Bind `record`/`records` too, to supply names. --&gt;
+&lt;fandry-lookup
+  label=&quot;Account&quot;
+  value={accountId}
+  record={account}
+  onresolve={handleResolve}
+  onchange={handleChange}
+&gt;&lt;/fandry-lookup&gt;
+
+&lt;fandry-lookup
+  label=&quot;Accounts&quot;
+  multiple
+  value={accountIds}
+  records={accounts}
+  onresolve={handleResolveMany}
+  onchange={handleChangeMany}
+&gt;&lt;/fandry-lookup&gt;
+
+// component
+accountId = '001C';               // straight off a saved record
+accountIds = ['001A', '001D'];
+
+// The lookup can't name an id it has no record for. It shows the id, and asks:
+async handleResolve(event) {
+  const [account] = await getAccounts(event.detail.values);
+  this.account = account;
+}
+
+async handleResolveMany(event) {
+  const found = await getAccounts(event.detail.values);
+  this.accounts = [...this.accounts, ...found];
+}
+
+// Only the ids it asked about are in event.detail.values. Records for ids
+// that aren't in `value` are ignored: value decides what's selected.
+handleChange(event) {
+  this.accountId = event.detail.value;
+}
+handleChangeMany(event) {
+  this.accountIds = event.detail.values;
+  this.accounts = event.detail.records;
+}</pre>
+​</section>
+<nav><a href="/components/table/">← Previous
+Table</a></nav></main>
+<nav>On this page
+<ul><li>Example</li><li>Custom colors and parts</li><li>Props</li><li>Parts</li><li>Code</li><li>Multiple records</li><li>Existing value (single and multiple)</li></ul></nav>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-component-doc></fandryui-component-doc></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-lookup/configuration/ci/-%2Fcomponents%2Flookup-/s/79ff6148bc3d84bc457020c3fc3af20c/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-lookup/configuration/ci/-%2Fcomponents%2Flookup-/s/205b89639c577c92cb9ecbb2aa5a0123/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fcomponent-lookup%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-Yh_peboH1OopD-8DjFzinSuU2AxkGXJHIn6q_6Xh0BI/bundle_@lwrjs_app-service_component-lookup_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_0/s/sha256-FkRdggNKMLX-eulDmGz3UlQXi8eZCH26iuV69AhRRWM/bundle_fandryui_componentDoc.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_1/s/sha256-dUpHtvbQJi0ACg3KDQONHM38aswrgia1M_2GCYS5c04/bundle_fandryui_componentDoc.js" />
   </body>
 </html>

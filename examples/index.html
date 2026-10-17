@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,167 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-dc9e0233cd1536cd57de008c377dc75b-8ae28416729e1b71-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-29ce07a63f09a5a524464065c1689db4-00ef5f307fd69a6d-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-examples></fandryui-examples></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<main><section><h1>11 patterns, built from these primitives</h1>
+<p>Real, interactive UI built entirely from <code>fandry-*</code> components, not screenshots. Retheme them with tokens to make them your own.</p></section>
+<section>01
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Pricing card</h2>
+<p>A plan card with a badge, feature list, and single CTA.</p>
+Popular
+<h3>Pro</h3>
+$29
+/mo
+<ul><li>Unlimited components</li><li>Priority support</li><li>Custom theming</li></ul>
+02
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Login form</h2>
+<p>Inputs, a checkbox, and a link, wired together.</p>
+<h3>Sign in</h3>
+Email
+Password
+Remember me
+Forgot password?
+03
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Settings list</h2>
+<p>Label, description, and a switch, repeated with dividers.</p>
+<h3>Notifications</h3>
+Email alerts
+Get notified when an order ships.
+SMS alerts
+Text messages for urgent updates.
+Weekly digest
+A Monday summary of account activity.
+04
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Empty state</h2>
+<p>Icon, heading, muted copy, and a way forward.</p>
+<h3>No invoices yet</h3>
+<p>Invoices show up here once you place your first order.</p>
+05
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Notification list</h2>
+<p>A stack of fandry-alert, each with its own variant.</p>
+<h3>Notifications</h3>
+New comment on ticket #4821.
+<p>Payment received</p>
+Invoice INV-2044 is now paid.
+<p>Low stock</p>
+Valve Assembly is running low.
+06
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Team list</h2>
+<p>Avatar, name, role, and a badge, data-driven with for:each.</p>
+<h3>Team</h3>
+AL
+Ada Lovelace
+Engineer
+Admin
+GH
+Grace Hopper
+Engineer
+Member
+AT
+Alan Turing
+Researcher
+Member
+07
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Attachment list</h2>
+<p>File icon, filename, size, and a remove action.</p>
+<h3>Attachments</h3>
+quarterly-report.pdf
+2.4 MB
+warranty-terms.docx
+640 KB
+08
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Onboarding checklist</h2>
+<p>Completed steps locked, the rest genuinely checkable.</p>
+<h3>Get started</h3>
+<p>2 of 4 steps complete</p>
+Create your account
+Verify your email
+Invite your team
+Place your first order
+09
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Search bar</h2>
+<p>fandry-input's prefix slot plus a static results list.</p>
+Quick search
+🔍
+#10482 — Industrial Pump
+Order
+Ada Lovelace
+Person
+Filter Kit
+Product
+10
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>KPI row</h2>
+<p>Three stat tiles with a trend badge each.</p>
+<h3>This month</h3>
+Revenue
+<h3>$84,200</h3>
++12%
+New customers
+<h3>38</h3>
++4%
+Churn
+<h3>1.2%</h3>
++0.3%
+11
+<a href="https://github.com/rahulgawale/fandryui/blob/main/src/modules/fandryui/exampleGallery/exampleGallery.html">View source</a>
+<h2>Breadcrumb navigation</h2>
+<p>Each crumb swaps the card below — fandry-breadcrumb driving real state.</p>
+<nav><ol><li>Documents</li>
+<li>/
+Projects</li>
+<li>/
+Redesign</li></ol></nav>
+<h3>Website Redesign</h3>
+<p>Design files, briefs, and assets for the Q3 site redesign.</p></section>
+<section><h2>Ready to build?</h2>
+<p>Every pattern above is just <code>fandry-*</code> primitives, composed. Grab the components and start.</p>
+<a href="/components/">Browse Components</a>
+<a href="https://github.com/rahulgawale/fandryui">View on GitHub</a></section></main>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-examples></fandryui-examples></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/examples/configuration/ci/-%2Fexamples-/s/365053f0d64e2beff21704cabdafa5e7/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/examples/configuration/ci/-%2Fexamples-/s/0ce3c4feb667c682de34d63d74cf8cff/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fexamples%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-IGIOJeXniDc0MHVKx_bYoGmmNkFLn-RJQ7j9ko1rZp0/bundle_@lwrjs_app-service_examples_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fexamples%2Fv%2F0_27_0/s/sha256-1inlMjFUkbz-PyQ7nQxoGPwCbTphwFyGd0cEJbcK6io/bundle_fandryui_examples.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fexamples%2Fv%2F0_27_1/s/sha256-hcoGEjeRfDvmvosw_VOadKP5VrqXi5jiNuWzEnNeq50/bundle_fandryui_examples.js" />
   </body>
 </html>

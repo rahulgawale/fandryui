@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,252 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-2050689398ddb34a595c03c3a53c28c9-c53b6554a97f7ccc-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-0e3185ef6b78e88af21ddf2e906f6212-7700babee8798d4c-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-getting-started></fandryui-getting-started></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<nav>Getting started
+<a href="/getting-started/">Overview</a>
+<a href="/getting-started/lwr-oss/">LWR / LWC OSS</a>
+<a href="/getting-started/salesforce/">Salesforce DX</a>
+<a href="/getting-started/theming/">Theming</a></nav>
+<main>css
+<h1>Theming</h1>
+<p>Set <code>--fd-*</code> tokens to theme colors, type, spacing, radius and motion for a site, a section or one component, and <code>::part()</code> to restyle one element.</p>
+<section><h2>How it works</h2>
+Link to section How it works
+<p>Every token has two names. You set the public one, <code>--fd-*</code>. Components read a private one, <code>--_fd-*</code>, which each component resolves from the public name or its default. Custom properties inherit through shadow roots, so a value you set on any ancestor reaches every fandry component below it, and the ones those components render.</p>
+Inside every component (fandry/base/tokens.css)
+<pre>:host {
+  --_fd-primary: var(--fd-primary, 226 90% 50%);
+  --_fd-radius-md: var(--fd-radius-md, 0.375rem);
+  /* ... */
+}</pre>
+​
+<ul><li><p>Set <code>--fd-*</code> names only. The <code>--_fd-*</code> names are internal and can change.</p></li><li><p>Colors are bare HSL channels with no commas and no <code>hsl()</code>: <code>--fd-primary: 210 90% 40%</code>. Components wrap them in <code>hsl()</code> themselves, which is how they add transparency.</p></li><li><p>Nothing needs a global stylesheet: every token has a default. Set only what you want to change.</p></li></ul></section><section><h2>Set a token for the whole site</h2>
+Link to section Set a token for the whole site
+<p>Put the tokens on <code>:root</code> in a stylesheet the page loads. Every fandry component on the page inherits them.</p>
+LWR / LWC OSS: src/assets/theme.css
+<pre>:root {
+  --fd-primary: 210 90% 40%;
+  --fd-primary-foreground: 0 0% 100%;
+  --fd-radius-md: 0;
+  --fd-font-sans: &quot;Brand Sans&quot;, system-ui, sans-serif;
+}</pre>
+​
+LWR / LWC OSS: src/layouts/index.html
+<pre>&lt;head&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/theme.css&quot; /&gt;
+&lt;/head&gt;</pre>
+​
+<p>:root in a component stylesheet does not work</p>
+A component's own CSS is scoped to that component, so <code>:root { ... }</code> in <code>my/app/app.css</code> never reaches the page. Use a stylesheet the layout loads, or set the tokens on <code>:host</code> (see below).
+<p>On Salesforce, where the page is not yours to edit, pick the place that matches where your components run:</p>
+<ul><li><p>Experience Cloud LWR site: in Experience Builder, Settings &gt; Advanced &gt; Edit Head Markup, add a <code>&lt;style&gt;</code> with the <code>:root</code> rule, or a <code>&lt;link&gt;</code> to a static resource holding it.</p></li><li><p>Lightning pages, apps and record pages: set the tokens on <code>:host</code> of your outermost component. Everything it renders inherits them, including fandry components nested in other components.</p></li><li><p>A whole Lightning app from one file: upload the <code>:root</code> rule as a CSS static resource and load it once with <code>loadStyle</code> from <code>lightning/platformResourceLoader</code>.</p></li></ul>
+Salesforce: force-app/main/default/lwc/myApp/myApp.css
+<pre>:host {
+  --fd-primary: 210 90% 40%;
+  --fd-radius-md: 0;
+}</pre>
+​
+Salesforce: loadStyle a static resource named fandryTheme
+<pre>import { LightningElement } from 'lwc';
+import { loadStyle } from 'lightning/platformResourceLoader';
+import fandryTheme from '@salesforce/resourceUrl/fandryTheme';
+
+export default class MyApp extends LightningElement {
+  connectedCallback() {
+    loadStyle(this, fandryTheme);
+  }
+}</pre>
+​</section><section><h2>Override for one section</h2>
+Link to section Override for one section
+<p>Set the same tokens on any element. Only the components inside it change; the nearest value wins, as with any inherited CSS property.</p>
+my/app/app.html
+<pre>&lt;section class=&quot;promo&quot;&gt;
+  &lt;fandry-card&gt;...&lt;/fandry-card&gt;
+  &lt;fandry-button&gt;Shop the sale&lt;/fandry-button&gt;
+&lt;/section&gt;</pre>
+​
+my/app/app.css
+<pre>.promo {
+  --fd-bg: 38 92% 95%;
+  --fd-primary: 24 95% 40%;
+}</pre>
+​</section><section><h2>Override for one component</h2>
+Link to section Override for one component
+<p>A fandry component reads its tokens on its own element, so a token set on the element itself changes that one instance, and whatever it renders: set <code>--fd-primary</code> on a <a href="/components/table/"><code>fandry-table</code></a> and its checkboxes and pagination buttons follow.</p>
+my/app/app.html
+<pre>&lt;fandry-button class=&quot;danger&quot;&gt;Delete&lt;/fandry-button&gt;
+&lt;fandry-button&gt;Cancel&lt;/fandry-button&gt;
+
+&lt;!-- or inline, for a one-off --&gt;
+&lt;fandry-input label=&quot;Search&quot; style=&quot;--fd-radius-md: 999px&quot;&gt;&lt;/fandry-input&gt;</pre>
+​
+my/app/app.css
+<pre>/* one instance */
+.danger {
+  --fd-primary: 0 72% 51%;
+}
+
+/* every fandry-button this component renders */
+fandry-button {
+  --fd-radius-md: 999px;
+}</pre>
+​
+<p>Put the rule where the element is</p>
+A selector only matches elements in its own shadow tree. <code>.danger</code> or <a href="/components/button/"><code>fandry-button</code></a> in <code>app.css</code> matches the buttons in <code>app.html</code>, not buttons inside some other component, and a global stylesheet's <code>fandry-button</code> rule matches only buttons outside every component. To change every button on the site, set the token on <code>:root</code>; to change the buttons of one component, set it in that component's CSS. On Salesforce the tag is c-fandry-button.</section><section><h2>Restyle one element inside a component</h2>
+Link to section Restyle one element inside a component
+<p>When no token covers it, style the element directly with <code>::part()</code>. Each component's page lists its parts and states. A part also carries the name of each state while it is on, so naming both targets that state only. The same rule as above applies: write it in the stylesheet of the component whose template renders the element.</p>
+my/app/app.css
+<pre>fandry-link::part(link) {
+  color: inherit;
+  text-decoration: none;
+}
+
+fandry-checkbox::part(control checked) {
+  background: hsl(160 84% 26%);
+}
+
+.danger::part(base) {
+  text-transform: uppercase;
+}</pre>
+​
+<p>Parts need native shadow DOM, which every fandry component uses, on LWR and on Salesforce alike. Tokens work everywhere.</p>
+<p>Keep box-shadow off a control's part</p>
+A control draws its focus ring as a <code>box-shadow</code>, and a <code>::part()</code> rule from outside wins over the component's own, in every state. So <code>fandry-button::part(base) { box-shadow: ... }</code> leaves a focused button with no ring. Put a shadow on the element instead, <code>fandry-button.cta { filter: drop-shadow(0 6px 12px hsl(160 84% 26% / 0.35)) }</code>, or change the ring with <code>--fd-ring-control</code>.</section><section><h2>Which value wins</h2>
+Link to section Which value wins
+<ul><li><p>An inline style or a rule on the component element itself.</p></li><li><p>The nearest ancestor that sets the token: a section, then your component's <code>:host</code>, then <code>:root</code>.</p></li><li><p>The default in <code>tokens.css</code>.</p></li><li><p>Reduced motion wins over all of them: when the user asks for it, the transition durations go to <code>0ms</code> whatever the site sets. Looping indicators (spinner, skeleton) keep running.</p></li></ul></section><section><h2>Using tokens in your own CSS</h2>
+Link to section Using tokens in your own CSS
+<p>The private <code>--_fd-*</code> names only exist inside fandry components and components that extend <code>fandry/base</code>. A component that extends Base reads them like the library does. Any other CSS should read the <code>--fd-*</code> names, with a fallback: outside a fandry component the private names are not set, and markup you slot into one inherits them only while it sits in that slot.</p>
+Your CSS
+<pre>/* my component extends Base from 'fandry/base' */
+.toolbar {
+  gap: var(--_fd-space-2);
+  color: hsl(var(--_fd-text-muted));
+}
+
+/* a plain LightningElement */
+.toolbar {
+  gap: var(--fd-space-2, 0.5rem);
+}</pre>
+​</section><section><h2>Every token</h2>
+Link to section Every token
+<p>The defaults are in <code>fandry/base/tokens.css</code> (<code>node_modules/fandryui/modules/fandry/base/</code> on LWR, <code>fandryBase/</code> on Salesforce). <code>--brand-primary</code> and <code>--brand-accent</code> still work as the older names for <code>--fd-primary</code> and <code>--fd-accent</code>. Info alerts and toasts use <code>--fd-info</code>, or <code>--fd-accent</code> when only that is set. Beyond that, no fandry component draws in <code>--fd-accent</code>: it is a highlight color for your own CSS.</p>
+Tokens
+<pre>Color (H S% L%)   --fd-primary  --fd-primary-foreground
+                  --fd-accent  --fd-accent-foreground  --fd-info
+                  --fd-success  --fd-success-foreground
+                  --fd-warning  --fd-warning-foreground
+                  --fd-danger  --fd-danger-foreground
+                  --fd-bg  --fd-bg-muted  --fd-text  --fd-text-muted
+                  --fd-border  --fd-border-focus  --fd-link-visited
+Borders           --fd-border-width  --fd-border-width-md  --fd-border-width-lg
+Radius            --fd-radius-sm  --fd-radius-md  --fd-radius-lg  --fd-radius-full
+Spacing           --fd-space-1  --fd-space-2  --fd-space-3  --fd-space-4  --fd-space-5
+Sizes             --fd-size-xs  --fd-size-sm  --fd-size-md  --fd-size-lg
+                  --fd-control-height-sm  --fd-control-height-md  --fd-control-height-lg
+                  --fd-control-max-width-sm  --fd-control-min-width-sm
+                  --fd-listbox-max-height  --fd-chevron-size
+                  --fd-overlay-min-width-sm  --fd-overlay-max-width-sm
+                  --fd-overlay-max-width-md  --fd-overlay-offset-top
+                  --fd-avatar-size-sm  --fd-avatar-size-md  --fd-avatar-size-lg
+                  --fd-switch-width  --fd-switch-padding  --fd-tooltip-arrow-size
+                  --fd-sidebar-width  --fd-toast-width  --fd-form-column-min-width
+                  --fd-media-columns  --fd-media-gap  --fd-media-min-width
+                  --fd-media-aspect-ratio  --fd-media-fit  --fd-link-underline-offset
+                  --fd-spinner-thickness
+Focus ring        --fd-ring-color  --fd-ring-width  --fd-ring-offset
+                  --fd-ring-field  --fd-ring-control  --fd-ring-halo-width  --fd-ring-halo-blur
+                  --fd-ring-halo-opacity
+Surfaces          --fd-surface-tint  --fd-shadow-sm  --fd-shadow-color-floating
+                  --fd-shadow-color-modal  --fd-shadow-color-subtle
+                  --fd-hover-brightness  --fd-disabled-opacity  --fd-pulse-opacity
+                  --fd-backdrop  --fd-backdrop-opacity  --fd-z-overlay
+                  --fd-z-overlay-contained
+Type              --fd-font-sans  --fd-font-mono  --fd-font-heading
+                  --fd-font-size-xs  --fd-font-size-sm  --fd-font-size-md
+                  --fd-font-size-lg  --fd-font-size-xl  --fd-font-size-2xl
+                  --fd-font-size-3xl  --fd-line-height-normal  --fd-line-height-tight
+                  --fd-font-weight-medium  --fd-font-weight-semibold
+                  --fd-font-weight-bold  --fd-heading-weight
+                  --fd-heading-letter-spacing
+Motion            --fd-duration-fast  --fd-duration-normal  --fd-duration-slow
+                  --fd-duration-spin  --fd-duration-slowest
+                  --fd-loading-overlay-delay
+                  --fd-ease-standard  --fd-ease-emphasized  --fd-ease-in-out</pre>
+​
+<p>Deprecated component hooks</p>
+<code>--fd-button-radius</code>, <code>--fd-button-padding-x</code>, <code>--fd-button-border-width</code>, <code>--fd-card-bg</code>, <code>--fd-card-height</code> and <code>--fd-icon-size</code> still work but will be removed. Use a token set on the element, or its base part: <code>.round::part(base) { border-radius: 999px }</code>.
+<p><code>--fd-success-foreground</code>, <code>--fd-warning-foreground</code> and <code>--fd-danger-foreground</code> are the text color on a solid fill of that status. Badges are soft tints now, so no fandry component draws one; they are there for your own CSS (see Upgrading below) and for components that extend <code>fandry/base</code>.</p></section><section><h2>Upgrading from 0.25</h2>
+Link to section Upgrading from 0.25
+<p>No token was removed or renamed, so a themed site keeps working. These changed how components look; each comes with the CSS that keeps the old look.</p>
+<ul><li><p>Default colors: <code>--fd-primary</code> is cobalt and <code>--fd-accent</code> mint. A site that sets its own sees no change.</p></li><li><p>Info alerts and toasts read <code>--fd-info</code>, and <code>--fd-accent</code> when only that is set, so a site that colored them through accent keeps its color. Set <code>--fd-info</code> to color them apart from accent.</p></li><li><p>Colored badges are soft tints of their color instead of solid fills, and every badge has a border. They still follow <code>--fd-success</code>, <code>--fd-warning</code>, <code>--fd-danger</code> and <code>--fd-primary</code>, and dark themes through <code>--fd-bg</code> and <code>--fd-text</code>; the <code>-foreground</code> tokens no longer color them.</p></li><li><p>Focus: buttons, links and other controls draw their ring with a soft halo, and still follow <code>--fd-ring-width</code>. A few keep a flat ring that follows only <code>--fd-ring-color</code> and <code>--fd-ring-width</code>, not <code>--fd-ring-control</code>: sidebar and breadcrumb items, table sort buttons, and menu items (drawn inside the item). Text fields draw it on their own border, so they no longer follow <code>--fd-ring-width</code>, and the textarea no longer uses <code>--fd-ring-offset</code>.</p></li><li><p>The data table marks the row being edited with <code>--fd-primary</code> instead of <code>--fd-accent</code>.</p></li><li><p>A link draws its focus ring on its <code>link</code> part (the <code>&lt;a&gt;</code>) instead of <code>base</code>, so the ring follows a box you give <code>::part(link)</code>. A site that drew its own ring on <code>fandry-link::part(base):focus-visible</code> now gets two: drop that rule and set <code>--fd-ring-control</code> or <code>--fd-ring-color</code> on the link instead.</p></li><li><p>A focused button keeps the shadow it lifts with on hover, under its ring. A filled (default) button also draws a line of its own color, mixed toward its text color, just inside the ring, so the ring stands apart from a fill of the same color.</p></li></ul>
+Keep the old default colors
+<pre>:root {
+  --fd-primary: 330 81% 48%;
+  --fd-accent: 199 89% 36%;
+  --fd-accent-foreground: 0 0% 100%;
+  --fd-link-visited: 271 55% 40%;
+}</pre>
+​
+Solid badges (the same for warning, danger and primary)
+<pre>fandry-badge::part(base success) {
+  background: hsl(var(--fd-success, 142 71% 30%));
+  color: hsl(var(--fd-success-foreground, 0 0% 100%));
+  border-color: transparent;
+}
+
+/* No border on any badge */
+fandry-badge::part(base) {
+  border-width: 0;
+}</pre>
+​
+A flat focus ring, as before
+<pre>:root {
+  --fd-ring-halo-opacity: 0;
+  /* your ring color */
+  --fd-ring-field: 0 0 0 2px hsl(222 89% 56%);
+}</pre>
+​
+<p>A ring token is a box-shadow list</p>
+A value for <code>--fd-ring-control</code> or <code>--fd-ring-field</code> has to be one or more box shadows. For an empty one write <code>0 0 transparent</code>, not <code>none</code>: a button adds its hover shadow after the ring, and <code>none</code> in a list makes the whole declaration invalid, so the button draws neither.</section>
+<p>Ready to build? Browse every component, its props and examples under <a href="/components/">Components</a>.</p></main>
+<nav>On this page
+<ul><li>How it works</li><li>Set a token for the whole site</li><li>Override for one section</li><li>Override for one component</li><li>Restyle one element inside a component</li><li>Which value wins</li><li>Using tokens in your own CSS</li><li>Every token</li><li>Upgrading from 0.25</li></ul></nav>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-getting-started></fandryui-getting-started></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/getting-started-theming/configuration/ci/-%2Fgetting-started%2Ftheming-/s/7c087ad3e3d0b496fb9586714c9e5107/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/getting-started-theming/configuration/ci/-%2Fgetting-started%2Ftheming-/s/4af36f019936bd5904bee22d5893fd72/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fgetting-started-theming%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-zi2-LYAFlleBQtxwASMilTP5HhUzhfeVyJyK9FmHqgY/bundle_@lwrjs_app-service_getting-started-theming_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FgettingStarted%2Fv%2F0_27_0/s/sha256-59ucGqTxX2Il3iWV2NrhrAlTyB0sFy1lBUTeASkjvsk/bundle_fandryui_gettingStarted.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FgettingStarted%2Fv%2F0_27_1/s/sha256-xMSrtXNbWCq4jBsYD7UlVRkwn1FDSGVN7iym3A6w7BQ/bundle_fandryui_gettingStarted.js" />
   </body>
 </html>

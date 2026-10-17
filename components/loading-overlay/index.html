@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,192 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-4278c9e959533919a968a764bbff8e97-0413e9b21427d37d-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-45a605b31260f0ed573d2c01648d6243-8db55c7350c952c6-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-component-doc></fandryui-component-doc></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<nav>Layout
+<a href="/components/breadcrumb/">Breadcrumb</a>
+<a href="/components/breadcrumb-item/">Breadcrumb Item</a>
+<a href="/components/card/">Card</a>
+<a href="/components/divider/">Divider</a>
+<a href="/components/pagination/">Pagination</a>
+<a href="/components/sidebar/">Sidebar</a>
+<a href="/components/sidebar-item/">Sidebar Item</a>
+Typography
+<a href="/components/heading/">Heading</a>
+<a href="/components/icon/">Icon</a>
+<a href="/components/label/">Label</a>
+<a href="/components/text/">Text</a>
+Forms
+<a href="/components/button/">Button</a>
+<a href="/components/checkbox/">Checkbox</a>
+<a href="/components/combobox/">Combobox</a>
+<a href="/components/input/">Input</a>
+<a href="/components/link/">Link</a>
+<a href="/components/radio/">Radio</a>
+<a href="/components/radio-group/">Radio Group</a>
+<a href="/components/select/">Select</a>
+<a href="/components/switch/">Switch</a>
+<a href="/components/textarea/">Textarea</a>
+Feedback
+<a href="/components/alert/">Alert</a>
+<a href="/components/badge/">Badge</a>
+<a href="/components/progress/">Progress</a>
+<a href="/components/skeleton/">Skeleton</a>
+<a href="/components/spinner/">Spinner</a>
+<a href="/components/loading-overlay/">Loading Overlay</a>
+<a href="/components/toast/">Toast</a>
+<a href="/components/toast-viewport/">Toast Viewport</a>
+<a href="/components/tooltip/">Tooltip</a>
+Overlays &amp; Data
+<a href="/components/avatar/">Avatar</a>
+<a href="/components/command/">Command</a>
+<a href="/components/dialog/">Dialog</a>
+<a href="/components/menu/">Menu</a>
+<a href="/components/menu-item/">Menu Item</a>
+<a href="/components/popover/">Popover</a>
+<a href="/components/table/">Table</a>
+Salesforce
+<a href="/components/lookup/">Lookup</a></nav>
+<main>Feedback
+<h1>Loading Overlay</h1>
+<p>Covers the page, or one panel, while it is busy. A backdrop blocks the pointer and the keyboard, and a panel shows a spinner and a label.</p>
+<p><code>fandry-loading-overlay</code></p>
+<section><h2>Example</h2>
+Link to section Example</section><section><h2>Custom colors and parts</h2>
+Link to section Custom colors and parts
+<p>The same component with a few <code>--fd-*</code> tokens set around it and its parts restyled. The code is under Parts below.</p></section><section><h2>Props</h2>
+Link to section Props
+<table><thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>open</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Whether the page or panel is busy. Bind it rather than wrapping the overlay in <code>lwc:if</code>: it stays in the page so its label is announced, and so it can fade out.</td></tr><tr><td><code>contained</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Covers the nearest positioned ancestor (position: relative) instead of the viewport, and blocks keys inside its parent element. Put the overlay directly inside the panel it covers.</td></tr><tr><td><code>label</code></td><td><code>string</code></td><td><code>''</code></td><td>The text under the spinner, e.g. &quot;Saving record…&quot;. Wins over messages.label. To restyle it (bold, color), use <code>::part(label)</code>, not the slot.</td></tr><tr><td><code>messages</code></td><td><code>{ label }</code></td><td><code>{}</code></td><td>Replaces the default label (&quot;Loading&quot;) for every instance, e.g. to translate it.</td></tr><tr><td><code>default slot</code></td><td><code>slot</code></td><td><code>spinner and label</code></td><td>The whole content of the panel, spinner included: your own indicator, markup in the text, a progress bar, a Cancel button. Its text (minus anything <code>aria-hidden</code>) is what is announced, or the label when it has none.</td></tr></tbody></table></section><section><h2>Parts</h2>
+Link to section Parts
+<p>Style the elements inside the component from your own CSS with <code>::part()</code>. Every fandry component renders in native shadow DOM, so parts work on LWR and Salesforce alike. For colors, spacing, radius and type across many components, set the <code>--fd-*</code> tokens instead. The code for the &quot;Custom colors and parts&quot; example above:</p>
+<table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>backdrop</code></td><td>The dimmed layer behind a modal panel, or a loading overlay's cover.</td></tr><tr><td><code>panel</code></td><td>The surface that opens: a dropdown's list, a popover, a tooltip, a dialog, a loading overlay's box.</td></tr><tr><td><code>spinner</code></td><td>A loading overlay's spinner (a <a href="/components/spinner/">fandry-spinner</a>'s <code>base</code>).</td></tr><tr><td><code>label</code></td><td>The label.</td></tr></tbody></table>
+<pre>&lt;!-- template --&gt;
+&lt;div class=&quot;brand row&quot;&gt;
+  &lt;fandry-button onclick={handleSave}&gt;Save record&lt;/fandry-button&gt;
+  &lt;fandry-loading-overlay open={saving} label=&quot;Saving record…&quot;&gt;&lt;/fandry-loading-overlay&gt;
+&lt;/div&gt;
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-backdrop: 160 40% 10%;
+  --fd-backdrop-opacity: 0.4;
+  --fd-loading-overlay-delay: 0ms;
+}
+
+/* The spinner's track is the border color: a tint of the primary here. */
+fandry-loading-overlay {
+  --fd-border: 160 84% 26% / 0.2;
+}
+
+fandry-loading-overlay::part(backdrop) {
+  backdrop-filter: blur(4px);
+}
+
+fandry-loading-overlay::part(panel) {
+  flex-direction: row;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+}
+
+/* The ring is 1em square: its font-size is its size. */
+fandry-loading-overlay::part(spinner) {
+  font-size: 1.25rem;
+}
+
+fandry-loading-overlay::part(label) {
+  font-weight: 600;
+}</pre>
+​</section><section><h2>Code</h2>
+Link to section Code
+<pre>&lt;fandry-button onclick={handleConvert}&gt;Convert lead&lt;/fandry-button&gt;
+&lt;fandry-loading-overlay open={converting} label=&quot;Converting lead…&quot;&gt;&lt;/fandry-loading-overlay&gt;</pre>
+​</section><section><p>Not a dialog</p>
+<p>It blocks the pointer and the keyboard the moment it opens, but takes no focus and has nothing to close: the page must always set open back to false, on errors and timeouts too. It only shows after <code>--fd-loading-overlay-delay</code> (<code>150ms</code>), so an operation that finishes sooner never flashes an overlay.</p>
+<p>Focus stays where it was. Over the page, keys do nothing until it closes (typing, Tab, Enter, Space, arrow-key scrolling, paste, the page's own shortcuts); the browser's shortcuts and wheel or touch scrolling still work. A contained overlay blocks keys inside the element it is in and lets Tab leave it. Keys still reach content in the overlay once it has focus: focus a Cancel button you put there yourself.</p>
+<p>It blocks hardware keys, not every input method: text from an IME or an on-screen keyboard, and a screen reader's own click, can still reach what is behind it. Guard the actions that must not run twice.</p>
+<p>It keeps a polite status region in the page at all times and puts the content's text into it once the overlay shows, so a screen reader announces it. A label edited in place while it is open is not announced again. Mark a slotted spinner <code>aria-hidden=&quot;true&quot;</code>: the region already says what is happening.</p></section>
+<section><h2>Example: Your own content</h2>
+Link to section Example: Your own content</section><section><p>Code</p>
+<pre>&lt;!-- template: the default slot replaces the spinner and label, so bring your own indicator --&gt;
+&lt;fandry-button onclick={handleImport}&gt;Import contacts&lt;/fandry-button&gt;
+&lt;fandry-loading-overlay open={importing}&gt;
+  &lt;fandry-progress value={percent} label=&quot;Import progress&quot;&gt;&lt;/fandry-progress&gt;
+  &lt;fandry-text&gt;Importing contacts…&lt;/fandry-text&gt;
+  &lt;fandry-button variant=&quot;secondary&quot; onclick={handleCancel}&gt;Cancel&lt;/fandry-button&gt;
+&lt;/fandry-loading-overlay&gt;
+
+// js: keys are blocked outside the overlay, so put focus on the action
+async handleImport() {
+  this.importing = true;
+  await Promise.resolve();
+  this.template.querySelector('fandry-loading-overlay fandry-button').focus();
+}</pre>
+​</section>
+<section><h2>Example: Over one panel</h2>
+Link to section Example: Over one panel</section><section><p>Code</p>
+<pre>&lt;!-- template: the overlay goes directly inside the panel it covers --&gt;
+&lt;div class=&quot;panel&quot;&gt;
+  &lt;fandry-card&gt;
+    ...
+    &lt;fandry-button variant=&quot;secondary&quot; onclick={handleRefresh}&gt;Refresh&lt;/fandry-button&gt;
+  &lt;/fandry-card&gt;
+  &lt;fandry-loading-overlay open={refreshing} contained label=&quot;Refreshing…&quot;&gt;&lt;/fandry-loading-overlay&gt;
+&lt;/div&gt;
+
+/* css */
+.panel {
+  position: relative;
+}
+
+/* Follow the panel's corners */
+.panel fandry-loading-overlay::part(backdrop) {
+  border-radius: var(--fd-radius-lg, 0.5rem);
+}</pre>
+​</section>
+<nav><a href="/components/spinner/">← Previous
+Spinner</a>
+<a href="/components/toast/">Next →
+Toast</a></nav></main>
+<nav>On this page
+<ul><li>Example</li><li>Custom colors and parts</li><li>Props</li><li>Parts</li><li>Code</li><li>Your own content</li><li>Over one panel</li></ul></nav>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-component-doc></fandryui-component-doc></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-loading-overlay/configuration/ci/-%2Fcomponents%2Floading-overlay-/s/db131eadfe04d426efd1f4568cdf0734/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-loading-overlay/configuration/ci/-%2Fcomponents%2Floading-overlay-/s/af9e4e43fcd593f1a2fadc0e481a1d54/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fcomponent-loading-overlay%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-f2dwufXSWjqNsyh-RJwivxbtah2Ybv6CQ-1tncMF5P8/bundle_@lwrjs_app-service_component-loading-overlay_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_0/s/sha256-FkRdggNKMLX-eulDmGz3UlQXi8eZCH26iuV69AhRRWM/bundle_fandryui_componentDoc.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_1/s/sha256-dUpHtvbQJi0ACg3KDQONHM38aswrgia1M_2GCYS5c04/bundle_fandryui_componentDoc.js" />
   </body>
 </html>

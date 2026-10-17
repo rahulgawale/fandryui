@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,85 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-c3022a3f3cd172432a116bab71ef82ce-c0bd8a781b54e04e-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-b2c8e1a6e68f1a3d81a64faba7db8f81-412eaf6098692dda-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-getting-started></fandryui-getting-started></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<nav>Getting started
+<a href="/getting-started/">Overview</a>
+<a href="/getting-started/lwr-oss/">LWR / LWC OSS</a>
+<a href="/getting-started/salesforce/">Salesforce DX</a>
+<a href="/getting-started/theming/">Theming</a></nav>
+<main>start
+<h1>Getting started</h1>
+<p>One source, one npm package, two platforms. Pick the one you build on; the components are the same.</p>
+npm
+<h2><a href="/getting-started/lwr-oss/">LWR / LWC OSS</a></h2>
+<p>Install one npm package, point your project at it, and use <code>&lt;fandry-*&gt;</code> components. Your bundler ships only the ones you use.</p>
+sfdx
+<h2><a href="/getting-started/salesforce/">Salesforce DX</a></h2>
+<p>The platform has no bundler and cannot import npm packages, so the CLI copies components into your project as source you own, with everything they depend on.</p>
+<section><h2>Choose your platform</h2>
+Link to section Choose your platform
+<p>Fandry UI is a single package, <code>fandryui</code>. What differs is how your platform resolves code, so what you run and what you write differs slightly.</p></section><section><h2>At a glance</h2>
+Link to section At a glance
+LWR / LWC OSS
+<pre>npm install fandryui
+npx fandry init
+
+&lt;fandry-button&gt;Save&lt;/fandry-button&gt;</pre>
+​
+Salesforce DX
+<pre>npm install --save-dev fandryui
+npx fandry init
+npx fandry add button table
+
+&lt;c-fandry-button&gt;Save&lt;/c-fandry-button&gt;</pre>
+​
+<p>LWR and LWC OSS let a package bring its own namespace and have a bundler that ships only what you use, so the whole package is installed and you write <code>&lt;fandry-*&gt;</code>. Salesforce code lives in the default <code>c</code> namespace and has no bundler or npm resolution, so the CLI copies the components you choose, with their dependencies, into your project and you write <code>&lt;c-fandry-*&gt;</code>. It is the same source either way.</p></section><section><h2>How Fandry is designed</h2>
+Link to section How Fandry is designed
+<p>Fandry UI is a composable component library for Salesforce LWC, for products and sites that should look like themselves, not like the platform. It is an opinionated design system with defined ways to change it, not a set of components with a prop for everything.</p>
+<ul><li><p>Sensible defaults. Every component works and looks finished with no configuration.</p></li><li><p>Composition over configuration. Variations come from slots and composition; a prop is added only for a genuinely binary behavior like disabled.</p></li><li><p>Customization in steps. Set <code>--fd-*</code> tokens, restyle a <code>::part()</code>, replace a slot or <code>messages</code> text, extend a state class, or copy the source. Go only as far as you need.</p></li></ul>
+<p>Why Fandry UI?</p>
+The reasoning, the trade-offs and how Fandry differs from Lightning Base Components are on the Why Fandry page (/why-fandry).</section><section><h2>What stays true on both</h2>
+Link to section What stays true on both
+<ul><li><p>Real LWC components. Readable source you can open, not a black box.</p></li><li><p>You own the application: layout, state, data, routing. There is no Fandry shell, router or bootstrap.</p></li><li><p>Use one component or thirty. Nothing forces you to adopt the whole system.</p></li><li><p>No runtime registry, loader or network fetch for components or icons.</p></li></ul></section>
+<p>Ready to build? Browse every component, its props and examples under <a href="/components/">Components</a>.</p></main>
+<nav>On this page
+<ul><li>Choose your platform</li><li>At a glance</li><li>How Fandry is designed</li><li>What stays true on both</li></ul></nav>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-getting-started></fandryui-getting-started></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/getting-started/configuration/ci/-%2Fgetting-started-/s/a783b1115787e176d087a00e2295abf8/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/getting-started/configuration/ci/-%2Fgetting-started-/s/25683caf835d9d2c5deff1037beec297/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fgetting-started%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-7Eyzyt_NV7EYCjWr3SWl-gbXXjrx7jyJqeN5izcV0Dc/bundle_@lwrjs_app-service_getting-started_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FgettingStarted%2Fv%2F0_27_0/s/sha256-59ucGqTxX2Il3iWV2NrhrAlTyB0sFy1lBUTeASkjvsk/bundle_fandryui_gettingStarted.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FgettingStarted%2Fv%2F0_27_1/s/sha256-xMSrtXNbWCq4jBsYD7UlVRkwn1FDSGVN7iym3A6w7BQ/bundle_fandryui_gettingStarted.js" />
   </body>
 </html>

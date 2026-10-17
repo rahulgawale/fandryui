@@ -7,13 +7,13 @@
     <!-- Per page: each route's "properties" in lwr.config.json
          (routeMeta.test.ts keeps them complete). -->
     <title>Fandry UI: composable UI components for Salesforce LWC</title>
-    <meta name="description" content="The flexibility of modern UI development with the simplicity of LWC. A themeable, composable component library for Salesforce LWC, LWR and Experience Cloud." />
+    <meta name="description" content="Fandry UI: themeable, composable UI components for Salesforce LWC, LWR and Experience Cloud, shipped as plain LWC source you own." />
     <link rel="canonical" href="https://fandryui.forcetrails.com/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Fandry UI" />
     <meta property="og:title" content="Fandry UI: composable UI components for Salesforce LWC" />
-    <meta property="og:description" content="The flexibility of modern UI development with the simplicity of LWC. A themeable, composable component library for Salesforce LWC, LWR and Experience Cloud." />
+    <meta property="og:description" content="Fandry UI: themeable, composable UI components for Salesforce LWC, LWR and Experience Cloud, shipped as plain LWC source you own." />
     <meta property="og:url" content="https://fandryui.forcetrails.com/" />
     <meta property="og:image" content="https://fandryui.forcetrails.com/assets/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,189 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-42c3ad940f5bb7d8311242f9608c74bd-24c4a3aafd65727a-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-4aeec92017a54b8a03836ebd3a24aa5c-dcfad7cf7f387319-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-home></fandryui-home></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<main><section>Native LWC
+<h1>The flexibility of modern UI development. The simplicity of LWC.</h1>
+<p>A modern, composable UI component library for Salesforce LWC. Build distinctive, customizable experiences for your product, in Salesforce's own component model.</p>
+<a href="/components/">Browse Components</a>
+<a href="https://github.com/rahulgawale/fandryui">View on GitHub</a>
+Default
+Primary
+Checked
+Build velocity
+<h2>Faster every month</h2>
+Dec
+Jan
+Feb
+Mar
+Apr
+<h2>Theme your brand</h2>
+<p>One token scale, retheme anywhere.</p>
+Primary color
+Accent color
+<h2>Try it live</h2>
+<p>A real fandry-toast, not a screenshot.</p>
+<p>Built with native LWC. Designed for LWR and Experience Cloud. Made to look like your product.</p></section>
+<section>Why Fandry UI
+<h2>Build Salesforce apps that look like your product, not the platform.</h2>
+<p>A modern, composable UI library for Salesforce LWC. Get design freedom, extensibility and control over your UI without adding another frontend framework.</p>
+<h3>Token-driven from the core</h3>
+<p>Set <code>--fd-*</code> tokens on <code>:root</code> to theme the whole site, or on one section to theme just that. They reach inside every component's shadow root.</p>
+Theme this section
+Default
+Editorial
+Midnight
+<pre>.checkout {
+  /* --fd-primary: inherited */
+  /* --fd-bg: inherited */
+  /* --fd-radius-md: inherited */
+  /* --fd-font-heading: inherited */
+  /* nothing set: the site theme */
+}</pre>
+​
+<h4>Order #1042</h4>
+Paid
+<p>3 items · ships Friday</p>
+Gift wrap
+<h3>Slots, not another prop</h3>
+<p>There is no <code>loading</code> flag: the spinner is markup you put in the slot, and you can put anything else there too. <code>--fd-*</code> tokens style the spinner and <code>::part()</code> restyles any element inside.</p>
+<pre>&lt;fandry-button&gt;
+  &lt;fandry-spinner&gt;&lt;/fandry-spinner&gt;
+  Saving
+&lt;/fandry-button&gt;
+
+fandry-button::part(base) {
+  border-radius: 999px;
+}</pre>
+​
+<h3>Zero framework overhead</h3>
+<p>Plain Lightning Web Components in native shadow DOM. Nothing to learn, bundle or ship on top of LWC.</p>
+<ul><li>Native shadow DOM</li><li>LWR &amp; Experience Cloud</li><li>Salesforce orgs via fandry add</li><li>No second framework</li></ul>
+<a href="/why-fandry/">Read why Fandry UI exists →</a></section>
+<section>Features
+<h2>What you get</h2>
+<h3>Native shadow DOM, even on Salesforce</h3>
+<p>Plain Lightning Web Components in real, standards-based shadow DOM, on LWR and in your org, not the synthetic polyfill base components grew up on.</p>
+<h3>Lightweight &amp; composable</h3>
+<p>Small, dependency-light primitives you compose with slots, not a dozen config props.</p>
+<h3>Your product, not the platform</h3>
+<p>Give your app or site its own type, colors and spacing instead of the standard Salesforce look.</p>
+<h3>Faster development</h3>
+<p>Sensible defaults and Claude Code-friendly source make every screen faster to build.</p>
+<h3>Design tokens, not magic numbers</h3>
+<p>Every color, spacing, and radius comes from one token scale you can retheme in a single place.</p>
+<h3>Accessible by default</h3>
+<p>WCAG AA-tuned color tokens, keyboard-first controls, and correct ARIA out of the box.</p>
+<h3>Components you control</h3>
+<p>Restyle with parts, replace content with slots, extend a state class, or copy the source. Nothing here is a black box.</p>
+<h3>Brandable</h3>
+<p>Reskin an entire site by changing tokens, not by rewriting components.</p>
+<h3>Boring, on purpose</h3>
+<p>No hidden state, no magic — every primitive does exactly one predictable thing.</p>
+<h3>Built for the real world</h3>
+<p>Real focus management, correct tab order, and Safari quirks handled, so you don’t have to.</p></section>
+<section>Live demo
+<h2>A B2B dashboard, built entirely from these primitives</h2>
+<p>No custom UI components. Just Fandry primitives composed together. Click around: it's interactive.</p>
+acme.my.site.com/portal
+ACME
+Help
+<nav>Overview
+Orders
+Products
+Invoices
+Service
+Knowledge</nav>
+<h3>Good morning, Alex</h3>
+<p>Here's what's happening with your account.</p>
+Orders
+<h4>12</h4>
+Balance
+<h4>$42,050</h4>
+Open Cases
+<h4>3</h4>
+<h4>Recent Orders</h4>
+#10482
+Industrial Pump
+Shipped
+#10471
+Valve Assembly
+Processing
+#10463
+Filter Kit
+Delivered
+Built from
+<ul><li>fandry-input</li><li>fandry-popover</li><li>fandry-menu</li><li>fandry-avatar</li><li>fandry-button</li><li>fandry-card</li><li>fandry-badge</li><li>fandry-heading</li><li>fandry-text</li><li>fandry-link</li><li>fandry-sidebar</li><li>fandry-sidebar-item</li></ul></section>
+<section>Layout
+<h2>Layout is just CSS</h2>
+<p>No Container or Grid components to learn. Two plain classes from <code>global.css</code> wrap ordinary primitives, and the grid finds its own columns as the space changes.</p>
+orders.html
+<pre>&lt;div class=&quot;fandry-container&quot;&gt;
+  &lt;fandry-heading&gt;Orders&lt;/fandry-heading&gt;
+  &lt;div class=&quot;fandry-grid&quot;&gt;
+    &lt;fandry-card&gt;…&lt;/fandry-card&gt;
+    &lt;fandry-card&gt;…&lt;/fandry-card&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+/* global.css */
+.fandry-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--fd-space-6);
+}</pre>
+​
+<h3>Orders</h3>
+<p>3 orders placed today.</p>
+#10482
+<h4>Acme Robotics</h4>
+$1,240.00
+Shipped
+#10483
+<h4>Bramble &amp; Co</h4>
+$86.50
+Processing
+#10484
+<h4>Nimbus Traders</h4>
+$412.00
+Backordered</section></main>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-home></fandryui-home></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/home/configuration/ci/-%2F-/s/f085423835b79448f0deeb9543167ac4/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/home/configuration/ci/-%2F-/s/7ace619e42f8a13aa4f57cdd1638b36f/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fhome%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256--cnWxDfWkzU6pMncUvqRjIMHq8uQEnM5Cna7l9Q2kDQ/bundle_@lwrjs_app-service_home_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fhome%2Fv%2F0_27_0/s/sha256-sVuIM0L70n-1XnKwrQlN-PK4ciJSiByfz5KkeDFeEAQ/bundle_fandryui_home.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2Fhome%2Fv%2F0_27_1/s/sha256-SMRKCL9xAw1yzAiFEc4BYvhRUcg_bKJLHB_2hD2oqpE/bundle_fandryui_home.js" />
   </body>
 </html>

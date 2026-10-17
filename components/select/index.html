@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,202 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-35118f24101141612c6630129a4ab54c-312e2e361e70fbcf-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-b6a0aa464903aab4220233bbb1e28fb5-6e15654f614e9124-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-component-doc></fandryui-component-doc></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<nav>Layout
+<a href="/components/breadcrumb/">Breadcrumb</a>
+<a href="/components/breadcrumb-item/">Breadcrumb Item</a>
+<a href="/components/card/">Card</a>
+<a href="/components/divider/">Divider</a>
+<a href="/components/pagination/">Pagination</a>
+<a href="/components/sidebar/">Sidebar</a>
+<a href="/components/sidebar-item/">Sidebar Item</a>
+Typography
+<a href="/components/heading/">Heading</a>
+<a href="/components/icon/">Icon</a>
+<a href="/components/label/">Label</a>
+<a href="/components/text/">Text</a>
+Forms
+<a href="/components/button/">Button</a>
+<a href="/components/checkbox/">Checkbox</a>
+<a href="/components/combobox/">Combobox</a>
+<a href="/components/input/">Input</a>
+<a href="/components/link/">Link</a>
+<a href="/components/radio/">Radio</a>
+<a href="/components/radio-group/">Radio Group</a>
+<a href="/components/select/">Select</a>
+<a href="/components/switch/">Switch</a>
+<a href="/components/textarea/">Textarea</a>
+Feedback
+<a href="/components/alert/">Alert</a>
+<a href="/components/badge/">Badge</a>
+<a href="/components/progress/">Progress</a>
+<a href="/components/skeleton/">Skeleton</a>
+<a href="/components/spinner/">Spinner</a>
+<a href="/components/loading-overlay/">Loading Overlay</a>
+<a href="/components/toast/">Toast</a>
+<a href="/components/toast-viewport/">Toast Viewport</a>
+<a href="/components/tooltip/">Tooltip</a>
+Overlays &amp; Data
+<a href="/components/avatar/">Avatar</a>
+<a href="/components/command/">Command</a>
+<a href="/components/dialog/">Dialog</a>
+<a href="/components/menu/">Menu</a>
+<a href="/components/menu-item/">Menu Item</a>
+<a href="/components/popover/">Popover</a>
+<a href="/components/table/">Table</a>
+Salesforce
+<a href="/components/lookup/">Lookup</a></nav>
+<main>Forms
+<h1>Select</h1>
+<p>A custom listbox-style select, with optional grouped options.</p>
+<p><code>fandry-select</code></p>
+<section><h2>Example</h2>
+Link to section Example</section><section><h2>Custom colors and parts</h2>
+Link to section Custom colors and parts
+<p>The same component with a few <code>--fd-*</code> tokens set around it and its parts restyled. The code is under Parts below.</p></section><section><h2>Props</h2>
+Link to section Props
+<table><thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>label</code></td><td><code>string</code></td><td><code>''</code></td><td>Visible label.</td></tr><tr><td><code>placeholder</code></td><td><code>string</code></td><td><code>''</code></td><td>Shown when nothing is selected.</td></tr><tr><td><code>options</code></td><td><code>{ label, value, disabled?, component?, componentProps? }[]</code></td><td><code>[]</code></td><td>Flat option list. An option's <code>component</code> (with <code>componentProps</code>) draws its own row instead of the label -- see the custom options example.</td></tr><tr><td><code>groups</code></td><td><code>{ label, options }[]</code></td><td><code>[]</code></td><td>Grouped option list (used instead of options).</td></tr><tr><td><code>value</code></td><td><code>string</code></td><td><code>''</code></td><td>Selected value. <code>''</code> (or null) is no selection and shows the placeholder, unless an option has that value: give one <code>value: ''</code> to offer &quot;None&quot;.</td></tr><tr><td><code>change (event)</code></td><td><code>CustomEvent&lt;string&gt;</code></td><td><code>—</code></td><td>Fires when the user picks a different value; <code>event.detail</code> is the new value. Not fired when <code>value</code> is set from code.</td></tr><tr><td><code>help-text</code></td><td><code>string</code></td><td><code>''</code></td><td>Helper text below the field.</td></tr><tr><td><code>error-text</code></td><td><code>string</code></td><td><code>''</code></td><td>An error shown under the field: the field is invalid while it has one (<code>aria-invalid</code>, the <code>invalid</code> state), and a screen reader hears it when it appears and when the field is focused.</td></tr><tr><td><code>label · help-text · error-text (slots)</code></td><td><code>slot</code></td><td><code>the props</code></td><td>Markup in place of the label, help text or error text. Shown even without the matching prop.</td></tr></tbody></table></section><section><h2>Parts</h2>
+Link to section Parts
+<p>Style the elements inside the component from your own CSS with <code>::part()</code>. Every fandry component renders in native shadow DOM, so parts work on LWR and Salesforce alike. For colors, spacing, radius and type across many components, set the <code>--fd-*</code> tokens instead. The code for the &quot;Custom colors and parts&quot; example above:</p>
+<table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>base</code></td><td>The outermost element.</td></tr><tr><td><code>label</code></td><td>The label.</td></tr><tr><td><code>required</code></td><td>The required-field asterisk.</td></tr><tr><td><code>control</code></td><td>The box the field draws: a text field's border, a select's button, a checkbox's box, a radio's circle, a switch's track.</td></tr><tr><td><code>value</code></td><td>The selected value, as shown in the closed field.</td></tr><tr><td><code>chevron</code></td><td>The dropdown arrow.</td></tr><tr><td><code>listbox</code></td><td>The list of options.</td></tr><tr><td><code>option</code></td><td>One option.</td></tr><tr><td><code>group</code></td><td>A group of options.</td></tr><tr><td><code>group-label</code></td><td>A group's heading.</td></tr><tr><td><code>help-text</code></td><td>The help text under the field.</td></tr><tr><td><code>error-text</code></td><td>The error under the field. In the page even while empty, so style it only for a field that is <code>invalid</code>.</td></tr><tr><td><code>panel</code></td><td>The surface that opens: a dropdown's list, a popover, a tooltip, a dialog, a loading overlay's box.</td></tr></tbody></table>
+<p>States are extra names on a part while the state is on. Name both to style one state, e.g.<code>fandry-checkbox::part(control checked)</code>.</p>
+<table><thead><tr><th>State</th><th>Description</th></tr></thead><tbody><tr><td><code>disabled</code></td><td>A control, option or item that cannot be used.</td></tr><tr><td><code>invalid</code></td><td>A field that has error text.</td></tr><tr><td><code>selected</code></td><td>The chosen option, or a selected table row.</td></tr><tr><td><code>active</code></td><td>The option the keyboard or pointer is on.</td></tr></tbody></table>
+<pre>&lt;!-- template --&gt;
+&lt;div class=&quot;brand narrow&quot;&gt;
+  &lt;fandry-select label=&quot;Size&quot; placeholder=&quot;Choose a size&quot; options={options} value=&quot;m&quot;&gt;&lt;/fandry-select&gt;
+&lt;/div&gt;
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 0.75rem;
+  --fd-border-focus: 160 84% 36%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-bg-muted: 160 40% 94%;
+}
+
+fandry-select::part(control) {
+  background: hsl(160 40% 98%);
+  font-weight: 600;
+}
+
+fandry-select::part(panel) {
+  box-shadow: 0 12px 32px hsl(160 40% 20% / 0.18);
+}
+
+fandry-select::part(option) {
+  padding-block: 0.5rem;
+}
+
+/* A state: only the chosen option. */
+fandry-select::part(option selected) {
+  font-weight: 700;
+  color: hsl(160 84% 26%);
+}</pre>
+​</section><section><h2>Code</h2>
+Link to section Code
+<pre>&lt;fandry-select
+  label=&quot;Plan&quot;
+  placeholder=&quot;Choose a plan&quot;
+  options={planOptions}
+  value=&quot;pro&quot;
+&gt;&lt;/fandry-select&gt;</pre>
+​</section>
+<section><h2>Example: Custom options</h2>
+Link to section Example: Custom options</section><section><p>Code</p>
+<pre>&lt;!-- template --&gt;
+&lt;fandry-select label=&quot;Plan&quot; options={planOptions}
+  value={value} onchange={handleChange}&gt;&lt;/fandry-select&gt;
+
+// component
+import PlanRow from 'my/planRow'; // your LWC: @api icon, label, hint
+
+planOptions = [
+  {
+    label: 'Free', value: 'free', component: PlanRow,
+    componentProps: { icon: '🌱', label: 'Free' }
+  },
+  {
+    label: 'Pro', value: 'pro', component: PlanRow,
+    componentProps: { icon: '💎', label: 'Pro', hint: 'Popular' }
+  },
+  { label: 'Enterprise', value: 'enterprise', disabled: true } // plain option
+];
+
+// The component draws only the inside of the row; the row keeps its
+// highlight, hover, keyboard and click, and `label` stays the accessible
+// name and what typeahead matches, so give every option a real one.
+// The chosen option's component is also shown in the closed control.
+//
+// On Salesforce this uses lwc:is: fandry-select's .js-meta.xml needs the
+// lightning__dynamicComponent capability (API 55+), which `fandry add` writes.</pre>
+​</section>
+<section><h2>Example: A long list, with the keyboard</h2>
+Link to section Example: A long list, with the keyboard</section><section><p>Code</p>
+<pre>&lt;!-- template --&gt;
+&lt;fandry-select label=&quot;Country&quot; placeholder=&quot;Choose a country&quot;
+  options={countryOptions} value={value} onchange={handleChange}&gt;&lt;/fandry-select&gt;
+
+// component
+handleChange(event) {
+  this.value = event.detail;
+}
+
+// The list scrolls once it is taller than --fd-listbox-max-height, and
+// the option the keyboard is on is kept in view. Hovering never scrolls.
+//
+// Closed:  Enter, Space, ArrowDown or ArrowUp open the list
+//          ArrowLeft / ArrowRight choose the previous or next option
+//          typing chooses the option that starts with what was typed
+// Open:    ArrowUp / ArrowDown move, and stop at the first and last option
+//          Home / End, Page Up / Page Down move further
+//          typing moves to a match: &quot;new z&quot; finds New Zealand, and &quot;s&quot;
+//          pressed again steps through the options that start with s
+//          Enter or Space choose; Escape or Tab close without choosing</pre>
+​</section>
+<nav><a href="/components/radio-group/">← Previous
+Radio Group</a>
+<a href="/components/switch/">Next →
+Switch</a></nav></main>
+<nav>On this page
+<ul><li>Example</li><li>Custom colors and parts</li><li>Props</li><li>Parts</li><li>Code</li><li>Custom options</li><li>A long list, with the keyboard</li></ul></nav>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-component-doc></fandryui-component-doc></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-select/configuration/ci/-%2Fcomponents%2Fselect-/s/fddcfb1a5976d874bc6a2283b4f7d99b/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-select/configuration/ci/-%2Fcomponents%2Fselect-/s/b2cc24252005f28fcc817bc5989afe5b/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fcomponent-select%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-vI8R3TmHcY8DemRHmDV9tqlz1yYC9Gk2tx0-3hwKkI8/bundle_@lwrjs_app-service_component-select_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_0/s/sha256-FkRdggNKMLX-eulDmGz3UlQXi8eZCH26iuV69AhRRWM/bundle_fandryui_componentDoc.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_1/s/sha256-dUpHtvbQJi0ACg3KDQONHM38aswrgia1M_2GCYS5c04/bundle_fandryui_componentDoc.js" />
   </body>
 </html>

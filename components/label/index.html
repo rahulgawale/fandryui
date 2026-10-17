@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,144 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-fbb3e01d1f5941d89fe8a4f683df2e06-e22b88fe44eb7b1c-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-c63a134f38e68c1ee4efa434c3e2363f-e95ca2e30eb612ab-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-component-doc></fandryui-component-doc></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<nav>Layout
+<a href="/components/breadcrumb/">Breadcrumb</a>
+<a href="/components/breadcrumb-item/">Breadcrumb Item</a>
+<a href="/components/card/">Card</a>
+<a href="/components/divider/">Divider</a>
+<a href="/components/pagination/">Pagination</a>
+<a href="/components/sidebar/">Sidebar</a>
+<a href="/components/sidebar-item/">Sidebar Item</a>
+Typography
+<a href="/components/heading/">Heading</a>
+<a href="/components/icon/">Icon</a>
+<a href="/components/label/">Label</a>
+<a href="/components/text/">Text</a>
+Forms
+<a href="/components/button/">Button</a>
+<a href="/components/checkbox/">Checkbox</a>
+<a href="/components/combobox/">Combobox</a>
+<a href="/components/input/">Input</a>
+<a href="/components/link/">Link</a>
+<a href="/components/radio/">Radio</a>
+<a href="/components/radio-group/">Radio Group</a>
+<a href="/components/select/">Select</a>
+<a href="/components/switch/">Switch</a>
+<a href="/components/textarea/">Textarea</a>
+Feedback
+<a href="/components/alert/">Alert</a>
+<a href="/components/badge/">Badge</a>
+<a href="/components/progress/">Progress</a>
+<a href="/components/skeleton/">Skeleton</a>
+<a href="/components/spinner/">Spinner</a>
+<a href="/components/loading-overlay/">Loading Overlay</a>
+<a href="/components/toast/">Toast</a>
+<a href="/components/toast-viewport/">Toast Viewport</a>
+<a href="/components/tooltip/">Tooltip</a>
+Overlays &amp; Data
+<a href="/components/avatar/">Avatar</a>
+<a href="/components/command/">Command</a>
+<a href="/components/dialog/">Dialog</a>
+<a href="/components/menu/">Menu</a>
+<a href="/components/menu-item/">Menu Item</a>
+<a href="/components/popover/">Popover</a>
+<a href="/components/table/">Table</a>
+Salesforce
+<a href="/components/lookup/">Lookup</a></nav>
+<main>Typography
+<h1>Label</h1>
+<p>The text of a form label, with an optional required indicator. Put it inside your own <code>&lt;label&gt;</code>, or in the <code>label</code> slot of a field.</p>
+<p><code>fandry-label</code></p>
+<section><h2>Example</h2>
+Link to section Example</section><section><h2>Custom colors and parts</h2>
+Link to section Custom colors and parts
+<p>The same component with a few <code>--fd-*</code> tokens set around it and its parts restyled. The code is under Parts below.</p></section><section><h2>Props</h2>
+Link to section Props
+<table><thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>required</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Shows the required asterisk. It is only the mark: set <code>required</code> on your control as well. In a field's <code>label</code> slot the field shows it instead, from its own <code>required</code>.</td></tr><tr><td><code>html-for</code></td><td><code>string</code></td><td><code>—</code></td><td>Deprecated: it does nothing. The <code>for</code> goes on the <code>&lt;label&gt;</code> you wrap this in.</td></tr></tbody></table></section><section><h2>Parts</h2>
+Link to section Parts
+<p>Style the elements inside the component from your own CSS with <code>::part()</code>. Every fandry component renders in native shadow DOM, so parts work on LWR and Salesforce alike. For colors, spacing, radius and type across many components, set the <code>--fd-*</code> tokens instead. The code for the &quot;Custom colors and parts&quot; example above:</p>
+<table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>base</code></td><td>The outermost element.</td></tr><tr><td><code>required</code></td><td>The required-field asterisk.</td></tr></tbody></table>
+<pre>&lt;!-- template --&gt;
+&lt;div class=&quot;brand stack narrow&quot;&gt;
+  &lt;label for=&quot;theme-email&quot;&gt;&lt;fandry-label required&gt;Email&lt;/fandry-label&gt;&lt;/label&gt;
+  &lt;input id=&quot;theme-email&quot; type=&quot;email&quot; class=&quot;native-input&quot; placeholder=&quot;you@brand.com&quot; /&gt;
+&lt;/div&gt;
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-text: 160 40% 14%;
+}
+
+fandry-label::part(base) {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+fandry-label::part(required) {
+  color: hsl(160 84% 26%);
+}</pre>
+​</section><section><h2>Code</h2>
+Link to section Code
+<pre>&lt;!-- with your own control --&gt;
+&lt;label for=&quot;username&quot;&gt;&lt;fandry-label required&gt;Username&lt;/fandry-label&gt;&lt;/label&gt;
+&lt;input id=&quot;username&quot; /&gt;
+
+&lt;!-- in a field's label slot: it looks like the field's label, and the
+     field shows the asterisk --&gt;
+&lt;fandry-input required&gt;
+  &lt;fandry-label slot=&quot;label&quot;&gt;Username&lt;/fandry-label&gt;
+&lt;/fandry-input&gt;</pre>
+​</section><section><p>Why you write the &lt;label&gt; yourself</p>
+<p>A label finds its control by id, and the browser looks an id up inside one shadow root only. A <code>&lt;label&gt;</code> rendered inside <code>fandry-label</code> could never reach a control outside it: it would look right, give the control no name for a screen reader, and do nothing when clicked.</p>
+<p>So you write the <code>&lt;label&gt;</code>, beside its control, and <code>fandry-label</code> goes inside it as the text. That is how web components work, not something particular to this library: each component is a tree of its own, so two elements that refer to each other have to be in the same one.</p>
+<p>The fields (<a href="/components/input/"><code>fandry-input</code></a>, <a href="/components/textarea/"><code>fandry-textarea</code></a>, <a href="/components/select/"><code>fandry-select</code></a>, <a href="/components/combobox/"><code>fandry-combobox</code></a>, <a href="/components/lookup/"><code>fandry-lookup</code></a>) follow the same rule from the inside. Each renders its own <code>&lt;label&gt;</code> next to its own control, so they take the label as a prop or a slot and need no <code>fandry-label</code>.</p></section>
+<nav><a href="/components/icon/">← Previous
+Icon</a>
+<a href="/components/text/">Next →
+Text</a></nav></main>
+<nav>On this page
+<ul><li>Example</li><li>Custom colors and parts</li><li>Props</li><li>Parts</li><li>Code</li></ul></nav>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-component-doc></fandryui-component-doc></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-label/configuration/ci/-%2Fcomponents%2Flabel-/s/a9b88c4d84dc5fb245bf4b35ea0ff513/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-label/configuration/ci/-%2Fcomponents%2Flabel-/s/99b1e6370cef2777cb118d280f4e5003/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fcomponent-label%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-BNSpg73E24tStjfj5yHYyXWDuVzZzyI85qoJnBJ9Z2k/bundle_@lwrjs_app-service_component-label_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_0/s/sha256-FkRdggNKMLX-eulDmGz3UlQXi8eZCH26iuV69AhRRWM/bundle_fandryui_componentDoc.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_1/s/sha256-dUpHtvbQJi0ACg3KDQONHM38aswrgia1M_2GCYS5c04/bundle_fandryui_componentDoc.js" />
   </body>
 </html>

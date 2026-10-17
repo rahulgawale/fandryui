@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,146 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-0fc1979297fda8d3e13baaf28dbf53f6-7ec832e5655d22c2-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-9b96dd5b09ebd27eaa7fd070c9d406d4-f527ab8d4cab4faa-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-block-media-gallery></fandryui-block-media-gallery></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<main><nav><ol><li><a href="/">Home</a></li>
+<li>/
+<a href="/blocks/">Blocks</a></li>
+<li>/
+Media gallery</li></ol></nav>
+Block
+<h1>Media gallery</h1>
+<p>A grid of pictures that fits whatever box it is in, and a full-screen viewer with swipe, pinch to zoom and keyboard control. Three pieces you can use apart: the behavior with no markup, a grid, and a viewer. Choose a picture to open it.</p>
+<section>Columns
+Aspect ratio
+Fit
+Gap
+<p>Last <code>change</code>: None yet. In the viewer, the keyboard button (or <code>?</code>) lists the keys. On a phone: swipe, pinch, double tap.</p>
+<pre>fandry-media-gallery {
+  --fd-media-columns: 4;
+  --fd-media-gap: 0.75rem;
+  --fd-media-aspect-ratio: 1 / 1;
+  --fd-media-fit: cover;
+}</pre>
+​</section><section><h2>Install</h2>
+Link to section Install
+<p>LWR / LWC OSS</p>
+<pre>npm install fandryui
+
+&lt;!-- nothing to copy: your bundler ships only what you use --&gt;
+&lt;fandry-media-gallery&gt;&lt;/fandry-media-gallery&gt;</pre>
+​
+<p>Salesforce DX</p>
+<pre>npx fandry add media-gallery
+# adds the block and everything it is built from
+# to your package directory, as source you own</pre>
+​</section><section><h2>Usage</h2>
+Link to section Usage
+<pre>&lt;fandry-media-gallery
+  items={photos}
+  loading={loading}
+  onchange={handleChange}
+&gt;&lt;/fandry-media-gallery&gt;</pre>
+​
+<p>An item is plain data:</p>
+<pre>photos = [
+  {
+    id: 'lake',              // unique and stable
+    src: '/media/lake.jpg',  // the full file, for the viewer
+    thumbnail: '/media/lake-400.jpg',
+    alt: 'A pine forest above a calm bay.',
+    caption: 'Above the bay',
+    width: 1280,
+    height: 960,
+    loading: 'eager'         // only for pictures on screen at page load
+  },
+  ...
+];</pre>
+​</section><section><h2>Props and methods</h2>
+Link to section Props and methods
+<table><thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>items</code></td><td><code>item[]</code></td><td><code>[]</code></td><td>What the gallery shows (see the item table below). Controlled: the block never changes it.</td></tr><tr><td><code>index</code></td><td><code>number</code></td><td><code>0</code></td><td>The current item. Set it to choose where the gallery starts; the block keeps it current as the user moves and reports each move through <code>change</code>.</td></tr><tr><td><code>loading</code></td><td><code>boolean</code></td><td><code>false</code></td><td>While the items are being fetched: the grid shows placeholders and says it is busy.</td></tr><tr><td><code>loading-count</code></td><td><code>number</code></td><td><code>8</code></td><td>How many placeholders.</td></tr><tr><td><code>messages</code></td><td><code>object</code></td><td><code>{}</code></td><td>What the gallery says (the viewer's name, Close, Keyboard shortcuts, Previous, Next, &quot;3 of 12&quot;, what a screen reader hears on moving, and the name of a tile whose picture has no alt text), e.g. to translate it: any key of <code>DEFAULT_MEDIA_VIEWER_MESSAGES</code> (<code>fandry/mediaViewerState</code>) or <code>DEFAULT_MEDIA_GRID_MESSAGES</code> (<code>fandry/mediaGrid</code>).</td></tr><tr><td><code>keys (slot)</code></td><td><code>slot</code></td><td><code>an English list</code></td><td>The keyboard shortcuts the viewer's keyboard button (or <code>?</code>) shows. To translate it, slot a <code>fandry-media-keys</code> here with its text slots filled (<code>title</code>, <code>previous-next</code>, <code>first-last</code>, <code>zoom</code>, <code>reset-zoom</code>, <code>pan</code>, <code>page</code>, <code>toggle</code>, <code>close</code>, and the keys named with words: <code>key-home</code>, <code>key-end</code>, <code>key-page-up</code>, <code>key-page-down</code>, <code>key-escape</code>), or a list of your own.</td></tr><tr><td><code>show(index?) · close()</code></td><td><code>methods</code></td><td><code>—</code></td><td>Open the viewer (on <code>index</code>, or on the current item) and close it.</td></tr><tr><td><code>next() · previous() · goTo(index)</code></td><td><code>methods</code></td><td><code>—</code></td><td>Move the current item, with or without the viewer open.</td></tr></tbody></table></section><section><h2>Item</h2>
+Link to section Item
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>string</code></td><td>Unique and stable: the key each piece renders by.</td></tr><tr><td><code>src</code></td><td><code>string</code></td><td>The full-size file, shown in the viewer.</td></tr><tr><td><code>alt</code></td><td><code>string</code></td><td>Describes the picture for people who can't see it. <code>''</code> for a decorative one.</td></tr><tr><td><code>thumbnail</code></td><td><code>string</code></td><td>A smaller file for the grid. Without one the grid uses <code>src</code> (with <code>srcset</code> / <code>sizes</code>).</td></tr><tr><td><code>srcset · sizes</code></td><td><code>string</code></td><td>As on a native <code>&lt;img&gt;</code>, for the viewer.</td></tr><tr><td><code>width · height</code></td><td><code>number</code></td><td>The intrinsic size, so the browser reserves the space before the file arrives.</td></tr><tr><td><code>caption</code></td><td><code>string</code></td><td>Shown under the tile and under the picture in the viewer. Leave it out for none.</td></tr><tr><td><code>loading</code></td><td><code>'lazy' | 'eager'</code></td><td>Defaults to <code>lazy</code>. Set <code>eager</code> on the pictures that are on screen when the page opens.</td></tr></tbody></table></section><section><h2>Events</h2>
+Link to section Events
+<table><thead><tr><th>Event</th><th>detail</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td><code>{ index, item }</code></td><td>The current item changed: a tile was chosen, or the user moved in the viewer.</td></tr><tr><td><code>toggle</code></td><td><code>boolean</code></td><td>The viewer opened (<code>true</code>) or closed (<code>false</code>).</td></tr></tbody></table></section><section><h2>Tokens</h2>
+Link to section Tokens
+<p>Layout and look are tokens, not props: set them on <code>:root</code>, on a section, or on one gallery.</p>
+<table><thead><tr><th>Token</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>--fd-media-columns</code></td><td><code>4</code></td><td>The most tiles in a row.</td></tr><tr><td><code>--fd-media-gap</code></td><td><code>--fd-space-3</code></td><td>The space between tiles.</td></tr><tr><td><code>--fd-media-min-width</code></td><td><code>8rem</code></td><td>The narrowest a tile gets. A narrower box gets fewer columns, so the grid fits wherever it is put, with no breakpoints.</td></tr><tr><td><code>--fd-media-aspect-ratio</code></td><td><code>1 / 1</code></td><td>The shape every tile is cut to.</td></tr><tr><td><code>--fd-media-fit</code></td><td><code>cover</code></td><td><code>cover</code> fills the tile and crops; <code>contain</code> shows the whole picture.</td></tr><tr><td><code>--fd-bg · --fd-text</code></td><td><code>the page's</code></td><td>The viewer's surface and its text. Set them on the gallery for a dark viewer.</td></tr></tbody></table></section><section><h2>Parts</h2>
+Link to section Parts
+<table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>base</code></td><td>The grid (a <code>&lt;ul&gt;</code>).</td></tr><tr><td><code>item · button · frame · image · caption</code></td><td>One tile, its <a href="/components/button/">fandry-button</a>'s <code>&lt;button&gt;</code>, the box the picture is cut to, the picture, its caption.</td></tr><tr><td><code>placeholder</code></td><td>A tile's placeholder while loading.</td></tr><tr><td><code>viewer · backdrop · panel</code></td><td>The viewer, and the <a href="/components/dialog/">fandry-dialog</a> it is drawn in.</td></tr><tr><td><code>toolbar · status · close-button</code></td><td>The bar at the top, the &quot;3 of 12&quot;, the close button.</td></tr><tr><td><code>keys-button · keys</code></td><td>The keyboard button, and the box its list of shortcuts shows in.</td></tr><tr><td><code>stage · viewer-image · viewer-caption</code></td><td>Where the pictures slide, the current picture, its caption.</td></tr><tr><td><code>previous · next</code></td><td>The arrows (with <code>disabled</code> at the first and last item).</td></tr></tbody></table></section><section><h2>Make it yours: a product gallery</h2>
+Link to section Make it yours: a product gallery
+<p>A store's product page wants one big picture and a strip of thumbnails, not a grid. This one extends <code>fandry/mediaGalleryState</code> and writes only its own markup: the current picture, focus coming back after the viewer, the events and the full-screen viewer with swipe and zoom all come from the block.</p>
+<pre>// productGallery.js -- your markup, the block's behavior
+import FdMediaGalleryState from 'fandry/mediaGalleryState';
+
+export default class ProductGallery extends FdMediaGalleryState {
+  // `current` is undefined while there are no items.
+  get main() {
+    return { src: this.current?.src ?? '', alt: this.current?.alt ?? '' };
+  }
+
+  handleThumb(event) {
+    this.goTo(Number(event.currentTarget.dataset.thumb));
+  }
+}
+
+&lt;!-- productGallery.html --&gt;
+&lt;fandry-button variant=&quot;ghost&quot; data-index={currentIndex} onclick={handleSelect}&gt;
+  &lt;img src={main.src} alt={main.alt} /&gt;
+&lt;/fandry-button&gt;
+&lt;ul&gt;
+  &lt;template for:each={thumbs} for:item=&quot;thumb&quot;&gt;
+    &lt;li key={thumb.key}&gt;
+      &lt;fandry-button variant=&quot;ghost&quot; data-thumb={thumb.index} onclick={handleThumb}&gt;...&lt;/fandry-button&gt;
+    &lt;/li&gt;
+  &lt;/template&gt;
+&lt;/ul&gt;
+&lt;fandry-media-viewer
+  items={items}
+  index={currentIndex}
+  open={viewerOpen}
+  messages={messages}
+  onchange={handleViewerChange}
+  ontoggle={handleViewerToggle}
+&gt;&lt;/fandry-media-viewer&gt;</pre>
+​</section><section><h2>The pieces</h2>
+Link to section The pieces
+<p><code>fandry/mediaGalleryState</code> has the behavior and no template. <code>fandry/mediaGallery</code> is that class plus a grid and a viewer. <code>fandry/mediaGrid</code> and <code>fandry/mediaViewer</code> each work on their own and know nothing of each other; what they share is the item shape in <code>fandry/mediaItem</code>. The viewer is split the same way: <code>fandry/mediaViewerState</code> has its keyboard, swipe and zoom and no template. <code>fandry/mediaGestures</code> is the swipe and pinch math, with no template. To change the markup, extend a state class, or, on Salesforce, edit the copy <code>fandry add</code> put in your project. Built from:<a href="/components/dialog/">dialog</a><a href="/components/button/">button</a><a href="/components/icon/">icon</a><a href="/components/text/">text</a><a href="/components/skeleton/">skeleton</a></p></section></main>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-block-media-gallery></fandryui-block-media-gallery></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/block-media-gallery/configuration/ci/-%2Fblocks%2Fmedia-gallery-/s/b2024d2480ee2edb2beee3e3b0858d3f/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/block-media-gallery/configuration/ci/-%2Fblocks%2Fmedia-gallery-/s/3f4730d28797c1843f7cb6fa6fa2aa23/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fblock-media-gallery%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-mmHQcHftozJ4WCPraG_CWmNmmNDUWcMTljF5bXA98lg/bundle_@lwrjs_app-service_block-media-gallery_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockMediaGallery%2Fv%2F0_27_0/s/sha256-Q6AUdgvTo_Yla4Xy1_Q76eksOR5WWyNs83hNveKPSSs/bundle_fandryui_blockMediaGallery.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockMediaGallery%2Fv%2F0_27_1/s/sha256-55Aqe7HVKh6p1uWzB3tmurmxVHWAO0UcqfnIot0ryh8/bundle_fandryui_blockMediaGallery.js" />
   </body>
 </html>

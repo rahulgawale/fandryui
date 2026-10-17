@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,122 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-2783311957939b3383eb95e75d95d313-6f6f477b31a733b6-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-520555ecec409ac91c274544faf9da15-e91e29ac5fb0cc87-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-block-data-table></fandryui-block-data-table></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<main><nav><ol><li><a href="/">Home</a></li>
+<li>/
+<a href="/blocks/">Blocks</a></li>
+<li>/
+Data table</li></ol></nav>
+Block
+<h1>Data table</h1>
+<p>Search, filters, column visibility, pagination, selection, row actions, inline and multi-record editing and save hooks with toasts, all built from <code>fandry-*</code> primitives. It is a working screen, not a screenshot: everything below runs against a fake backend with real latency and real validation.</p>
+<section>Simulate server errors
+Simulate latency
+<p>Try it: choose <strong>Edit</strong> from a row's menu (or double-click a cell), clear the name or enter an email without an @, then Save. Select two or more rows for <strong>Edit selected</strong>.</p>
+<p><a href="/blocks/data-table/?rows=10000&amp;latency=0&amp;pageSize=50">Try it with 10,000 rows (the benchmark view).</a></p></section><section><h2>Install</h2>
+Link to section Install
+<p>LWR / LWC OSS</p>
+<pre>npm install fandryui
+
+&lt;!-- nothing to copy: your bundler ships only what you use --&gt;
+&lt;fandry-data-table&gt;&lt;/fandry-data-table&gt;</pre>
+​
+<p>Salesforce DX</p>
+<pre>npx fandry add data-table
+# adds the block and everything it is built from
+# to your package directory, as source you own</pre>
+​</section><section><h2>Usage</h2>
+Link to section Usage
+<pre>&lt;fandry-data-table
+  columns={columns}
+  data={rows}
+  loading={loading}
+  page-size=&quot;8&quot;
+  save-row={saveRow}
+  save-rows={saveRows}
+  delete-row={deleteRow}
+  onrowsave={handleRowSave}
+  onrowdelete={handleRowDelete}
+&gt;&lt;/fandry-data-table&gt;</pre>
+​
+<p>A column is a plain tanstack column definition. What makes it filterable, editable or badged is its <code>meta</code>:</p>
+<pre>columns = [
+  { id: 'name', accessorKey: 'name', header: 'Name',
+    meta: { editor: { type: 'text' } } },
+  { id: 'role', accessorKey: 'role', header: 'Role',
+    meta: {
+      filter: { options: ROLE_OPTIONS },
+      editor: { type: 'select', options: ROLE_OPTIONS }
+    } },
+  { id: 'status', accessorKey: 'status', header: 'Status',
+    meta: {
+      filter: { options: STATUS_OPTIONS },
+      editor: { type: 'select', options: STATUS_OPTIONS },
+      badges: { active: 'success', pending: 'warning', suspended: 'danger' }
+    } }
+];</pre>
+​
+<p>The block owns the workflow (saving state, toasts, failure handling); you own the request and the data:</p>
+<pre>// The hook is where the request goes. Resolve with the saved row, or throw
+// to keep the row in edit mode and show the message in a toast.
+saveRow = (row, changes) =&gt; api.update(row.id, changes);
+saveRows = (rows, changes) =&gt; api.updateMany(rows.map((r) =&gt; r.id), changes);
+deleteRow = (row) =&gt; api.remove([row.id]);
+
+// The block never edits `data` itself -- put the result back. A multi-record
+// edit fires rowsave once per saved row, so this one handler covers both.
+handleRowSave(event) {
+  const { row } = event.detail;
+  this.rows = this.rows.map((r) =&gt; (r.id === row.id ? row : r));
+}
+handleRowDelete(event) {
+  this.rows = this.rows.filter((r) =&gt; r.id !== event.detail.id);
+}</pre>
+​</section><section><h2>Props</h2>
+Link to section Props
+<table><thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>columns</code></td><td><code>ColumnDef[]</code></td><td><code>[]</code></td><td>Plain tanstack column definitions. Filters, editors and badges are read from each column's <code>meta</code>.</td></tr><tr><td><code>data</code></td><td><code>object[]</code></td><td><code>[]</code></td><td>The rows. Controlled: the block never changes it.</td></tr><tr><td><code>get-row-id</code></td><td><code>function</code></td><td><code>row =&gt; String(row.id)</code></td><td>Stable row identity, used by selection and editing.</td></tr><tr><td><code>get-row-label</code></td><td><code>function</code></td><td><code>—</code></td><td>A readable name for a row (row =&gt; row.name), used in toasts, the delete prompt and aria-labels.</td></tr><tr><td><code>messages</code></td><td><code>object</code></td><td><code>{}</code></td><td>Everything the block says, from button labels to toasts, e.g. to translate it: any key of DEFAULT_DATA_TABLE_MESSAGES (fandry/dataTableState), <a href="/components/table/">fandry-table</a>'s own included. Keys you leave out keep their English default.</td></tr><tr><td><code>loading</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Renders skeleton rows in place of the data.</td></tr><tr><td><code>save-row</code></td><td><code>(row, changes) =&gt; Promise</code></td><td><code>—</code></td><td>Persists an inline edit. <code>changes</code> holds only the changed columns. Reject to keep the row editing and toast the error.</td></tr><tr><td><code>save-rows</code></td><td><code>(rows, changes) =&gt; Promise</code></td><td><code>—</code></td><td>Persists a multi-record edit as one batch (select two or more rows, then Edit selected). <code>changes</code> holds only the fields the user filled in. Resolve with the saved rows or nothing; reject to keep the dialog open and toast the error.</td></tr><tr><td><code>delete-row</code></td><td><code>(row) =&gt; Promise</code></td><td><code>—</code></td><td>Same contract, for the built-in Delete action (after the confirmation).</td></tr><tr><td><code>row-actions</code></td><td><code>{ value, label }[]</code></td><td><code>Edit, Delete</code></td><td>The row menu. <code>edit</code> and <code>delete</code> are built in, and without a label take theirs from <code>messages</code>; any other value fires <code>rowaction</code>. An empty list removes the column.</td></tr><tr><td><code>column-visibility</code></td><td><code>{ [columnId]: boolean }</code></td><td><code>{}</code></td><td>Which columns are hidden (<code>{ email: false }</code>). Set it to start hidden or to restore a saved choice; the block keeps it current as the user toggles columns.</td></tr><tr><td><code>page-size</code></td><td><code>number</code></td><td><code>10</code></td><td>Rows per page.</td></tr><tr><td><code>toast-duration</code></td><td><code>number</code></td><td><code>4000</code></td><td>Milliseconds before a toast dismisses itself.</td></tr><tr><td><code>showToast(variant, message)</code></td><td><code>method</code></td><td><code>—</code></td><td>Shows a toast, for actions you run yourself (a bulk delete, say).</td></tr></tbody></table></section><section><h2>Events</h2>
+Link to section Events
+<table><thead><tr><th>Event</th><th>detail</th><th>Description</th></tr></thead><tbody><tr><td><code>rowsave</code></td><td><code>{ id, row, changes }</code></td><td>A save succeeded. Put <code>row</code> into your data. A multi-record edit fires it once per saved row.</td></tr><tr><td><code>rowdelete</code></td><td><code>{ id, row }</code></td><td>A delete succeeded. Take the row out of your data.</td></tr><tr><td><code>rowaction</code></td><td><code>{ action, id, row }</code></td><td>A custom row-menu action was chosen.</td></tr><tr><td><code>rowselectionchange</code></td><td><code>{ rowSelection, rows }</code></td><td>The selection changed (inherited from <a href="/components/table/">fandry-table</a>).</td></tr><tr><td><code>columnvisibilitychange</code></td><td><code>{ columnVisibility }</code></td><td>A column was shown or hidden. Save it if you want it remembered.</td></tr><tr><td><code>filterchange</code></td><td><code>{ globalFilter, columnFilters }</code></td><td>Search or a filter changed.</td></tr><tr><td><code>sortchange · pagechange</code></td><td>Inherited from <a href="/components/table/">fandry-table</a>.</td></tr></tbody></table></section><section><h2>Slots</h2>
+Link to section Slots
+<table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td><code>toolbar</code></td><td>Controls at the end of the toolbar -- Refresh, Add, bulk actions.</td></tr><tr><td><code>search</code></td><td>Replaces the search box. Dispatch a bubbling <code>input</code> event with <code>.value</code>.</td></tr><tr><td><code>empty</code></td><td>What shows when nothing matches.</td></tr><tr><td><code>pagination</code></td><td>Replaces the pagination control.</td></tr><tr><td><code>selection-all</code></td><td>Replaces the select-all checkbox.</td></tr></tbody></table></section><section><h2>Make it yours</h2>
+Link to section Make it yours
+<p>The block is two files on purpose. <code>fandry/dataTableState</code> has all the behavior and no template; <code>fandry/dataTable</code> is that class plus the markup you see here. To change the markup, extend the state class and write your own template, or, on Salesforce, just edit the copy <code>fandry add</code> put in your project. Built from:<a href="/components/table/">table</a><a href="/components/input/">input</a><a href="/components/select/">select</a><a href="/components/checkbox/">checkbox</a><a href="/components/button/">button</a><a href="/components/badge/">badge</a><a href="/components/popover/">popover</a><a href="/components/menu/">menu</a><a href="/components/dialog/">dialog</a><a href="/components/toast/">toast</a><a href="/components/skeleton/">skeleton</a><a href="/components/spinner/">spinner</a><a href="/components/pagination/">pagination</a></p></section></main>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-block-data-table></fandryui-block-data-table></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/block-data-table/configuration/ci/-%2Fblocks%2Fdata-table-/s/5532b0b7dd83d57d0b6082c421cc09c3/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/block-data-table/configuration/ci/-%2Fblocks%2Fdata-table-/s/1ddf384ba68c6b8912cd084b742b2bae/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fblock-data-table%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-trmtQpHcerH2c5mE2K2cUfNgR48Ch6w8X7Omikw5bIw/bundle_@lwrjs_app-service_block-data-table_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockDataTable%2Fv%2F0_27_0/s/sha256-dhKunu2MiRcmzUVgz5lGtWAT8gA7uhMWTSPsVGQp8WU/bundle_fandryui_blockDataTable.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockDataTable%2Fv%2F0_27_1/s/sha256-gTUD2I2EapmR4cfU4eS3s51Btq2IXJsHNsnUDMCUs0g/bundle_fandryui_blockDataTable.js" />
   </body>
 </html>

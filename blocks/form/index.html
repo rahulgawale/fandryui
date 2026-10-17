@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,123 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-a53e17a9590f85bcbe831a85ca7ca25b-1aa22400f36733d6-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-224cb6b4b227f965dbb1a49714084afb-1343a9b3040b165f-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-block-form></fandryui-block-form></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<main><nav><ol><li><a href="/">Home</a></li>
+<li>/
+<a href="/blocks/">Blocks</a></li>
+<li>/
+Form</li></ol></nav>
+Block
+<h1>Form</h1>
+<p>Fields, validation that speaks up at the right moment, and a save with feedback, all built from <code>fandry-*</code> primitives. A form can read first and edit on demand. It is a working screen, not a screenshot: what is below runs against a fake backend with real latency and real rules.</p>
+<section>Simulate server errors
+<p>Try it: choose <strong>Edit</strong>, clear the name or break the email and leave the field, then Save. A field you change is highlighted and gets a revert button; <strong>Reset</strong> takes back all of them. Then use the username <strong>admin</strong>, a rule only the server can check.</p></section><section><h2>Install</h2>
+Link to section Install
+<p>LWR / LWC OSS</p>
+<pre>npm install fandryui
+
+&lt;!-- nothing to copy: your bundler ships only what you use --&gt;
+&lt;fandry-form&gt;&lt;/fandry-form&gt;</pre>
+​
+<p>Salesforce DX</p>
+<pre>npx fandry add form
+# adds the block and everything it is built from
+# to your package directory, as source you own</pre>
+​</section><section><h2>Usage</h2>
+Link to section Usage
+<pre>&lt;fandry-form
+  fields={fields}
+  values={profile}
+  mode=&quot;read&quot;
+  save-values={saveValues}
+  validate={validate}
+  onsave={handleSave}
+&gt;&lt;/fandry-form&gt;</pre>
+​
+<p>A field is plain data. Its type picks the control, and its rules are functions:</p>
+<pre>fields = [
+  { name: 'name', label: 'Name', required: true },
+  { name: 'email', label: 'Email', type: 'email', required: true,
+    validate: (value) =&gt; (/^\S+@\S+\.\S+$/.test(value) ? undefined : 'Enter a valid email address.') },
+  { name: 'username', label: 'Username', required: true, helpText: 'At least 3 characters.',
+    validate: (value) =&gt; (value.length &lt; 3 ? 'Use at least 3 characters.' : undefined) },
+  { name: 'plan', label: 'Plan', type: 'radio', options: PLAN_OPTIONS },
+  { name: 'bio', label: 'Bio', type: 'textarea' },
+  { name: 'newsletter', label: 'Send me the newsletter', type: 'switch' },
+  { name: 'memberSince', label: 'Member since', readonly: true }
+];</pre>
+​
+<p>The block owns the workflow (when errors show, the saving state, read and edit); you own the request and the data:</p>
+<pre>// Rules that need more than one field, or the server. Runs once every
+// field's own rules pass; return { [field name]: message }.
+validate = async (values) =&gt; {
+  const taken = await api.checkUsername(values.username);
+  return taken ? { username: taken } : undefined;
+};
+
+// The request. `changes` holds only what differs from `values`. Resolve with
+// the saved values, or throw to stay in edit mode and show the message.
+saveValues = (values, changes) =&gt; api.save(changes);
+
+// The block never edits `values` itself -- put the result back.
+handleSave(event) {
+  this.profile = event.detail.values;
+}</pre>
+​</section><section><h2>Props</h2>
+Link to section Props
+<table><thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>fields</code></td><td><code>field[]</code></td><td><code>[]</code></td><td>What the form asks for, as plain data (see the field table below).</td></tr><tr><td><code>values</code></td><td><code>object</code></td><td><code>{}</code></td><td>The saved values. Controlled: the block never changes it. What the user types is a draft over it.</td></tr><tr><td><code>mode</code></td><td><code>'read' | 'edit'</code></td><td><code>'edit'</code></td><td>Whether the form shows controls or the values as text. Set it to choose where the form starts; the block keeps it current as the user moves between the two.</td></tr><tr><td><code>save-values</code></td><td><code>(values, changes) =&gt; Promise</code></td><td><code>—</code></td><td>Persists the form. <code>values</code> is everything with the edits applied, <code>changes</code> only what differs. Resolve with the saved values or nothing; reject to stay in edit mode and show the message.</td></tr><tr><td><code>validate</code></td><td><code>(values) =&gt; errors | Promise</code></td><td><code>—</code></td><td>Rules that span fields or need the server. Return <code>{ [field name]: message }</code>. Runs on save, once every field's own rules pass.</td></tr><tr><td><code>messages</code></td><td><code>object</code></td><td><code>{}</code></td><td>Everything the form says (buttons, statuses, &quot;is required&quot;, the name of the Revert button, Yes / No in read mode), e.g. to translate it: any key of DEFAULT_FORM_MESSAGES (fandry/formState). Keys you leave out keep their English default.</td></tr><tr><td><code>edit() · save() · cancel() · reset()</code></td><td><code>methods</code></td><td><code>—</code></td><td>What the default buttons call. Use them from your own buttons in the <code>actions</code> slot. <code>reset()</code> discards every edit and stays in edit mode; <code>cancel()</code> also goes back to reading.</td></tr></tbody></table></section><section><h2>Field</h2>
+Link to section Field
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td><code>string</code></td><td>The key in the form's <code>values</code>.</td></tr><tr><td><code>label</code></td><td><code>string</code></td><td>Shown above the control, and beside the value in read mode.</td></tr><tr><td><code>type</code></td><td><code>text · email · number · tel · url · password · date · textarea · select · radio · checkbox · switch</code></td><td>Defaults to <code>text</code>. <code>number</code> fields save as numbers; <code>checkbox</code> and <code>switch</code> as booleans.</td></tr><tr><td><code>options</code></td><td><code>{ label, value }[]</code></td><td>For <code>select</code> and <code>radio</code>.</td></tr><tr><td><code>required</code></td><td><code>boolean</code></td><td>Must have a value. For a checkbox or switch, must be on.</td></tr><tr><td><code>readonly</code></td><td><code>boolean</code></td><td>Shown as text even while the form is being edited, and never validated.</td></tr><tr><td><code>helpText</code></td><td><code>string</code></td><td>Shown under the control.</td></tr><tr><td><code>placeholder</code></td><td><code>string</code></td><td>For text inputs, textareas and selects.</td></tr><tr><td><code>elementProps</code></td><td><code>object</code></td><td>Spread onto the native control (<code>{ autocomplete: 'email', maxLength: 80 }</code>).</td></tr><tr><td><code>validate</code></td><td><code>(value, values) =&gt; string | void</code></td><td>Return a message when the value is not acceptable. Runs after <code>required</code>, and not at all on an empty field that is not required.</td></tr></tbody></table></section><section><h2>Events</h2>
+Link to section Events
+<table><thead><tr><th>Event</th><th>detail</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td><code>{ name, value, values }</code></td><td>A field's value changed (on every keystroke), or its Revert button put the saved value back. <code>value</code> is in its saved shape: a number for a number field.</td></tr><tr><td><code>save</code></td><td><code>{ values, changes }</code></td><td>A save succeeded. Put <code>values</code> into your data.</td></tr><tr><td><code>cancel</code></td><td>The user cancelled; their edits are discarded.</td></tr><tr><td><code>reset</code></td><td>Every edit was discarded and the form is still being edited.</td></tr><tr><td><code>modechange</code></td><td><code>{ mode }</code></td><td>The form moved between reading and editing.</td></tr></tbody></table></section><section><h2>Slots</h2>
+Link to section Slots
+<table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td><code>actions</code></td><td>Replaces the default Edit / Save / Cancel / Reset buttons. Wire your own to <code>edit()</code>, <code>save()</code>, <code>cancel()</code> and <code>reset()</code>.</td></tr></tbody></table></section><section><h2>Parts</h2>
+Link to section Parts
+<table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>field</code></td><td>One field of a form: its label, control, help text and error (a fandry-form-field's <code>base</code>).</td></tr><tr><td><code>revert</code></td><td>The button that puts back a changed field's saved value.</td></tr><tr><td><code>field changed</code></td><td>A form field whose value differs from the saved one. The tinted panel behind it, with the bar at its start, is its <code>::before</code>.</td></tr></tbody></table>
+<pre>/* Your own color for a changed field, and no bar */
+fandry-form::part(field changed)::before {
+  background: hsl(199 89% 48% / 0.12);
+  border-inline-start-width: 0;
+}</pre>
+​</section><section><h2>Make it yours</h2>
+Link to section Make it yours
+<p>The block is three pieces on purpose. <code>fandry/formState</code> has all the behavior and no template; <code>fandry/form</code> is that class plus the layout and actions you see here; <code>fandry/formField</code> is one field, which you can also use on its own. To change the markup, extend the state class and write your own template, or, on Salesforce, just edit the copy <code>fandry add</code> put in your project. Built from:<a href="/components/input/">input</a><a href="/components/textarea/">textarea</a><a href="/components/select/">select</a><a href="/components/radio-group/">radio-group</a><a href="/components/checkbox/">checkbox</a><a href="/components/switch/">switch</a><a href="/components/button/">button</a><a href="/components/icon/">icon</a><a href="/components/alert/">alert</a><a href="/components/spinner/">spinner</a><a href="/components/text/">text</a></p></section></main>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-block-form></fandryui-block-form></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/block-form/configuration/ci/-%2Fblocks%2Fform-/s/be2da8ffcb6a440a52901e93e9153180/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/block-form/configuration/ci/-%2Fblocks%2Fform-/s/cd25d36fb16b918fcf3620b99a61d591/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fblock-form%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-ZIDkun3RClOI58Y-RtLIV54XHukkkqSmt5saBzNni_I/bundle_@lwrjs_app-service_block-form_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockForm%2Fv%2F0_27_0/s/sha256-HVeCmv21uYWZUtjKrnmjeiLGws03bA6MdmYmHu9nttI/bundle_fandryui_blockForm.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FblockForm%2Fv%2F0_27_1/s/sha256-HONus0PLKS-bGBCjKkBgo1wLbj_KSLUvcLy_M0q--HE/bundle_fandryui_blockForm.js" />
   </body>
 </html>

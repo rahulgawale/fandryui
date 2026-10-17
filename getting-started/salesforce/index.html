@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922438803094670/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922438803094670/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922438803081858/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922438803244670/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17922451197036098/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922451197027530/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922451197022990/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17922451197176096/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -65,9 +65,26 @@
             "@type": "Person",
             "@id": "https://fandryui.forcetrails.com/#author",
             "name": "Rahul Gawale",
-            "url": "https://github.com/rahulgawale"
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
           }
         ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -77,17 +94,180 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922438803244670/assets/styles/global.css" />
-  <meta name="traceparent" content="00-04d29883c177d496085a079b7af99167-493efc74b4d79858-01">
+    <link rel="stylesheet" href="/1/asset/immutable/s/17922451197176096/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-f946a523dbf2c4e1f642f5a9ba1b512f-0cd582315ba8c212-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
          document should have exactly one. -->
     <div class="wrapper">
-      <div id="main"><fandryui-getting-started></fandryui-getting-started></div>
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<nav>Getting started
+<a href="/getting-started/">Overview</a>
+<a href="/getting-started/lwr-oss/">LWR / LWC OSS</a>
+<a href="/getting-started/salesforce/">Salesforce DX</a>
+<a href="/getting-started/theming/">Theming</a></nav>
+<main>sfdx
+<h1>Getting started on Salesforce</h1>
+<p>The platform has no bundler and cannot import npm packages, so the CLI copies components into your project as source you own, with everything they depend on.</p>
+<section><h2>Requirements</h2>
+Link to section Requirements
+<ul><li><p>A Salesforce DX project (it has an <code>sfdx-project.json</code>)</p></li><li><p>The Salesforce CLI (<code>sf</code>) and an authorized org</p></li><li><p>Node.js 18 or newer, to run the <code>fandry</code> CLI</p></li></ul>
+<p>Native shadow DOM, whatever your org uses</p>
+Fandry components render in native shadow DOM (they set <code>static shadowSupportMode = 'native'</code>), even in orgs that run other components on the synthetic-shadow polyfill. That is what lets you restyle their internals with <code>::part()</code> and keeps their behavior identical to LWR. Your own components don't need to change: they can stay synthetic and still use and style fandry components, and Lightning components you slot into fandry (a lightning-button in a card or dialog) keep working. The one place not to use Lightning base components is inside an option's component (select, combobox, command, lookup): fandry renders that component, so it runs in native shadow, where base components lose their SLDS styling. SLDS and other global CSS don't reach inside them; theme them with <code>--fd-*</code> tokens and parts.</section><section><h2>1. Install the CLI</h2>
+Link to section 1. Install the CLI
+<p>Install <code>fandryui</code> as a dev dependency. It is only used to run the <code>fandry</code> CLI and to copy source out of; nothing from <code>node_modules</code> is deployed.</p>
+Terminal
+<pre>npm install --save-dev fandryui</pre>
+​
+<p>Prefer not to install it? Every command below also works as <code>npx fandryui &lt;command&gt;</code>.</p></section><section><h2>2. Initialize</h2>
+Link to section 2. Initialize
+<p>Fandry gets its own package directory next to your app code, so the copied source is easy to tell apart and can be deployed on its own.</p>
+Terminal
+<pre>npx fandry init</pre>
+​
+sfdx-project.json (after)
+<pre>{
+  &quot;packageDirectories&quot;: [
+    { &quot;path&quot;: &quot;force-app&quot;, &quot;default&quot;: true },
+    { &quot;path&quot;: &quot;fandryui&quot; }
+  ],
+  &quot;namespace&quot;: &quot;&quot;,
+  &quot;sourceApiVersion&quot;: &quot;67.0&quot;
+}</pre>
+​
+<p>Use <code>--dir &lt;path&gt;</code> to install into a different package directory. Your existing indentation and default package directory are left untouched.</p></section><section><h2>3. Add components</h2>
+Link to section 3. Add components
+<p>Name the components you want. Their dependencies are followed for you: adding table also adds input, checkbox, pagination, skeleton, the shared base and more.</p>
+Terminal
+<pre>npx fandry add button input table</pre>
+​
+Output
+<pre>Added 10 bundle(s) to fandryui/main/default/lwc (3 requested, 7 dependencies)
+  + fandryBase
+  + fandryButton
+  + fandryLabel
+  + fandryInput
+  + fandryCheckbox
+  + fandryPagination
+  + fandrySkeleton
+  + fandryTableCore
+  + fandryTableState
+  + fandryTable</pre>
+​
+Other commands
+<pre>npx fandry list                  # every component and what it depends on
+npx fandry add --all             # everything
+npx fandry add table --dry-run   # show what would be added
+npx fandry add table --overwrite # replace table even if you edited it</pre>
+​
+<p>Each bundle gets a <code>.js-meta.xml</code> using your project's <code>sourceApiVersion</code>, and it is never rewritten after that, so you can expose a component or add targets safely. Bundles you have edited are never overwritten unless you name them with <code>--overwrite</code>.</p></section><section><h2>What your project looks like</h2>
+Link to section What your project looks like
+Directory structure
+<pre>my-sfdx-project/
+├── sfdx-project.json          # &quot;fandryui&quot; package directory added by `fandry init`
+├── fandry.json                # written by `fandry init`
+├── package.json
+├── force-app/                 # your app
+│   └── main/default/lwc/
+│       └── myComponent/
+└── fandryui/                  # Fandry: your source now, commit it
+    └── main/default/lwc/
+        ├── fandryBase/        # shared class, base.css, tokens.css, motion.css
+        ├── fandryButton/
+        ├── fandryInput/
+        ├── fandryLabel/
+        ├── fandryCheckbox/
+        ├── fandryPagination/
+        ├── fandrySkeleton/
+        ├── fandryTable/
+        ├── fandryTableState/
+        └── fandryTableCore/   # @tanstack/table-core, bundled</pre>
+​
+<p>The copied files are yours: commit them, edit them, deploy them. They are ordinary LWC source, not a managed package.</p>
+<p>Make it yours: CSS, then slots, then your own copy</p>
+Style most things from your own CSS with <code>--fd-*</code> tokens and <code>::part()</code>, down to a rainbow border. Add to a component through its slots: a loading spinner is just slotted content. For a change inside a component that neither CSS nor slots reach, like a different native element or different internal behavior, copy <code>fandryButton</code> to <code>myButton</code>, rename it, and change anything: it still extends fandryBase, so it keeps your tokens and native shadow DOM. fandry add does not overwrite files you changed unless you pass --overwrite. With lightning-* components the only equivalent is rebuilding from SLDS blueprints.</section><section><h2>4. Use a component</h2>
+Link to section 4. Use a component
+<p>On the platform your code lives in the default <code>c</code> namespace, so <code>fandryButton</code> is <code>&lt;c-fandry-button&gt;</code>. No imports are needed in the template.</p>
+force-app/main/default/lwc/myComponent/myComponent.html
+<pre>&lt;template&gt;
+  &lt;lightning-card title=&quot;Team&quot;&gt;
+    &lt;c-fandry-button onclick={handleSave}&gt;Save&lt;/c-fandry-button&gt;
+
+    &lt;c-fandry-table
+      columns={columns}
+      data={rows}
+      caption=&quot;Team members&quot;
+      enable-pagination
+      page-size=&quot;3&quot;
+      enable-global-filter
+    &gt;&lt;/c-fandry-table&gt;
+  &lt;/lightning-card&gt;
+&lt;/template&gt;</pre>
+​
+force-app/main/default/lwc/myComponent/myComponent.js
+<pre>import { LightningElement } from 'lwc';
+
+export default class MyComponent extends LightningElement {
+  columns = [
+    { id: 'name', accessorKey: 'name', header: 'Name' },
+    { id: 'role', accessorKey: 'role', header: 'Role' }
+  ];
+  rows = [
+    { name: 'Ada Lovelace', role: 'Engineer' },
+    { name: 'Alan Turing', role: 'Researcher' }
+  ];
+
+  handleSave() {}
+}</pre>
+​</section><section><h2>5. Deploy</h2>
+Link to section 5. Deploy
+<p>Deploy Fandry first (or both directories in one command), then your app.</p>
+Terminal
+<pre>sf project deploy start --source-dir fandryui --target-org my-org
+sf project deploy start --source-dir force-app --target-org my-org
+
+# or both at once
+sf project deploy start --source-dir fandryui --source-dir force-app --target-org my-org</pre>
+​
+<p>Tested on a real org</p>
+button, input, table (with its bundled table-core), pagination and the table search were deployed to an org and run on a Lightning page.</section><section><h2>Good to know</h2>
+Link to section Good to know
+<p>select, combobox, command and lookup use dynamic components</p>
+They use <code>lwc:is</code>, which Salesforce only accepts when the bundle's own <code>.js-meta.xml</code> declares the <code>lightning__dynamicComponent</code> capability (with API 55 or later and Lightning Web Security on); otherwise the deploy fails with LWC1188. <code>fandry add</code> writes the capability into the meta files it creates and tells you if an existing one lacks it. Nothing in <code>jsconfig.json</code> or your project settings does this.
+<ul><li><p>Fandry is not a managed package. Components are plain <code>c</code>-namespace source in your project.</p></li><li><p>The table depends on <code>@tanstack/table-core</code>. Because npm packages cannot be imported on the platform, <code>fandry add table</code> installs it as the <code>fandryTableCore</code> bundle.</p></li><li><p>Upgrading: update <code>fandryui</code>, then run <code>fandry add &lt;name&gt;</code> again. Bundles you have not edited are updated to the new version, edited ones are skipped, and <code>--overwrite</code> replaces only the components you name. Commit <code>fandry.json</code>: it records what was installed so an upgrade can be told apart from an edit.</p></li></ul></section>
+<p>Ready to build? Browse every component, its props and examples under <a href="/components/">Components</a>.</p></main>
+<nav>On this page
+<ul><li>Requirements</li><li>1. Install the CLI</li><li>2. Initialize</li><li>3. Add components</li><li>What your project looks like</li><li>4. Use a component</li><li>5. Deploy</li><li>Good to know</li></ul></nav>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-getting-started></fandryui-getting-started></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/getting-started-salesforce/configuration/ci/-%2Fgetting-started%2Fsalesforce-/s/90997e29e30fb1dfcb0e7669639e2269/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/getting-started-salesforce/configuration/ci/-%2Fgetting-started%2Fsalesforce-/s/e3bc284a38fb0a3b7057a2ba5a436222/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fgetting-started-salesforce%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-yru_fMBiIeDZ1k5YgB7HJAweHDCE7d0DTWmSg7h4C6w/bundle_@lwrjs_app-service_getting-started-salesforce_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FgettingStarted%2Fv%2F0_27_0/s/sha256-59ucGqTxX2Il3iWV2NrhrAlTyB0sFy1lBUTeASkjvsk/bundle_fandryui_gettingStarted.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FgettingStarted%2Fv%2F0_27_1/s/sha256-xMSrtXNbWCq4jBsYD7UlVRkwn1FDSGVN7iym3A6w7BQ/bundle_fandryui_gettingStarted.js" />
   </body>
 </html>
