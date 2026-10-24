@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import FdMultiSelect from '../multiSelect';
+import SlotHarness from './slotHarness';
 
 const OPTIONS = [
   { label: 'Red', value: 'red' },
@@ -158,5 +159,38 @@ describe('fandry-multi-select', () => {
 
     expect(trigger(element).getAttribute('aria-invalid')).toBe('true');
     expect(trigger(element).getAttribute('part')).toBe('control invalid');
+  });
+
+  // Slotted content is distributed by a compiled template, so this needs a harness.
+  it('takes its label, help text and error text as slots, without the props', async () => {
+    const harness = createElement('slot-harness', { is: SlotHarness });
+    document.body.appendChild(harness);
+    await flush();
+    await flush();
+
+    const field = harness.shadowRoot!.querySelector('fandry-multi-select')!;
+    const slotted = (name: string) =>
+      (field.shadowRoot!.querySelector(`slot[name="${name}"]`) as HTMLSlotElement).assignedElements()[0];
+
+    expect(slotted('label').textContent).toBe('Toppings (pick some)');
+    expect(slotted('help-text').textContent).toBe('Tell us everything');
+    expect(slotted('error-text').textContent).toBe('Pick at least one');
+
+    // The wrappers show because of the slotted content, not a prop.
+    expect(field.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
+    expect(field.shadowRoot!.querySelector('.help-text')!.hasAttribute('hidden')).toBe(false);
+
+    // Slotted error text makes the field invalid, and is what describes it.
+    const trigger = field.shadowRoot!.querySelector('.trigger')!;
+    expect(trigger.getAttribute('aria-invalid')).toBe('true');
+    expect(trigger.getAttribute('aria-describedby')).toBe('error-text help-text');
+  });
+
+  it('hides the label and help text wrappers while there is nothing to show', async () => {
+    const element = build();
+    await flush();
+
+    expect(element.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(true);
+    expect(element.shadowRoot!.querySelector('.help-text')!.hasAttribute('hidden')).toBe(true);
   });
 });

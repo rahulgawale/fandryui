@@ -129,6 +129,7 @@
       "fandryuidemos/demoLink": ["src/modules/fandryuidemos/demoLink/demoLink"],
       "fandryuidemos/demoRadio": ["src/modules/fandryuidemos/demoRadio/demoRadio"],
       "fandryuidemos/demoRadioGroup": ["src/modules/fandryuidemos/demoRadioGroup/demoRadioGroup"],
+      "fandryuidemos/demoMultiSelectSlots": ["src/modules/fandryuidemos/demoMultiSelectSlots/demoMultiSelectSlots"],
       "fandryuidemos/demoMultiSelectTheme": ["src/modules/fandryuidemos/demoMultiSelectTheme/demoMultiSelectTheme"],
       "fandryuidemos/demoCheckboxList": ["src/modules/fandryuidemos/demoCheckboxList/demoCheckboxList"],
       "fandryuidemos/demoSelect": ["src/modules/fandryuidemos/demoSelect/demoSelect"],

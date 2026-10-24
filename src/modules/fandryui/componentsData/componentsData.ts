@@ -1532,7 +1532,30 @@ handleChange(event) {
 // Closed:  Enter, Space, ArrowDown or ArrowUp open the list
 // Open:    ArrowUp / ArrowDown, Home / End move
 //          Enter or Space check or uncheck the option, and the list stays open
-//          Escape or Tab close it; what is checked stays`
+//          Escape or Tab close it; what is checked stays`,
+    examples: [
+      {
+        title: 'Label, help text and error as slots',
+        demo: 'multi-select-slots',
+        code: `<!-- template -->
+<fandry-multi-select placeholder="Choose toppings"
+  options={toppingOptions} value={value} onchange={handleChange}>
+  <span slot="label">Toppings <em>(pick any)</em></span>
+  <span slot="help-text">Extra toppings are <strong>free</strong> this week.</span>
+  <span slot="error-text" if:true={empty}>Pick <strong>at least one</strong> topping.</span>
+</fandry-multi-select>
+
+// component
+get empty() {
+  return this.value.length === 0;
+}
+
+// Each slot takes the place of its prop and works without it. A slotted
+// error text makes the field invalid, as the error-text prop does, and the
+// field tells a screen reader about it. The label and help text stay
+// hidden until they have content.`
+      }
+    ]
   },
   {
     slug: 'switch',

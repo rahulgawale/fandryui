@@ -69,6 +69,7 @@ import DemoRadioGroup from 'fandryuidemos/demoRadioGroup';
 import DemoCheckboxList from 'fandryuidemos/demoCheckboxList';
 import DemoSelect from 'fandryuidemos/demoSelect';
 import DemoMultiSelect from 'fandryuidemos/demoMultiSelect';
+import DemoMultiSelectSlots from 'fandryuidemos/demoMultiSelectSlots';
 import DemoMultiSelectTheme from 'fandryuidemos/demoMultiSelectTheme';
 import DemoSwitch from 'fandryuidemos/demoSwitch';
 import DemoTextarea from 'fandryuidemos/demoTextarea';
@@ -173,6 +174,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'radio-theme': DemoRadioTheme,
   'select-theme': DemoSelectTheme,
   'multi-select-theme': DemoMultiSelectTheme,
+  'multi-select-slots': DemoMultiSelectSlots,
   'sidebar-theme': DemoSidebarTheme,
   'skeleton-theme': DemoSkeletonTheme,
   'spinner-theme': DemoSpinnerTheme,

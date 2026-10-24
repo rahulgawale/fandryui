@@ -1,0 +1,12 @@
+<template>
+  <fandry-multi-select
+    placeholder="Choose toppings"
+    options={toppingOptions}
+    value={value}
+    onchange={handleChange}
+  >
+    <span slot="label">Toppings <em>(pick any)</em></span>
+    <span slot="help-text">Extra toppings are <strong>free</strong> this week.</span>
+    <span slot="error-text" if:true={empty}>Pick <strong>at least one</strong> topping.</span>
+  </fandry-multi-select>
+</template>
