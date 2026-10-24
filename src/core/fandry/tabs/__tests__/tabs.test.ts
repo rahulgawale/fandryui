@@ -134,6 +134,19 @@ describe('fandry-tabs', () => {
     expect(panel(1).hidden).toBe(false);
   });
 
+  it('keeps the Tab stop on an enabled tab when the selected tab is disabled', async () => {
+    const { harness, button } = await setup({ billingEnabled: true, value: 'b' });
+    expect([0, 1, 2].map((i) => button(i).tabIndex)).toEqual([-1, 0, -1]);
+    (harness as any).billingEnabled = false;
+    await flush();
+    expect([0, 1, 2].map((i) => button(i).tabIndex)).toEqual([0, -1, -1]);
+  });
+
+  it('keeps the Tab stop on an enabled tab when value matches a disabled tab', async () => {
+    const { button } = await setup({ value: 'b' });
+    expect([0, 1, 2].map((i) => button(i).tabIndex)).toEqual([0, -1, -1]);
+  });
+
   it('gives a tab and its panel the selected state in their parts', async () => {
     const { tabs } = await setup();
     expect(tabs[0].shadowRoot!.querySelector('.tab')!.getAttribute('part')).toBe('base selected');

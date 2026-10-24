@@ -94,9 +94,11 @@ export default class FdTabs extends Base {
       console.warn('fandry-tabs: every fandry-tab and fandry-tab-panel needs a `value`; they are matched by it.');
     }
     const selected = this.selectedTab();
+    // A disabled tab can't take focus, so a selected one hands the Tab stop to the first enabled tab.
+    const stop = selected && !selected.disabled ? selected : tabs.find((tab) => !tab.disabled);
     tabs.forEach((tab) => {
       tab.selected = tab === selected;
-      tab.elementProps = { tabIndex: tab === selected ? 0 : -1 };
+      tab.elementProps = { tabIndex: tab === stop ? 0 : -1 };
     });
     panels.forEach((panel) => {
       panel.selected = !!selected && panel.value === selected.value;
