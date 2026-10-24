@@ -1,0 +1,11 @@
+<template>
+  <button
+    class="tab"
+    part={basePart}
+    type="button"
+    role="tab"
+    aria-selected={ariaSelected}
+    disabled={disabled}
+    lwc:spread={resolvedElementProps}
+  ><slot></slot></button>
+</template>

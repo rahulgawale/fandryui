@@ -1,0 +1,50 @@
+:host {
+  display: inline-block;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--_fd-space-2);
+
+  padding: var(--_fd-space-2) var(--_fd-space-3);
+  border: 0;
+  border-bottom: var(--_fd-border-width-lg) solid transparent;
+  border-radius: var(--_fd-radius-sm) var(--_fd-radius-sm) 0 0;
+  background: transparent;
+
+  font-family: inherit;
+  font-size: var(--_fd-font-size-sm);
+  font-weight: var(--_fd-font-weight-medium);
+  line-height: var(--_fd-line-height-tight);
+  color: hsl(var(--_fd-text-muted));
+  white-space: nowrap;
+
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+
+  transition: color var(--_fd-duration-fast) ease, border-color var(--_fd-duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .tab:hover:not(:disabled) {
+    color: hsl(var(--_fd-text));
+  }
+}
+
+.tab[aria-selected='true'] {
+  color: hsl(var(--_fd-text));
+  border-bottom-color: hsl(var(--_fd-primary));
+}
+
+.tab:focus-visible {
+  /* Transparent, not none: forced-colors mode paints this instead of the ring. */
+  outline: var(--_fd-ring-width) solid transparent;
+  box-shadow: var(--_fd-ring-control);
+}
+
+.tab:disabled {
+  opacity: var(--_fd-disabled-opacity);
+  cursor: not-allowed;
+}

@@ -1,0 +1,8 @@
+<template>
+  <div part="base">
+    <div class="list" part="list" role="tablist" aria-label={label}>
+      <slot name="tab" onslotchange={handleSlotChange}></slot>
+    </div>
+    <slot onslotchange={handleSlotChange}></slot>
+  </div>
+</template>

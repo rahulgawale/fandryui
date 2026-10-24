@@ -1,0 +1,18 @@
+:host {
+  display: block;
+}
+
+.panel {
+  /* Margin, not padding, so the focus ring hugs the content. */
+  margin-top: var(--_fd-space-4);
+  border-radius: var(--_fd-radius-sm);
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panel:focus-visible {
+  outline: var(--_fd-ring-width) solid transparent;
+  box-shadow: var(--_fd-ring-control);
+}

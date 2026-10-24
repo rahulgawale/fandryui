@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+.list {
+  display: flex;
+  gap: var(--_fd-space-1);
+  flex-wrap: wrap;
+  /* The rule is a shadow, not a border, so a tab's underline paints over it
+     with no negative margin and the list needs no overflow clipping. */
+  box-shadow: inset 0 calc(-1 * var(--_fd-border-width)) 0 hsl(var(--_fd-border));
+}

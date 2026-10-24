@@ -1,0 +1,18 @@
+<template>
+  <div class="brand">
+    <fandry-tabs value="account" aria-label="Settings">
+      <fandry-tab slot="tab" value="account">Account</fandry-tab>
+      <fandry-tab slot="tab" value="billing">Billing</fandry-tab>
+      <fandry-tab slot="tab" value="team">Team</fandry-tab>
+      <fandry-tab-panel value="account">
+        <fandry-text>Update your name, email and password.</fandry-text>
+      </fandry-tab-panel>
+      <fandry-tab-panel value="billing">
+        <fandry-text>Manage your plan and payment method.</fandry-text>
+      </fandry-tab-panel>
+      <fandry-tab-panel value="team">
+        <fandry-text>Invite people to your workspace.</fandry-text>
+      </fandry-tab-panel>
+    </fandry-tabs>
+  </div>
+</template>

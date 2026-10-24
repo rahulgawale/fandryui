@@ -1,0 +1,23 @@
+<template>
+  <fandry-tabs class="outer" value="a">
+    <fandry-tab slot="tab" value="a">Outer A</fandry-tab>
+    <fandry-tab slot="tab" value="b">Outer B</fandry-tab>
+    <fandry-tab-panel class="panel-a" value="a">
+      <fandry-tabs class="inner" value="x">
+        <fandry-tab slot="tab" value="x">Inner X</fandry-tab>
+        <fandry-tab slot="tab" value="y">Inner Y</fandry-tab>
+        <fandry-tab-panel value="x">X panel</fandry-tab-panel>
+        <fandry-tab-panel value="y">Y panel</fandry-tab-panel>
+      </fandry-tabs>
+    </fandry-tab-panel>
+    <fandry-tab-panel class="panel-b" value="b"><button>Save</button></fandry-tab-panel>
+  </fandry-tabs>
+  <fandry-tabs class="plain" value="p">
+    <fandry-tab slot="tab" value="p">P</fandry-tab>
+    <fandry-tab-panel class="panel-p" value="p"><fandry-button>Go</fandry-button></fandry-tab-panel>
+  </fandry-tabs>
+  <fandry-tabs class="missing">
+    <fandry-tab slot="tab">No value</fandry-tab>
+    <fandry-tab-panel>No value</fandry-tab-panel>
+  </fandry-tabs>
+</template>

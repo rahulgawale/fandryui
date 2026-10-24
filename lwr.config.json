@@ -199,6 +199,45 @@
             }
         },
         {
+            "id": "component-tabs",
+            "path": "/components/tabs",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Tabs component for LWC | Fandry UI",
+                "description": "A set of tabs that switch between panels — pair with fandry-tab and fandry-tab-panel. A Fandry UI component for Salesforce LWC.",
+                "path": "/components/tabs/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
+            }
+        },
+        {
+            "id": "component-tab",
+            "path": "/components/tab",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Tab component for LWC | Fandry UI",
+                "description": "A single tab inside fandry-tabs. A Fandry UI component for Salesforce LWC.",
+                "path": "/components/tab/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
+            }
+        },
+        {
+            "id": "component-tab-panel",
+            "path": "/components/tab-panel",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Tab Panel component for LWC | Fandry UI",
+                "description": "The content shown for one fandry-tab. A Fandry UI component for Salesforce LWC.",
+                "path": "/components/tab-panel/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
+            }
+        },
+        {
             "id": "component-heading",
             "path": "/components/heading",
             "rootComponent": "fandryui/componentDoc",

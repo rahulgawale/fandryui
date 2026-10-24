@@ -139,7 +139,7 @@ export const STATE_DESCRIPTIONS: Record<string, string> = {
   disabled: 'A control, option or item that cannot be used.',
   invalid: 'A field that has error text.',
   changed: 'A form field whose value differs from the saved one.',
-  selected: 'The chosen option, or a selected table row.',
+  selected: 'The chosen option, a selected table row, or the selected tab.',
   active: 'The option the keyboard or pointer is on.',
   current: 'The link to the page being viewed.',
   sorted: 'A header cell whose column is sorted (also `ascending` or `descending`).',
@@ -542,6 +542,196 @@ fandry-sidebar-item::part(link) {
       { name: 'active', type: 'boolean', default: 'false', description: "Marks this as the current page (styling + aria-current)." }
     ],
     code: `<fandry-sidebar-item href="/components/card" active>Card</fandry-sidebar-item>`
+  },
+  {
+    slug: 'tabs',
+    name: 'Tabs',
+    tag: 'fandry-tabs',
+    parts: ['base', 'list'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'tabs-theme',
+      code: `<!-- template -->
+<div class="brand">
+  <fandry-tabs value="account" aria-label="Settings">
+    <fandry-tab slot="tab" value="account">Account</fandry-tab>
+    <fandry-tab slot="tab" value="billing">Billing</fandry-tab>
+    <fandry-tab slot="tab" value="team">Team</fandry-tab>
+    <fandry-tab-panel value="account">
+      <fandry-text>Update your name, email and password.</fandry-text>
+    </fandry-tab-panel>
+    <fandry-tab-panel value="billing">
+      <fandry-text>Manage your plan and payment method.</fandry-text>
+    </fandry-tab-panel>
+    <fandry-tab-panel value="team">
+      <fandry-text>Invite people to your workspace.</fandry-text>
+    </fandry-tab-panel>
+  </fandry-tabs>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+}
+
+fandry-tabs::part(list) {
+  gap: 0.5rem;
+  box-shadow: none;
+}
+
+fandry-tab::part(base) {
+  border-radius: 999px;
+  border-bottom-color: transparent;
+}
+
+fandry-tab::part(base selected) {
+  background: hsl(160 84% 26%);
+  color: white;
+}`
+    },
+    category: 'Layout',
+    description: 'A set of tabs that switch between panels — pair with fandry-tab and fandry-tab-panel.',
+    props: [
+      { name: 'value', type: 'string', default: "''", description: 'The `value` of the selected tab. Updates as the user picks a tab. Unset, or matching no tab, the first enabled tab is selected.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names the tab list, e.g. "Settings".' },
+      { name: 'change (event)', type: 'CustomEvent<{ value }>', default: '—', description: 'Fires when the user picks a different tab, by click or keyboard; `event.detail.value` is that tab\'s `value`. Not fired when `value` is set from code or the tab is already selected.' }
+    ],
+    code: `<fandry-tabs value="account" aria-label="Settings" onchange={handleChange}>
+  <fandry-tab slot="tab" value="account">Account</fandry-tab>
+  <fandry-tab slot="tab" value="billing">Billing</fandry-tab>
+  <fandry-tab-panel value="account">Account settings</fandry-tab-panel>
+  <fandry-tab-panel value="billing">Billing settings</fandry-tab-panel>
+</fandry-tabs>
+
+handleChange(event) {
+  this.selectedTab = event.detail.value;
+}`,
+    notes: [
+      {
+        title: 'Tabs and panels are siblings',
+        paragraphs: [
+          'Put each fandry-tab in the `tab` slot and each fandry-tab-panel in the default slot, as direct children (a wrapper element in between hides them from fandry-tabs), matched by `value`, which every tab and panel needs. They stay separate children so a panel can hold anything, and a tab can be restyled or replaced without touching the panels.',
+          'A focused tab is selected: the arrow keys, Home and End move between enabled tabs. Every panel stays in the page, hidden until its tab is selected. A tab and its panel are in different shadow roots, so they cannot point at each other with ids; set `aria-label` on a panel to name it. A panel is a Tab stop only when it has nothing focusable inside, so keyboard users can reach its content: a native control, or a component with its own `focus()`, in the page\'s own markup counts.'
+        ]
+      }
+    ]
+  },
+  {
+    slug: 'tab',
+    name: 'Tab',
+    tag: 'fandry-tab',
+    parts: ['base'],
+    states: ['selected', 'disabled'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'tabs-theme',
+      code: `<!-- template -->
+<div class="brand">
+  <fandry-tabs value="account" aria-label="Settings">
+    <fandry-tab slot="tab" value="account">Account</fandry-tab>
+    <fandry-tab slot="tab" value="billing">Billing</fandry-tab>
+    <fandry-tab slot="tab" value="team">Team</fandry-tab>
+    <fandry-tab-panel value="account">
+      <fandry-text>Update your name, email and password.</fandry-text>
+    </fandry-tab-panel>
+    <fandry-tab-panel value="billing">
+      <fandry-text>Manage your plan and payment method.</fandry-text>
+    </fandry-tab-panel>
+    <fandry-tab-panel value="team">
+      <fandry-text>Invite people to your workspace.</fandry-text>
+    </fandry-tab-panel>
+  </fandry-tabs>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+}
+
+fandry-tabs::part(list) {
+  gap: 0.5rem;
+  box-shadow: none;
+}
+
+fandry-tab::part(base) {
+  border-radius: 999px;
+  border-bottom-color: transparent;
+}
+
+fandry-tab::part(base selected) {
+  background: hsl(160 84% 26%);
+  color: white;
+}`
+    },
+    category: 'Layout',
+    description: 'A single tab inside fandry-tabs.',
+    props: [
+      { name: 'value', type: 'string', default: "''", description: 'Required. Matches the `value` of one fandry-tab-panel, and is what fandry-tabs reports in `change`.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Cannot be selected, and the arrow keys skip it.' },
+      { name: 'selected', type: 'boolean', default: 'false', description: 'Set by fandry-tabs from its `value`; read it, but set `value` on fandry-tabs to change the tab.' }
+    ],
+    code: `<fandry-tab slot="tab" value="billing">Billing</fandry-tab>`
+  },
+  {
+    slug: 'tab-panel',
+    name: 'Tab Panel',
+    tag: 'fandry-tab-panel',
+    parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'tabs-theme',
+      code: `<!-- template -->
+<div class="brand">
+  <fandry-tabs value="account" aria-label="Settings">
+    <fandry-tab slot="tab" value="account">Account</fandry-tab>
+    <fandry-tab slot="tab" value="billing">Billing</fandry-tab>
+    <fandry-tab slot="tab" value="team">Team</fandry-tab>
+    <fandry-tab-panel value="account">
+      <fandry-text>Update your name, email and password.</fandry-text>
+    </fandry-tab-panel>
+    <fandry-tab-panel value="billing">
+      <fandry-text>Manage your plan and payment method.</fandry-text>
+    </fandry-tab-panel>
+    <fandry-tab-panel value="team">
+      <fandry-text>Invite people to your workspace.</fandry-text>
+    </fandry-tab-panel>
+  </fandry-tabs>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+}
+
+fandry-tabs::part(list) {
+  gap: 0.5rem;
+  box-shadow: none;
+}
+
+fandry-tab::part(base) {
+  border-radius: 999px;
+  border-bottom-color: transparent;
+}
+
+fandry-tab::part(base selected) {
+  background: hsl(160 84% 26%);
+  color: white;
+}`
+    },
+    category: 'Layout',
+    description: 'The content shown for one fandry-tab.',
+    props: [
+      { name: 'value', type: 'string', default: "''", description: 'Required. Matches the `value` of one fandry-tab. The panel is shown while that tab is selected.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names the panel, normally the same as its tab.' },
+      { name: 'selected', type: 'boolean', default: 'false', description: 'Set by fandry-tabs from its `value`; read it, but set `value` on fandry-tabs to change the tab.' }
+    ],
+    code: `<fandry-tab-panel value="billing">Billing settings</fandry-tab-panel>`
   },
 
   // ---- Typography ----
