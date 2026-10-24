@@ -105,7 +105,7 @@ describe('fandry-toggle-group', () => {
 
   it('adds pressed and disabled to the item part', async () => {
     const { button } = await setup({ value: ['bold'] });
-    expect(button(0).getAttribute('part')).toBe('base pressed');
-    expect(button(1).getAttribute('part')).toBe('base disabled');
+    expect(button(0).getAttribute('part')).toBe('base default pressed');
+    expect(button(1).getAttribute('part')).toBe('base default disabled');
   });
 });

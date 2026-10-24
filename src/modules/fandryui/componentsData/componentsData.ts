@@ -1769,7 +1769,7 @@ fandry-button::part(base secondary) {
     name: 'Toggle Button',
     tag: 'fandry-toggle-button',
     parts: ['base'],
-    states: ['pressed', 'disabled'],
+    states: ['default', 'secondary', 'ghost', 'pressed', 'disabled'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'toggle-button-theme',
@@ -1806,12 +1806,13 @@ fandry-toggle-button::part(base pressed) {
     category: 'Forms',
     description: 'A button that stays on or off when pressed. Use it alone, or inside fandry-toggle-group.',
     props: [
+      { name: 'variant', type: "'default' | 'secondary' | 'ghost'", default: "'default'", description: 'How the button looks while it is off: `default` is outlined, `secondary` has a muted fill, `ghost` is bare. Pressed fills with the primary color, except `ghost`, which turns muted. Set it on each button, also inside a group.' },
       { name: 'pressed', type: 'boolean', default: 'false', description: 'Whether the button is on. Updates as the user presses it, like a checkbox\'s `checked`. Inside a fandry-toggle-group the group\'s `value` decides it.' },
       { name: 'value', type: 'string', default: "''", description: 'Names the button inside a fandry-toggle-group, which matches it against its `value`. Not needed on its own.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Cannot be pressed, and a group\'s arrow keys skip it.' },
       { name: 'change (event)', type: 'CustomEvent<{ pressed: boolean }>', default: '—', description: 'Fires when the user presses the button; `event.detail.pressed` is the new state. Not fired when `pressed` is set from code. Inside a group, the group handles it and fires its own `change` instead.' }
     ],
-    code: `<fandry-toggle-button pressed={favorite} onchange={handleChange}>
+    code: `<fandry-toggle-button variant="ghost" pressed={favorite} onchange={handleChange}>
   <fandry-icon size="sm">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"></path>

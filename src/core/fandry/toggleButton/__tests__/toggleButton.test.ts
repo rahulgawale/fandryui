@@ -58,10 +58,22 @@ describe('fandry-toggle-button', () => {
   it('adds pressed and disabled to the base part', async () => {
     const { element, button } = setup({ pressed: true, disabled: true });
     await flush();
-    expect(button().getAttribute('part')).toBe('base pressed disabled');
+    expect(button().getAttribute('part')).toBe('base default pressed disabled');
     element.pressed = false;
     await flush();
-    expect(button().getAttribute('part')).toBe('base disabled');
+    expect(button().getAttribute('part')).toBe('base default disabled');
+  });
+
+  it('defaults to the default variant and names the variant as a state', async () => {
+    const { element, button } = setup();
+    await flush();
+    expect(button().classList.contains('toggle--default')).toBe(true);
+    expect(button().getAttribute('part')).toBe('base default');
+    element.variant = 'ghost';
+    element.pressed = true;
+    await flush();
+    expect(button().classList.contains('toggle--ghost')).toBe(true);
+    expect(button().getAttribute('part')).toBe('base ghost pressed');
   });
 
   it('focus() focuses the native button', async () => {

@@ -7,6 +7,10 @@ import { resolveElementProps } from 'fandry/elementProps';
 const RESERVED_ELEMENT_PROPS = ['type', 'class', 'disabled', 'ariaPressed'];
 
 export default class FdToggleButton extends Base {
+  /* How the button looks while it is off: outlined, a muted fill, or bare.
+     Pressed fills with the primary color, except `ghost`, which turns muted. */
+  @api variant: 'default' | 'secondary' | 'ghost' = 'default';
+
   /** What a fandry-toggle-group matches against its `value` and reports in `change`. */
   @api value = '';
 
@@ -42,8 +46,12 @@ export default class FdToggleButton extends Base {
     return this.pressed ? 'true' : 'false';
   }
 
+  get classes(): string {
+    return ['toggle', `toggle--${this.variant || 'default'}`].join(' ');
+  }
+
   get basePart(): string {
-    return partList('base', { pressed: this.pressed, disabled: this.disabled });
+    return partList('base', { [this.variant || 'default']: true, pressed: this.pressed, disabled: this.disabled });
   }
 
   handleClick() {

@@ -10,13 +10,12 @@
 
   height: var(--_fd-control-height-md);
   padding: 0 var(--_fd-space-4);
-  border: var(--_fd-border-width) solid hsl(var(--_fd-border));
+  border: var(--_fd-border-width) solid transparent;
   /* The group squares the inner corners through these two. */
   border-start-start-radius: var(--_fd-button-radius-start, var(--_fd-radius-md));
   border-end-start-radius: var(--_fd-button-radius-start, var(--_fd-radius-md));
   border-start-end-radius: var(--_fd-button-radius-end, var(--_fd-radius-md));
   border-end-end-radius: var(--_fd-button-radius-end, var(--_fd-radius-md));
-  background: hsl(var(--_fd-bg));
 
   font-family: inherit;
   font-size: var(--_fd-font-size-sm);
@@ -31,27 +30,54 @@
   transition: background-color var(--_fd-duration-fast) ease, color var(--_fd-duration-fast) ease;
 }
 
-@media (hover: hover) {
-  .toggle:hover:not(:disabled):not([aria-pressed='true']) {
-    background: hsl(var(--_fd-bg-muted));
-  }
-
-  /* The fill and its border lighten together; the seam keeps its color, so it
-     looks the same whichever neighbor is hovered. */
-  .toggle[aria-pressed='true']:hover:not(:disabled) {
-    --_fd-toggle-hover: color-mix(in srgb, hsl(var(--_fd-primary-foreground)) 12%, hsl(var(--_fd-primary)));
-    background: var(--_fd-toggle-hover);
-    border-color: var(--_fd-toggle-hover);
-    border-inline-start-color: var(--_fd-toggle-seam, var(--_fd-toggle-hover));
-  }
+/* Variants: the look while off. */
+.toggle--default {
+  background: hsl(var(--_fd-bg));
+  border-color: hsl(var(--_fd-border));
 }
 
-.toggle[aria-pressed='true'] {
+.toggle--secondary {
+  background: hsl(var(--_fd-bg-muted));
+}
+
+.toggle--ghost {
+  background: transparent;
+}
+
+/* Pressed fills with the primary color. */
+.toggle--default[aria-pressed='true'],
+.toggle--secondary[aria-pressed='true'] {
   background: hsl(var(--_fd-primary));
   border-color: hsl(var(--_fd-primary));
   border-inline-start-color: var(--_fd-toggle-seam, hsl(var(--_fd-primary)));
   border-inline-start-width: var(--_fd-toggle-seam-width, var(--_fd-border-width));
   color: hsl(var(--_fd-primary-foreground));
+}
+
+/* A ghost has no fill to lose, so pressed is a muted one. */
+.toggle--ghost[aria-pressed='true'] {
+  background: hsl(var(--_fd-bg-muted));
+}
+
+@media (hover: hover) {
+  .toggle:hover:not(:disabled):not([aria-pressed='true']) {
+    background: hsl(var(--_fd-bg-muted));
+  }
+
+  .toggle--secondary:hover:not(:disabled):not([aria-pressed='true']),
+  .toggle--ghost[aria-pressed='true']:hover:not(:disabled) {
+    background: color-mix(in srgb, hsl(var(--_fd-text)) 6%, hsl(var(--_fd-bg-muted)));
+  }
+
+  /* The fill and its border lighten together; the seam keeps its color, so it
+     looks the same whichever neighbor is hovered. */
+  .toggle--default[aria-pressed='true']:hover:not(:disabled),
+  .toggle--secondary[aria-pressed='true']:hover:not(:disabled) {
+    --_fd-toggle-hover: color-mix(in srgb, hsl(var(--_fd-primary-foreground)) 12%, hsl(var(--_fd-primary)));
+    background: var(--_fd-toggle-hover);
+    border-color: var(--_fd-toggle-hover);
+    border-inline-start-color: var(--_fd-toggle-seam, var(--_fd-toggle-hover));
+  }
 }
 
 .toggle:focus-visible {
@@ -62,7 +88,8 @@
 
 /* As on a filled fandry-button: a line of the fill mixed toward the text
    color sits just inside the ring, so the ring never melts into the fill. */
-.toggle[aria-pressed='true']:focus-visible {
+.toggle--default[aria-pressed='true']:focus-visible,
+.toggle--secondary[aria-pressed='true']:focus-visible {
   box-shadow: inset 0 0 0 var(--_fd-ring-width)
       color-mix(in srgb, hsl(var(--_fd-primary-foreground)) 75%, hsl(var(--_fd-primary))),
     var(--_fd-ring-control);
