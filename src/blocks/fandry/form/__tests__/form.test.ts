@@ -266,6 +266,7 @@ describe('fandry-form', () => {
       expect(validate).not.toHaveBeenCalled();
 
       edit(el, 'name', 'Taken');
+      await settle();
       button(el, 'Save')!.click();
       await settle();
 

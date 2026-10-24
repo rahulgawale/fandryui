@@ -875,8 +875,8 @@ fandry-button.rainbow::part(base)::after {
     slug: 'checkbox',
     name: 'Checkbox',
     tag: 'fandry-checkbox',
-    parts: ['base', 'control', 'indicator', 'label'],
-    states: ['checked', 'indeterminate', 'disabled'],
+    parts: ['base', 'control', 'indicator', 'label', 'error-text'],
+    states: ['checked', 'indeterminate', 'disabled', 'invalid'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'checkbox-theme',
@@ -916,6 +916,10 @@ fandry-checkbox::part(control checked) {
       { name: 'checked', type: 'boolean', default: 'false', description: 'Checked state.' },
       { name: 'indeterminate', type: 'boolean', default: 'false', description: 'Visual mixed state (synced onto the native input imperatively).' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the checkbox.' },
+      { name: 'required', type: 'boolean', default: 'false', description: "Must be checked. The browser's own rule, checked by the browser; the error shows when the box is left, then follows the value." },
+      { name: 'error-text', type: 'string', default: "''", description: "An error shown under the checkbox, which makes it invalid. It wins over the browser's message. Also a slot." },
+      { name: 'messages', type: '{ valueMissing?: string }', default: '{}', description: "Your wording for the failed rule; otherwise the browser's own message." },
+      { name: 'validity · validationMessage · checkValidity() · reportValidity()', type: 'native API', default: '-', description: 'The native names, as on `fandry-input`.' },
       { name: 'default slot', type: 'slot', default: 'the label prop', description: 'Markup in place of the label. Shown even without the label prop.' }
     ],
     code: `<fandry-checkbox label="Accept terms" onchange={handleChange}></fandry-checkbox>`
@@ -1070,6 +1074,36 @@ export default class PeopleSearch extends FdSearchState {
     tag: 'fandry-input',
     examples: [
       {
+        title: 'Validation',
+        demo: 'input-validation',
+        code: `<!-- template -->
+<fandry-input label="Username" required min-length="3" pattern="[a-z0-9_]+"
+  messages={messages} validate={noReserved}></fandry-input>
+
+// component
+// The browser decides what is valid (required, type, pattern, min-length,
+// max-length, min, max, step) and words the message in the user's language.
+// \`messages\` words a rule yourself, by ValidityState name:
+messages = { valueMissing: 'Pick a username.', patternMismatch: 'Use a-z, 0-9 and _ only.' };
+
+// \`validate\` is a rule the browser has no attribute for. Return the message,
+// or nothing. It runs for a non-empty value, and shows up as customError.
+noReserved(value) {
+  return ['admin', 'root'].includes(value) ? 'That name is reserved.' : '';
+}
+
+// The error appears when the field is left, then follows the value. On
+// submit, check every field and focus the first that fails:
+handleSubmit() {
+  const fields = [...this.template.querySelectorAll('fandry-input')];
+  fields.filter((field) => !field.reportValidity())[0]?.focus();
+}
+
+// Also on the element: validity, validationMessage, checkValidity().
+// A server's verdict is not a rule the browser can check: use error-text,
+// which wins over the browser's message.`
+      },
+      {
         title: 'An error',
         demo: 'input-error',
         code: `<!-- template -->
@@ -1155,6 +1189,10 @@ fandry-input::part(help-text) {
       { name: 'type', type: 'string', default: "'text'", description: 'Native input type (email, password, ...).' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Field size.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
+      { name: 'required · pattern · min-length · max-length · min · max · step', type: 'native', default: 'none', description: "The browser's own constraints, set on the native input and checked by the browser. The error shows when the field is left, then follows the value." },
+      { name: 'messages', type: 'Partial<Record<ValidityState key, string>>', default: '{}', description: "Your wording for a failed rule (`valueMissing`, `typeMismatch`, `patternMismatch`, `tooShort`, `tooLong`, `rangeUnderflow`, `rangeOverflow`, `stepMismatch`, `badInput`). A rule with no entry shows the browser's own message." },
+      { name: 'validate', type: '(value) => string | void', default: 'undefined', description: 'A rule the browser has no attribute for. Return the error text, or nothing. Runs for a non-empty value; shows up as `customError`.' },
+      { name: 'validity · validationMessage · checkValidity() · reportValidity()', type: 'native API', default: '-', description: "The native names. `reportValidity()` shows the error now and returns whether the field is valid; the page focuses the first one that fails." },
       { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text (a link, an icon). Shown even without the matching prop.' }
     ],
     code: `<fandry-input label="Email" type="email" placeholder="you@company.com"></fandry-input>`
@@ -1440,8 +1478,8 @@ handleChange(event) {
     slug: 'switch',
     name: 'Switch',
     tag: 'fandry-switch',
-    parts: ['base', 'control', 'indicator', 'label'],
-    states: ['checked', 'disabled'],
+    parts: ['base', 'control', 'indicator', 'label', 'error-text'],
+    states: ['checked', 'disabled', 'invalid'],
     customize: {
       title: 'Custom colors and parts',
       demo: 'switch-theme',
@@ -1474,6 +1512,10 @@ fandry-switch::part(label) {
       { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
       { name: 'checked', type: 'boolean', default: 'false', description: 'On/off state.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the switch.' },
+      { name: 'required', type: 'boolean', default: 'false', description: "Must be on. The browser's own rule, checked by the browser; the error shows when the switch is left, then follows the value." },
+      { name: 'error-text', type: 'string', default: "''", description: "An error shown under the switch, which makes it invalid. It wins over the browser's message. Also a slot." },
+      { name: 'messages', type: '{ valueMissing?: string }', default: '{}', description: "Your wording for the failed rule; otherwise the browser's own message." },
+      { name: 'validity · validationMessage · checkValidity() · reportValidity()', type: 'native API', default: '-', description: 'The native names, as on `fandry-input`.' },
       { name: 'default slot', type: 'slot', default: 'the label prop', description: 'Markup in place of the label. Shown even without the label prop.' }
     ],
     code: `<fandry-switch label="Enable notifications" checked></fandry-switch>`
@@ -1519,6 +1561,9 @@ fandry-textarea::part(label) {
       { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state), and a screen reader hears it when it appears and when the field is focused.' },
       { name: 'rows', type: 'number', default: '3', description: 'Visible row count.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the field.' },
+      { name: 'required · min-length · max-length', type: 'native', default: 'none', description: "The browser's own constraints, set on the native textarea and checked by the browser. The error shows when the field is left, then follows the value." },
+      { name: 'messages · validate', type: 'object · function', default: 'none', description: 'As on `fandry-input`: your wording for a failed rule, and a rule the browser has no attribute for.' },
+      { name: 'validity · validationMessage · checkValidity() · reportValidity()', type: 'native API', default: '-', description: 'The native names, as on `fandry-input`.' },
       { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<fandry-textarea label="Notes" rows="4"></fandry-textarea>`

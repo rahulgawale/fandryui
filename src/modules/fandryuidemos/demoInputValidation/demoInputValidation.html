@@ -1,0 +1,22 @@
+<template>
+  <fandry-input
+    data-field
+    label="Email"
+    type="email"
+    required
+    placeholder="you@company.com"
+    messages={emailMessages}
+  ></fandry-input>
+  <fandry-input
+    data-field
+    label="Username"
+    required
+    min-length="3"
+    pattern="[a-z0-9_]+"
+    help-text="Lowercase letters, numbers and underscores."
+    messages={usernameMessages}
+    validate={noReserved}
+  ></fandry-input>
+  <fandry-textarea data-field label="Bio" max-length="20" value="Longer than twenty characters, in fact."></fandry-textarea>
+  <fandry-button variant="primary" onclick={handleSubmit}>Check</fandry-button>
+</template>

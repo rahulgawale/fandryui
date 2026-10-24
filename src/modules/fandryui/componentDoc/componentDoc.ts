@@ -20,6 +20,7 @@ import DemoHeadingTheme from 'fandryuidemos/demoHeadingTheme';
 import DemoIconTheme from 'fandryuidemos/demoIconTheme';
 import DemoInputTheme from 'fandryuidemos/demoInputTheme';
 import DemoInputError from 'fandryuidemos/demoInputError';
+import DemoInputValidation from 'fandryuidemos/demoInputValidation';
 import DemoLabelTheme from 'fandryuidemos/demoLabelTheme';
 import DemoLinkTheme from 'fandryuidemos/demoLinkTheme';
 import DemoLookupTheme from 'fandryuidemos/demoLookupTheme';
@@ -157,6 +158,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'icon-theme': DemoIconTheme,
   'input-theme': DemoInputTheme,
   'input-error': DemoInputError,
+  'input-validation': DemoInputValidation,
   'label-theme': DemoLabelTheme,
   'link-theme': DemoLinkTheme,
   'loading-overlay-theme': DemoLoadingOverlayTheme,

@@ -66,6 +66,22 @@
   transform: translateY(-1px) rotate(-45deg) scale(1);
 }
 
+/* Invalid */
+.input[aria-invalid='true'] + .box {
+  border-color: hsl(var(--_fd-danger));
+}
+
+.error-text {
+  font-size: var(--_fd-font-size-xs);
+  color: hsl(var(--_fd-danger));
+}
+
+/* Not `hidden` while empty, so it can announce its text (see
+   fandry/fieldError). Out of the flow, so it leaves no gap either. */
+.error-text--empty {
+  position: absolute;
+}
+
 /* Focus */
 .control:focus-within .box {
   box-shadow: var(--_fd-ring-control);
