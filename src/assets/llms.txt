@@ -31,6 +31,9 @@ Key facts:
 - [Pagination component for LWC](https://fandryui.forcetrails.com/components/pagination/): Previous/next navigation between pages. A Fandry UI component for Salesforce LWC.
 - [Sidebar component for LWC](https://fandryui.forcetrails.com/components/sidebar/): A vertical navigation rail — pair with fandry-sidebar-item for links. A Fandry UI component for Salesforce LWC.
 - [Sidebar Item component for LWC](https://fandryui.forcetrails.com/components/sidebar-item/): A single navigation row for fandry-sidebar, with an active/current-page state. A Fandry UI component for Salesforce LWC.
+- [Tabs component for LWC](https://fandryui.forcetrails.com/components/tabs/): A set of tabs that switch between panels — pair with fandry-tab and fandry-tab-panel. A Fandry UI component for Salesforce LWC.
+- [Tab component for LWC](https://fandryui.forcetrails.com/components/tab/): A single tab inside fandry-tabs. A Fandry UI component for Salesforce LWC.
+- [Tab Panel component for LWC](https://fandryui.forcetrails.com/components/tab-panel/): The content shown for one fandry-tab. A Fandry UI component for Salesforce LWC.
 - [Heading component for LWC](https://fandryui.forcetrails.com/components/heading/): A semantically-leveled heading, sized off the shared type scale. A Fandry UI component for Salesforce LWC.
 - [Icon component for LWC](https://fandryui.forcetrails.com/components/icon/): A sizing/color frame around a slotted glyph — brings no icon set of its own. A Fandry UI component for Salesforce LWC.
 - [Label component for LWC](https://fandryui.forcetrails.com/components/label/): The text of a form label, with an optional required indicator. A Fandry UI component for Salesforce LWC.

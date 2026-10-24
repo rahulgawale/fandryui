@@ -2,7 +2,7 @@
    so a page can link to components without loading all of their docs;
    componentLinks.test.ts keeps it equal to COMPONENTS. */
 export const COMPONENT_SLUGS: readonly string[] = [
-  'breadcrumb', 'breadcrumb-item', 'card', 'divider', 'pagination', 'sidebar', 'sidebar-item',
+  'breadcrumb', 'breadcrumb-item', 'card', 'divider', 'pagination', 'sidebar', 'sidebar-item', 'tabs', 'tab', 'tab-panel',
   'heading', 'icon', 'label', 'text',
   'button', 'checkbox', 'combobox', 'input', 'link', 'radio', 'radio-group', 'select', 'switch', 'textarea',
   'alert', 'badge', 'progress', 'skeleton', 'spinner', 'loading-overlay', 'toast', 'toast-viewport', 'tooltip',

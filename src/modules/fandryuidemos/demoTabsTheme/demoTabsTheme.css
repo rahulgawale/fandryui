@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+}
+
+fandry-tabs::part(list) {
+  gap: 0.5rem;
+  box-shadow: none;
+}
+
+fandry-tab::part(base) {
+  border-radius: 999px;
+  border-bottom-color: transparent;
+}
+
+fandry-tab::part(base selected) {
+  background: hsl(160 84% 26%);
+  color: white;
+}
