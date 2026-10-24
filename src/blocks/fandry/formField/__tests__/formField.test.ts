@@ -284,4 +284,94 @@ describe('fandry-form-field', () => {
     const input = control(el)!.shadowRoot!;
     expect(input.activeElement).toBe(input.querySelector('input'));
   });
+
+  describe('lists of values', () => {
+    const LIST = [
+      { label: 'Red', value: 'red' },
+      { label: 'Green', value: 'green' },
+      { label: 'Blue', value: 'blue' }
+    ];
+    const boxes = (el: HTMLElement) => Array.from(el.shadowRoot!.querySelectorAll('fandry-checkbox')) as any[];
+
+    it('renders checkboxes as a fieldset of boxes, the chosen ones checked', async () => {
+      const el = mount({ field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST }, value: ['green'] });
+      await settle();
+
+      expect(el.shadowRoot!.querySelector('fieldset legend')!.textContent).toContain('Colors');
+      expect(boxes(el).map((box) => box.checked)).toEqual([false, true, false]);
+    });
+
+    it('reports checkboxes as the list of values that are on, in option order', async () => {
+      const el = mount({ field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST }, value: ['blue'] });
+      const handler = jest.fn();
+      el.addEventListener('change', handler);
+      await settle();
+
+      boxes(el)[0].dispatchEvent(new CustomEvent('change', { detail: true, bubbles: true }));
+      boxes(el)[2].dispatchEvent(new CustomEvent('change', { detail: false, bubbles: true }));
+
+      expect(handler.mock.calls[0][0].detail.value).toEqual(['red', 'blue']);
+      expect(handler.mock.calls[1][0].detail.value).toEqual([]);
+    });
+
+    it('shows a checkboxes error and help text itself', async () => {
+      const el = mount({ field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST, helpText: 'Any.' }, error: 'Pick one.' });
+      await settle();
+
+      expect(el.shadowRoot!.querySelector('.help')!.textContent).toBe('Any.');
+      expect(el.shadowRoot!.querySelector('.error')!.textContent).toBe('Pick one.');
+    });
+
+    it('renders a multiselect, passing its list through', async () => {
+      const el = mount({ field: { name: 'c', label: 'Colors', type: 'multiselect', options: LIST }, value: ['red'] });
+      const handler = jest.fn();
+      el.addEventListener('change', handler);
+      await settle();
+
+      expect(control(el)!.tagName).toBe('FANDRY-MULTI-SELECT');
+      expect((control(el) as any).value).toEqual(['red']);
+
+      control(el)!.dispatchEvent(new CustomEvent('change', { detail: ['red', 'blue'], bubbles: true }));
+      expect(handler.mock.calls[0][0].detail.value).toEqual(['red', 'blue']);
+    });
+
+    it('lets a site say how a list reads, and ties the group to its error and help text', async () => {
+      const el = mount({
+        mode: 'read',
+        field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST },
+        value: ['red', 'blue'],
+        messages: { list: (labels: string[]) => labels.join(' / ') }
+      });
+      await settle();
+      expect(el.shadowRoot!.querySelector('.read-value')!.textContent).toBe('Red / Blue');
+
+      const edit = mount({
+        field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST, helpText: 'Any.' },
+        error: 'Pick one.'
+      });
+      await settle();
+      expect(edit.shadowRoot!.querySelector('fieldset')!.getAttribute('aria-describedby')).toBe('error-text help-text');
+      expect(edit.shadowRoot!.querySelector('fieldset')!.getAttribute('part')).toBe('list');
+    });
+
+    it('focuses the first box of a checkboxes group', async () => {
+      const el = mount({ field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST } });
+      await settle();
+
+      el.focus();
+
+      expect(el.shadowRoot!.activeElement).toBe(boxes(el)[0]);
+    });
+
+    it('reads a list as the labels of what is chosen', async () => {
+      const el = mount({
+        mode: 'read',
+        field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST },
+        value: ['red', 'blue']
+      });
+      await settle();
+
+      expect(el.shadowRoot!.querySelector('.read-value')!.textContent).toBe('Red, Blue');
+    });
+  });
 });

@@ -2,7 +2,7 @@ import { api, track } from 'lwc';
 import Base from 'fandry/base';
 import type { FdFormField, FdFormFieldMessages } from 'fandry/formField';
 import { DEFAULT_FORM_FIELD_MESSAGES } from 'fandry/formField';
-import { toBoolean } from 'fandry/formField';
+import { toBoolean, toList, isListType } from 'fandry/formField';
 
 export type FdFormValues = Record<string, unknown>;
 export type FdFormMode = 'read' | 'edit';
@@ -39,6 +39,8 @@ export interface FdFormMessages {
   /** How a checkbox or switch reads in `read` mode. */
   yes: string;
   no: string;
+  /** How a list of chosen labels reads in `read` mode ("Red, Blue"). */
+  list: (labels: string[]) => string;
 }
 
 export const DEFAULT_FORM_MESSAGES: FdFormMessages = {
@@ -55,7 +57,8 @@ export const DEFAULT_FORM_MESSAGES: FdFormMessages = {
   revert: DEFAULT_FORM_FIELD_MESSAGES.revert,
   saving: 'Saving…',
   yes: 'Yes',
-  no: 'No'
+  no: 'No',
+  list: DEFAULT_FORM_FIELD_MESSAGES.list
 };
 
 export interface FdFormStatus {
@@ -95,6 +98,12 @@ function escapeAttrValue(value: string): string {
  * An error is shown once its field has been left or a save was attempted, and
  * follows the value from then on.
  */
+function sameList(a: string[], b: string[]): boolean {
+  const left = new Set(a);
+  const right = new Set(b);
+  return left.size === right.size && [...left].every((value) => right.has(value));
+}
+
 export default class FdFormState extends Base {
   @api fields: FdFormField[] = [];
 
@@ -140,8 +149,8 @@ export default class FdFormState extends Base {
 
   // Handed to each fandry-form-field.
   get fieldMessages(): FdFormFieldMessages {
-    const { yes, no, revert } = this.text;
-    return { yes, no, revert };
+    const { yes, no, list, revert } = this.text;
+    return { yes, no, list, revert };
   }
 
   // What the user has typed, over `values`: so a `values` that changes while
@@ -234,6 +243,9 @@ export default class FdFormState extends Base {
       case 'checkbox':
       case 'switch':
         return toBoolean(value);
+      case 'checkboxes':
+      case 'multiselect':
+        return toList(value);
       case 'number': {
         if (value === '' || value == null) return null;
         // A value that doesn't parse (e.g. dirty data like "N/A") is no more
@@ -250,6 +262,7 @@ export default class FdFormState extends Base {
   private isEmpty(field: FdFormField, value: unknown): boolean {
     const type = field.type ?? 'text';
     if (type === 'checkbox' || type === 'switch') return !value;
+    if (isListType(type)) return (value as string[]).length === 0;
     return value === null || (typeof value === 'string' && value.trim() === '');
   }
 
@@ -266,7 +279,11 @@ export default class FdFormState extends Base {
   // Compared in the saved shape, so typing a value back is not a change.
   private isChanged(field: FdFormField): boolean {
     if (!(field.name in this.draft)) return false;
-    return this.toSavedShape(field, this.draft[field.name]) !== this.toSavedShape(field, this.values[field.name]);
+    const draft = this.toSavedShape(field, this.draft[field.name]);
+    const saved = this.toSavedShape(field, this.values[field.name]);
+    // A list is the same list however its values were ordered or repeated.
+    if (isListType(field.type)) return !sameList(draft as string[], saved as string[]);
+    return draft !== saved;
   }
 
   get hasChanges(): boolean {

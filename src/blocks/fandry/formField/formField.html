@@ -78,6 +78,40 @@
             </template>
           </fandry-radio-group>
         </template>
+        <template if:true={isCheckboxes}>
+          <fieldset class="control group" part="list" aria-describedby={groupDescribedBy}>
+            <legend class="legend" part="label">{field.label}<template if:true={requiredMark}><span class="required" aria-hidden="true"> *</span></template></legend>
+            <template for:each={checkboxOptions} for:item="option">
+              <fandry-checkbox
+                key={option.value}
+                name={field.name}
+                label={option.label}
+                value={option.value}
+                data-value={option.value}
+                checked={option.checked}
+                disabled={disabled}
+                element-props={controlProps}
+                onchange={handleCheckboxChange}
+              ></fandry-checkbox>
+            </template>
+          </fieldset>
+        </template>
+        <template if:true={isMultiSelect}>
+          <fandry-multi-select
+            class="control"
+            name={field.name}
+            label={field.label}
+            help-text={field.helpText}
+            error-text={error}
+            placeholder={field.placeholder}
+            required={field.required}
+            disabled={disabled}
+            value={listValue}
+            options={options}
+            element-props={controlProps}
+            onchange={handleControlChange}
+          ></fandry-multi-select>
+        </template>
         <template if:true={isCheckbox}>
           <fandry-checkbox
             class="control"
@@ -122,10 +156,10 @@
         </template>
 
         <template if:true={showOwnHelpText}>
-          <p class="help">{field.helpText}</p>
+          <p id="help-text" class="help">{field.helpText}</p>
         </template>
         <template if:true={showOwnError}>
-          <p class="error" role="alert">{error}</p>
+          <p id="error-text" class="error" role="alert">{error}</p>
         </template>
       </template>
     </div>

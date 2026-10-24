@@ -342,6 +342,19 @@
             }
         },
         {
+            "id": "component-multi-select",
+            "path": "/components/multi-select",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Multi-select component for LWC | Fandry UI",
+                "description": "A select that keeps several options: each row has a check box, and picking one leaves the list open. A Fandry UI component for Salesforce LWC.",
+                "path": "/components/multi-select/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
+            }
+        },
+        {
             "id": "component-switch",
             "path": "/components/switch",
             "rootComponent": "fandryui/componentDoc",

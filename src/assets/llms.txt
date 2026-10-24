@@ -42,6 +42,7 @@ Key facts:
 - [Radio component for LWC](https://fandryui.forcetrails.com/components/radio/): A single radio input — pair with fandry-radio-group for the roving-tabindex group. A Fandry UI component for Salesforce LWC.
 - [Radio Group component for LWC](https://fandryui.forcetrails.com/components/radio-group/): A roving-tabindex container for a set of fandry-radio buttons. A Fandry UI component for Salesforce LWC.
 - [Select component for LWC](https://fandryui.forcetrails.com/components/select/): A custom listbox-style select, with optional grouped options. A Fandry UI component for Salesforce LWC.
+- [Multi-select component for LWC](https://fandryui.forcetrails.com/components/multi-select/): A select that keeps several options: each row has a check box, and picking one leaves the list open. A Fandry UI component for Salesforce LWC.
 - [Switch component for LWC](https://fandryui.forcetrails.com/components/switch/): A toggle switch with a built-in label. A Fandry UI component for Salesforce LWC.
 - [Textarea component for LWC](https://fandryui.forcetrails.com/components/textarea/): A multi-line text input with a label and help text. A Fandry UI component for Salesforce LWC.
 - [Alert component for LWC](https://fandryui.forcetrails.com/components/alert/): An inline banner for a status message, with an optional title. A Fandry UI component for Salesforce LWC.

@@ -1,7 +1,7 @@
 import { LightningElement } from 'lwc';
 import { componentHref } from 'fandryui/componentLinks';
 import { BLOCKS, PART_DESCRIPTIONS, STATE_DESCRIPTIONS } from 'fandryui/componentsData';
-import { createMockApi, PLAN_OPTIONS } from './mockApi';
+import { createMockApi, INTEREST_OPTIONS, LANGUAGE_OPTIONS, PLAN_OPTIONS } from './mockApi';
 import type { Profile } from './mockApi';
 
 const USAGE = `<fandry-form
@@ -21,6 +21,8 @@ const FIELDS_CODE = `fields = [
     validate: (value) => (value.length < 3 ? 'Use at least 3 characters.' : undefined) },
   { name: 'plan', label: 'Plan', type: 'radio', options: PLAN_OPTIONS },
   { name: 'bio', label: 'Bio', type: 'textarea' },
+  { name: 'interests', label: 'Interests', type: 'checkboxes', options: INTEREST_OPTIONS },
+  { name: 'languages', label: 'Languages', type: 'multiselect', options: LANGUAGE_OPTIONS, placeholder: 'Choose languages' },
   { name: 'newsletter', label: 'Send me the newsletter', type: 'switch' },
   { name: 'memberSince', label: 'Member since', readonly: true }
 ];`;
@@ -136,6 +138,8 @@ export default class BlockForm extends LightningElement {
     },
     { name: 'plan', label: 'Plan', type: 'radio', options: PLAN_OPTIONS },
     { name: 'bio', label: 'Bio', type: 'textarea' },
+    { name: 'interests', label: 'Interests', type: 'checkboxes', options: INTEREST_OPTIONS },
+    { name: 'languages', label: 'Languages', type: 'multiselect', options: LANGUAGE_OPTIONS, placeholder: 'Choose languages' },
     { name: 'newsletter', label: 'Send me the newsletter', type: 'switch' },
     { name: 'memberSince', label: 'Member since', readonly: true }
   ];

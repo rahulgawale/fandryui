@@ -1,0 +1,16 @@
+<template>
+  <fieldset class="list">
+    <legend class="legend">Toppings</legend>
+    <template for:each={toppings} for:item="topping">
+      <fandry-checkbox
+        key={topping.value}
+        label={topping.label}
+        value={topping.value}
+        checked={topping.checked}
+        disabled={topping.disabled}
+        onchange={handleChange}
+      ></fandry-checkbox>
+    </template>
+  </fieldset>
+  <p class="summary">Chosen: {chosen}</p>
+</template>

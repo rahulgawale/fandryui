@@ -12,9 +12,24 @@ export interface Profile {
   username: string;
   plan: string;
   bio: string;
+  interests: string[];
+  languages: string[];
   newsletter: boolean;
   memberSince: string;
 }
+
+export const INTEREST_OPTIONS = [
+  { label: 'Compilers', value: 'compilers' },
+  { label: 'Hardware', value: 'hardware' },
+  { label: 'Teaching', value: 'teaching' }
+];
+
+export const LANGUAGE_OPTIONS = [
+  { label: 'COBOL', value: 'cobol' },
+  { label: 'FLOW-MATIC', value: 'flow-matic' },
+  { label: 'Fortran', value: 'fortran' },
+  { label: 'Assembly', value: 'assembly' }
+];
 
 export const PLAN_OPTIONS = [
   { label: 'Free', value: 'free' },
@@ -31,6 +46,8 @@ export function createMockApi({ latencyMs = 800, shouldFail = () => false }: Moc
     username: 'grace',
     plan: 'team',
     bio: 'Compilers, and the occasional moth.',
+    interests: ['compilers', 'teaching'],
+    languages: ['cobol'],
     newsletter: true,
     memberSince: 'March 2024'
   };

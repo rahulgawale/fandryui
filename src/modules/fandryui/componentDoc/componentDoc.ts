@@ -66,7 +66,11 @@ import DemoLookupMultiple from 'fandryuidemos/demoLookupMultiple';
 import DemoLookupValue from 'fandryuidemos/demoLookupValue';
 import DemoRadio from 'fandryuidemos/demoRadio';
 import DemoRadioGroup from 'fandryuidemos/demoRadioGroup';
+import DemoCheckboxList from 'fandryuidemos/demoCheckboxList';
 import DemoSelect from 'fandryuidemos/demoSelect';
+import DemoMultiSelect from 'fandryuidemos/demoMultiSelect';
+import DemoMultiSelectSlots from 'fandryuidemos/demoMultiSelectSlots';
+import DemoMultiSelectTheme from 'fandryuidemos/demoMultiSelectTheme';
 import DemoSwitch from 'fandryuidemos/demoSwitch';
 import DemoTextarea from 'fandryuidemos/demoTextarea';
 import DemoAlert from 'fandryuidemos/demoAlert';
@@ -121,6 +125,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   radio: DemoRadio,
   'radio-group': DemoRadioGroup,
   select: DemoSelect,
+  'multi-select': DemoMultiSelect,
   switch: DemoSwitch,
   textarea: DemoTextarea,
   alert: DemoAlert,
@@ -149,6 +154,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'button-theme': DemoButtonTheme,
   'card-theme': DemoCardTheme,
   'checkbox-theme': DemoCheckboxTheme,
+  'checkbox-list': DemoCheckboxList,
   'combobox-theme': DemoComboboxTheme,
   'command-theme': DemoCommandTheme,
   'dialog-theme': DemoDialogTheme,
@@ -167,6 +173,8 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'progress-theme': DemoProgressTheme,
   'radio-theme': DemoRadioTheme,
   'select-theme': DemoSelectTheme,
+  'multi-select-theme': DemoMultiSelectTheme,
+  'multi-select-slots': DemoMultiSelectSlots,
   'sidebar-theme': DemoSidebarTheme,
   'skeleton-theme': DemoSkeletonTheme,
   'spinner-theme': DemoSpinnerTheme,

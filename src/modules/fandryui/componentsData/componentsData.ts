@@ -170,7 +170,7 @@ export interface BlockParts {
 
 export const BLOCKS: BlockParts[] = [
   { tag: 'fandry-form', parts: ['field', 'revert'], states: ['changed'] },
-  { tag: 'fandry-form-field', parts: ['base', 'revert'], states: ['changed'] },
+  { tag: 'fandry-form-field', parts: ['base', 'list', 'label', 'revert'], states: ['changed'] },
   {
     tag: 'fandry-media-gallery',
     parts: ['base', 'item', 'button', 'frame', 'image', 'caption', 'placeholder', 'viewer', 'backdrop', 'panel', 'toolbar', 'status', 'keys-button', 'keys', 'close-button', 'stage', 'previous', 'next', 'viewer-image', 'viewer-caption'],
@@ -918,7 +918,39 @@ fandry-checkbox::part(control checked) {
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the checkbox.' },
       { name: 'default slot', type: 'slot', default: 'the label prop', description: 'Markup in place of the label. Shown even without the label prop.' }
     ],
-    code: `<fandry-checkbox label="Accept terms" onchange={handleChange}></fandry-checkbox>`
+    code: `<fandry-checkbox label="Accept terms" onchange={handleChange}></fandry-checkbox>`,
+    examples: [
+      {
+        title: 'A checkbox list',
+        demo: 'checkbox-list',
+        code: `<!-- template -->
+<fieldset class="list">
+  <legend>Toppings</legend>
+  <template for:each={toppings} for:item="topping">
+    <fandry-checkbox key={topping.value} label={topping.label}
+      value={topping.value} checked={topping.checked}
+      onchange={handleChange}></fandry-checkbox>
+  </template>
+</fieldset>
+
+// component
+handleChange(event) {
+  const { value, checked } = event.target;
+  this.toppings = this.toppings.map((t) =>
+    t.value === value ? { ...t, checked } : t);
+}
+
+/* css */
+.list { display: flex; flex-direction: column; gap: var(--fd-space-2); border: 0; padding: 0; }
+
+// A list of checkboxes is not a component: each box is its own tab stop,
+// so there is no focus or state to share. A native <fieldset> and <legend>
+// name the group for assistive technology, and CSS lays it out. In a form,
+// use the form block's \`checkboxes\` field type, which does this for you
+// (and takes a required rule, help text and an error); fandry-multi-select
+// folds the same options into a dropdown.`
+      }
+    ]
   },
   {
     slug: 'combobox',
@@ -1433,6 +1465,95 @@ handleChange(event) {
 //          typing moves to a match: "new z" finds New Zealand, and "s"
 //          pressed again steps through the options that start with s
 //          Enter or Space choose; Escape or Tab close without choosing`
+      }
+    ]
+  },
+  {
+    slug: 'multi-select',
+    name: 'Multi-select',
+    tag: 'fandry-multi-select',
+    parts: ['base', 'label', 'required', 'control', 'value', 'chevron', 'listbox', 'option', 'indicator', 'option-label', 'help-text', 'error-text', 'panel'],
+    states: ['disabled', 'invalid', 'selected', 'active'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'multi-select-theme',
+      code: `<!-- template -->
+<div class="brand narrow">
+  <fandry-multi-select label="Sizes" placeholder="Choose sizes" options={options} value={value}></fandry-multi-select>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-radius-md: 0.75rem;
+  --fd-border-focus: 160 84% 36%;
+  --fd-ring-color: 160 84% 36%;
+  --fd-primary: 160 84% 36%;
+  --fd-bg-muted: 160 40% 94%;
+}
+
+fandry-multi-select::part(control) {
+  background: hsl(160 40% 98%);
+  font-weight: 600;
+}
+
+/* A state of a part: only the boxes that are checked. */
+fandry-multi-select::part(indicator selected) {
+  border-radius: 50%;
+}`
+    },
+    category: 'Forms',
+    description: 'A select that keeps several options: each row has a check box, and picking one leaves the list open.',
+    props: [
+      { name: 'label', type: 'string', default: "''", description: 'Visible label.' },
+      { name: 'placeholder', type: 'string', default: "''", description: 'Shown when nothing is chosen.' },
+      { name: 'options', type: '{ label, value, disabled? }[]', default: '[]', description: 'The option list.' },
+      { name: 'value', type: 'string[]', default: '[]', description: 'The chosen values, in option order. Like a native control it updates itself as the user picks.' },
+      { name: 'messages', type: 'FdMultiSelectMessages', default: 'DEFAULT_MULTI_SELECT_MESSAGES', description: 'The text that is not markup: `selected(count)` is what the closed field shows once more than one option is chosen ("3 selected"). One option shows its label.' },
+      { name: 'change (event)', type: 'CustomEvent<string[]>', default: '—', description: 'Fires each time the user checks or unchecks an option; `event.detail` is the new list. Not fired when `value` is set from code.' },
+      { name: 'help-text', type: 'string', default: "''", description: 'Helper text below the field.' },
+      { name: 'error-text', type: 'string', default: "''", description: 'An error shown under the field: the field is invalid while it has one (`aria-invalid`, the `invalid` state).' },
+      { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
+    ],
+    code: `<fandry-multi-select
+  label="Toppings"
+  placeholder="Choose toppings"
+  options={toppingOptions}
+  value={value}
+  onchange={handleChange}
+></fandry-multi-select>
+
+// component
+handleChange(event) {
+  this.value = event.detail; // ['olives', 'peppers']
+}
+
+// Closed:  Enter, Space, ArrowDown or ArrowUp open the list
+// Open:    ArrowUp / ArrowDown, Home / End move
+//          Enter or Space check or uncheck the option, and the list stays open
+//          Escape or Tab close it; what is checked stays`,
+    examples: [
+      {
+        title: 'Label, help text and error as slots',
+        demo: 'multi-select-slots',
+        code: `<!-- template -->
+<fandry-multi-select placeholder="Choose toppings"
+  options={toppingOptions} value={value} onchange={handleChange}>
+  <span slot="label">Toppings <em>(pick any)</em></span>
+  <span slot="help-text">Extra toppings are <strong>free</strong> this week.</span>
+  <span slot="error-text" if:true={empty}>Pick <strong>at least one</strong> topping.</span>
+</fandry-multi-select>
+
+// component
+get empty() {
+  return this.value.length === 0;
+}
+
+// Each slot takes the place of its prop and works without it. A slotted
+// error text makes the field invalid, as the error-text prop does, and the
+// field tells a screen reader about it. The label and help text stay
+// hidden until they have content.`
       }
     ]
   },
