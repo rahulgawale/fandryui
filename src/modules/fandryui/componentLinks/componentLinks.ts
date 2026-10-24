@@ -4,7 +4,7 @@
 export const COMPONENT_SLUGS: readonly string[] = [
   'breadcrumb', 'breadcrumb-item', 'card', 'divider', 'pagination', 'sidebar', 'sidebar-item',
   'heading', 'icon', 'label', 'text',
-  'button', 'checkbox', 'combobox', 'input', 'link', 'radio', 'radio-group', 'select', 'switch', 'textarea',
+  'button', 'checkbox', 'combobox', 'input', 'link', 'multi-select', 'radio', 'radio-group', 'select', 'switch', 'textarea',
   'alert', 'badge', 'progress', 'skeleton', 'spinner', 'loading-overlay', 'toast', 'toast-viewport', 'tooltip',
   'avatar', 'command', 'dialog', 'menu', 'menu-item', 'popover', 'table',
   'lookup'

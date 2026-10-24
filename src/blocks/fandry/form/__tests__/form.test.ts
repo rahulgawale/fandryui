@@ -891,4 +891,43 @@ describe('fandry-form text', () => {
 
     expect(errorText(el, 'name')).toBe('Name fehlt.');
   });
+
+  describe('lists of values', () => {
+    const COLORS = [
+      { label: 'Red', value: 'red' },
+      { label: 'Green', value: 'green' }
+    ];
+    const LIST_FIELDS = [{ name: 'colors', label: 'Colors', type: 'checkboxes', options: COLORS, required: true }];
+    const isChanged = (el: HTMLElement) =>
+      inner(el, 'colors').querySelector('[part~="base"]')!.getAttribute('part') === 'base changed';
+    // The way the user does it: one box at a time.
+    const toggle = (el: HTMLElement, value: string, on: boolean) =>
+      inner(el, 'colors')
+        .querySelector(`fandry-checkbox[data-value="${value}"]`)!
+        .dispatchEvent(new CustomEvent('change', { detail: on, bubbles: true }));
+
+    it('is changed by a different list, and not by the same one put back', async () => {
+      const el = mount({ fields: LIST_FIELDS, values: { colors: ['red', 'green'] } });
+      await settle();
+
+      toggle(el, 'red', false);
+      await settle();
+      expect(isChanged(el)).toBe(true);
+
+      toggle(el, 'red', true);
+      await settle();
+      expect(isChanged(el)).toBe(false);
+    });
+
+    it('treats an empty list as missing when required', async () => {
+      const el = mount({ fields: LIST_FIELDS, values: { colors: ['red'] } });
+      await settle();
+
+      toggle(el, 'red', false);
+      inner(el, 'colors').querySelector('.field')!.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+      await settle();
+
+      expect(errorText(el, 'colors')).toBe('Colors is required.');
+    });
+  });
 });

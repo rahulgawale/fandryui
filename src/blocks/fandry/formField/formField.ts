@@ -18,6 +18,8 @@ export type FdFormFieldType =
   | 'textarea'
   | 'select'
   | 'radio'
+  | 'checkboxes'
+  | 'multiselect'
   | 'checkbox'
   | 'switch';
 
@@ -34,7 +36,7 @@ export interface FdFormField {
   label: string;
   /** Defaults to `text`. */
   type?: FdFormFieldType;
-  /** For `select` and `radio`. */
+  /** For `select`, `radio`, `checkboxes` and `multiselect`. The last two hold a list of values. */
   options?: FdFormOption[];
   /** Must have a value (a checkbox or switch: must be on). */
   required?: boolean;
@@ -66,6 +68,15 @@ export const DEFAULT_FORM_FIELD_MESSAGES: FdFormFieldMessages = {
   no: 'No',
   revert: (label) => `Revert ${label}`
 };
+
+// The two types whose value is a list of option values (`string[]`).
+export function isListType(type: FdFormFieldType | undefined): boolean {
+  return type === 'checkboxes' || type === 'multiselect';
+}
+
+export function toList(value: unknown): string[] {
+  return Array.isArray(value) ? value.map(String) : [];
+}
 
 // A checkbox/switch value that came from serialized data (e.g. Salesforce,
 // which sends booleans as the strings "true"/"false") would read as checked
@@ -106,7 +117,8 @@ export default class FormField extends Base {
 
   @api
   focus() {
-    (this.template.querySelector('.control') as HTMLElement | null)?.focus();
+    // A group is not focusable itself: its first box is.
+    (this.template.querySelector(this.isCheckboxes ? 'fandry-checkbox' : '.control') as HTMLElement | null)?.focus();
   }
 
   get hasField(): boolean {
@@ -160,6 +172,27 @@ export default class FormField extends Base {
     return this.type === 'radio';
   }
 
+  get isCheckboxes(): boolean {
+    return this.type === 'checkboxes';
+  }
+
+  get isMultiSelect(): boolean {
+    return this.type === 'multiselect';
+  }
+
+  get listValue(): string[] {
+    return toList(this.value);
+  }
+
+  get checkboxOptions(): Array<FdFormOption & { checked: boolean }> {
+    const chosen = this.listValue;
+    return this.options.map((option) => ({ ...option, checked: chosen.includes(option.value) }));
+  }
+
+  get requiredMark(): boolean {
+    return !!this.field?.required;
+  }
+
   get isCheckbox(): boolean {
     return this.type === 'checkbox';
   }
@@ -193,7 +226,7 @@ export default class FormField extends Base {
   // The primitives that have a place for help text take it as a prop, so it
   // stays wired to the control; the rest have no such place.
   get showOwnHelpText(): boolean {
-    return !!this.field?.helpText && (this.isRadio || this.isCheckbox || this.isSwitch);
+    return !!this.field?.helpText && (this.isRadio || this.isCheckboxes || this.isCheckbox || this.isSwitch);
   }
 
   get hasError(): boolean {
@@ -203,7 +236,7 @@ export default class FormField extends Base {
   // Likewise the error: a primitive with a place for it ties it to its
   // control and announces it, so only the rest get this field's own line.
   get showOwnError(): boolean {
-    return this.hasError && (this.isRadio || this.isCheckbox || this.isSwitch);
+    return this.hasError && (this.isRadio || this.isCheckboxes || this.isCheckbox || this.isSwitch);
   }
 
   // `tabIndex` is what every native control needs to be in Safari's Tab
@@ -229,6 +262,9 @@ export default class FormField extends Base {
     if (this.isCheckbox || this.isSwitch) {
       return this.checked ? this.text.yes : this.text.no;
     }
+    if (isListType(this.type)) {
+      return this.listValue.map((value) => this.options.find((option) => option.value === value)?.label ?? value).join(', ');
+    }
     if (this.isSelect || this.isRadio) {
       return this.options.find((option) => option.value === this.stringValue)?.label ?? this.stringValue;
     }
@@ -242,7 +278,22 @@ export default class FormField extends Base {
     // the rest all become this one event.
     event.stopPropagation();
     const detail = event.detail;
-    const value = detail !== null && typeof detail === 'object' ? (detail as { value: unknown }).value : detail;
+    const value =
+      detail !== null && typeof detail === 'object' && !Array.isArray(detail) ? (detail as { value: unknown }).value : detail;
+    this.dispatchEvent(new CustomEvent('change', { detail: { value }, bubbles: true }));
+  }
+
+  // Each box reports its own state; the field's value is the list of those that are on, in option order.
+  handleCheckboxChange(event: CustomEvent<boolean>) {
+    event.stopPropagation();
+    const option = (event.target as HTMLElement).dataset.value ?? '';
+    const chosen = new Set(this.listValue);
+    if (event.detail) {
+      chosen.add(option);
+    } else {
+      chosen.delete(option);
+    }
+    const value = this.options.map((o) => o.value).filter((v) => chosen.has(v));
     this.dispatchEvent(new CustomEvent('change', { detail: { value }, bubbles: true }));
   }
 
