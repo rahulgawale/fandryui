@@ -1806,7 +1806,7 @@ fandry-toggle-button::part(base pressed) {
     category: 'Forms',
     description: 'A button that stays on or off when pressed. Use it alone, or inside fandry-toggle-group.',
     props: [
-      { name: 'variant', type: "'default' | 'secondary' | 'ghost'", default: "'default'", description: 'How the button looks while it is off: `default` is outlined, `secondary` has a muted fill, `ghost` is bare. Pressed fills with the primary color, except `ghost`, which turns muted. Set it on each button, also inside a group.' },
+      { name: 'variant', type: "'default' | 'secondary' | 'ghost'", default: "'default'", description: 'How the button looks while it is off: `default` is outlined, `secondary` has a muted fill, `ghost` is bare. Pressed fills with the primary color; `secondary` turns a deeper muted and `ghost` a light one. Set it on each button, also inside a group.' },
       { name: 'pressed', type: 'boolean', default: 'false', description: 'Whether the button is on. Updates as the user presses it, like a checkbox\'s `checked`. Inside a fandry-toggle-group the group\'s `value` decides it.' },
       { name: 'value', type: 'string', default: "''", description: 'Names the button inside a fandry-toggle-group, which matches it against its `value`. Not needed on its own.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Cannot be pressed, and a group\'s arrow keys skip it.' },

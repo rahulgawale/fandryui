@@ -8,7 +8,7 @@ const RESERVED_ELEMENT_PROPS = ['type', 'class', 'disabled', 'ariaPressed'];
 
 export default class FdToggleButton extends Base {
   /* How the button looks while it is off: outlined, a muted fill, or bare.
-     Pressed fills with the primary color, except `ghost`, which turns muted. */
+     Pressed fills with the primary color; `secondary` and `ghost` turn muted. */
   @api variant: 'default' | 'secondary' | 'ghost' = 'default';
 
   /** What a fandry-toggle-group matches against its `value` and reports in `change`. */
