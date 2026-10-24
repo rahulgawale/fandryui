@@ -612,8 +612,8 @@ handleChange(event) {
       {
         title: 'Tabs and panels are siblings',
         paragraphs: [
-          'Put each fandry-tab in the `tab` slot and each fandry-tab-panel in the default slot, matched by `value`. They stay separate children so a panel can hold anything, and a tab can be restyled or replaced without touching the panels.',
-          'A focused tab is selected: the arrow keys, Home and End move between enabled tabs. Every panel stays in the page, hidden until its tab is selected. A tab and its panel are in different shadow roots, so they cannot point at each other with ids; set `aria-label` on a panel to name it.'
+          'Put each fandry-tab in the `tab` slot and each fandry-tab-panel in the default slot, as direct children (a wrapper element in between hides them from fandry-tabs), matched by `value`, which every tab and panel needs. They stay separate children so a panel can hold anything, and a tab can be restyled or replaced without touching the panels.',
+          'A focused tab is selected: the arrow keys, Home and End move between enabled tabs. Every panel stays in the page, hidden until its tab is selected. A tab and its panel are in different shadow roots, so they cannot point at each other with ids; set `aria-label` on a panel to name it. A panel is a Tab stop only when it has nothing focusable inside, so keyboard users can reach its content: a native control, or a component with its own `focus()`, in the page\'s own markup counts.'
         ]
       }
     ]
@@ -670,8 +670,9 @@ fandry-tab::part(base selected) {
     category: 'Layout',
     description: 'A single tab inside fandry-tabs.',
     props: [
-      { name: 'value', type: 'string', default: "''", description: 'Matches the `value` of one fandry-tab-panel, and is what fandry-tabs reports in `change`.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Cannot be selected, and the arrow keys skip it.' }
+      { name: 'value', type: 'string', default: "''", description: 'Required. Matches the `value` of one fandry-tab-panel, and is what fandry-tabs reports in `change`.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Cannot be selected, and the arrow keys skip it.' },
+      { name: 'selected', type: 'boolean', default: 'false', description: 'Set by fandry-tabs from its `value`; read it, but set `value` on fandry-tabs to change the tab.' }
     ],
     code: `<fandry-tab slot="tab" value="billing">Billing</fandry-tab>`
   },
@@ -726,8 +727,9 @@ fandry-tab::part(base selected) {
     category: 'Layout',
     description: 'The content shown for one fandry-tab.',
     props: [
-      { name: 'value', type: 'string', default: "''", description: 'Matches the `value` of one fandry-tab. The panel is shown while that tab is selected.' },
-      { name: 'aria-label', type: 'string', default: '—', description: 'Names the panel, normally the same as its tab.' }
+      { name: 'value', type: 'string', default: "''", description: 'Required. Matches the `value` of one fandry-tab. The panel is shown while that tab is selected.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names the panel, normally the same as its tab.' },
+      { name: 'selected', type: 'boolean', default: 'false', description: 'Set by fandry-tabs from its `value`; read it, but set `value` on fandry-tabs to change the tab.' }
     ],
     code: `<fandry-tab-panel value="billing">Billing settings</fandry-tab-panel>`
   },

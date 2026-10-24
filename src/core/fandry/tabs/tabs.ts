@@ -82,14 +82,23 @@ export default class FdTabs extends Base {
     return tabs.find((tab) => tab.value === this.value) ?? tabs.find((tab) => !tab.disabled);
   }
 
+  private warnedMissingValue = false;
+
   // Shows the selected tab's panel and leaves only that tab a Tab stop.
   private sync() {
+    const tabs = this.getTabs();
+    const panels = this.getPanels();
+    if (!this.warnedMissingValue && [...tabs, ...panels].some((el) => !el.value)) {
+      this.warnedMissingValue = true;
+      // eslint-disable-next-line no-console
+      console.warn('fandry-tabs: every fandry-tab and fandry-tab-panel needs a `value`; they are matched by it.');
+    }
     const selected = this.selectedTab();
-    this.getTabs().forEach((tab) => {
+    tabs.forEach((tab) => {
       tab.selected = tab === selected;
       tab.elementProps = { tabIndex: tab === selected ? 0 : -1 };
     });
-    this.getPanels().forEach((panel) => {
+    panels.forEach((panel) => {
       panel.selected = !!selected && panel.value === selected.value;
     });
   }
