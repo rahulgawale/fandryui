@@ -94,25 +94,11 @@ export default class FdTabs extends Base {
     });
   }
 
-  /* False when the tab was not selected: disabled, already selected, or a
-     `beforechange` listener cancelled it. */
-  private select(tab: FdTabElement): boolean {
-    const current = this.selectedTab();
-    if (tab.disabled || tab === current) return false;
-
-    const proceed = this.dispatchEvent(
-      new CustomEvent('beforechange', {
-        detail: { value: tab.value, previousValue: current?.value ?? '' },
-        bubbles: true,
-        cancelable: true
-      })
-    );
-    if (!proceed) return false;
-
+  private select(tab: FdTabElement) {
+    if (tab.disabled || tab === this.selectedTab()) return;
     this.value = tab.value;
     this.sync();
     this.dispatchEvent(new CustomEvent('change', { detail: { value: tab.value }, bubbles: true }));
-    return true;
   }
 
   /* The target, not composedPath(), for the reason in menu.ts's currentItem. */
@@ -140,6 +126,7 @@ export default class FdTabs extends Base {
     if (!next) return;
 
     event.preventDefault();
-    if (this.select(next)) next.focus();
+    this.select(next);
+    next.focus();
   };
 }

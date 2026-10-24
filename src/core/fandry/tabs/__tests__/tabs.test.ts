@@ -145,39 +145,4 @@ describe('fandry-tabs', () => {
     expect(panel(0).getAttribute('role')).toBe('tabpanel');
     expect(panel(0).hasAttribute('aria-label')).toBe(false);
   });
-
-  it('fires a cancelable beforechange with the new and previous value, before change', async () => {
-    const { harness, button } = await setup({ billingEnabled: true });
-    button(1).click();
-    await flush();
-    expect((harness as any).beforeDetails).toEqual([{ value: 'b', previousValue: 'a' }]);
-    expect((harness as any).changed).toEqual(['b']);
-  });
-
-  it('keeps the current tab, and fires no change, when beforechange is cancelled', async () => {
-    const { harness, button, panel } = await setup({ billingEnabled: true, blockChange: true });
-    button(1).click();
-    await flush();
-    expect(button(0).getAttribute('aria-selected')).toBe('true');
-    expect(panel(0).hidden).toBe(false);
-    expect((harness as any).changed).toEqual([]);
-  });
-
-  it('does not move focus on a cancelled arrow key', async () => {
-    const { button, keydown } = await setup({ billingEnabled: true, blockChange: true });
-    const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
-    keydown(0, 'ArrowRight');
-    await flush();
-    expect(focusSpy.mock.instances).not.toContain(button(1));
-    expect(button(0).getAttribute('aria-selected')).toBe('true');
-    focusSpy.mockRestore();
-  });
-
-  it('fires no beforechange for a disabled or already-selected tab', async () => {
-    const { harness, button } = await setup();
-    button(0).click();
-    button(1).dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
-    await flush();
-    expect((harness as any).beforeDetails).toEqual([]);
-  });
 });

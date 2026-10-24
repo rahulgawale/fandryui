@@ -6,8 +6,6 @@ export default class TabsHarness extends LightningElement {
   @api value = '';
   @api billingEnabled = false;
   changes: string[] = [];
-  @api blockChange = false;
-  beforeLog: Array<{ value: string; previousValue: string }> = [];
 
   get billingDisabled(): boolean {
     return !this.billingEnabled;
@@ -15,15 +13,6 @@ export default class TabsHarness extends LightningElement {
 
   handleChange(event: CustomEvent) {
     this.changes.push(event.detail.value);
-  }
-
-  handleBeforeChange(event: CustomEvent) {
-    this.beforeLog.push(event.detail);
-    if (this.blockChange) event.preventDefault();
-  }
-
-  @api get beforeDetails() {
-    return this.beforeLog;
   }
 
   @api get changed(): string[] {

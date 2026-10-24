@@ -596,19 +596,14 @@ fandry-tab::part(base selected) {
     props: [
       { name: 'value', type: 'string', default: "''", description: 'The `value` of the selected tab. Updates as the user picks a tab. Unset, or matching no tab, the first enabled tab is selected.' },
       { name: 'aria-label', type: 'string', default: '—', description: 'Names the tab list, e.g. "Settings".' },
-      { name: 'beforechange (event)', type: 'CustomEvent<{ value, previousValue }>', default: '—', description: 'Fires before the user switches tabs, by click or keyboard, and is cancelable: call `event.preventDefault()` to stay on the current tab, e.g. while its form is invalid. `value` is the tab being opened, `previousValue` the one being left. For an async check, cancel, then set `value` once it passes.' },
       { name: 'change (event)', type: 'CustomEvent<{ value }>', default: '—', description: 'Fires when the user picks a different tab, by click or keyboard; `event.detail.value` is that tab\'s `value`. Not fired when `value` is set from code or the tab is already selected.' }
     ],
-    code: `<fandry-tabs value="account" aria-label="Settings" onbeforechange={handleBeforeChange} onchange={handleChange}>
+    code: `<fandry-tabs value="account" aria-label="Settings" onchange={handleChange}>
   <fandry-tab slot="tab" value="account">Account</fandry-tab>
   <fandry-tab slot="tab" value="billing">Billing</fandry-tab>
   <fandry-tab-panel value="account">Account settings</fandry-tab-panel>
   <fandry-tab-panel value="billing">Billing settings</fandry-tab-panel>
 </fandry-tabs>
-
-handleBeforeChange(event) {
-  if (!this.isValid(event.detail.previousValue)) event.preventDefault();
-}
 
 handleChange(event) {
   this.selectedTab = event.detail.value;
