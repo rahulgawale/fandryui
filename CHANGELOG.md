@@ -1,3 +1,10 @@
+# [0.28.0](https://github.com/rahulgawale/fandryui/compare/v0.27.3...v0.28.0) (2026-10-24)
+
+
+### Features
+
+* add tabs, tab and tab-panel primitives ([#141](https://github.com/rahulgawale/fandryui/issues/141)) ([dcbf650](https://github.com/rahulgawale/fandryui/commit/dcbf650461d928a165338d8676e7382a596bfdaf))
+
 ## [0.27.3](https://github.com/rahulgawale/fandryui/compare/v0.27.2...v0.27.3) (2026-10-17)
 
 
