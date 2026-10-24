@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-ring-color: 160 84% 36%;
+  --fd-border: 160 30% 70%;
+}
+
+fandry-button::part(base secondary) {
+  color: hsl(160 84% 26%);
+  letter-spacing: 0.02em;
+}

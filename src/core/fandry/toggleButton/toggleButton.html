@@ -1,0 +1,11 @@
+<template>
+  <button
+    class="toggle"
+    part={basePart}
+    type="button"
+    aria-pressed={ariaPressed}
+    disabled={disabled}
+    onclick={handleClick}
+    lwc:spread={resolvedElementProps}
+  ><slot></slot></button>
+</template>
