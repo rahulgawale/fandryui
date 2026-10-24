@@ -335,6 +335,25 @@ describe('fandry-form-field', () => {
       expect(handler.mock.calls[0][0].detail.value).toEqual(['red', 'blue']);
     });
 
+    it('lets a site say how a list reads, and ties the group to its error and help text', async () => {
+      const el = mount({
+        mode: 'read',
+        field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST },
+        value: ['red', 'blue'],
+        messages: { list: (labels: string[]) => labels.join(' / ') }
+      });
+      await settle();
+      expect(el.shadowRoot!.querySelector('.read-value')!.textContent).toBe('Red / Blue');
+
+      const edit = mount({
+        field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST, helpText: 'Any.' },
+        error: 'Pick one.'
+      });
+      await settle();
+      expect(edit.shadowRoot!.querySelector('fieldset')!.getAttribute('aria-describedby')).toBe('error-text help-text');
+      expect(edit.shadowRoot!.querySelector('fieldset')!.getAttribute('part')).toBe('list');
+    });
+
     it('focuses the first box of a checkboxes group', async () => {
       const el = mount({ field: { name: 'c', label: 'Colors', type: 'checkboxes', options: LIST } });
       await settle();

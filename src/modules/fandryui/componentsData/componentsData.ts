@@ -170,7 +170,7 @@ export interface BlockParts {
 
 export const BLOCKS: BlockParts[] = [
   { tag: 'fandry-form', parts: ['field', 'revert'], states: ['changed'] },
-  { tag: 'fandry-form-field', parts: ['base', 'revert'], states: ['changed'] },
+  { tag: 'fandry-form-field', parts: ['base', 'list', 'label', 'revert'], states: ['changed'] },
   {
     tag: 'fandry-media-gallery',
     parts: ['base', 'item', 'button', 'frame', 'image', 'caption', 'placeholder', 'viewer', 'backdrop', 'panel', 'toolbar', 'status', 'keys-button', 'keys', 'close-button', 'stage', 'previous', 'next', 'viewer-image', 'viewer-caption'],

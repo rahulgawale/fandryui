@@ -1,6 +1,7 @@
 import { api } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
+import { fieldDescribedBy } from 'fandry/fieldError';
 
 export interface FdFormOption {
   label: string;
@@ -59,6 +60,8 @@ export interface FdFormFieldMessages {
   /** How a checkbox or switch reads in `read` mode. */
   yes: string;
   no: string;
+  /** How a list of chosen labels reads in `read` mode ("Red, Blue"). */
+  list: (labels: string[]) => string;
   /** The name (and tooltip) of the button that puts back a changed field's saved value. */
   revert: (label: string) => string;
 }
@@ -66,6 +69,7 @@ export interface FdFormFieldMessages {
 export const DEFAULT_FORM_FIELD_MESSAGES: FdFormFieldMessages = {
   yes: 'Yes',
   no: 'No',
+  list: (labels) => labels.join(', '),
   revert: (label) => `Revert ${label}`
 };
 
@@ -189,6 +193,11 @@ export default class FormField extends Base {
     return this.options.map((option) => ({ ...option, checked: chosen.includes(option.value) }));
   }
 
+  // The group's error and help text are this field's own lines, in the same template.
+  get groupDescribedBy(): string | null {
+    return fieldDescribedBy(this.showOwnError, this.showOwnHelpText);
+  }
+
   get requiredMark(): boolean {
     return !!this.field?.required;
   }
@@ -263,7 +272,9 @@ export default class FormField extends Base {
       return this.checked ? this.text.yes : this.text.no;
     }
     if (isListType(this.type)) {
-      return this.listValue.map((value) => this.options.find((option) => option.value === value)?.label ?? value).join(', ');
+      return this.text.list(
+        this.listValue.map((value) => this.options.find((option) => option.value === value)?.label ?? value)
+      );
     }
     if (this.isSelect || this.isRadio) {
       return this.options.find((option) => option.value === this.stringValue)?.label ?? this.stringValue;

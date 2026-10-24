@@ -39,6 +39,8 @@ export interface FdFormMessages {
   /** How a checkbox or switch reads in `read` mode. */
   yes: string;
   no: string;
+  /** How a list of chosen labels reads in `read` mode ("Red, Blue"). */
+  list: (labels: string[]) => string;
 }
 
 export const DEFAULT_FORM_MESSAGES: FdFormMessages = {
@@ -55,7 +57,8 @@ export const DEFAULT_FORM_MESSAGES: FdFormMessages = {
   revert: DEFAULT_FORM_FIELD_MESSAGES.revert,
   saving: 'Saving…',
   yes: 'Yes',
-  no: 'No'
+  no: 'No',
+  list: DEFAULT_FORM_FIELD_MESSAGES.list
 };
 
 export interface FdFormStatus {
@@ -146,8 +149,8 @@ export default class FdFormState extends Base {
 
   // Handed to each fandry-form-field.
   get fieldMessages(): FdFormFieldMessages {
-    const { yes, no, revert } = this.text;
-    return { yes, no, revert };
+    const { yes, no, list, revert } = this.text;
+    return { yes, no, list, revert };
   }
 
   // What the user has typed, over `values`: so a `values` that changes while

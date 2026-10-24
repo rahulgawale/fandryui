@@ -79,8 +79,8 @@
           </fandry-radio-group>
         </template>
         <template if:true={isCheckboxes}>
-          <fieldset class="control group">
-            <legend class="legend">{field.label}<template if:true={requiredMark}><span class="required" aria-hidden="true"> *</span></template></legend>
+          <fieldset class="control group" part="list" aria-describedby={groupDescribedBy}>
+            <legend class="legend" part="label">{field.label}<template if:true={requiredMark}><span class="required" aria-hidden="true"> *</span></template></legend>
             <template for:each={checkboxOptions} for:item="option">
               <fandry-checkbox
                 key={option.value}
@@ -156,10 +156,10 @@
         </template>
 
         <template if:true={showOwnHelpText}>
-          <p class="help">{field.helpText}</p>
+          <p id="help-text" class="help">{field.helpText}</p>
         </template>
         <template if:true={showOwnError}>
-          <p class="error" role="alert">{error}</p>
+          <p id="error-text" class="error" role="alert">{error}</p>
         </template>
       </template>
     </div>
