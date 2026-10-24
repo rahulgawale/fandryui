@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Per page: each route's "properties" in lwr.config.json
+         (routeMeta.test.ts keeps them complete). -->
+    <title>Tabs component for LWC | Fandry UI</title>
+    <meta name="description" content="A set of tabs that switch between panels — pair with fandry-tab and fandry-tab-panel. A Fandry UI component for Salesforce LWC." />
+    <link rel="canonical" href="https://fandryui.forcetrails.com/components/tabs/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Fandry UI" />
+    <meta property="og:title" content="Tabs component for LWC | Fandry UI" />
+    <meta property="og:description" content="A set of tabs that switch between panels — pair with fandry-tab and fandry-tab-panel. A Fandry UI component for Salesforce LWC." />
+    <meta property="og:url" content="https://fandryui.forcetrails.com/components/tabs/" />
+    <meta property="og:image" content="https://fandryui.forcetrails.com/assets/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Fandry UI: the flexibility of modern UI development, the simplicity of LWC." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://fandryui.forcetrails.com/assets/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Fandry UI: the flexibility of modern UI development, the simplicity of LWC." />
+
+    <meta name="author" content="Rahul Gawale" />
+    <meta name="application-name" content="Fandry UI" />
+    <meta name="apple-mobile-web-app-title" content="Fandry UI" />
+    <meta name="theme-color" content="#0d42f2" />
+    <link rel="icon" href="/1/asset/immutable/s/17928536406763216/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17928536406763216/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17928536406752444/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17928536406873216/assets/site.webmanifest" />
+    <!-- The same on every page: the site, the library it documents, and its
+         author, for search engines and AI answers. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://fandryui.forcetrails.com/#website",
+            "name": "Fandry UI",
+            "url": "https://fandryui.forcetrails.com/",
+            "description": "A composable, themeable UI component library for Salesforce LWC.",
+            "about": { "@id": "https://fandryui.forcetrails.com/#library" },
+            "publisher": { "@id": "https://fandryui.forcetrails.com/#author" }
+          },
+          {
+            "@type": "SoftwareSourceCode",
+            "@id": "https://fandryui.forcetrails.com/#library",
+            "name": "Fandry UI",
+            "alternateName": "fandryui",
+            "description": "A modern, composable UI component library for Salesforce Lightning Web Components (LWC), LWR, Experience Cloud and LWC OSS: themeable with design tokens, extensible with slots, CSS parts and state classes, shipped as plain LWC source.",
+            "url": "https://fandryui.forcetrails.com/",
+            "codeRepository": "https://github.com/rahulgawale/fandryui",
+            "programmingLanguage": ["JavaScript", "TypeScript", "HTML", "CSS"],
+            "runtimePlatform": ["Salesforce Lightning Web Components", "LWR", "LWC OSS"],
+            "license": "https://opensource.org/licenses/MIT",
+            "keywords": "Salesforce, LWC, Lightning Web Components, LWR, Experience Cloud, UI components, design system, design tokens",
+            "sameAs": ["https://www.npmjs.com/package/fandryui", "https://github.com/rahulgawale/fandryui"],
+            "author": { "@id": "https://fandryui.forcetrails.com/#author" }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://fandryui.forcetrails.com/#author",
+            "name": "Rahul Gawale",
+            "url": "https://github.com/rahulgawale",
+            "sameAs": ["https://www.youtube.com/@forcetrails"]
+          }
+        ]
+      }
+    </script>
+    <!-- Google Analytics 4, on the live site only: lwr dev, stage and the
+         prerender serve localhost. Async, so it never blocks rendering. -->
+    <script>
+      if (location.hostname === 'fandryui.forcetrails.com') {
+        const tag = document.createElement('script');
+        tag.async = true;
+        tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-18F150Z1JV';
+        document.head.appendChild(tag);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          dataLayer.push(arguments);
+        };
+        gtag('js', new Date());
+        gtag('config', 'G-18F150Z1JV');
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- One request for all three families. -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/1/asset/immutable/s/17928536406873216/assets/styles/global.css" />
+    <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
+         app renders the real page. A class, not @media (scripting), which
+         older Chrome and Safari ignore. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      .js .prerender {
+        display: none;
+      }
+    </style>
+  <meta name="traceparent" content="00-7a1f5fe0125b70620ed6a2cd3094a458-6ed46d6240acf3a4-01">
+</head>
+  <body>
+    <!-- A div, not <main>: every page renders its own <main> landmark, and a
+         document should have exactly one. -->
+    <div class="wrapper">
+      <div id="main"><!-- prerender --><div class="prerender">
+<header><a href="/">Fandry UI</a>
+<nav><a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a></nav></header>
+<nav>Layout
+<a href="/components/breadcrumb/">Breadcrumb</a>
+<a href="/components/breadcrumb-item/">Breadcrumb Item</a>
+<a href="/components/card/">Card</a>
+<a href="/components/divider/">Divider</a>
+<a href="/components/pagination/">Pagination</a>
+<a href="/components/sidebar/">Sidebar</a>
+<a href="/components/sidebar-item/">Sidebar Item</a>
+<a href="/components/tabs/">Tabs</a>
+<a href="/components/tab/">Tab</a>
+<a href="/components/tab-panel/">Tab Panel</a>
+Typography
+<a href="/components/heading/">Heading</a>
+<a href="/components/icon/">Icon</a>
+<a href="/components/label/">Label</a>
+<a href="/components/text/">Text</a>
+Forms
+<a href="/components/button/">Button</a>
+<a href="/components/checkbox/">Checkbox</a>
+<a href="/components/combobox/">Combobox</a>
+<a href="/components/input/">Input</a>
+<a href="/components/link/">Link</a>
+<a href="/components/radio/">Radio</a>
+<a href="/components/radio-group/">Radio Group</a>
+<a href="/components/select/">Select</a>
+<a href="/components/switch/">Switch</a>
+<a href="/components/textarea/">Textarea</a>
+Feedback
+<a href="/components/alert/">Alert</a>
+<a href="/components/badge/">Badge</a>
+<a href="/components/progress/">Progress</a>
+<a href="/components/skeleton/">Skeleton</a>
+<a href="/components/spinner/">Spinner</a>
+<a href="/components/loading-overlay/">Loading Overlay</a>
+<a href="/components/toast/">Toast</a>
+<a href="/components/toast-viewport/">Toast Viewport</a>
+<a href="/components/tooltip/">Tooltip</a>
+Overlays &amp; Data
+<a href="/components/avatar/">Avatar</a>
+<a href="/components/command/">Command</a>
+<a href="/components/dialog/">Dialog</a>
+<a href="/components/menu/">Menu</a>
+<a href="/components/menu-item/">Menu Item</a>
+<a href="/components/popover/">Popover</a>
+<a href="/components/table/">Table</a>
+Salesforce
+<a href="/components/lookup/">Lookup</a></nav>
+<main>Layout
+<h1>Tabs</h1>
+<p>A set of tabs that switch between panels — pair with <a href="/components/tab/">fandry-tab</a> and <a href="/components/tab-panel/">fandry-tab-panel</a>.</p>
+<p><code>fandry-tabs</code></p>
+<section><h2>Example</h2>
+Link to section Example</section><section><h2>Custom colors and parts</h2>
+Link to section Custom colors and parts
+<p>The same component with a few <code>--fd-*</code> tokens set around it and its parts restyled. The code is under Parts below.</p></section><section><h2>Props</h2>
+Link to section Props
+<table><thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>string</code></td><td><code>''</code></td><td>The <code>value</code> of the selected tab. Updates as the user picks a tab. Unset, or matching no tab, the first enabled tab is selected.</td></tr><tr><td><code>aria-label</code></td><td><code>string</code></td><td><code>—</code></td><td>Names the tab list, e.g. &quot;Settings&quot;.</td></tr><tr><td><code>change (event)</code></td><td><code>CustomEvent&lt;{ value }&gt;</code></td><td><code>—</code></td><td>Fires when the user picks a different tab, by click or keyboard; <code>event.detail.value</code> is that tab's <code>value</code>. Not fired when <code>value</code> is set from code or the tab is already selected.</td></tr></tbody></table></section><section><h2>Parts</h2>
+Link to section Parts
+<p>Style the elements inside the component from your own CSS with <code>::part()</code>. Every fandry component renders in native shadow DOM, so parts work on LWR and Salesforce alike. For colors, spacing, radius and type across many components, set the <code>--fd-*</code> tokens instead. The code for the &quot;Custom colors and parts&quot; example above:</p>
+<table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>base</code></td><td>The outermost element.</td></tr><tr><td><code>list</code></td><td>The element holding the items.</td></tr></tbody></table>
+<pre>&lt;!-- template --&gt;
+&lt;div class=&quot;brand&quot;&gt;
+  &lt;fandry-tabs value=&quot;account&quot; aria-label=&quot;Settings&quot;&gt;
+    &lt;fandry-tab slot=&quot;tab&quot; value=&quot;account&quot;&gt;Account&lt;/fandry-tab&gt;
+    &lt;fandry-tab slot=&quot;tab&quot; value=&quot;billing&quot;&gt;Billing&lt;/fandry-tab&gt;
+    &lt;fandry-tab slot=&quot;tab&quot; value=&quot;team&quot;&gt;Team&lt;/fandry-tab&gt;
+    &lt;fandry-tab-panel value=&quot;account&quot;&gt;
+      &lt;fandry-text&gt;Update your name, email and password.&lt;/fandry-text&gt;
+    &lt;/fandry-tab-panel&gt;
+    &lt;fandry-tab-panel value=&quot;billing&quot;&gt;
+      &lt;fandry-text&gt;Manage your plan and payment method.&lt;/fandry-text&gt;
+    &lt;/fandry-tab-panel&gt;
+    &lt;fandry-tab-panel value=&quot;team&quot;&gt;
+      &lt;fandry-text&gt;Invite people to your workspace.&lt;/fandry-text&gt;
+    &lt;/fandry-tab-panel&gt;
+  &lt;/fandry-tabs&gt;
+&lt;/div&gt;
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+}
+
+fandry-tabs::part(list) {
+  gap: 0.5rem;
+  box-shadow: none;
+}
+
+fandry-tab::part(base) {
+  border-radius: 999px;
+  border-bottom-color: transparent;
+}
+
+fandry-tab::part(base selected) {
+  background: hsl(160 84% 26%);
+  color: white;
+}</pre>
+​</section><section><h2>Code</h2>
+Link to section Code
+<pre>&lt;fandry-tabs value=&quot;account&quot; aria-label=&quot;Settings&quot; onchange={handleChange}&gt;
+  &lt;fandry-tab slot=&quot;tab&quot; value=&quot;account&quot;&gt;Account&lt;/fandry-tab&gt;
+  &lt;fandry-tab slot=&quot;tab&quot; value=&quot;billing&quot;&gt;Billing&lt;/fandry-tab&gt;
+  &lt;fandry-tab-panel value=&quot;account&quot;&gt;Account settings&lt;/fandry-tab-panel&gt;
+  &lt;fandry-tab-panel value=&quot;billing&quot;&gt;Billing settings&lt;/fandry-tab-panel&gt;
+&lt;/fandry-tabs&gt;
+
+handleChange(event) {
+  this.selectedTab = event.detail.value;
+}</pre>
+​</section><section><p>Tabs and panels are siblings</p>
+<p>Put each <a href="/components/tab/">fandry-tab</a> in the <code>tab</code> slot and each <a href="/components/tab-panel/">fandry-tab-panel</a> in the default slot, as direct children (a wrapper element in between hides them from fandry-tabs), matched by <code>value</code>, which every tab and panel needs. They stay separate children so a panel can hold anything, and a tab can be restyled or replaced without touching the panels.</p>
+<p>A focused tab is selected: the arrow keys, Home and End move between enabled tabs. Every panel stays in the page, hidden until its tab is selected. A tab and its panel are in different shadow roots, so they cannot point at each other with ids; set <code>aria-label</code> on a panel to name it. A panel is a Tab stop only when it has nothing focusable inside, so keyboard users can reach its content: a native control, or a component with its own <code>focus()</code>, in the page's own markup counts.</p></section>
+<nav><a href="/components/sidebar-item/">← Previous
+Sidebar Item</a>
+<a href="/components/tab/">Next →
+Tab</a></nav></main>
+<nav>On this page
+<ul><li>Example</li><li>Custom colors and parts</li><li>Props</li><li>Parts</li><li>Code</li></ul></nav>
+<footer>© 2026 Fandry UI · MIT License
+<a href="/why-fandry/">Why Fandry</a>
+<a href="/getting-started/">Get started</a>
+<a href="/examples/">Examples</a>
+<a href="/components/">Components</a>
+<a href="/blocks/">Blocks</a>
+<a href="https://github.com/rahulgawale/fandryui">GitHub</a>
+<a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
+</div><!-- /prerender --><fandryui-component-doc></fandryui-component-doc></div>
+    </div>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-tabs/configuration/ci/-%2Fcomponents%2Ftabs-/s/3df71dc6e854a20a95d824338511669e/config.js"></script>
+<script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fcomponent-tabs%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-aL3uOV8gCagWdvBq1vI6kHz2eq_SsNJ9Z2X3z4gATIk/bundle_@lwrjs_app-service_component-tabs_module_esm.js"></script>
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_3/s/sha256-2_iqR8N9uv9km23MSX3b60g4sWqddpJuOb7YwFmZK6Q/bundle_fandryui_componentDoc.js" />
+  </body>
+</html>

@@ -27,10 +27,10 @@
     <meta name="application-name" content="Fandry UI" />
     <meta name="apple-mobile-web-app-title" content="Fandry UI" />
     <meta name="theme-color" content="#0d42f2" />
-    <link rel="icon" href="/1/asset/immutable/s/17922625298855416/assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17922625298855416/assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17922625298847124/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/1/asset/immutable/s/17922625299005418/assets/site.webmanifest" />
+    <link rel="icon" href="/1/asset/immutable/s/17928536406763216/assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/1/asset/immutable/s/17928536406763216/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/1/asset/immutable/s/17928536406752444/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/1/asset/immutable/s/17928536406873216/assets/site.webmanifest" />
     <!-- The same on every page: the site, the library it documents, and its
          author, for search engines and AI answers. -->
     <script type="application/ld+json">
@@ -94,7 +94,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/1/asset/immutable/s/17922625299005418/assets/styles/global.css" />
+    <link rel="stylesheet" href="/1/asset/immutable/s/17928536406873216/assets/styles/global.css" />
     <!-- The plain-HTML copy scripts/prerender.mjs writes for crawlers; the
          app renders the real page. A class, not @media (scripting), which
          older Chrome and Safari ignore. -->
@@ -106,7 +106,7 @@
         display: none;
       }
     </style>
-  <meta name="traceparent" content="00-755dd60f08acb6082d40b8a1c18f6bc8-2d3b07575ce80743-01">
+  <meta name="traceparent" content="00-a5d95719c2f604059aff6ffb2465b4f8-0740e68c821482a9-01">
 </head>
   <body>
     <!-- A div, not <main>: every page renders its own <main> landmark, and a
@@ -127,6 +127,9 @@
 <a href="/components/pagination/">Pagination</a>
 <a href="/components/sidebar/">Sidebar</a>
 <a href="/components/sidebar-item/">Sidebar Item</a>
+<a href="/components/tabs/">Tabs</a>
+<a href="/components/tab/">Tab</a>
+<a href="/components/tab-panel/">Tab Panel</a>
 Typography
 <a href="/components/heading/">Heading</a>
 <a href="/components/icon/">Icon</a>
@@ -177,7 +180,7 @@ Link to section Parts
 <p>Style the elements inside the component from your own CSS with <code>::part()</code>. Every fandry component renders in native shadow DOM, so parts work on LWR and Salesforce alike. For colors, spacing, radius and type across many components, set the <code>--fd-*</code> tokens instead. The code for the &quot;Custom colors and parts&quot; example above:</p>
 <table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>base</code></td><td>The outermost element.</td></tr><tr><td><code>label</code></td><td>The label.</td></tr><tr><td><code>required</code></td><td>The required-field asterisk.</td></tr><tr><td><code>control</code></td><td>The box the field draws: a text field's border, a select's button, a checkbox's box, a radio's circle, a switch's track.</td></tr><tr><td><code>value</code></td><td>The selected value, as shown in the closed field.</td></tr><tr><td><code>chevron</code></td><td>The dropdown arrow.</td></tr><tr><td><code>listbox</code></td><td>The list of options.</td></tr><tr><td><code>option</code></td><td>One option.</td></tr><tr><td><code>group</code></td><td>A group of options.</td></tr><tr><td><code>group-label</code></td><td>A group's heading.</td></tr><tr><td><code>help-text</code></td><td>The help text under the field.</td></tr><tr><td><code>error-text</code></td><td>The error under the field. In the page even while empty, so style it only for a field that is <code>invalid</code>.</td></tr><tr><td><code>panel</code></td><td>The surface that opens: a dropdown's list, a popover, a tooltip, a dialog, a loading overlay's box.</td></tr></tbody></table>
 <p>States are extra names on a part while the state is on. Name both to style one state, e.g.<code>fandry-checkbox::part(control checked)</code>.</p>
-<table><thead><tr><th>State</th><th>Description</th></tr></thead><tbody><tr><td><code>disabled</code></td><td>A control, option or item that cannot be used.</td></tr><tr><td><code>invalid</code></td><td>A field that has error text.</td></tr><tr><td><code>selected</code></td><td>The chosen option, or a selected table row.</td></tr><tr><td><code>active</code></td><td>The option the keyboard or pointer is on.</td></tr></tbody></table>
+<table><thead><tr><th>State</th><th>Description</th></tr></thead><tbody><tr><td><code>disabled</code></td><td>A control, option or item that cannot be used.</td></tr><tr><td><code>invalid</code></td><td>A field that has error text.</td></tr><tr><td><code>selected</code></td><td>The chosen option, a selected table row, or the selected tab.</td></tr><tr><td><code>active</code></td><td>The option the keyboard or pointer is on.</td></tr></tbody></table>
 <pre>&lt;!-- template --&gt;
 &lt;div class=&quot;brand narrow&quot;&gt;
   &lt;fandry-select label=&quot;Size&quot; placeholder=&quot;Choose a size&quot; options={options} value=&quot;m&quot;&gt;&lt;/fandry-select&gt;
@@ -288,8 +291,8 @@ Switch</a></nav></main>
 <a href="https://www.youtube.com/@forcetrails">YouTube</a></footer>
 </div><!-- /prerender --><fandryui-component-doc></fandryui-component-doc></div>
     </div>
-    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-select/configuration/ci/-%2Fcomponents%2Fselect-/s/87cda52b74280565e3f69497522ab4fa/config.js"></script>
+    <script type="application/javascript" src="/1/application/esm/l/en-US/ai/component-select/configuration/ci/-%2Fcomponents%2Fselect-/s/72a074309a95aa7d10e0929c7960eb54/config.js"></script>
 <script type="module" src="/1/bundle/esm/l/en-US/bi/0/module/mi/%40lwrjs%2Fapp-service%2Fcomponent-select%2Fmodule%2Fesm%2Fv%2F0_24_1/s/sha256-vI8R3TmHcY8DemRHmDV9tqlz1yYC9Gk2tx0-3hwKkI8/bundle_@lwrjs_app-service_component-select_module_esm.js"></script>
-<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_3/s/sha256-qOhB-3WZIsp-ZJyCOdVt6WYS-slZrx30ajJr3rn3sbs/bundle_fandryui_componentDoc.js" />
+<link rel="modulepreload" href="/1/bundle/esm/l/en-US/bi/0/module/mi/fandryui%2FcomponentDoc%2Fv%2F0_27_3/s/sha256-2_iqR8N9uv9km23MSX3b60g4sWqddpJuOb7YwFmZK6Q/bundle_fandryui_componentDoc.js" />
   </body>
 </html>
