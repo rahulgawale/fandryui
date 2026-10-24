@@ -110,3 +110,15 @@
   opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
+
+/* Forced colors drops fills and borders, so pressed would look like off: it
+   takes the system selection colors instead. */
+@media (forced-colors: active) {
+  .toggle[aria-pressed='true'],
+  .toggle[aria-pressed='true']:hover:not(:disabled) {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+  }
+}

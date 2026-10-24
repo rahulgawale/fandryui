@@ -5,7 +5,12 @@ import { LightningElement, api } from 'lwc';
 export default class ToggleGroupHarness extends LightningElement {
   @api value: string[] = [];
   @api multiple = false;
+  @api italicEnabled = false;
   changes: string[][] = [];
+
+  get italicDisabled(): boolean {
+    return !this.italicEnabled;
+  }
 
   handleChange(event: CustomEvent) {
     this.changes.push(event.detail.value);

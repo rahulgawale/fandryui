@@ -103,6 +103,19 @@ describe('fandry-toggle-group', () => {
     focus.mockRestore();
   });
 
+  it('follows a button whose disabled changes after it rendered', async () => {
+    const { harness, button, keydown } = await setup();
+    keydown(0, 'ArrowRight');
+    await flush();
+    expect(button(2).tabIndex).toBe(0);
+    (harness as any).italicEnabled = true;
+    await flush();
+    await flush();
+    keydown(2, 'ArrowLeft');
+    await flush();
+    expect(button(1).tabIndex).toBe(0);
+  });
+
   it('adds pressed and disabled to the item part', async () => {
     const { button } = await setup({ value: ['bold'] });
     expect(button(0).getAttribute('part')).toBe('base default pressed');

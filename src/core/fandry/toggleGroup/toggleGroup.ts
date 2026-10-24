@@ -94,7 +94,7 @@ export default class FdToggleGroup extends Base {
   handleChange = (event: Event) => {
     const item = this.currentItem(event);
     if (!item) return;
-    /* Heard on the wrapper in the template, which a slotted button's event passes through before it reaches the host, so it stops here; the group reports the whole value. */
+    // Stops here, so the page hears only the group's change.
     event.stopPropagation();
     const selection = this.selection.filter((v) => v !== item.value);
     this.value = item.pressed ? (this.multiple ? [...selection, item.value] : [item.value]) : selection;

@@ -2,6 +2,12 @@
   display: block;
 }
 
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;
