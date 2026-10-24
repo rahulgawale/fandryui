@@ -29,6 +29,7 @@
       "fandry/anchorTabStop": ["src/core/fandry/anchorTabStop/anchorTabStop"],
       "fandry/textSlots": ["src/core/fandry/textSlots/textSlots"],
       "fandry/fieldError": ["src/core/fandry/fieldError/fieldError"],
+      "fandry/validation": ["src/core/fandry/validation/validation"],
       "fandry/searchState": ["src/core/fandry/searchState/searchState"],
       "fandry/loadingOverlayState": ["src/core/fandry/loadingOverlayState/loadingOverlayState"],
       // Record-aware components live in src/salesforce (same `fandry` namespace).
@@ -86,6 +87,7 @@
       "fandryuidemos/demoIconTheme": ["src/modules/fandryuidemos/demoIconTheme/demoIconTheme"],
       "fandryuidemos/demoInputTheme": ["src/modules/fandryuidemos/demoInputTheme/demoInputTheme"],
       "fandryuidemos/demoInputError": ["src/modules/fandryuidemos/demoInputError/demoInputError"],
+      "fandryuidemos/demoInputValidation": ["src/modules/fandryuidemos/demoInputValidation/demoInputValidation"],
       "fandryuidemos/demoLabelTheme": ["src/modules/fandryuidemos/demoLabelTheme/demoLabelTheme"],
       "fandryuidemos/demoLinkTheme": ["src/modules/fandryuidemos/demoLinkTheme/demoLinkTheme"],
       "fandryuidemos/demoLookupTheme": ["src/modules/fandryuidemos/demoLookupTheme/demoLookupTheme"],

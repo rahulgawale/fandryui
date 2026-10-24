@@ -89,7 +89,7 @@ describe('fandry-form-field', () => {
 
   /* A primitive with a place for an error ties it to its control and
      announces it, so the field hands it over instead of showing its own. */
-  it.each(['text', 'textarea', 'select'])('gives a %s control its error to show', async (type) => {
+  it.each(['text', 'textarea', 'select', 'checkbox', 'switch'])('gives a %s control its error to show', async (type) => {
     const el = mount({ field: { name: 'n', label: 'N', type, options: [] }, error: 'Required.' });
     await settle();
 
@@ -98,7 +98,7 @@ describe('fandry-form-field', () => {
     expect(el.shadowRoot!.querySelector('.error')).toBeNull();
   });
 
-  it.each(['checkbox', 'switch', 'radio'])('shows the error of a %s as an alert and marks the control invalid', async (type) => {
+  it.each(['radio'])('shows the error of a %s as an alert and marks the control invalid', async (type) => {
     const el = mount({ field: { name: 'n', label: 'N', type, options: [] }, error: 'Required.' });
     await settle();
 
@@ -283,5 +283,33 @@ describe('fandry-form-field', () => {
 
     const input = control(el)!.shadowRoot!;
     expect(input.activeElement).toBe(input.querySelector('input'));
+  });
+});
+
+describe('fandry-form-field native validation', () => {
+  it('asks the browser about a control that has rules, through its elementProps', async () => {
+    const el = mount({ field: { name: 'n', label: 'N', elementProps: { pattern: '[0-9]+' } }, value: 'abc' });
+    await settle();
+
+    expect(el.checkValidity()).toBe(false);
+    el.value = '123';
+    await settle();
+    expect(el.checkValidity()).toBe(true);
+  });
+
+  it('has no rule to ask of a control that is not native', async () => {
+    const el = mount({ field: { name: 'n', label: 'N', type: 'select', options: OPTIONS, required: true }, value: '' });
+    await settle();
+
+    expect(el.reportValidity()).toBe(true);
+  });
+
+  it('requires a checkbox to be checked, the browser way', async () => {
+    const el = mount({ field: { name: 'n', label: 'N', type: 'checkbox', required: true }, value: false });
+    await settle();
+
+    expect(el.reportValidity()).toBe(false);
+    await settle();
+    expect(control(el)!.shadowRoot!.querySelector('.error-text')!.textContent).not.toBe('');
   });
 });

@@ -297,9 +297,20 @@ export default class FdFormState extends Base {
     return this.fieldError(field, values) || this.serverErrors[field.name] || '';
   }
 
+  private fieldElement(field: FdFormField): (HTMLElement & { checkValidity(): boolean; reportValidity(): boolean }) | null {
+    return this.template.querySelector(`fandry-form-field[data-name="${escapeAttrValue(field.name)}"]`);
+  }
+
+  /* The browser's rules on the controls that have them (`pattern`,
+     `maxLength`, ... from a field's `elementProps`), on top of the form's
+     own: a control the browser rejects is not valid just because the form
+     has no message for it. */
   private firstInvalid(): FdFormField | undefined {
     const values = this.currentValues();
-    return this.editableFields.find((field) => this.fieldError(field, values) || this.serverErrors[field.name]);
+    return this.editableFields.find(
+      (field) =>
+        this.fieldError(field, values) || this.serverErrors[field.name] || this.fieldElement(field)?.checkValidity() === false
+    );
   }
 
   private async runValidateHook(): Promise<Record<string, string>> {
@@ -415,6 +426,8 @@ export default class FdFormState extends Base {
 
     this.submitAttempted = true;
     this.status = null;
+    // Each control shows its own browser error; the form's messages are passed down.
+    for (const field of this.editableFields) this.fieldElement(field)?.reportValidity();
     this.focusBeforeSave = this.template.activeElement as HTMLElement | null;
     const hadFocus = this.hasFocus();
     this.saving = true;

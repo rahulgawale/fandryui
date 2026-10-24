@@ -1,15 +1,18 @@
-import { api } from 'lwc';
+import { api, track } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
 import { resolveElementProps } from 'fandry/elementProps';
 import { slotHasContent } from 'fandry/textSlots';
+import { fieldInvalid, withoutAriaInvalid } from 'fandry/fieldError';
+import { validationText } from 'fandry/validation';
+import type { FdValidationMessages } from 'fandry/validation';
 
 // Properties the component itself already binds onto the native <input> --
 // stripped from a consumer's `elementProps` before spreading so a
 // (possibly accidental) matching key there can't desync the checkbox's own
 // controlled state (e.g. `elementProps={ checked: false }` silently
 // unchecking a checkbox whose `checked` API prop is still `true`).
-const RESERVED_ELEMENT_PROPS = ['type', 'name', 'value', 'checked', 'disabled', 'class', 'onchange', 'ariaChecked', 'ariaLabel'];
+const RESERVED_ELEMENT_PROPS = ['type', 'name', 'value', 'checked', 'disabled', 'required', 'class', 'onchange', 'ariaChecked', 'ariaLabel', 'ariaDescribedBy', 'ariaDescribedByElements'];
 
 export default class Checkbox extends Base {
   @api label = '';
@@ -18,6 +21,19 @@ export default class Checkbox extends Base {
   @api name = '';
   @api value = '';
   @api ariaLabel = '';
+
+  /** Must be checked: the browser's `required`, checked by the browser. */
+  @api required = false;
+  // Shown under the checkbox, and makes it invalid -- see fandry/fieldError.
+  @api errorText = '';
+
+  /** Your wording for a failed rule (`valueMissing`), else the browser's -- see FdValidationMessages. */
+  @api messages: FdValidationMessages = {};
+
+  // The native input's verdict, and whether the user has earned seeing it:
+  // the box was left, or reportValidity() was called.
+  @track private validationError = '';
+  @track private validationShown = false;
 
   // Spread onto the native <input> via `lwc:spread` -- lets a consumer pass
   // through anything the library doesn't already control (tabIndex,
@@ -36,7 +52,67 @@ export default class Checkbox extends Base {
   @api elementProps: Record<string, unknown> = { tabIndex: 0 };
 
   get resolvedElementProps(): Record<string, unknown> {
-    return resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-checkbox');
+    return withoutAriaInvalid(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-checkbox'));
+  }
+
+  // `error-text` (the page's, e.g. a server's) wins over the browser's.
+  get shownErrorText(): string {
+    return this.errorText || (this.validationShown ? this.validationError : '');
+  }
+
+  get hasErrorText(): boolean {
+    return !!this.shownErrorText || !!this.textSlots['error-text'];
+  }
+
+  get errorTextClasses(): string {
+    return this.hasErrorText ? 'error-text' : 'error-text error-text--empty';
+  }
+
+  get invalid(): boolean {
+    return fieldInvalid(this.hasErrorText, this.elementProps);
+  }
+
+  get ariaInvalid(): 'true' | null {
+    return this.invalid ? 'true' : null;
+  }
+
+  get describedBy(): string | null {
+    return this.hasErrorText ? 'error-text' : null;
+  }
+
+  private get nativeInput(): HTMLInputElement | null {
+    return this.template.querySelector('.input');
+  }
+
+  /** The native input's ValidityState (`valid`, `valueMissing`). */
+  @api
+  get validity(): ValidityState | undefined {
+    return this.nativeInput?.validity;
+  }
+
+  /** The message the checkbox would show: yours from `messages`, else the browser's. '' while valid. */
+  @api
+  get validationMessage(): string {
+    return this.validationError;
+  }
+
+  /** Whether the checkbox passes every rule. Shows nothing. */
+  @api
+  checkValidity(): boolean {
+    this.renderedCallback();
+    return this.nativeInput?.validity.valid ?? true;
+  }
+
+  /** checkValidity(), and shows the error now, as a submit does. Focusing the first field that fails is the page's to do. */
+  @api
+  reportValidity(): boolean {
+    const valid = this.checkValidity();
+    this.validationShown = true;
+    return valid;
+  }
+
+  handleBlur() {
+    this.validationShown = true;
   }
 
   /**
@@ -62,6 +138,7 @@ export default class Checkbox extends Base {
     const input = this.template.querySelector('.input') as HTMLInputElement | null;
     if (input) {
       input.indeterminate = this.indeterminate;
+      this.validationError = validationText(input, undefined, this.messages);
     }
   }
 
@@ -85,7 +162,12 @@ export default class Checkbox extends Base {
   }
 
   get controlPart(): string {
-    return partList('control', { checked: this.checked, indeterminate: this.indeterminate, disabled: this.disabled });
+    return partList('control', {
+      checked: this.checked,
+      indeterminate: this.indeterminate,
+      disabled: this.disabled,
+      invalid: this.invalid
+    });
   }
 
   // Which text slots have content -- see fandry/textSlots.
