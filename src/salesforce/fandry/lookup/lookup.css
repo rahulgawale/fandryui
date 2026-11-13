@@ -57,6 +57,7 @@
 }
 
 .field[part~='disabled'] {
+  /* Fades everything inside once, so the controls don't fade again. */
   opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
@@ -95,7 +96,6 @@
 }
 
 .input:disabled {
-  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -177,7 +177,6 @@
 .clear:disabled,
 .pill-remove:disabled,
 .clear-all:disabled {
-  opacity: var(--_fd-disabled-opacity);
   cursor: not-allowed;
 }
 
