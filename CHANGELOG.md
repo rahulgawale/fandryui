@@ -1,3 +1,10 @@
+## [0.28.1](https://github.com/rahulgawale/fandryui/compare/v0.28.0...v0.28.1) (2026-11-13)
+
+
+### Bug Fixes
+
+* Salesforce field heights, shared hover token, disabled lookup, dialog autofocus ([#144](https://github.com/rahulgawale/fandryui/issues/144)) ([0ad6a27](https://github.com/rahulgawale/fandryui/commit/0ad6a2739c2511d3479148312412c2c9fcf38d47))
+
 # [0.28.0](https://github.com/rahulgawale/fandryui/compare/v0.27.3...v0.28.0) (2026-10-24)
 
 
