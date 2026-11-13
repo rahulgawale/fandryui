@@ -122,6 +122,8 @@ export const PART_DESCRIPTIONS: Record<string, string> = {
   'keys-button': 'The button that shows the viewer\'s keyboard shortcuts (a fandry-button\'s `base`).',
   keys: 'The box that holds the viewer\'s keyboard shortcuts.',
   stage: 'The area that shows the picture and takes swipes and pinches.',
+  actions: 'The wrapper of a swipe\'s start or end slot, behind the content.',
+  content: 'The part of a swipe that slides over its actions.',
   viewer: 'The full-screen viewer\'s content (a fandry-media-viewer\'s `base`).',
   'viewer-image': 'The picture in the viewer (a fandry-media-viewer\'s `image`).',
   'viewer-caption': 'The caption in the viewer (a fandry-media-viewer\'s `caption`).'
@@ -153,7 +155,10 @@ export const STATE_DESCRIPTIONS: Record<string, string> = {
   info: '`variant="info"`.',
   success: '`variant="success"`.',
   warning: '`variant="warning"`.',
-  danger: '`variant="danger"`.'
+  danger: '`variant="danger"`.',
+  start: 'A swipe\'s start-side actions, or the swipe while they show.',
+  end: 'A swipe\'s end-side actions, or the swipe while they show.',
+  dragging: 'A swipe\'s content while a finger or the mouse holds it.'
 };
 
 /*
@@ -732,6 +737,69 @@ fandry-tab::part(base selected) {
       { name: 'selected', type: 'boolean', default: 'false', description: 'Set by fandry-tabs from its `value`; read it, but set `value` on fandry-tabs to change the tab.' }
     ],
     code: `<fandry-tab-panel value="billing">Billing settings</fandry-tab-panel>`
+  },
+  {
+    slug: 'swipe',
+    name: 'Swipe',
+    tag: 'fandry-swipe',
+    parts: ['base', 'content', 'actions', 'trigger'],
+    states: ['start', 'end', 'dragging'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'swipe-theme',
+      code: `<!-- template -->
+<div class="brand">
+  <fandry-swipe>
+    <fandry-button slot="end" variant="secondary">Archive</fandry-button>
+    <fandry-text>Order #1042 — drag me sideways</fandry-text>
+  </fandry-swipe>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-bg: 160 30% 96%;
+  --fd-radius-lg: 1rem;
+}
+
+fandry-swipe::part(base) {
+  border-radius: 1rem;
+}
+
+fandry-swipe::part(content) {
+  padding: 1rem;
+}
+
+fandry-swipe::part(actions end) {
+  background: hsl(160 84% 26%);
+  padding-inline: 1rem;
+  align-items: center;
+}`
+    },
+    category: 'Layout',
+    description: 'Content that slides sideways to show actions behind it — a list row\'s swipe actions, or a full page pulled aside.',
+    props: [
+      { name: 'open', type: "'start' | 'end' | ''", default: "''", description: 'The side showing its actions. Updates as the user swipes and `change` reports it. A side with nothing slotted cannot open.' },
+      { name: 'start-trigger / end-trigger (slots)', type: 'slot', default: '—', description: 'A button for mouse and keyboard users. A click on what you slot there opens that side; a second click closes it. It sits on the content at that edge — restyle it with `::part(trigger)`.' },
+      { name: 'reveal(side) / close()', type: 'method', default: '—', description: 'Open a side or slide back from code — the way for keyboard and screen-reader users, who cannot swipe, to reach the actions.' },
+      { name: 'change (event)', type: 'CustomEvent<{ open }>', default: '—', description: 'Fires when the open side changes, by swipe, tap, Escape, `reveal()` or `close()`. `event.detail.open` is `\'start\'`, `\'end\'` or `\'\'`. Not fired when `open` is set from code.' }
+    ],
+    code: `<fandry-swipe onchange={handleChange}>
+  <fandry-button slot="start" variant="secondary">Pin</fandry-button>
+  <fandry-button slot="end" variant="secondary">Archive</fandry-button>
+  <fandry-button slot="end-trigger" variant="ghost">More</fandry-button>
+  <fandry-text>Order #1042 — drag me sideways</fandry-text>
+</fandry-swipe>`,
+    notes: [
+      {
+        title: 'Put it anywhere',
+        paragraphs: [
+          'The host is a block that fills its parent\'s height, so it fits anywhere: wrap a list row or a card for swipe actions, or give it a height (`height: 100vh`) to pull a whole page aside. The content slot is opaque and slides over the `start` and `end` slots; each action side is as wide as what you slot into it. Drags are horizontal only and the page still scrolls up and down. Start and end follow the page direction, so they flip in right-to-left text.',
+          'A swipe is never the only way in: a closed side is hidden from Tab and screen readers, so slot a button into `end-trigger` (or `start-trigger`) so a click or Enter opens it, or call `reveal(\'end\')` yourself. Escape closes, and a tap on open content closes it without reaching the page. Rows of a fandry-table are rendered by the table, so slot a fandry-swipe into a cell\'s content or use it on a list of your own.'
+        ]
+      }
+    ]
   },
 
   // ---- Typography ----

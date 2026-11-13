@@ -1,0 +1,78 @@
+:host {
+  display: block;
+}
+
+/* Clips the content as it slides, and fills the host: a full page sets a
+   height on the host, a table row or list item sizes to its content. */
+.swipe {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.actions {
+  position: absolute;
+  inset-block: 0;
+  display: flex;
+  align-items: stretch;
+  max-width: 100%;
+}
+
+.actions--start {
+  inset-inline-start: 0;
+}
+
+.actions--end {
+  inset-inline-end: 0;
+}
+
+.actions[hidden] {
+  display: none;
+}
+
+/* A closed side can't be tabbed to or read while the content covers it; it
+   hides once the content has slid back, and shows at once on opening. */
+.actions--closed {
+  visibility: hidden;
+  /* visibility flips at the end of a fade out and at the start of one in. */
+  transition: visibility var(--_fd-duration-normal);
+}
+
+/* The foreground. Opaque, or the actions would show through it. */
+.content {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  background: hsl(var(--_fd-bg));
+  color: hsl(var(--_fd-text));
+
+  /* Sideways drags are ours; the page still scrolls up and down. */
+  touch-action: pan-y;
+  translate: var(--_fd-swipe-x, 0) 0;
+  transition: translate var(--_fd-duration-normal) var(--_fd-ease-emphasized);
+}
+
+.content--dragging {
+  transition: none;
+  user-select: none;
+}
+
+/* The slotted open buttons sit on the content, centred on each edge. */
+.trigger {
+  position: absolute;
+  inset-block: 0;
+  display: flex;
+  align-items: center;
+}
+
+.trigger--start {
+  inset-inline-start: var(--_fd-space-2);
+}
+
+.trigger--end {
+  inset-inline-end: var(--_fd-space-2);
+}
+
+.trigger[hidden] {
+  display: none;
+}

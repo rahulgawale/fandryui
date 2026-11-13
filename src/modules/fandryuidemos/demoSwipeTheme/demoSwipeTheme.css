@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-bg: 160 30% 96%;
+  --fd-radius-lg: 1rem;
+}
+
+fandry-swipe::part(base) {
+  border-radius: 1rem;
+}
+
+fandry-swipe::part(content) {
+  padding: 1rem;
+}
+
+fandry-swipe::part(actions end) {
+  background: hsl(160 84% 26%);
+  padding-inline: 1rem;
+  align-items: center;
+}

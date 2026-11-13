@@ -68,6 +68,8 @@ import DemoRadio from 'fandryuidemos/demoRadio';
 import DemoRadioGroup from 'fandryuidemos/demoRadioGroup';
 import DemoTabsTheme from 'fandryuidemos/demoTabsTheme';
 import DemoTabs from 'fandryuidemos/demoTabs';
+import DemoSwipeTheme from 'fandryuidemos/demoSwipeTheme';
+import DemoSwipe from 'fandryuidemos/demoSwipe';
 import DemoTab from 'fandryuidemos/demoTab';
 import DemoTabPanel from 'fandryuidemos/demoTabPanel';
 import DemoSelect from 'fandryuidemos/demoSelect';
@@ -99,6 +101,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   breadcrumb: DemoBreadcrumb,
   'breadcrumb-item': DemoBreadcrumbItem,
   tabs: DemoTabs,
+  swipe: DemoSwipe,
   tab: DemoTab,
   'tab-panel': DemoTabPanel,
   card: DemoCard,
@@ -176,6 +179,7 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'select-theme': DemoSelectTheme,
   'sidebar-theme': DemoSidebarTheme,
   'tabs-theme': DemoTabsTheme,
+  'swipe-theme': DemoSwipeTheme,
   'skeleton-theme': DemoSkeletonTheme,
   'spinner-theme': DemoSpinnerTheme,
   'switch-theme': DemoSwitchTheme,

@@ -238,6 +238,19 @@
             }
         },
         {
+            "id": "component-swipe",
+            "path": "/components/swipe",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Swipe component for LWC | Fandry UI",
+                "description": "Content that slides sideways to show actions behind it — a list row's swipe actions, or a full page pulled aside. A Fandry UI component for Salesforce LWC.",
+                "path": "/components/swipe/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
+            }
+        },
+        {
             "id": "component-heading",
             "path": "/components/heading",
             "rootComponent": "fandryui/componentDoc",
