@@ -5,9 +5,11 @@
 .item {
   display: flex;
   align-items: center;
+  min-height: var(--_fd-field-height);
+  box-sizing: border-box;
   gap: var(--_fd-space-2);
 
-  padding: var(--_fd-space-2) var(--_fd-space-3);
+  padding: var(--_fd-space-1) var(--_fd-space-2);
   border-radius: var(--_fd-radius-sm);
 
   font-family: inherit;
@@ -24,12 +26,12 @@
 }
 
 .item:hover:not(.item--disabled) {
-  background: hsl(var(--_fd-bg-muted));
+  background: hsl(var(--_fd-bg-hover));
 }
 
 .item:focus-visible {
   outline: none;
-  background: hsl(var(--_fd-bg-muted));
+  background: hsl(var(--_fd-bg-hover));
   box-shadow: inset 0 0 0 var(--_fd-ring-width) hsl(var(--_fd-ring-color));
 }
 

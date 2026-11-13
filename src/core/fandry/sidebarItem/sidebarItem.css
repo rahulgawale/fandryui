@@ -19,7 +19,7 @@
 }
 
 .item:hover {
-  background: hsl(var(--_fd-bg-muted));
+  background: hsl(var(--_fd-bg-hover));
   color: hsl(var(--_fd-text));
 }
 
