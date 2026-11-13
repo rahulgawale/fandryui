@@ -66,6 +66,12 @@ import DemoLookupMultiple from 'fandryuidemos/demoLookupMultiple';
 import DemoLookupValue from 'fandryuidemos/demoLookupValue';
 import DemoRadio from 'fandryuidemos/demoRadio';
 import DemoRadioGroup from 'fandryuidemos/demoRadioGroup';
+import DemoButtonGroup from 'fandryuidemos/demoButtonGroup';
+import DemoButtonGroupTheme from 'fandryuidemos/demoButtonGroupTheme';
+import DemoToggleGroup from 'fandryuidemos/demoToggleGroup';
+import DemoToggleButton from 'fandryuidemos/demoToggleButton';
+import DemoToggleButtonTheme from 'fandryuidemos/demoToggleButtonTheme';
+import DemoToggleGroupTheme from 'fandryuidemos/demoToggleGroupTheme';
 import DemoTabsTheme from 'fandryuidemos/demoTabsTheme';
 import DemoTabs from 'fandryuidemos/demoTabs';
 import DemoTab from 'fandryuidemos/demoTab';
@@ -98,6 +104,9 @@ import DemoTable from 'fandryuidemos/demoTable';
 const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   breadcrumb: DemoBreadcrumb,
   'breadcrumb-item': DemoBreadcrumbItem,
+  'button-group': DemoButtonGroup,
+  'toggle-group': DemoToggleGroup,
+  'toggle-button': DemoToggleButton,
   tabs: DemoTabs,
   tab: DemoTab,
   'tab-panel': DemoTabPanel,
@@ -176,6 +185,9 @@ const DEMO_COMPONENTS: Record<string, typeof LightningElement> = {
   'select-theme': DemoSelectTheme,
   'sidebar-theme': DemoSidebarTheme,
   'tabs-theme': DemoTabsTheme,
+  'button-group-theme': DemoButtonGroupTheme,
+  'toggle-button-theme': DemoToggleButtonTheme,
+  'toggle-group-theme': DemoToggleGroupTheme,
   'skeleton-theme': DemoSkeletonTheme,
   'spinner-theme': DemoSpinnerTheme,
   'switch-theme': DemoSwitchTheme,

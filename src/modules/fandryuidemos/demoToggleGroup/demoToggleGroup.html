@@ -1,0 +1,22 @@
+<template>
+  <fandry-toggle-group multiple value={value} aria-label="Text style">
+    <fandry-toggle-button value="bold">
+      <fandry-icon size="sm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 0 1 0 8H6zM6 12h9a4 4 0 0 1 0 8H6z"></path></svg>
+      </fandry-icon>
+      Bold
+    </fandry-toggle-button>
+    <fandry-toggle-button value="italic">
+      <fandry-icon size="sm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4h-9M14 20H5M15 4L9 20"></path></svg>
+      </fandry-icon>
+      Italic
+    </fandry-toggle-button>
+    <fandry-toggle-button value="underline" disabled>
+      <fandry-icon size="sm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v6a6 6 0 0 0 12 0V4M4 20h16"></path></svg>
+      </fandry-icon>
+      Underline
+    </fandry-toggle-button>
+  </fandry-toggle-group>
+</template>

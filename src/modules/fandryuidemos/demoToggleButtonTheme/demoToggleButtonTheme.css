@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-ring-color: 160 84% 36%;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+fandry-toggle-button::part(base) {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* A state is part of the name: only a pressed button. */
+fandry-toggle-button::part(base pressed) {
+  letter-spacing: 0.02em;
+}

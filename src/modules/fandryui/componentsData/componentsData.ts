@@ -139,6 +139,7 @@ export const STATE_DESCRIPTIONS: Record<string, string> = {
   disabled: 'A control, option or item that cannot be used.',
   invalid: 'A field that has error text.',
   changed: 'A form field whose value differs from the saved one.',
+  pressed: 'A toggle button that is on.',
   selected: 'The chosen option, a selected table row, or the selected tab.',
   active: 'The option the keyboard or pointer is on.',
   current: 'The link to the page being viewed.',
@@ -1712,6 +1713,198 @@ fandry-textarea::part(label) {
       { name: 'label · help-text · error-text (slots)', type: 'slot', default: 'the props', description: 'Markup in place of the label, help text or error text. Shown even without the matching prop.' }
     ],
     code: `<fandry-textarea label="Notes" rows="4"></fandry-textarea>`
+  },
+  {
+    slug: 'button-group',
+    name: 'Button Group',
+    tag: 'fandry-button-group',
+    parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'button-group-theme',
+      code: `<!-- template -->
+<div class="brand">
+  <fandry-button-group aria-label="Text alignment">
+    <fandry-button variant="secondary">Left</fandry-button>
+    <fandry-button variant="secondary">Center</fandry-button>
+    <fandry-button variant="secondary">Right</fandry-button>
+  </fandry-button-group>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-ring-color: 160 84% 36%;
+  --fd-border: 160 30% 70%;
+}
+
+fandry-button::part(base secondary) {
+  color: hsl(160 84% 26%);
+  letter-spacing: 0.02em;
+}`
+    },
+    category: 'Forms',
+    description: 'Joins the fandry-buttons inside it into one bar.',
+    props: [
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names the group, e.g. "Text alignment".' }
+    ],
+    code: `<fandry-button-group aria-label="Text alignment">
+  <fandry-button variant="secondary" onclick={handleLeft}>Left</fandry-button>
+  <fandry-button variant="secondary" onclick={handleCenter}>Center</fandry-button>
+  <fandry-button variant="secondary" onclick={handleRight}>Right</fandry-button>
+</fandry-button-group>`,
+    notes: [
+      {
+        title: 'Layout only',
+        paragraphs: [
+          'The group squares the inner corners and shares one border between neighbors; every button keeps its own click, focus and disabled state, and the group emits no events. Variants, sizes and parts are the buttons\' own. The `secondary` variant shows the seams best; solid buttons merge, so put a gap or a divider between them if you need one.',
+          'Buttons must be direct children. A page rule on a button (`margin-inline-start`, or `::part(base)` `border-radius`) wins over the group\'s.'
+        ]
+      }
+    ]
+  },
+  {
+    slug: 'toggle-button',
+    name: 'Toggle Button',
+    tag: 'fandry-toggle-button',
+    parts: ['base'],
+    states: ['default', 'secondary', 'ghost', 'pressed', 'disabled'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'toggle-button-theme',
+      code: `<!-- template -->
+<div class="brand row">
+  <fandry-toggle-button pressed>Favorite</fandry-toggle-button>
+  <fandry-toggle-button>Mute</fandry-toggle-button>
+  <fandry-toggle-button>Bookmark</fandry-toggle-button>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-ring-color: 160 84% 36%;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+fandry-toggle-button::part(base) {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* A state is part of the name: only a pressed button. */
+fandry-toggle-button::part(base pressed) {
+  letter-spacing: 0.02em;
+}`
+    },
+    category: 'Forms',
+    description: 'A button that stays on or off when pressed. Use it alone, or inside fandry-toggle-group.',
+    props: [
+      { name: 'variant', type: "'default' | 'secondary' | 'ghost'", default: "'default'", description: 'How the button looks while it is off: `default` is outlined, `secondary` has a muted fill, `ghost` is bare. Pressed fills with the primary color; `secondary` turns a deeper muted and `ghost` a light one. Set it on each button, also inside a group.' },
+      { name: 'pressed', type: 'boolean', default: 'false', description: 'Whether the button is on. Updates as the user presses it, like a checkbox\'s `checked`. Inside a fandry-toggle-group the group\'s `value` decides it.' },
+      { name: 'value', type: 'string', default: "''", description: 'Names the button inside a fandry-toggle-group, which matches it against its `value`. Not needed on its own.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Cannot be pressed, and a group\'s arrow keys skip it.' },
+      { name: 'change (event)', type: 'CustomEvent<{ pressed: boolean }>', default: '—', description: 'Fires when the user presses the button; `event.detail.pressed` is the new state. Not fired when `pressed` is set from code. Inside a group, the group handles it and fires its own `change` instead.' }
+    ],
+    code: `<fandry-toggle-button variant="ghost" pressed={favorite} onchange={handleChange}>
+  <fandry-icon size="sm">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 21l-6-3.6L6 21l1.5-6.9L2 9.3l7.1-.4z"></path>
+    </svg>
+  </fandry-icon>
+  Favorite
+</fandry-toggle-button>
+
+favorite = true;
+
+handleChange(event) {
+  this.favorite = event.detail.pressed;
+}`
+  },
+  {
+    slug: 'toggle-group',
+    name: 'Toggle Group',
+    tag: 'fandry-toggle-group',
+    parts: ['base'],
+    customize: {
+      title: 'Custom colors and parts',
+      demo: 'toggle-group-theme',
+      code: `<!-- template -->
+<div class="brand">
+  <fandry-toggle-group value={value} aria-label="View">
+    <fandry-toggle-button value="list">List</fandry-toggle-button>
+    <fandry-toggle-button value="grid">Grid</fandry-toggle-button>
+    <fandry-toggle-button value="map">Map</fandry-toggle-button>
+  </fandry-toggle-group>
+</div>
+
+/* css */
+/* Scoped to this demo. Set the same --fd-* tokens on :root to theme
+   every fandry-* component on the site. */
+.brand {
+  --fd-primary: 160 84% 26%;
+  --fd-ring-color: 160 84% 36%;
+}
+
+/* A page's rule beats the group's: separate pills instead of one bar. */
+fandry-toggle-group::part(base) {
+  gap: 0.5rem;
+}
+
+fandry-toggle-button {
+  margin-inline-start: 0;
+}
+
+fandry-toggle-button::part(base) {
+  border-radius: 999px;
+}`
+    },
+    category: 'Forms',
+    description: 'A bar of toggle buttons that hold on or off — one at a time, or several. Pair with fandry-toggle-button.',
+    props: [
+      { name: 'value', type: 'string[]', default: '[]', description: 'The `value` of every pressed button. Updates as the user presses buttons. Without `multiple`, only the first entry counts.' },
+      { name: 'multiple', type: 'boolean', default: 'false', description: 'Lets more than one button be pressed. Without it, pressing a button releases the others, and pressing the pressed button releases it too.' },
+      { name: 'aria-label', type: 'string', default: '—', description: 'Names the group, e.g. "Text style".' },
+      { name: 'change (event)', type: 'CustomEvent<{ value: string[] }>', default: '—', description: 'Fires when the user presses or releases a button; `event.detail.value` lists every pressed button. Not fired when `value` is set from code.' }
+    ],
+    code: `<fandry-toggle-group multiple value={styles} aria-label="Text style" onchange={handleChange}>
+  <fandry-toggle-button value="bold">
+    <fandry-icon size="sm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 4h8a4 4 0 0 1 0 8H6zM6 12h9a4 4 0 0 1 0 8H6z"></path>
+      </svg>
+    </fandry-icon>
+    Bold
+  </fandry-toggle-button>
+  <fandry-toggle-button value="italic">
+    <fandry-icon size="sm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 4h-9M14 20H5M15 4L9 20"></path>
+      </svg>
+    </fandry-icon>
+    Italic
+  </fandry-toggle-button>
+</fandry-toggle-group>
+
+styles = ['bold'];
+
+handleChange(event) {
+  this.styles = event.detail.value;
+}`,
+    notes: [
+      {
+        title: 'Buttons are toggle buttons',
+        paragraphs: [
+          'Each fandry-toggle-button flips itself and says so; the group turns that into one `value`. Put them in the default slot as direct children, each with a `value`. The group is one Tab stop (the first pressed button, or the first enabled one); the arrow keys, Home and End move focus between enabled buttons, and Space or Enter presses, as on any button.'
+        ]
+      }
+    ]
   },
 
   // ---- Feedback ----

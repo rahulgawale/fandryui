@@ -1,0 +1,27 @@
+:host {
+  display: inline-flex;
+}
+
+.group {
+  display: inline-flex;
+}
+
+/* The same joined bar as fandry-button-group; a page's own rule on an item wins. */
+::slotted(:not(:first-child)) {
+  --_fd-button-radius-start: 0;
+  /* A pressed item draws this on its start edge, so two pressed neighbors stay two. */
+  --_fd-toggle-seam-width: var(--_fd-border-width-md);
+  --_fd-toggle-seam-muted: color-mix(in srgb, hsl(var(--_fd-text)) 25%, hsl(var(--_fd-bg-muted)));
+  --_fd-toggle-seam: color-mix(in srgb, hsl(var(--_fd-primary-foreground)) 40%, hsl(var(--_fd-primary)));
+  margin-inline-start: calc(-1 * var(--_fd-border-width));
+}
+
+::slotted(:not(:last-child)) {
+  --_fd-button-radius-end: 0;
+}
+
+/* Only focus rises: a raised hover would paint over the next item's seam. */
+::slotted(:focus-within) {
+  position: relative;
+  z-index: 1;
+}

@@ -238,6 +238,45 @@
             }
         },
         {
+            "id": "component-button-group",
+            "path": "/components/button-group",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Button Group component for LWC | Fandry UI",
+                "description": "Joins the fandry-buttons inside it into one bar. A Fandry UI component for Salesforce LWC.",
+                "path": "/components/button-group/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
+            }
+        },
+        {
+            "id": "component-toggle-group",
+            "path": "/components/toggle-group",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Toggle Group component for LWC | Fandry UI",
+                "description": "A bar of toggle buttons that hold on or off — one at a time, or several. A Fandry UI component for Salesforce LWC.",
+                "path": "/components/toggle-group/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
+            }
+        },
+        {
+            "id": "component-toggle-button",
+            "path": "/components/toggle-button",
+            "rootComponent": "fandryui/componentDoc",
+            "layoutTemplate": "$layoutsDir/index.html",
+            "properties": {
+                "title": "Toggle Button component for LWC | Fandry UI",
+                "description": "A button that stays on or off when pressed. A Fandry UI component for Salesforce LWC.",
+                "path": "/components/toggle-button/",
+                "image": "/assets/og-image.jpg",
+                "imageAlt": "Fandry UI: the flexibility of modern UI development, the simplicity of LWC."
+            }
+        },
+        {
             "id": "component-heading",
             "path": "/components/heading",
             "rootComponent": "fandryui/componentDoc",

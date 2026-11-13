@@ -1,0 +1,26 @@
+:host {
+  display: inline-flex;
+}
+
+.group {
+  display: inline-flex;
+}
+
+/* Inner corners go square through the buttons' private radius variables;
+   neighbors overlap by one border so the seam is a single line. A page's own
+   rule on a button (outside this shadow root) wins over all of these. */
+::slotted(:not(:first-child)) {
+  --_fd-button-radius-start: 0;
+  margin-inline-start: calc(-1 * var(--_fd-border-width));
+}
+
+::slotted(:not(:last-child)) {
+  --_fd-button-radius-end: 0;
+}
+
+/* The focus ring and the hovered border sit above the neighbor's. */
+::slotted(:hover),
+::slotted(:focus-within) {
+  position: relative;
+  z-index: 1;
+}

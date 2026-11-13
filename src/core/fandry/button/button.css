@@ -19,6 +19,11 @@
      padding-inline: 0; border-width: 0 }` -- or all of them with the
      --fd-radius-md / --fd-border-width / --fd-space-* tokens. */
   border-radius: var(--fd-button-radius, var(--_fd-radius-md));
+  /* fandry-button-group squares the inner corners through these two. */
+  border-start-start-radius: var(--_fd-button-radius-start, var(--fd-button-radius, var(--_fd-radius-md)));
+  border-end-start-radius: var(--_fd-button-radius-start, var(--fd-button-radius, var(--_fd-radius-md)));
+  border-start-end-radius: var(--_fd-button-radius-end, var(--fd-button-radius, var(--_fd-radius-md)));
+  border-end-end-radius: var(--_fd-button-radius-end, var(--fd-button-radius, var(--_fd-radius-md)));
   border: var(--fd-button-border-width, var(--_fd-border-width)) solid transparent;
   cursor: pointer;
   -webkit-user-select: none;

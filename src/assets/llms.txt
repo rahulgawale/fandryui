@@ -34,6 +34,9 @@ Key facts:
 - [Tabs component for LWC](https://fandryui.forcetrails.com/components/tabs/): A set of tabs that switch between panels — pair with fandry-tab and fandry-tab-panel. A Fandry UI component for Salesforce LWC.
 - [Tab component for LWC](https://fandryui.forcetrails.com/components/tab/): A single tab inside fandry-tabs. A Fandry UI component for Salesforce LWC.
 - [Tab Panel component for LWC](https://fandryui.forcetrails.com/components/tab-panel/): The content shown for one fandry-tab. A Fandry UI component for Salesforce LWC.
+- [Button Group component for LWC](https://fandryui.forcetrails.com/components/button-group/): Joins the fandry-buttons inside it into one bar. A Fandry UI component for Salesforce LWC.
+- [Toggle Group component for LWC](https://fandryui.forcetrails.com/components/toggle-group/): A bar of toggle buttons that hold on or off — one at a time, or several. A Fandry UI component for Salesforce LWC.
+- [Toggle Button component for LWC](https://fandryui.forcetrails.com/components/toggle-button/): A button that stays on or off when pressed. A Fandry UI component for Salesforce LWC.
 - [Heading component for LWC](https://fandryui.forcetrails.com/components/heading/): A semantically-leveled heading, sized off the shared type scale. A Fandry UI component for Salesforce LWC.
 - [Icon component for LWC](https://fandryui.forcetrails.com/components/icon/): A sizing/color frame around a slotted glyph — brings no icon set of its own. A Fandry UI component for Salesforce LWC.
 - [Label component for LWC](https://fandryui.forcetrails.com/components/label/): The text of a form label, with an optional required indicator. A Fandry UI component for Salesforce LWC.
