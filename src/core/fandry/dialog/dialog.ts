@@ -82,6 +82,20 @@ export default class Dialog extends Base {
     return this.open ? 'backdrop' : 'backdrop backdrop--closing';
   }
 
+  /* Like a native <dialog>: slotted content marked `autofocus` takes focus
+     once the panel has it. Its own focus() reaches the real control inside a
+     fandry-* field. Nothing is guessed when no element is marked. */
+  private focusAutofocusContent() {
+    const slot = this.template.querySelector('slot');
+    for (const node of slot?.assignedElements({ flatten: true }) ?? []) {
+      const target = node.hasAttribute('autofocus') ? node : node.querySelector('[autofocus]');
+      if (target) {
+        (target as HTMLElement).focus();
+        return;
+      }
+    }
+  }
+
   // A closing dialog must not take focus or clicks while it fades -- body
   // scroll and focus are already handed back by the `open` setter. `''`
   // (attribute present) / `undefined` (removed): `inert` is a boolean
@@ -105,6 +119,7 @@ export default class Dialog extends Base {
     if (this.focusPending && this.open) {
       this.focusPending = false;
       (this.refs?.panel as HTMLElement | undefined)?.focus();
+      this.focusAutofocusContent();
     }
 
     if (!this.open && this.isMounted) {
