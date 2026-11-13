@@ -132,6 +132,8 @@
       "fandryuidemos/demoTabs": ["src/modules/fandryuidemos/demoTabs/demoTabs"],
       "fandryuidemos/demoTab": ["src/modules/fandryuidemos/demoTab/demoTab"],
       "fandryuidemos/demoTabPanel": ["src/modules/fandryuidemos/demoTabPanel/demoTabPanel"],
+      "fandryuidemos/demoSwipe": ["src/modules/fandryuidemos/demoSwipe/demoSwipe"],
+      "fandryuidemos/demoSwipeTheme": ["src/modules/fandryuidemos/demoSwipeTheme/demoSwipeTheme"],
       "fandryuidemos/demoSelect": ["src/modules/fandryuidemos/demoSelect/demoSelect"],
       "fandryuidemos/demoSwitch": ["src/modules/fandryuidemos/demoSwitch/demoSwitch"],
       "fandryuidemos/demoTextarea": ["src/modules/fandryuidemos/demoTextarea/demoTextarea"],

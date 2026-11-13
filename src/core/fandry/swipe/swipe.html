@@ -1,0 +1,32 @@
+<template>
+  <div class="swipe" part={basePart} onkeydown={handleKeydown}>
+    <!--
+      Behind the content, so the content slides off them. A closed side is
+      visibility: hidden (not tabbable, not read out) until it opens.
+    -->
+    <div class={startClass} part={startPart} hidden={noStart}>
+      <slot name="start" onslotchange={handleSlotChange}></slot>
+    </div>
+    <div class={endClass} part={endPart} hidden={noEnd}>
+      <slot name="end" onslotchange={handleSlotChange}></slot>
+    </div>
+    <div
+      lwc:ref="content"
+      class="content"
+      part={contentPart}
+      style={contentStyle}
+      onpointerdown={handlePointerDown}
+      onpointermove={handlePointerMove}
+      onpointerup={handlePointerUp}
+      onpointercancel={handlePointerCancel}
+    >
+      <slot></slot>
+      <div class="trigger trigger--start" part="trigger" hidden={noStartTrigger} onclick={handleStartTrigger}>
+        <slot name="start-trigger" onslotchange={handleSlotChange}></slot>
+      </div>
+      <div class="trigger trigger--end" part="trigger" hidden={noEndTrigger} onclick={handleEndTrigger}>
+        <slot name="end-trigger" onslotchange={handleSlotChange}></slot>
+      </div>
+    </div>
+  </div>
+</template>
