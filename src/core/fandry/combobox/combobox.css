@@ -39,6 +39,7 @@
 
 .input {
   width: 100%;
+  min-height: var(--_fd-field-height);
   box-sizing: border-box;
   font: inherit;
   color: hsl(var(--_fd-text));
@@ -114,13 +115,15 @@
 .option {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  min-height: var(--_fd-field-height);
   padding: var(--_fd-space-1) var(--_fd-space-2);
   border-radius: var(--_fd-radius-sm);
   cursor: pointer;
 }
 
 .option--active {
-  background: hsl(var(--_fd-bg-muted));
+  background: hsl(var(--_fd-bg-hover));
 }
 
 .option--selected .option-label {

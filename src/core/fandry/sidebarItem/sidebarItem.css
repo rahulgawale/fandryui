@@ -9,8 +9,11 @@
 }
 
 .item {
-  display: block;
-  padding: var(--_fd-space-2) var(--_fd-space-3);
+  display: flex;
+  align-items: center;
+  min-height: var(--_fd-field-height);
+  box-sizing: border-box;
+  padding: var(--_fd-space-1) var(--_fd-space-2);
   border-radius: var(--_fd-radius-md);
   color: hsl(var(--_fd-text-muted));
   font-size: var(--_fd-font-size-sm);
@@ -19,7 +22,7 @@
 }
 
 .item:hover {
-  background: hsl(var(--_fd-bg-muted));
+  background: hsl(var(--_fd-bg-hover));
   color: hsl(var(--_fd-text));
 }
 

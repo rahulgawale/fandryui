@@ -52,6 +52,9 @@
 
   --_fd-bg: var(--fd-bg, 0 0% 100%);
   --_fd-bg-muted: var(--fd-bg-muted, 220 14% 96%);
+  /* Highlight of the hovered or keyboard-active item in a list (menu item,
+     select/combobox/lookup/command option, sidebar item). */
+  --_fd-bg-hover: var(--fd-bg-hover, var(--_fd-bg-muted));
 
   --_fd-text: var(--fd-text, 222 47% 11%);
   --_fd-text-muted: var(--fd-text-muted, 220 9% 46%);
@@ -102,6 +105,11 @@
   --_fd-control-height-sm: var(--fd-control-height-sm, 32px);
   --_fd-control-height-md: var(--fd-control-height-md, 36px);
   --_fd-control-height-lg: var(--fd-control-height-lg, 40px);
+
+  /* ---- Field height: 2rem, the Salesforce (SLDS) input height. Fields
+     (input, select, combobox, lookup) and their options, menu items and
+     sidebar items share it. */
+  --_fd-field-height: var(--fd-field-height, 2rem);
 
   /* ---- Max-width cap for a standalone control (e.g. a search box that
      shouldn't stretch full-width of its container) ---- */

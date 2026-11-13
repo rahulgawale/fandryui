@@ -2394,7 +2394,7 @@ export default class PeopleSearch extends FdSearchState {
     <fandry-heading level="3">Remove Stride Runner?</fandry-heading>
     <fandry-text variant="muted">You can add it back any time.</fandry-text>
     <div class="row actions">
-      <fandry-button variant="secondary" onclick={handleClose}>Keep it</fandry-button>
+      <fandry-button variant="secondary" autofocus onclick={handleClose}>Keep it</fandry-button>
       <fandry-button onclick={handleClose}>Remove</fandry-button>
     </div>
   </fandry-dialog>
@@ -2419,7 +2419,7 @@ fandry-dialog::part(backdrop) {
 }`
     },
     category: 'Overlays & Data',
-    description: 'A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger.',
+    description: 'A modal panel over a backdrop, with Escape/backdrop-click to close and focus returned to the trigger. On open the panel takes focus; mark one slotted element `autofocus` to focus it instead (a safe choice such as Cancel, or the first field).',
     props: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Open state (consumer-controlled via ontoggle).' },
       { name: 'label', type: 'string', default: "''", description: 'Accessible name for the dialog.' },
@@ -2428,6 +2428,7 @@ fandry-dialog::part(backdrop) {
     code: `<fandry-dialog open={isOpen} label="Delete item" ontoggle={handleToggle}>
   <fandry-heading level="3">Delete item?</fandry-heading>
   <fandry-text variant="muted">This action can't be undone.</fandry-text>
+  <fandry-button variant="secondary" autofocus onclick={handleCancel}>Cancel</fandry-button>
 </fandry-dialog>`
   },
   {

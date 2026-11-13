@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import FdDialog from '../dialog';
+import AutofocusHarness from './autofocusHarness';
 import { mockAnimations, settle, AnimationMock } from '../../motion/__tests__/animationMock';
 
 const flush = () => Promise.resolve();
@@ -166,6 +167,23 @@ describe('fandry-dialog', () => {
 
     const panel = element.shadowRoot!.querySelector('.panel')!;
     expect(focusSpy.mock.instances).toContain(panel);
+
+    focusSpy.mockRestore();
+  });
+
+  it('focuses slotted content marked autofocus after the panel', async () => {
+    const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
+
+    const element = createElement('x-autofocus-harness', { is: AutofocusHarness });
+    document.body.appendChild(element);
+
+    element.open = true;
+    await flush();
+    await flush();
+
+    const focused = focusSpy.mock.instances as unknown as HTMLElement[];
+    expect(focused.some((node) => node.classList?.contains('second'))).toBe(true);
+    expect(focused.some((node) => node.classList?.contains('first'))).toBe(false);
 
     focusSpy.mockRestore();
   });

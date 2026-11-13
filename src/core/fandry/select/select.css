@@ -36,6 +36,8 @@
 
 .trigger {
   display: flex;
+  min-height: var(--_fd-field-height);
+  box-sizing: border-box;
   align-items: center;
   justify-content: space-between;
   gap: var(--_fd-space-2);
@@ -95,6 +97,9 @@
 }
 
 .option {
+  display: flex;
+  align-items: center;
+  min-height: var(--_fd-field-height);
   padding: var(--_fd-space-1) var(--_fd-space-2);
   border-radius: var(--_fd-radius-sm);
   white-space: nowrap;
@@ -102,7 +107,7 @@
 }
 
 .option--active {
-  background: hsl(var(--_fd-bg-muted));
+  background: hsl(var(--_fd-bg-hover));
 }
 
 .option--selected {

@@ -445,13 +445,13 @@ export const THEMING_TOKENS = `Color (H S% L%)   --fd-primary  --fd-primary-fore
                   --fd-success  --fd-success-foreground
                   --fd-warning  --fd-warning-foreground
                   --fd-danger  --fd-danger-foreground
-                  --fd-bg  --fd-bg-muted  --fd-text  --fd-text-muted
+                  --fd-bg  --fd-bg-muted  --fd-bg-hover  --fd-text  --fd-text-muted
                   --fd-border  --fd-border-focus  --fd-link-visited
 Borders           --fd-border-width  --fd-border-width-md  --fd-border-width-lg
 Radius            --fd-radius-sm  --fd-radius-md  --fd-radius-lg  --fd-radius-full
 Spacing           --fd-space-1  --fd-space-2  --fd-space-3  --fd-space-4  --fd-space-5
 Sizes             --fd-size-xs  --fd-size-sm  --fd-size-md  --fd-size-lg
-                  --fd-control-height-sm  --fd-control-height-md  --fd-control-height-lg
+                  --fd-control-height-sm  --fd-control-height-md  --fd-control-height-lg  --fd-field-height
                   --fd-control-max-width-sm  --fd-control-min-width-sm
                   --fd-listbox-max-height  --fd-chevron-size
                   --fd-overlay-min-width-sm  --fd-overlay-max-width-sm

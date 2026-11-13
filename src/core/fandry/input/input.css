@@ -50,6 +50,8 @@
 .control {
   display: flex;
   align-items: center;
+  min-height: var(--_fd-field-height);
+  box-sizing: border-box;
   border: var(--_fd-border-width) solid hsl(var(--_fd-border));
   border-radius: var(--_fd-radius-md);
   padding: var(--_fd-space-1) var(--_fd-space-2);

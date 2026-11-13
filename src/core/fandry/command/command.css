@@ -110,7 +110,7 @@
 }
 
 .option--active {
-  background: hsl(var(--_fd-bg-muted));
+  background: hsl(var(--_fd-bg-hover));
 }
 
 .option--disabled {
