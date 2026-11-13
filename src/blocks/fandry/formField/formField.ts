@@ -109,6 +109,28 @@ export default class FormField extends Base {
     (this.template.querySelector('.control') as HTMLElement | null)?.focus();
   }
 
+  /*
+    The browser's verdict on a control that has one (input, textarea,
+    checkbox, switch): `required` and whatever `elementProps` sets (`pattern`,
+    `maxLength`, ...). The others have no native rule to ask.
+  */
+  private get nativeControl(): (HTMLElement & { checkValidity(): boolean; reportValidity(): boolean }) | null {
+    if (!(this.isInput || this.isTextarea || this.isCheckbox || this.isSwitch)) return null;
+    return this.template.querySelector('.control');
+  }
+
+  /** Whether the control passes the browser's rules. Shows nothing. */
+  @api
+  checkValidity(): boolean {
+    return this.nativeControl?.checkValidity() ?? true;
+  }
+
+  /** checkValidity(), and shows the control's own error now. */
+  @api
+  reportValidity(): boolean {
+    return this.nativeControl?.reportValidity() ?? true;
+  }
+
   get hasField(): boolean {
     return !!this.field;
   }
@@ -203,7 +225,7 @@ export default class FormField extends Base {
   // Likewise the error: a primitive with a place for it ties it to its
   // control and announces it, so only the rest get this field's own line.
   get showOwnError(): boolean {
-    return this.hasError && (this.isRadio || this.isCheckbox || this.isSwitch);
+    return this.hasError && this.isRadio;
   }
 
   // `tabIndex` is what every native control needs to be in Safari's Tab
@@ -216,7 +238,7 @@ export default class FormField extends Base {
       ...this.field?.elementProps,
       ariaInvalid: this.hasError ? 'true' : 'false'
     };
-    if (this.field?.required && (this.isCheckbox || this.isSwitch)) props.ariaRequired = 'true';
+    if (this.field?.required && this.isSwitch) props.ariaRequired = 'true';
     return props;
   }
 

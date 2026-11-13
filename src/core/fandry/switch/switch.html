@@ -7,9 +7,13 @@
       value={value}
       checked={checked}
       disabled={disabled}
+      required={required}
       role="switch"
+      aria-describedby={describedBy}
+      aria-invalid={ariaInvalid}
       aria-checked={ariaChecked}
       onchange={handleChange}
+      onblur={handleBlur}
       lwc:spread={resolvedElementProps}
     />
 
@@ -19,4 +23,8 @@
 
     <span class="label" part="label" hidden={labelHidden}><slot onslotchange={handleTextSlotChange}>{label}</slot></span>
   </label>
+
+  <div id="error-text" class={errorTextClasses} part="error-text" aria-live="polite">
+    <slot name="error-text" onslotchange={handleTextSlotChange}>{shownErrorText}</slot>
+  </div>
 </template>

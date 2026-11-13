@@ -1,9 +1,11 @@
-import { api } from 'lwc';
+import { api, track } from 'lwc';
 import Base from 'fandry/base';
 import { partList } from 'fandry/parts';
 import { resolveElementProps } from 'fandry/elementProps';
 import { slotHasContent } from 'fandry/textSlots';
 import { fieldInvalid, fieldDescribedBy, withoutAriaInvalid } from 'fandry/fieldError';
+import { validationText } from 'fandry/validation';
+import type { FdValidate, FdValidationMessages } from 'fandry/validation';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -41,11 +43,27 @@ export default class Textarea extends Base {
   @api readonly = false;
   @api required = false;
 
+  // The browser's constraints, set on the native textarea: it decides what
+  // is valid, and words the message.
+  @api minLength: number | null = null;
+  @api maxLength: number | null = null;
+
+  /** A rule the browser has no attribute for -- see FdValidate. */
+  @api validate?: FdValidate;
+
+  /** Your wording for a failed rule, by ValidityState name -- see FdValidationMessages. */
+  @api messages: FdValidationMessages = {};
+
   // Spread onto the native <textarea> via `lwc:spread` -- see checkbox.ts
   // for why this can't reach `data-*` attributes, and why that's not
   // solved with a dedicated prop either. No tabIndex default here: Safari
   // already includes plain text fields in the Tab order by default.
   @api elementProps: Record<string, unknown> = {};
+
+  // The native textarea's verdict, and whether the user has earned seeing
+  // it: the field was left, or reportValidity() was called.
+  @track private validationError = '';
+  @track private validationShown = false;
 
   get hasLabel(): boolean {
     return !!this.label || !!this.textSlots['label'];
@@ -55,8 +73,13 @@ export default class Textarea extends Base {
     return !!this.helpText || !!this.textSlots['help-text'];
   }
 
+  // `error-text` (the page's, e.g. a server's) wins over the browser's.
+  get shownErrorText(): string {
+    return this.errorText || (this.validationShown ? this.validationError : '');
+  }
+
   get hasErrorText(): boolean {
-    return !!this.errorText || !!this.textSlots['error-text'];
+    return !!this.shownErrorText || !!this.textSlots['error-text'];
   }
 
   get errorTextClasses(): string {
@@ -97,6 +120,44 @@ export default class Textarea extends Base {
     if (textarea && textarea.value !== value) {
       textarea.value = value;
     }
+    // After every render, so a change to the value or to any constraint is
+    // checked against what the browser now holds.
+    if (textarea) this.validationError = validationText(textarea, this.validate, this.messages);
+  }
+
+  private get nativeTextarea(): HTMLTextAreaElement | null {
+    return this.template.querySelector('textarea');
+  }
+
+  /** The native textarea's ValidityState (`valid`, `valueMissing`, ...). */
+  @api
+  get validity(): ValidityState | undefined {
+    return this.nativeTextarea?.validity;
+  }
+
+  /** The message the field would show: yours from `messages` or `validate`, else the browser's. '' while valid. */
+  @api
+  get validationMessage(): string {
+    return this.validationError;
+  }
+
+  /** Whether the value passes every rule. Shows nothing. */
+  @api
+  checkValidity(): boolean {
+    this.renderedCallback();
+    return this.nativeTextarea?.validity.valid ?? true;
+  }
+
+  /** checkValidity(), and shows the error now, as a submit does. Focusing the first field that fails is the page's to do. */
+  @api
+  reportValidity(): boolean {
+    const valid = this.checkValidity();
+    this.validationShown = true;
+    return valid;
+  }
+
+  handleBlur() {
+    this.validationShown = true;
   }
 
   get resolvedElementProps(): Record<string, unknown> {

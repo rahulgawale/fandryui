@@ -4,6 +4,8 @@ import { partList } from 'fandry/parts';
 import { resolveElementProps } from 'fandry/elementProps';
 import { slotHasContent } from 'fandry/textSlots';
 import { fieldInvalid, fieldDescribedBy, withoutAriaInvalid } from 'fandry/fieldError';
+import { validationText } from 'fandry/validation';
+import type { FdValidate, FdValidationMessages } from 'fandry/validation';
 
 // See fandry-checkbox's checkbox.ts for why this list exists: it keeps a
 // consumer's `elementProps` from clobbering a property the component
@@ -44,6 +46,24 @@ export default class Input extends Base {
   @api required = false;
   @api size: 'sm' | 'md' | 'lg' = 'md';
 
+  /*
+    The browser's constraints, set on the native input: it decides what is
+    valid, and words the message. Which apply depends on `type` (`pattern`
+    on text-like types, `min`/`max`/`step` on numbers and dates).
+  */
+  @api pattern = '';
+  @api minLength: number | null = null;
+  @api maxLength: number | null = null;
+  @api min: string | number | null = null;
+  @api max: string | number | null = null;
+  @api step: string | number | null = null;
+
+  /** A rule the browser has no attribute for -- see FdValidate. */
+  @api validate?: FdValidate;
+
+  /** Your wording for a failed rule, by ValidityState name -- see FdValidationMessages. */
+  @api messages: FdValidationMessages = {};
+
   // Spread onto the native <input> via `lwc:spread` -- see checkbox.ts for
   // why this can't reach `data-*` attributes, and why that's not solved
   // with a dedicated prop either. No tabIndex default here: unlike
@@ -52,6 +72,11 @@ export default class Input extends Base {
   @api elementProps: Record<string, unknown> = {};
 
   @track hasFocus = false;
+
+  // The native input's verdict, and whether the user has earned seeing it:
+  // the field was left, or reportValidity() was called.
+  @track private validationError = '';
+  @track private validationShown = false;
 
   get resolvedElementProps(): Record<string, unknown> {
     return withoutAriaInvalid(resolveElementProps(this, this.elementProps, RESERVED_ELEMENT_PROPS, 'fandry-input'));
@@ -65,8 +90,13 @@ export default class Input extends Base {
     return !!this.helpText || !!this.textSlots['help-text'];
   }
 
+  // `error-text` (the page's, e.g. a server's) wins over the browser's.
+  get shownErrorText(): string {
+    return this.errorText || (this.validationShown ? this.validationError : '');
+  }
+
   get hasErrorText(): boolean {
-    return !!this.errorText || !!this.textSlots['error-text'];
+    return !!this.shownErrorText || !!this.textSlots['error-text'];
   }
 
   get errorTextClasses(): string {
@@ -103,6 +133,49 @@ export default class Input extends Base {
   focus() {
     const input = this.template.querySelector('input') as HTMLElement | null;
     input?.focus();
+  }
+
+  // An empty pattern attribute is a pattern that only an empty value matches.
+  get patternAttribute(): string | null {
+    return this.pattern || null;
+  }
+
+  private get nativeInput(): HTMLInputElement | null {
+    return this.template.querySelector('input');
+  }
+
+  // After every render, so a change to the value or to any constraint is
+  // checked against what the browser now holds.
+  renderedCallback() {
+    const input = this.nativeInput;
+    if (input) this.validationError = validationText(input, this.validate, this.messages);
+  }
+
+  /** The native input's ValidityState (`valid`, `valueMissing`, ...). */
+  @api
+  get validity(): ValidityState | undefined {
+    return this.nativeInput?.validity;
+  }
+
+  /** The message the field would show: yours from `messages` or `validate`, else the browser's. '' while valid. */
+  @api
+  get validationMessage(): string {
+    return this.validationError;
+  }
+
+  /** Whether the value passes every rule. Shows nothing. */
+  @api
+  checkValidity(): boolean {
+    this.renderedCallback();
+    return this.nativeInput?.validity.valid ?? true;
+  }
+
+  /** checkValidity(), and shows the error now, as a submit does. Focusing the first field that fails is the page's to do. */
+  @api
+  reportValidity(): boolean {
+    const valid = this.checkValidity();
+    this.validationShown = true;
+    return valid;
   }
 
   handleInput(event: Event) {
@@ -153,6 +226,7 @@ export default class Input extends Base {
 
   handleBlur() {
     this.hasFocus = false;
+    this.validationShown = true;
   }
 
   get controlPart(): string {
