@@ -2394,7 +2394,7 @@ export default class PeopleSearch extends FdSearchState {
     <fandry-heading level="3">Remove Stride Runner?</fandry-heading>
     <fandry-text variant="muted">You can add it back any time.</fandry-text>
     <div class="row actions">
-      <fandry-button variant="secondary" onclick={handleClose}>Keep it</fandry-button>
+      <fandry-button variant="secondary" autofocus onclick={handleClose}>Keep it</fandry-button>
       <fandry-button onclick={handleClose}>Remove</fandry-button>
     </div>
   </fandry-dialog>
