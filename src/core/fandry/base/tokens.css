@@ -107,7 +107,8 @@
   --_fd-control-height-lg: var(--fd-control-height-lg, 40px);
 
   /* ---- Field height: 2rem, the Salesforce (SLDS) input height. Fields
-     (input, select, combobox, lookup) and their options/menu items share it. */
+     (input, select, combobox, lookup) and their options, menu items and
+     sidebar items share it. */
   --_fd-field-height: var(--fd-field-height, 2rem);
 
   /* ---- Max-width cap for a standalone control (e.g. a search box that
